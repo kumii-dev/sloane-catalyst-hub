@@ -14,6 +14,275 @@ export type Database = {
   }
   public: {
     Tables: {
+      funders: {
+        Row: {
+          created_at: string
+          description: string | null
+          focus_areas: string[] | null
+          id: string
+          is_verified: boolean | null
+          logo_url: string | null
+          max_funding_amount: number | null
+          min_funding_amount: number | null
+          organization_name: string
+          organization_type: string | null
+          preferred_industries:
+            | Database["public"]["Enums"]["industry_type"][]
+            | null
+          preferred_stages:
+            | Database["public"]["Enums"]["company_stage"][]
+            | null
+          sloane_credits_balance: number | null
+          total_funded_amount: number | null
+          total_funded_companies: number | null
+          updated_at: string
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          focus_areas?: string[] | null
+          id?: string
+          is_verified?: boolean | null
+          logo_url?: string | null
+          max_funding_amount?: number | null
+          min_funding_amount?: number | null
+          organization_name: string
+          organization_type?: string | null
+          preferred_industries?:
+            | Database["public"]["Enums"]["industry_type"][]
+            | null
+          preferred_stages?:
+            | Database["public"]["Enums"]["company_stage"][]
+            | null
+          sloane_credits_balance?: number | null
+          total_funded_amount?: number | null
+          total_funded_companies?: number | null
+          updated_at?: string
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          focus_areas?: string[] | null
+          id?: string
+          is_verified?: boolean | null
+          logo_url?: string | null
+          max_funding_amount?: number | null
+          min_funding_amount?: number | null
+          organization_name?: string
+          organization_type?: string | null
+          preferred_industries?:
+            | Database["public"]["Enums"]["industry_type"][]
+            | null
+          preferred_stages?:
+            | Database["public"]["Enums"]["company_stage"][]
+            | null
+          sloane_credits_balance?: number | null
+          total_funded_amount?: number | null
+          total_funded_companies?: number | null
+          updated_at?: string
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      funding_applications: {
+        Row: {
+          applicant_id: string
+          application_data: Json | null
+          created_at: string
+          funder_notes: string | null
+          id: string
+          opportunity_id: string
+          requested_amount: number | null
+          reviewed_at: string | null
+          startup_id: string
+          status: Database["public"]["Enums"]["application_status"] | null
+          submitted_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          applicant_id: string
+          application_data?: Json | null
+          created_at?: string
+          funder_notes?: string | null
+          id?: string
+          opportunity_id: string
+          requested_amount?: number | null
+          reviewed_at?: string | null
+          startup_id: string
+          status?: Database["public"]["Enums"]["application_status"] | null
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          applicant_id?: string
+          application_data?: Json | null
+          created_at?: string
+          funder_notes?: string | null
+          id?: string
+          opportunity_id?: string
+          requested_amount?: number | null
+          reviewed_at?: string | null
+          startup_id?: string
+          status?: Database["public"]["Enums"]["application_status"] | null
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_applications_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "funding_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funding_applications_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startup_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funding_matches: {
+        Row: {
+          created_at: string
+          id: string
+          is_dismissed: boolean | null
+          is_viewed: boolean | null
+          match_reasons: string[] | null
+          match_score: number
+          opportunity_id: string
+          startup_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          is_viewed?: boolean | null
+          match_reasons?: string[] | null
+          match_score: number
+          opportunity_id: string
+          startup_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          is_viewed?: boolean | null
+          match_reasons?: string[] | null
+          match_score?: number
+          opportunity_id?: string
+          startup_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_matches_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "funding_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funding_matches_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startup_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funding_opportunities: {
+        Row: {
+          amount_max: number | null
+          amount_min: number | null
+          application_deadline: string | null
+          application_process: string | null
+          approved_applications: number | null
+          created_at: string
+          description: string
+          funder_id: string
+          funding_type: Database["public"]["Enums"]["funding_type"]
+          geographic_restrictions: string[] | null
+          id: string
+          industry_focus: Database["public"]["Enums"]["industry_type"][] | null
+          min_credit_score: number | null
+          requirements: string
+          sloane_credits_allocation: number | null
+          stage_requirements:
+            | Database["public"]["Enums"]["company_stage"][]
+            | null
+          status: Database["public"]["Enums"]["funding_status"] | null
+          tags: string[] | null
+          title: string
+          total_applications: number | null
+          updated_at: string
+        }
+        Insert: {
+          amount_max?: number | null
+          amount_min?: number | null
+          application_deadline?: string | null
+          application_process?: string | null
+          approved_applications?: number | null
+          created_at?: string
+          description: string
+          funder_id: string
+          funding_type: Database["public"]["Enums"]["funding_type"]
+          geographic_restrictions?: string[] | null
+          id?: string
+          industry_focus?: Database["public"]["Enums"]["industry_type"][] | null
+          min_credit_score?: number | null
+          requirements: string
+          sloane_credits_allocation?: number | null
+          stage_requirements?:
+            | Database["public"]["Enums"]["company_stage"][]
+            | null
+          status?: Database["public"]["Enums"]["funding_status"] | null
+          tags?: string[] | null
+          title: string
+          total_applications?: number | null
+          updated_at?: string
+        }
+        Update: {
+          amount_max?: number | null
+          amount_min?: number | null
+          application_deadline?: string | null
+          application_process?: string | null
+          approved_applications?: number | null
+          created_at?: string
+          description?: string
+          funder_id?: string
+          funding_type?: Database["public"]["Enums"]["funding_type"]
+          geographic_restrictions?: string[] | null
+          id?: string
+          industry_focus?: Database["public"]["Enums"]["industry_type"][] | null
+          min_credit_score?: number | null
+          requirements?: string
+          sloane_credits_allocation?: number | null
+          stage_requirements?:
+            | Database["public"]["Enums"]["company_stage"][]
+            | null
+          status?: Database["public"]["Enums"]["funding_status"] | null
+          tags?: string[] | null
+          title?: string
+          total_applications?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_opportunities_funder_id_fkey"
+            columns: ["funder_id"]
+            isOneToOne: false
+            referencedRelation: "funders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mentor_categories: {
         Row: {
           category_id: string
@@ -211,6 +480,66 @@ export type Database = {
         }
         Relationships: []
       }
+      startup_profiles: {
+        Row: {
+          annual_revenue: number | null
+          company_name: string
+          consent_data_sharing: boolean | null
+          created_at: string
+          credit_score: number | null
+          description: string | null
+          founded_year: number | null
+          funding_needed: number | null
+          id: string
+          industry: Database["public"]["Enums"]["industry_type"]
+          location: string | null
+          logo_url: string | null
+          stage: Database["public"]["Enums"]["company_stage"]
+          team_size: number | null
+          updated_at: string
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          annual_revenue?: number | null
+          company_name: string
+          consent_data_sharing?: boolean | null
+          created_at?: string
+          credit_score?: number | null
+          description?: string | null
+          founded_year?: number | null
+          funding_needed?: number | null
+          id?: string
+          industry: Database["public"]["Enums"]["industry_type"]
+          location?: string | null
+          logo_url?: string | null
+          stage: Database["public"]["Enums"]["company_stage"]
+          team_size?: number | null
+          updated_at?: string
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          annual_revenue?: number | null
+          company_name?: string
+          consent_data_sharing?: boolean | null
+          created_at?: string
+          credit_score?: number | null
+          description?: string | null
+          founded_year?: number | null
+          funding_needed?: number | null
+          id?: string
+          industry?: Database["public"]["Enums"]["industry_type"]
+          location?: string | null
+          logo_url?: string | null
+          stage?: Database["public"]["Enums"]["company_stage"]
+          team_size?: number | null
+          updated_at?: string
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -219,6 +548,40 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      application_status:
+        | "draft"
+        | "submitted"
+        | "under_review"
+        | "approved"
+        | "rejected"
+        | "withdrawn"
+      company_stage:
+        | "idea"
+        | "pre_seed"
+        | "seed"
+        | "series_a"
+        | "series_b"
+        | "growth"
+        | "established"
+      funding_status: "draft" | "active" | "closed" | "paused"
+      funding_type:
+        | "grant"
+        | "loan"
+        | "vc"
+        | "angel"
+        | "bank_product"
+        | "accelerator"
+        | "competition"
+      industry_type:
+        | "fintech"
+        | "healthtech"
+        | "edtech"
+        | "agritech"
+        | "cleantech"
+        | "retail"
+        | "manufacturing"
+        | "services"
+        | "other"
       mentor_status: "available" | "busy" | "unavailable"
       session_status: "pending" | "confirmed" | "completed" | "cancelled"
       session_type: "free" | "premium"
@@ -349,6 +712,44 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      application_status: [
+        "draft",
+        "submitted",
+        "under_review",
+        "approved",
+        "rejected",
+        "withdrawn",
+      ],
+      company_stage: [
+        "idea",
+        "pre_seed",
+        "seed",
+        "series_a",
+        "series_b",
+        "growth",
+        "established",
+      ],
+      funding_status: ["draft", "active", "closed", "paused"],
+      funding_type: [
+        "grant",
+        "loan",
+        "vc",
+        "angel",
+        "bank_product",
+        "accelerator",
+        "competition",
+      ],
+      industry_type: [
+        "fintech",
+        "healthtech",
+        "edtech",
+        "agritech",
+        "cleantech",
+        "retail",
+        "manufacturing",
+        "services",
+        "other",
+      ],
       mentor_status: ["available", "busy", "unavailable"],
       session_status: ["pending", "confirmed", "completed", "cancelled"],
       session_type: ["free", "premium"],

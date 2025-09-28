@@ -9,6 +9,10 @@ import Auth from "./pages/Auth";
 import Mentorship from "./pages/Mentorship";
 import FindMentor from "./pages/FindMentor";
 import BecomeMentor from "./pages/BecomeMentor";
+import FundingHub from "./pages/FundingHub";
+import BrowseFunding from "./pages/BrowseFunding";
+import StartupDashboard from "./pages/StartupDashboard";
+import FunderDashboard from "./pages/FunderDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +30,10 @@ const App = () => (
             <Route path="/mentorship" element={<Mentorship />} />
             <Route path="/find-mentor" element={<FindMentor />} />
             <Route path="/become-mentor" element={<BecomeMentor />} />
+            <Route path="/funding" element={<FundingHub />} />
+            <Route path="/funding/browse" element={<BrowseFunding />} />
+            <Route path="/funding/startup-dashboard" element={<StartupDashboard />} />
+            <Route path="/funding/funder-dashboard" element={<FunderDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

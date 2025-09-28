@@ -2,6 +2,8 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
 const TopNavbar = () => {
@@ -39,9 +41,19 @@ const TopNavbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="h-14 bg-background border-b border-border px-6 flex items-center justify-between">
-      {/* Left - Brand */}
-      <div className="flex items-center gap-8">
+    <header className="h-14 bg-background border-b border-border px-4 flex items-center justify-between w-full">
+      {/* Left - Search and Brand */}
+      <div className="flex items-center gap-6">
+        {/* Search Bar */}
+        <div className="relative w-64">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Input 
+            placeholder="Search apps and more" 
+            className="pl-10 h-9 bg-muted/50 border-muted"
+          />
+        </div>
+
+        {/* Brand */}
         <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
             <span className="text-primary-foreground font-bold text-sm">22</span>
@@ -53,7 +65,7 @@ const TopNavbar = () => {
         </Link>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden lg:flex items-center space-x-6 ml-6">
           {navItems.map((item) => (
             <Link
               key={item.href}

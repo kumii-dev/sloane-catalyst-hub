@@ -35,16 +35,16 @@ export function Layout({ children, showSidebar = false }: LayoutProps) {
   }
 
   return (
-    <div className="min-h-screen flex w-full">
-      <AppSidebar 
-        selectedPrimary={selectedPrimary}
-        onPrimarySelect={handlePrimarySelect}
-        showSecondary={showSecondary}
-      />
+    <div className="min-h-screen flex w-full flex-col">
+      {/* Top Navigation - Full Width */}
+      <TopNavbar />
       
-      <div className="flex-1 flex flex-col">
-        {/* Top Navigation */}
-        <TopNavbar />
+      <div className="flex-1 flex">
+        <AppSidebar 
+          selectedPrimary={selectedPrimary}
+          onPrimarySelect={handlePrimarySelect}
+          showSecondary={showSecondary}
+        />
         
         <main className="flex-1 overflow-auto bg-background">
           {children}

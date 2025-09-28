@@ -19,6 +19,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 import Resources from "./pages/Resources";
 import ResourceCategory from "./pages/ResourceCategory";
 import ResourceDetail from "./pages/ResourceDetail";
+import AccessToMarket from "./pages/AccessToMarket";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/funding/browse" element={<BrowseFunding />} />
             <Route path="/funding/startup-dashboard" element={<StartupDashboard />} />
             <Route path="/funding/funder-dashboard" element={<FunderDashboard />} />
+            <Route path="/access-to-market" element={<AccessToMarket />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/category/:slug" element={<ServiceCategory />} />
             <Route path="/services/:id" element={<ServiceDetail />} />

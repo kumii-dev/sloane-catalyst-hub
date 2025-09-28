@@ -55,8 +55,8 @@ const TopNavbar = () => {
         </Link>
       </div>
 
-      {/* Center - Navigation Links */}
-      <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-center">
+      {/* Center-Right - Navigation Links */}
+      <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-center ml-32">
         {navItems.map((item) => (
           <Link
             key={item.href}

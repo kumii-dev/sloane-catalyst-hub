@@ -114,7 +114,7 @@ const AccessToMarket = () => {
       icon: Shield,
       title: "Credit Score Check",
       description: "Get your standardized credit and technical readiness scores",
-      href: "/funding/startup-dashboard",
+      href: "/credit-score",
       color: "bg-blue-500/10 text-blue-600",
       action: "Check Score"
     },

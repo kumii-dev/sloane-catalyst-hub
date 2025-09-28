@@ -14,6 +14,83 @@ export type Database = {
   }
   public: {
     Tables: {
+      credit_assessments: {
+        Row: {
+          assessed_at: string | null
+          assessment_data: Json | null
+          compliance_score: number | null
+          consent_timestamp: string | null
+          consent_to_share: boolean | null
+          created_at: string
+          expires_at: string | null
+          financial_health_score: number | null
+          governance_score: number | null
+          growth_readiness_score: number | null
+          id: string
+          improvement_areas: string[] | null
+          market_access_score: number | null
+          overall_score: number | null
+          recommendations: string[] | null
+          skills_score: number | null
+          startup_id: string
+          status: Database["public"]["Enums"]["assessment_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assessed_at?: string | null
+          assessment_data?: Json | null
+          compliance_score?: number | null
+          consent_timestamp?: string | null
+          consent_to_share?: boolean | null
+          created_at?: string
+          expires_at?: string | null
+          financial_health_score?: number | null
+          governance_score?: number | null
+          growth_readiness_score?: number | null
+          id?: string
+          improvement_areas?: string[] | null
+          market_access_score?: number | null
+          overall_score?: number | null
+          recommendations?: string[] | null
+          skills_score?: number | null
+          startup_id: string
+          status?: Database["public"]["Enums"]["assessment_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assessed_at?: string | null
+          assessment_data?: Json | null
+          compliance_score?: number | null
+          consent_timestamp?: string | null
+          consent_to_share?: boolean | null
+          created_at?: string
+          expires_at?: string | null
+          financial_health_score?: number | null
+          governance_score?: number | null
+          growth_readiness_score?: number | null
+          id?: string
+          improvement_areas?: string[] | null
+          market_access_score?: number | null
+          overall_score?: number | null
+          recommendations?: string[] | null
+          skills_score?: number | null
+          startup_id?: string
+          status?: Database["public"]["Enums"]["assessment_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_assessments_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startup_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_registrations: {
         Row: {
           attended: boolean | null
@@ -846,6 +923,90 @@ export type Database = {
           },
         ]
       }
+      score_sharing: {
+        Row: {
+          access_level: string
+          assessment_id: string
+          created_at: string
+          expires_at: string | null
+          funder_id: string | null
+          id: string
+          shared_at: string
+          viewed_at: string | null
+        }
+        Insert: {
+          access_level?: string
+          assessment_id: string
+          created_at?: string
+          expires_at?: string | null
+          funder_id?: string | null
+          id?: string
+          shared_at?: string
+          viewed_at?: string | null
+        }
+        Update: {
+          access_level?: string
+          assessment_id?: string
+          created_at?: string
+          expires_at?: string | null
+          funder_id?: string | null
+          id?: string
+          shared_at?: string
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "score_sharing_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "credit_assessments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "score_sharing_funder_id_fkey"
+            columns: ["funder_id"]
+            isOneToOne: false
+            referencedRelation: "funders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scoring_criteria: {
+        Row: {
+          category: Database["public"]["Enums"]["scoring_category"]
+          created_at: string
+          criteria_name: string
+          description: string | null
+          id: string
+          is_active: boolean
+          max_points: number
+          updated_at: string
+          weight: number
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["scoring_category"]
+          created_at?: string
+          criteria_name: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          max_points?: number
+          updated_at?: string
+          weight?: number
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["scoring_category"]
+          created_at?: string
+          criteria_name?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          max_points?: number
+          updated_at?: string
+          weight?: number
+        }
+        Relationships: []
+      }
       service_categories: {
         Row: {
           created_at: string
@@ -1207,6 +1368,7 @@ export type Database = {
         | "approved"
         | "rejected"
         | "withdrawn"
+      assessment_status: "draft" | "in_progress" | "completed" | "reviewed"
       company_stage:
         | "idea"
         | "pre_seed"
@@ -1253,6 +1415,13 @@ export type Database = {
         | "guide"
         | "webinar"
         | "podcast"
+      scoring_category:
+        | "financial_health"
+        | "governance"
+        | "skills"
+        | "market_access"
+        | "compliance"
+        | "growth_readiness"
       service_type: "subscription" | "one_time" | "session_based" | "custom"
       session_status: "pending" | "confirmed" | "completed" | "cancelled"
       session_type: "free" | "premium"
@@ -1392,6 +1561,7 @@ export const Constants = {
         "rejected",
         "withdrawn",
       ],
+      assessment_status: ["draft", "in_progress", "completed", "reviewed"],
       company_stage: [
         "idea",
         "pre_seed",
@@ -1442,6 +1612,14 @@ export const Constants = {
         "guide",
         "webinar",
         "podcast",
+      ],
+      scoring_category: [
+        "financial_health",
+        "governance",
+        "skills",
+        "market_access",
+        "compliance",
+        "growth_readiness",
       ],
       service_type: ["subscription", "one_time", "session_based", "custom"],
       session_status: ["pending", "confirmed", "completed", "cancelled"],

@@ -14,7 +14,203 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      mentor_categories: {
+        Row: {
+          category_id: string
+          mentor_id: string
+        }
+        Insert: {
+          category_id: string
+          mentor_id: string
+        }
+        Update: {
+          category_id?: string
+          mentor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "mentoring_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentor_categories_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentoring_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      mentoring_sessions: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration_minutes: number
+          id: string
+          meeting_link: string | null
+          mentee_id: string
+          mentor_id: string
+          notes: string | null
+          price: number | null
+          scheduled_at: string | null
+          session_status: Database["public"]["Enums"]["session_status"]
+          session_type: Database["public"]["Enums"]["session_type"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number
+          id?: string
+          meeting_link?: string | null
+          mentee_id: string
+          mentor_id: string
+          notes?: string | null
+          price?: number | null
+          scheduled_at?: string | null
+          session_status?: Database["public"]["Enums"]["session_status"]
+          session_type: Database["public"]["Enums"]["session_type"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number
+          id?: string
+          meeting_link?: string | null
+          mentee_id?: string
+          mentor_id?: string
+          notes?: string | null
+          price?: number | null
+          scheduled_at?: string | null
+          session_status?: Database["public"]["Enums"]["session_status"]
+          session_type?: Database["public"]["Enums"]["session_type"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentoring_sessions_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentors: {
+        Row: {
+          company: string | null
+          created_at: string
+          experience_years: number | null
+          expertise_areas: string[] | null
+          hourly_rate: number | null
+          id: string
+          is_premium: boolean
+          rating: number | null
+          status: Database["public"]["Enums"]["mentor_status"]
+          title: string
+          total_sessions: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          experience_years?: number | null
+          expertise_areas?: string[] | null
+          hourly_rate?: number | null
+          id?: string
+          is_premium?: boolean
+          rating?: number | null
+          status?: Database["public"]["Enums"]["mentor_status"]
+          title: string
+          total_sessions?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          experience_years?: number | null
+          expertise_areas?: string[] | null
+          hourly_rate?: number | null
+          id?: string
+          is_premium?: boolean
+          rating?: number | null
+          status?: Database["public"]["Enums"]["mentor_status"]
+          title?: string
+          total_sessions?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          bio: string | null
+          created_at: string
+          email: string | null
+          first_name: string | null
+          id: string
+          last_name: string | null
+          profile_picture_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          profile_picture_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          profile_picture_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +219,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      mentor_status: "available" | "busy" | "unavailable"
+      session_status: "pending" | "confirmed" | "completed" | "cancelled"
+      session_type: "free" | "premium"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +348,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      mentor_status: ["available", "busy", "unavailable"],
+      session_status: ["pending", "confirmed", "completed", "cancelled"],
+      session_type: ["free", "premium"],
+    },
   },
 } as const

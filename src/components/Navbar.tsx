@@ -12,7 +12,7 @@ const Navbar = () => {
   const navItems = [
     { name: "Services", href: "#services", hasDropdown: true },
     { name: "Funding", href: "#funding" },
-    { name: "Mentorship", href: "#mentorship" },
+    { name: "Mentorship", href: "/mentorship" },
     { name: "Resources", href: "#resources", hasDropdown: true },
     { name: "About", href: "#about" }
   ];
@@ -36,13 +36,23 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <div key={item.name} className="relative group">
-                <a
-                  href={item.href}
-                  className="flex items-center gap-1 text-foreground hover:text-primary transition-smooth font-medium"
-                >
-                  {item.name}
-                  {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
-                </a>
+                {item.href.startsWith('#') ? (
+                  <a
+                    href={item.href}
+                    className="flex items-center gap-1 text-foreground hover:text-primary transition-smooth font-medium"
+                  >
+                    {item.name}
+                    {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
+                  </a>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className="flex items-center gap-1 text-foreground hover:text-primary transition-smooth font-medium"
+                  >
+                    {item.name}
+                    {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
+                  </Link>
+                )}
                 
                 {/* Dropdown would go here for items with hasDropdown */}
               </div>
@@ -93,14 +103,25 @@ const Navbar = () => {
           <div className="md:hidden py-4 border-t border-border/50">
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-foreground hover:text-primary transition-smooth font-medium py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.name}
-                </a>
+                item.href.startsWith('#') ? (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="text-foreground hover:text-primary transition-smooth font-medium py-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className="text-foreground hover:text-primary transition-smooth font-medium py-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                )
               ))}
               
               <div className="pt-4 border-t border-border/50 flex flex-col space-y-3">

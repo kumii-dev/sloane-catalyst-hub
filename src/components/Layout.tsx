@@ -47,7 +47,7 @@ export function Layout({ children, showSidebar = false }: LayoutProps) {
         />
         
         <main className="flex-1 overflow-auto main-gradient-light">
-          <div className="max-w-6xl mx-auto px-6 py-4 max-h-[60vh]">
+          <div className="max-w-6xl mx-auto px-6 py-4 max-h-[36vh]">
             {children}
           </div>
         </main>

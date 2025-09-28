@@ -145,8 +145,9 @@ const BecomeMentor = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 py-16 px-4">
-        <div className="mx-auto max-w-4xl text-center">
+      <section className="relative bg-gradient-to-br from-background via-background/95 to-muted/20 py-16 px-4 overflow-hidden">
+        <div className="absolute inset-0 hero-gradient opacity-20" />
+        <div className="mx-auto max-w-4xl text-center relative z-10">
           <h1 className="mb-4 text-4xl font-bold">Share Your Expertise</h1>
           <p className="text-lg text-muted-foreground">
             Join thousands of mentors helping professionals accelerate their careers
@@ -171,8 +172,8 @@ const BecomeMentor = () => {
                 <Card key={index} className="text-center">
                   <CardContent className="p-6">
                     <div className="mb-4 flex justify-center">
-                      <div className="rounded-full bg-primary/10 p-4">
-                        <Icon className="h-8 w-8 text-primary" />
+                      <div className="rounded-full bg-accent/10 p-4">
+                        <Icon className="h-8 w-8 text-accent" />
                       </div>
                     </div>
                     <h3 className="mb-2 font-semibold">{benefit.title}</h3>
@@ -294,7 +295,7 @@ const BecomeMentor = () => {
                   </div>
                 )}
 
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" variant="hero" className="w-full" disabled={loading}>
                   {loading ? "Creating Profile..." : "Create Mentor Profile"}
                 </Button>
               </form>

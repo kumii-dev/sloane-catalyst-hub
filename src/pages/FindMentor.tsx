@@ -96,8 +96,9 @@ const FindMentor = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 py-16 px-4">
-        <div className="mx-auto max-w-6xl">
+      <section className="relative bg-gradient-to-br from-background via-background/95 to-muted/20 py-16 px-4 overflow-hidden">
+        <div className="absolute inset-0 hero-gradient opacity-20" />
+        <div className="mx-auto max-w-6xl relative z-10">
           <h1 className="mb-4 text-4xl font-bold">Find Your Perfect Mentor</h1>
           <p className="text-lg text-muted-foreground">
             Discover industry experts ready to guide your career journey
@@ -236,7 +237,7 @@ const FindMentor = () => {
                           </div>
                         )}
                       </div>
-                      <Button size="sm">
+                      <Button variant="hero" size="sm">
                         <Calendar className="mr-2 h-4 w-4" />
                         Book Session
                       </Button>

@@ -70,19 +70,19 @@ const Mentorship = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 px-4">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5" />
-        <div className="relative mx-auto max-w-6xl text-center">
+      <section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-background via-background/95 to-muted/20">
+        <div className="absolute inset-0 hero-gradient opacity-20" />
+        <div className="relative mx-auto max-w-6xl text-center z-10">
           <div className="mb-8 flex justify-center gap-4">
             <Link to="/find-mentor">
-              <Button size="lg" className="rounded-full">
+              <Button variant="hero" size="lg" className="rounded-full">
                 Find a Mentor
               </Button>
             </Link>
             <Link to="/become-mentor">
-              <Button size="lg" variant="outline" className="rounded-full">
+              <Button size="lg" variant="outline" className="rounded-full border-accent/30 hover:bg-accent/10 text-foreground">
                 Become a Mentor
               </Button>
             </Link>
@@ -91,7 +91,7 @@ const Mentorship = () => {
           <h1 className="mb-6 text-5xl font-bold leading-tight md:text-6xl">
             Unlock Your Potential,
             <br />
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
               Faster.
             </span>
             <br />
@@ -108,9 +108,9 @@ const Mentorship = () => {
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
-                <div key={index} className="flex items-center gap-2 rounded-full bg-background/80 backdrop-blur-sm px-6 py-3 shadow-sm">
+                <div key={index} className="flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-6 py-3 shadow-sm border border-white/20">
                   <Icon className={`h-5 w-5 ${stat.color}`} />
-                  <span className="font-medium">{stat.label}</span>
+                  <span className="font-medium text-foreground">{stat.label}</span>
                 </div>
               );
             })}
@@ -133,8 +133,8 @@ const Mentorship = () => {
                 <Card key={index} className="group cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1">
                   <CardContent className="p-6">
                     <div className="mb-4 flex items-center gap-3">
-                      <div className="rounded-lg bg-primary/10 p-3 transition-colors group-hover:bg-primary/20">
-                        <Icon className="h-6 w-6 text-primary" />
+                      <div className="rounded-lg bg-accent/10 p-3 transition-colors group-hover:bg-accent/20">
+                        <Icon className="h-6 w-6 text-accent" />
                       </div>
                       <div>
                         <h3 className="font-semibold">{category.name}</h3>

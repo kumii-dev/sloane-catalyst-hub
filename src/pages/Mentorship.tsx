@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { Layout } from "@/components/Layout";
 import { 
   Users, 
   Star, 
@@ -70,7 +71,7 @@ const Mentorship = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <Layout showSidebar={true}>
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-background via-background/95 to-muted/20">
         <div className="absolute inset-0 hero-gradient opacity-20" />
@@ -248,7 +249,7 @@ const Mentorship = () => {
           </div>
         </div>
       </section>
-    </div>
+    </Layout>
   );
 };
 

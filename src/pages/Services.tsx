@@ -6,8 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search, Filter, Star, Users, Zap, Award } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
 interface ServiceCategory {
@@ -105,8 +104,7 @@ const Services = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <Layout showSidebar={true}>
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-8">
             <div className="h-8 bg-muted rounded w-48"></div>
@@ -117,15 +115,12 @@ const Services = () => {
             </div>
           </div>
         </div>
-        <Footer />
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
+    <Layout showSidebar={true}>
       {/* Hero Section */}
       <section className="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4 text-center">
@@ -294,9 +289,7 @@ const Services = () => {
           </div>
         </section>
       </div>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import Navbar from "@/components/Navbar";
+import { Layout } from "@/components/Layout";
 
 interface ResourceCategory {
   id: string;
@@ -105,22 +105,19 @@ const Resources = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <Layout showSidebar={true}>
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-muted-foreground">Loading resources...</p>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
+    <Layout showSidebar={true}>
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-accent/10">
         <div className="container mx-auto px-6">
@@ -429,8 +426,8 @@ const Resources = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Button asChild>
-                      <Link to="/resources/getting-started">Onboarding Guide</Link>
+                    <Button className="w-full" asChild>
+                      <Link to="/resources/getting-started">Get Started Guide</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -439,7 +436,7 @@ const Resources = () => {
           </Tabs>
         </section>
       </div>
-    </div>
+    </Layout>
   );
 };
 

@@ -11,8 +11,7 @@ import {
   CheckCircle,
   Target
 } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 
 const CreditScore = () => {
@@ -64,11 +63,9 @@ const CreditScore = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
+    <Layout showSidebar={true}>
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
+      <section className="py-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <Badge variant="outline" className="mb-4">
@@ -209,9 +206,7 @@ const CreditScore = () => {
           )}
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

@@ -17,8 +17,7 @@ import {
   Shield,
   BarChart3
 } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -152,11 +151,9 @@ const AccessToMarket = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
+    <Layout showSidebar={true}>
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
+      <section className="py-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
         <div className="container mx-auto px-6 text-center">
           <div className="max-w-4xl mx-auto">
             <Badge variant="outline" className="mb-4">
@@ -497,9 +494,7 @@ const AccessToMarket = () => {
           </Card>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

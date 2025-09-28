@@ -161,8 +161,7 @@ const StartupDashboard = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-        <Navbar />
+      <Layout showSidebar={false}>
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
           <p className="text-muted-foreground mb-6">Please sign in to access your startup dashboard.</p>
@@ -170,15 +169,13 @@ const StartupDashboard = () => {
             <Button>Sign In</Button>
           </Link>
         </div>
-        <Footer />
-      </div>
+      </Layout>
     );
   }
 
   if (!profile && !loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-        <Navbar />
+      <Layout showSidebar={false}>
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Building className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
           <h1 className="text-2xl font-bold mb-4">Complete Your Startup Profile</h1>
@@ -192,15 +189,12 @@ const StartupDashboard = () => {
             </Button>
           </Link>
         </div>
-        <Footer />
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <Navbar />
-      
+    <Layout showSidebar={true}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -459,50 +453,48 @@ const StartupDashboard = () => {
                     Keep your profile updated to get better funding matches
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium">Company Name</label>
-                      <p className="text-sm text-muted-foreground">{profile.company_name}</p>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium">Industry</label>
-                      <p className="text-sm text-muted-foreground capitalize">{profile.industry}</p>
-                    </div>
+                 <CardContent className="space-y-4">
+                   <div className="grid grid-cols-2 gap-4">
+                     <div>
+                       <label className="text-sm font-medium">Company Name</label>
+                       <p className="text-sm text-muted-foreground">{profile.company_name}</p>
+                     </div>
+                     <div>
+                       <label className="text-sm font-medium">Industry</label>
+                       <p className="text-sm text-muted-foreground capitalize">{profile.industry}</p>
+                     </div>
+                   </div>
                     <div>
                       <label className="text-sm font-medium">Stage</label>
                       <p className="text-sm text-muted-foreground capitalize">{profile.stage.replace('_', ' ')}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Funding Needed</label>
-                      <p className="text-sm text-muted-foreground">
-                        {profile.funding_needed ? formatAmount(profile.funding_needed) : 'Not specified'}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="text-sm font-medium">Description</label>
-                    <p className="text-sm text-muted-foreground">{profile.description || 'No description provided'}</p>
-                  </div>
-                  
-                  <div className="flex justify-end">
-                    <Link to="/funding/startup-profile">
-                      <Button>
-                        <Settings className="w-4 h-4 mr-2" />
-                        Edit Profile
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-        </Tabs>
-      </div>
-
-      <Footer />
-    </div>
+                       <label className="text-sm font-medium">Funding Needed</label>
+                       <p className="text-sm text-muted-foreground">
+                         {profile.funding_needed ? formatAmount(profile.funding_needed) : 'Not specified'}
+                       </p>
+                     </div>
+                   
+                   <div>
+                     <label className="text-sm font-medium">Description</label>
+                     <p className="text-sm text-muted-foreground">{profile.description || 'No description provided'}</p>
+                   </div>
+                   
+                   <div className="flex justify-end">
+                     <Link to="/funding/startup-profile">
+                       <Button>
+                         <Settings className="w-4 h-4 mr-2" />
+                         Edit Profile
+                       </Button>
+                     </Link>
+                   </div>
+                 </CardContent>
+               </Card>
+             )}
+           </TabsContent>
+         </Tabs>
+       </div>
+     </Layout>
   );
 };
 

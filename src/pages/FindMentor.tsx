@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -94,7 +95,8 @@ const FindMentor = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <Layout showSidebar={true}>
+      <div className="bg-background">
       {/* Header */}
       <section className="relative bg-gradient-to-br from-background via-background/95 to-muted/20 py-16 px-4 overflow-hidden">
         <div className="absolute inset-0 hero-gradient opacity-20" />
@@ -249,7 +251,8 @@ const FindMentor = () => {
           )}
         </div>
       </section>
-    </div>
+      </div>
+    </Layout>
   );
 };
 

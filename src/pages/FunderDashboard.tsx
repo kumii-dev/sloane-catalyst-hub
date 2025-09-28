@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -141,8 +140,7 @@ const FunderDashboard = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-        <Navbar />
+      <Layout showSidebar={false}>
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
           <p className="text-muted-foreground mb-6">Please sign in to access your funder dashboard.</p>
@@ -150,15 +148,13 @@ const FunderDashboard = () => {
             <Button>Sign In</Button>
           </Link>
         </div>
-        <Footer />
-      </div>
+      </Layout>
     );
   }
 
   if (!funderProfile && !loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-        <Navbar />
+      <Layout showSidebar={false}>
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Building className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
           <h1 className="text-2xl font-bold mb-4">Complete Your Funder Profile</h1>
@@ -172,15 +168,12 @@ const FunderDashboard = () => {
             </Button>
           </Link>
         </div>
-        <Footer />
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <Navbar />
-      
+    <Layout showSidebar={true}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -480,39 +473,37 @@ const FunderDashboard = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium">Organization Name</label>
-                      <p className="text-sm text-muted-foreground">{funderProfile.organization_name}</p>
+                   <div className="grid grid-cols-2 gap-4">
+                     <div>
+                       <label className="text-sm font-medium">Organization Name</label>
+                       <p className="text-sm text-muted-foreground">{funderProfile.organization_name}</p>
+                     </div>
+                     <div>
+                       <label className="text-sm font-medium">Organization Type</label>
+                       <p className="text-sm text-muted-foreground">{funderProfile.organization_type || 'Not specified'}</p>
+                      </div>
                     </div>
-                    <div>
-                      <label className="text-sm font-medium">Organization Type</label>
-                      <p className="text-sm text-muted-foreground">{funderProfile.organization_type || 'Not specified'}</p>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="text-sm font-medium">Description</label>
-                    <p className="text-sm text-muted-foreground">{funderProfile.description || 'No description provided'}</p>
-                  </div>
-                  
-                  <div className="flex justify-end">
-                    <Link to="/funding/funder-profile">
-                      <Button>
-                        <Settings className="w-4 h-4 mr-2" />
-                        Edit Profile
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-        </Tabs>
-      </div>
-
-      <Footer />
-    </div>
+                   
+                   <div>
+                     <label className="text-sm font-medium">Description</label>
+                     <p className="text-sm text-muted-foreground">{funderProfile.description || 'No description provided'}</p>
+                   </div>
+                   
+                   <div className="flex justify-end">
+                     <Link to="/funding/funder-profile">
+                       <Button>
+                         <Settings className="w-4 h-4 mr-2" />
+                         Edit Profile
+                       </Button>
+                     </Link>
+                   </div>
+                 </CardContent>
+               </Card>
+             )}
+           </TabsContent>
+         </Tabs>
+       </div>
+     </Layout>
   );
 };
 

@@ -25,7 +25,7 @@ const Hero = () => {
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-up">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-up text-white">
             Empowering SMMEs &<br />
             <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
               Startup Success

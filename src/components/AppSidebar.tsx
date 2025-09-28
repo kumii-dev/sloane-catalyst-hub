@@ -140,7 +140,17 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
         <div className="w-80 bg-background border-r border-border flex flex-col">
           {/* Header */}
           <div className="p-4 border-b border-border">
-            <h2 className="font-semibold text-lg text-foreground">{selectedContent.title}</h2>
+            {selectedPrimary === 'apps' ? (
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Input 
+                  placeholder="Search apps and more" 
+                  className="pl-10 h-9 bg-muted/50 border-muted"
+                />
+              </div>
+            ) : (
+              <h2 className="font-semibold text-lg text-foreground">{selectedContent.title}</h2>
+            )}
           </div>
 
           {/* Content */}

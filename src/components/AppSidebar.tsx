@@ -137,7 +137,7 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
 
       {/* Secondary Sidebar */}
       {showSecondary && selectedContent && (
-        <div className="w-80 bg-background border-r border-border flex flex-col">
+        <div className="w-[250px] bg-background border-r border-border flex flex-col">
           {/* Header */}
           <div className="p-4 border-b border-border">
             {selectedPrimary === 'apps' ? (

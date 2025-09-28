@@ -51,6 +51,7 @@
     --gradient-hero: linear-gradient(135deg, hsl(215 85% 15%) 0%, hsl(215 70% 20%) 50%, hsl(45 95% 55%) 100%);
     --gradient-accent: linear-gradient(90deg, hsl(45 95% 55%), hsl(45 80% 70%));
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
+    --gradient-main-light: linear-gradient(135deg, hsl(215 25% 97%) 0%, hsl(215 20% 96%) 50%, hsl(45 30% 96%) 100%);
 
     /* Professional shadows */
     --shadow-soft: 0 2px 20px -4px hsl(215 25% 15% / 0.1);
@@ -94,6 +95,7 @@
 
     --gradient-primary: linear-gradient(135deg, hsl(215 85% 8%), hsl(215 60% 15%));
     --gradient-hero: linear-gradient(135deg, hsl(215 85% 8%) 0%, hsl(215 70% 12%) 50%, hsl(45 95% 55%) 100%);
+    --gradient-main-light: linear-gradient(135deg, hsl(215 25% 18%) 0%, hsl(215 20% 16%) 50%, hsl(45 30% 20%) 100%);
     --shadow-soft: 0 2px 20px -4px hsl(0 0% 0% / 0.3);
     --shadow-medium: 0 8px 30px -8px hsl(0 0% 0% / 0.4);
     --shadow-strong: 0 20px 40px -12px hsl(0 0% 0% / 0.5);
@@ -122,6 +124,10 @@
 
   .card-gradient {
     background: var(--gradient-card);
+  }
+
+  .main-gradient-light {
+    background: var(--gradient-main-light);
   }
 
   /* Animation utilities */

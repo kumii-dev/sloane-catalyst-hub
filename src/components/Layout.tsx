@@ -46,7 +46,7 @@ export function Layout({ children, showSidebar = false }: LayoutProps) {
           showSecondary={showSecondary}
         />
         
-        <main className="flex-1 overflow-auto bg-background">
+        <main className="flex-1 overflow-auto main-gradient-light">
           {children}
         </main>
       </div>

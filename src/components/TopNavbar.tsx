@@ -41,10 +41,9 @@ const TopNavbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="h-14 bg-background border-b border-border px-4 flex items-center justify-between w-full">
+    <header className="h-14 bg-background border-b border-border px-4 flex items-center w-full">
       {/* Left - Brand */}
-      <div className="flex items-center gap-6">
-        {/* Brand */}
+      <div className="flex items-center">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
             <span className="text-primary-foreground font-bold text-sm">22</span>
@@ -54,24 +53,24 @@ const TopNavbar = () => {
             <span className="text-xs text-muted-foreground">Sloane</span>
           </div>
         </Link>
-
-        {/* Navigation Links */}
-        <nav className="hidden lg:flex items-center space-x-6 ml-6">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                isActive(item.href) 
-                  ? 'text-primary border-b-2 border-primary pb-4' 
-                  : 'text-muted-foreground'
-              }`}
-            >
-              {item.title}
-            </Link>
-          ))}
-        </nav>
       </div>
+
+      {/* Center - Navigation Links */}
+      <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-center">
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            to={item.href}
+            className={`text-sm font-medium transition-colors hover:text-primary ${
+              isActive(item.href) 
+                ? 'text-primary border-b-2 border-primary pb-4' 
+                : 'text-muted-foreground'
+            }`}
+          >
+            {item.title}
+          </Link>
+        ))}
+      </nav>
 
       {/* Right - User Actions */}
       <div className="flex items-center gap-4">

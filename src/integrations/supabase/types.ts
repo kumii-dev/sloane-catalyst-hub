@@ -480,6 +480,291 @@ export type Database = {
         }
         Relationships: []
       }
+      service_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          parent_id: string | null
+          slug: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          parent_id?: string | null
+          slug: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          parent_id?: string | null
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_providers: {
+        Row: {
+          company_name: string
+          contact_email: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_cohort_partner: boolean | null
+          is_verified: boolean | null
+          logo_url: string | null
+          phone: string | null
+          rating: number | null
+          total_reviews: number | null
+          updated_at: string
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          company_name: string
+          contact_email?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_cohort_partner?: boolean | null
+          is_verified?: boolean | null
+          logo_url?: string | null
+          phone?: string | null
+          rating?: number | null
+          total_reviews?: number | null
+          updated_at?: string
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          company_name?: string
+          contact_email?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_cohort_partner?: boolean | null
+          is_verified?: boolean | null
+          logo_url?: string | null
+          phone?: string | null
+          rating?: number | null
+          total_reviews?: number | null
+          updated_at?: string
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      service_reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          is_verified_purchase: boolean | null
+          rating: number
+          service_id: string
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          is_verified_purchase?: boolean | null
+          rating: number
+          service_id: string
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          is_verified_purchase?: boolean | null
+          rating?: number
+          service_id?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_reviews_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_subscriptions: {
+        Row: {
+          created_at: string
+          credits_used: number | null
+          expires_at: string | null
+          id: string
+          service_id: string
+          started_at: string
+          subscription_status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          credits_used?: number | null
+          expires_at?: string | null
+          id?: string
+          service_id: string
+          started_at?: string
+          subscription_status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          credits_used?: number | null
+          expires_at?: string | null
+          id?: string
+          service_id?: string
+          started_at?: string
+          subscription_status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_subscriptions_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      services: {
+        Row: {
+          banner_image_url: string | null
+          base_price: number | null
+          category_id: string
+          cohort_benefits: string | null
+          created_at: string
+          credits_price: number | null
+          demo_url: string | null
+          description: string
+          documentation_url: string | null
+          gallery_images: string[] | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          key_features: string[] | null
+          name: string
+          pricing_type: Database["public"]["Enums"]["pricing_type"]
+          provider_id: string
+          rating: number | null
+          service_type: Database["public"]["Enums"]["service_type"]
+          short_description: string | null
+          target_industries: string[] | null
+          terms_url: string | null
+          total_reviews: number | null
+          total_subscribers: number | null
+          updated_at: string
+        }
+        Insert: {
+          banner_image_url?: string | null
+          base_price?: number | null
+          category_id: string
+          cohort_benefits?: string | null
+          created_at?: string
+          credits_price?: number | null
+          demo_url?: string | null
+          description: string
+          documentation_url?: string | null
+          gallery_images?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          key_features?: string[] | null
+          name: string
+          pricing_type: Database["public"]["Enums"]["pricing_type"]
+          provider_id: string
+          rating?: number | null
+          service_type: Database["public"]["Enums"]["service_type"]
+          short_description?: string | null
+          target_industries?: string[] | null
+          terms_url?: string | null
+          total_reviews?: number | null
+          total_subscribers?: number | null
+          updated_at?: string
+        }
+        Update: {
+          banner_image_url?: string | null
+          base_price?: number | null
+          category_id?: string
+          cohort_benefits?: string | null
+          created_at?: string
+          credits_price?: number | null
+          demo_url?: string | null
+          description?: string
+          documentation_url?: string | null
+          gallery_images?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          key_features?: string[] | null
+          name?: string
+          pricing_type?: Database["public"]["Enums"]["pricing_type"]
+          provider_id?: string
+          rating?: number | null
+          service_type?: Database["public"]["Enums"]["service_type"]
+          short_description?: string | null
+          target_industries?: string[] | null
+          terms_url?: string | null
+          total_reviews?: number | null
+          total_subscribers?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "services_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "services_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "service_providers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       startup_profiles: {
         Row: {
           annual_revenue: number | null
@@ -583,6 +868,13 @@ export type Database = {
         | "services"
         | "other"
       mentor_status: "available" | "busy" | "unavailable"
+      pricing_type:
+        | "free"
+        | "freemium"
+        | "paid"
+        | "credits_only"
+        | "contact_for_pricing"
+      service_type: "subscription" | "one_time" | "session_based" | "custom"
       session_status: "pending" | "confirmed" | "completed" | "cancelled"
       session_type: "free" | "premium"
     }
@@ -751,6 +1043,14 @@ export const Constants = {
         "other",
       ],
       mentor_status: ["available", "busy", "unavailable"],
+      pricing_type: [
+        "free",
+        "freemium",
+        "paid",
+        "credits_only",
+        "contact_for_pricing",
+      ],
+      service_type: ["subscription", "one_time", "session_based", "custom"],
       session_status: ["pending", "confirmed", "completed", "cancelled"],
       session_type: ["free", "premium"],
     },

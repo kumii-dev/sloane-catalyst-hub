@@ -10,7 +10,7 @@ const Navbar = () => {
   const { user, signOut } = useAuth();
 
   const navItems = [
-    { name: "Services", href: "#services", hasDropdown: true },
+    { name: "Services", href: "/services", hasDropdown: true },
     { name: "Funding", href: "/funding" },
     { name: "Mentorship", href: "/mentorship" },
     { name: "Resources", href: "#resources", hasDropdown: true },

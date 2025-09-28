@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { 
   Shield, 
@@ -10,24 +9,14 @@ import {
   Users,
   ArrowRight,
   CheckCircle,
-  AlertCircle,
   Target
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CreditScoreAssessment from "@/components/CreditScoreAssessment";
-import CreditScoreDashboard from "@/components/CreditScoreDashboard";
 import { useAuth } from "@/hooks/useAuth";
 
 const CreditScore = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState("overview");
-  const [currentAssessment, setCurrentAssessment] = useState<any>(null);
-
-  const handleScoreGenerated = (assessment: any) => {
-    setCurrentAssessment(assessment);
-    setActiveTab("dashboard");
-  };
 
   const features = [
     {
@@ -94,30 +83,27 @@ const CreditScore = () => {
               trusted by leading South African funders.
             </p>
             
-            {user ? (
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button 
-                  size="lg" 
-                  onClick={() => setActiveTab("assessment")}
-                >
-                  Start Assessment
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  onClick={() => setActiveTab("dashboard")}
-                >
-                  View My Score
-                </Button>
-              </div>
-            ) : (
+            {!user ? (
               <Button size="lg" asChild>
                 <a href="/auth">
                   Get Started - Free Assessment
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </a>
               </Button>
+            ) : (
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button size="lg" asChild>
+                  <a href="/auth">
+                    Start Assessment
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </a>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <a href="/funding/startup-dashboard">
+                    View My Profile
+                  </a>
+                </Button>
+              </div>
             )}
           </div>
         </div>
@@ -181,80 +167,27 @@ const CreditScore = () => {
         </div>
       </section>
 
-      {/* Main Application */}
+      {/* Main Application - Coming Soon */}
       {user && (
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-6">
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-3 mb-8">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="assessment">Start Assessment</TabsTrigger>
-                <TabsTrigger value="dashboard">My Score</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="overview">
-                <div className="grid md:grid-cols-3 gap-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <FileText className="w-5 h-5" />
-                        Assessment Process
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Complete a comprehensive business assessment covering all key areas of your operation.
-                      </p>
-                      <Button variant="outline" onClick={() => setActiveTab("assessment")}>
-                        Start Assessment
-                      </Button>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Target className="w-5 h-5" />
-                        Get Your Score
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Receive a detailed credit score with category breakdowns and improvement recommendations.
-                      </p>
-                      <Button variant="outline" onClick={() => setActiveTab("dashboard")}>
-                        View Dashboard
-                      </Button>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Users className="w-5 h-5" />
-                        Share with Funders
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Share your score with verified funders to access funding opportunities.
-                      </p>
-                      <Button variant="outline" disabled>
-                        Coming Soon
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="assessment">
-                <CreditScoreAssessment onScoreGenerated={handleScoreGenerated} />
-              </TabsContent>
-
-              <TabsContent value="dashboard">
-                <CreditScoreDashboard assessmentId={currentAssessment?.id} />
-              </TabsContent>
-            </Tabs>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-center">Credit Assessment Platform</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-muted-foreground mb-6">
+                  The credit assessment platform is being finalized. 
+                  Complete your startup profile to be ready when it launches.
+                </p>
+                <Button asChild>
+                  <a href="/funding/startup-dashboard">
+                    Complete Startup Profile
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </section>
       )}

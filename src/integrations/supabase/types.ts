@@ -14,6 +14,110 @@ export type Database = {
   }
   public: {
     Tables: {
+      event_registrations: {
+        Row: {
+          attended: boolean | null
+          created_at: string
+          event_id: string | null
+          id: string
+          registration_status: string | null
+          user_id: string
+        }
+        Insert: {
+          attended?: boolean | null
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          registration_status?: string | null
+          user_id: string
+        }
+        Update: {
+          attended?: boolean | null
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          registration_status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_registrations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          banner_image_url: string | null
+          created_at: string
+          description: string | null
+          end_date: string | null
+          event_type: string
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          is_virtual: boolean | null
+          location: string | null
+          max_attendees: number | null
+          meeting_link: string | null
+          organizer_email: string | null
+          organizer_name: string
+          registration_deadline: string | null
+          registration_required: boolean | null
+          start_date: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          banner_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          event_type: string
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          is_virtual?: boolean | null
+          location?: string | null
+          max_attendees?: number | null
+          meeting_link?: string | null
+          organizer_email?: string | null
+          organizer_name: string
+          registration_deadline?: string | null
+          registration_required?: boolean | null
+          start_date: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          banner_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          event_type?: string
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          is_virtual?: boolean | null
+          location?: string | null
+          max_attendees?: number | null
+          meeting_link?: string | null
+          organizer_email?: string | null
+          organizer_name?: string
+          registration_deadline?: string | null
+          registration_required?: boolean | null
+          start_date?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       funders: {
         Row: {
           created_at: string
@@ -480,6 +584,268 @@ export type Database = {
         }
         Relationships: []
       }
+      resource_bookmarks: {
+        Row: {
+          created_at: string
+          id: string
+          resource_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          resource_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          resource_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_bookmarks_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resource_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          parent_id: string | null
+          slug: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          parent_id?: string | null
+          slug: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          parent_id?: string | null
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "resource_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resource_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          last_accessed_at: string | null
+          progress_percentage: number | null
+          resource_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          progress_percentage?: number | null
+          resource_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          progress_percentage?: number | null
+          resource_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_progress_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resource_ratings: {
+        Row: {
+          created_at: string
+          id: string
+          is_verified: boolean | null
+          rating: number
+          resource_id: string | null
+          review_text: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_verified?: boolean | null
+          rating: number
+          resource_id?: string | null
+          review_text?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_verified?: boolean | null
+          rating?: number
+          resource_id?: string | null
+          review_text?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_ratings_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resources: {
+        Row: {
+          access_level: Database["public"]["Enums"]["access_level"] | null
+          author_bio: string | null
+          author_name: string | null
+          category_id: string | null
+          cohort_benefits: string | null
+          content: string | null
+          created_at: string
+          description: string | null
+          difficulty_level: string | null
+          download_count: number | null
+          duration_minutes: number | null
+          external_url: string | null
+          file_url: string | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          learning_outcomes: string[] | null
+          prerequisites: string[] | null
+          rating: number | null
+          resource_type: Database["public"]["Enums"]["resource_type"]
+          slug: string
+          sponsor_logo_url: string | null
+          sponsor_name: string | null
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          total_ratings: number | null
+          updated_at: string
+          view_count: number | null
+        }
+        Insert: {
+          access_level?: Database["public"]["Enums"]["access_level"] | null
+          author_bio?: string | null
+          author_name?: string | null
+          category_id?: string | null
+          cohort_benefits?: string | null
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string | null
+          download_count?: number | null
+          duration_minutes?: number | null
+          external_url?: string | null
+          file_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          learning_outcomes?: string[] | null
+          prerequisites?: string[] | null
+          rating?: number | null
+          resource_type: Database["public"]["Enums"]["resource_type"]
+          slug: string
+          sponsor_logo_url?: string | null
+          sponsor_name?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          total_ratings?: number | null
+          updated_at?: string
+          view_count?: number | null
+        }
+        Update: {
+          access_level?: Database["public"]["Enums"]["access_level"] | null
+          author_bio?: string | null
+          author_name?: string | null
+          category_id?: string | null
+          cohort_benefits?: string | null
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string | null
+          download_count?: number | null
+          duration_minutes?: number | null
+          external_url?: string | null
+          file_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          learning_outcomes?: string[] | null
+          prerequisites?: string[] | null
+          rating?: number | null
+          resource_type?: Database["public"]["Enums"]["resource_type"]
+          slug?: string
+          sponsor_logo_url?: string | null
+          sponsor_name?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          total_ratings?: number | null
+          updated_at?: string
+          view_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resources_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "resource_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_categories: {
         Row: {
           created_at: string
@@ -833,6 +1199,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      access_level: "public" | "registered" | "cohort_only" | "premium"
       application_status:
         | "draft"
         | "submitted"
@@ -874,6 +1241,18 @@ export type Database = {
         | "paid"
         | "credits_only"
         | "contact_for_pricing"
+      resource_type:
+        | "article"
+        | "template"
+        | "video"
+        | "course"
+        | "tool"
+        | "calculator"
+        | "checklist"
+        | "case_study"
+        | "guide"
+        | "webinar"
+        | "podcast"
       service_type: "subscription" | "one_time" | "session_based" | "custom"
       session_status: "pending" | "confirmed" | "completed" | "cancelled"
       session_type: "free" | "premium"
@@ -1004,6 +1383,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      access_level: ["public", "registered", "cohort_only", "premium"],
       application_status: [
         "draft",
         "submitted",
@@ -1049,6 +1429,19 @@ export const Constants = {
         "paid",
         "credits_only",
         "contact_for_pricing",
+      ],
+      resource_type: [
+        "article",
+        "template",
+        "video",
+        "course",
+        "tool",
+        "calculator",
+        "checklist",
+        "case_study",
+        "guide",
+        "webinar",
+        "podcast",
       ],
       service_type: ["subscription", "one_time", "session_based", "custom"],
       session_status: ["pending", "confirmed", "completed", "cancelled"],

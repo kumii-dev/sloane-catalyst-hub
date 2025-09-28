@@ -16,6 +16,9 @@ import FunderDashboard from "./pages/FunderDashboard";
 import Services from "./pages/Services";
 import ServiceCategory from "./pages/ServiceCategory";
 import ServiceDetail from "./pages/ServiceDetail";
+import Resources from "./pages/Resources";
+import ResourceCategory from "./pages/ResourceCategory";
+import ResourceDetail from "./pages/ResourceDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +43,9 @@ const App = () => (
             <Route path="/services" element={<Services />} />
             <Route path="/services/category/:slug" element={<ServiceCategory />} />
             <Route path="/services/:id" element={<ServiceDetail />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/category/:slug" element={<ResourceCategory />} />
+            <Route path="/resources/:slug" element={<ResourceDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

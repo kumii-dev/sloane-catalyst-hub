@@ -13,7 +13,7 @@ const Navbar = () => {
     { name: "Services", href: "/services", hasDropdown: true },
     { name: "Funding", href: "/funding" },
     { name: "Mentorship", href: "/mentorship" },
-    { name: "Resources", href: "#resources", hasDropdown: true },
+    { name: "Resources", href: "/resources", hasDropdown: true },
     { name: "About", href: "#about" }
   ];
 

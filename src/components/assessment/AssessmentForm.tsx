@@ -48,10 +48,6 @@ const INDUSTRIES = [
   { value: 'other', label: 'Other' },
 ];
 
-const TEAM_SIZE_OPTIONS = [
-  '1-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100', '100+'
-];
-
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: currentYear - 1979 }, (_, i) => currentYear - i);
 
@@ -442,7 +438,7 @@ export const AssessmentForm = () => {
             founded_year: formData.founded_year || String(new Date().getFullYear() - 3),
             industry: formData.industry || 'services',
             annual_revenue: formData.annual_revenue || '750000',
-            team_size: formData.team_size || '1-10',
+            team_size: formData.team_size || '10',
             funding_needed: formData.funding_needed || '600000',
             business_description:
               formData.business_description || 'Test company used to validate assessment flow and results.',
@@ -645,22 +641,14 @@ export const AssessmentForm = () => {
             </div>
             <div>
               <Label htmlFor="team_size">Team Size *</Label>
-              <Select
+              <Input
+                id="team_size"
+                type="number"
                 required
+                placeholder="Enter number of team members"
                 value={formData.team_size}
-                onValueChange={(value) => setFormData({ ...formData, team_size: value })}
-              >
-                <SelectTrigger id="team_size">
-                  <SelectValue placeholder="Select team size" />
-                </SelectTrigger>
-                <SelectContent>
-                  {TEAM_SIZE_OPTIONS.map((size) => (
-                    <SelectItem key={size} value={size}>
-                      {size}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                onChange={(e) => setFormData({ ...formData, team_size: e.target.value })}
+              />
             </div>
             <div>
               <Label htmlFor="annual_revenue">Annual Revenue (R) *</Label>

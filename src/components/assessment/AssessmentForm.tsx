@@ -244,9 +244,25 @@ export const AssessmentForm = () => {
         description: "Your credit score has been calculated successfully.",
       });
 
-      // Navigate to results
-      navigate(`/credit-score/results/${result.assessment.id}`);
+      // Navigate to results (with fallback lookup if ID is missing)
+      let newAssessmentId = result?.assessment?.id as string | undefined;
+      if (!newAssessmentId) {
+        console.warn('Assessment ID missing from function response, fetching latest assessment...');
+        const { data: latest, error: latestErr } = await supabase
+          .from('credit_assessments')
+          .select('id')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (latestErr) console.error('Failed to fetch latest assessment id:', latestErr);
+        newAssessmentId = latest?.id;
+      }
 
+      if (newAssessmentId) {
+        navigate(`/credit-score/results/${newAssessmentId}`);
+      } else {
+        throw new Error('Assessment created but ID was not found. Please try again.');
+      }
     } catch (error: any) {
       console.error('Assessment submission error:', error);
       toast({

@@ -28,8 +28,7 @@ const CreditScoreResults = () => {
           .from('credit_assessments')
           .select('*')
           .eq('id', assessmentId)
-          .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
         setAssessment(data);

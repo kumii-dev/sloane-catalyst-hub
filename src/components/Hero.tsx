@@ -102,13 +102,21 @@ const Hero = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="mt-12 text-center animate-fade-up">
-            <p className="text-sm text-white/70 mb-4">Trusted by leading organizations</p>
-            <div className="flex items-center justify-center gap-8 opacity-60">
-              <div className="text-white font-semibold">Microsoft</div>
-              <div className="text-white font-semibold">AWS</div>
-              <div className="text-white font-semibold">African Bank</div>
-              <div className="text-white font-semibold">Nedbank</div>
+          <div className="mt-16 text-center animate-fade-up">
+            <p className="text-base text-white/80 mb-6 font-medium">Trusted by leading organizations</p>
+            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+              <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
+                <span className="text-white font-bold text-lg">Microsoft</span>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
+                <span className="text-white font-bold text-lg">AWS</span>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
+                <span className="text-white font-bold text-lg">African Bank</span>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
+                <span className="text-white font-bold text-lg">Nedbank</span>
+              </div>
             </div>
           </div>
         </div>

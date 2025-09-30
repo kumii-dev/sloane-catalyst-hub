@@ -13,6 +13,7 @@ import { Loader2, Upload, FileText, CheckCircle2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AssessmentResults } from "@/components/assessment/AssessmentResults";
+import jsPDF from "jspdf";
 
 
 interface DocumentUpload {
@@ -100,6 +101,91 @@ export const AssessmentForm = () => {
     competitive_advantage: '',
     consent_to_share: false,
   });
+
+  const downloadPDF = (assessment: any) => {
+    const pdf = new jsPDF();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    let yPos = 20;
+
+    // Title
+    pdf.setFontSize(20);
+    pdf.text("Credit Score Assessment Report", pageWidth / 2, yPos, { align: "center" });
+    yPos += 15;
+
+    // Overall Score
+    pdf.setFontSize(16);
+    pdf.text(`Overall Score: ${assessment.overall_score}/1000`, 20, yPos);
+    yPos += 10;
+    pdf.setFontSize(12);
+    pdf.text(`Risk Band: ${assessment.risk_band}`, 20, yPos);
+    yPos += 10;
+    pdf.text(`Funding Eligibility: ${assessment.funding_eligibility_range}`, 20, yPos);
+    yPos += 15;
+
+    // Score Explanation
+    pdf.setFontSize(14);
+    pdf.text("Assessment Summary", 20, yPos);
+    yPos += 8;
+    pdf.setFontSize(10);
+    const explanationLines = pdf.splitTextToSize(assessment.score_explanation, pageWidth - 40);
+    pdf.text(explanationLines, 20, yPos);
+    yPos += explanationLines.length * 5 + 10;
+
+    // Strengths
+    if (assessment.strengths?.length > 0) {
+      pdf.setFontSize(14);
+      pdf.text("Strengths", 20, yPos);
+      yPos += 8;
+      pdf.setFontSize(10);
+      assessment.strengths.forEach((strength: string, idx: number) => {
+        const lines = pdf.splitTextToSize(`${idx + 1}. ${strength}`, pageWidth - 40);
+        pdf.text(lines, 20, yPos);
+        yPos += lines.length * 5 + 3;
+      });
+      yPos += 5;
+    }
+
+    // Weaknesses
+    if (assessment.improvement_areas?.length > 0) {
+      if (yPos > 250) {
+        pdf.addPage();
+        yPos = 20;
+      }
+      pdf.setFontSize(14);
+      pdf.text("Areas for Improvement", 20, yPos);
+      yPos += 8;
+      pdf.setFontSize(10);
+      assessment.improvement_areas.forEach((area: string, idx: number) => {
+        const lines = pdf.splitTextToSize(`${idx + 1}. ${area}`, pageWidth - 40);
+        pdf.text(lines, 20, yPos);
+        yPos += lines.length * 5 + 3;
+      });
+      yPos += 5;
+    }
+
+    // Recommendations
+    if (assessment.recommendations?.length > 0) {
+      if (yPos > 250) {
+        pdf.addPage();
+        yPos = 20;
+      }
+      pdf.setFontSize(14);
+      pdf.text("Recommendations", 20, yPos);
+      yPos += 8;
+      pdf.setFontSize(10);
+      assessment.recommendations.forEach((rec: string, idx: number) => {
+        const lines = pdf.splitTextToSize(`${idx + 1}. ${rec}`, pageWidth - 40);
+        pdf.text(lines, 20, yPos);
+        yPos += lines.length * 5 + 3;
+        if (yPos > 270) {
+          pdf.addPage();
+          yPos = 20;
+        }
+      });
+    }
+
+    pdf.save(`credit-assessment-${new Date().toISOString().split('T')[0]}.pdf`);
+  };
 
   const handleFileChange = (docType: string, file: File | null) => {
     setDocuments(prev => ({
@@ -267,9 +353,15 @@ export const AssessmentForm = () => {
         } as any;
         setAssessmentResult(fallback);
         setShowResults(true);
+        
+        // Auto-download PDF for error fallback
+        setTimeout(() => {
+          downloadPDF(fallback);
+        }, 500);
+        
         toast({
           title: 'Test Results',
-          description: 'Showing test results while analysis completes.',
+          description: 'Showing test results while analysis completes. PDF downloading...',
         });
         return;
       }
@@ -280,11 +372,16 @@ export const AssessmentForm = () => {
 
       toast({
         title: "Assessment completed!",
-        description: "Your credit score has been calculated successfully.",
+        description: "Your credit score has been calculated successfully. PDF downloading...",
       });
 
       if (resAssessment) {
         setAssessmentResult(resAssessment);
+        
+        // Auto-download PDF
+        setTimeout(() => {
+          downloadPDF(resAssessment);
+        }, 500);
       } else {
         const fallback = {
           id: 'test-assessment',

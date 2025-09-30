@@ -42,14 +42,14 @@ const TopNavbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="h-14 bg-primary border-b border-primary-dark px-4 flex items-center w-full shadow-orange">
+    <header className="h-16 bg-gradient-to-r from-white via-primary-light to-primary border-b border-primary-dark/20 px-4 flex items-center w-full shadow-medium">
       {/* Left - Brand */}
       <div className="flex items-center">
         <Link to="/" className="flex items-center">
           <img 
             src={logo} 
             alt="22 On Sloane" 
-            className="h-8 w-auto"
+            className="h-12 w-auto"
           />
         </Link>
       </div>
@@ -60,10 +60,10 @@ const TopNavbar = () => {
           <Link
             key={item.href}
             to={item.href}
-            className={`text-sm font-medium transition-colors ${
+            className={`text-base font-semibold transition-colors ${
               isActive(item.href) 
                 ? 'text-white border-b-2 border-white pb-4' 
-                : 'text-white/80 hover:text-white'
+                : 'text-white/90 hover:text-white'
             }`}
           >
             {item.title}
@@ -75,31 +75,31 @@ const TopNavbar = () => {
       <div className="flex items-center gap-4">
         {user ? (
           <div className="flex items-center gap-3">
-            <span className="text-sm text-white/80">About</span>
+            <span className="text-base text-white/90 font-medium">About</span>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => signOut()}
-              className="text-sm text-white hover:text-white hover:bg-white/10"
+              className="text-base text-white hover:text-white hover:bg-white/10"
             >
               Sign Out
             </Button>
-            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-              <span className="text-xs font-bold text-white">
+            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+              <span className="text-sm font-bold text-white">
                 {user.email?.charAt(0).toUpperCase()}
               </span>
             </div>
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <span className="text-sm text-white/80">About</span>
+            <span className="text-base text-white/90 font-medium">About</span>
             <Link to="/auth">
-              <Button variant="ghost" size="sm" className="text-sm text-white hover:text-white hover:bg-white/10">
+              <Button variant="ghost" size="sm" className="text-base text-white hover:text-white hover:bg-white/10">
                 Sign In
               </Button>
             </Link>
             <Link to="/auth">
-              <Button variant="secondary" size="sm" className="text-sm">
+              <Button variant="secondary" size="sm" className="text-base font-semibold">
                 Get Started
               </Button>
             </Link>

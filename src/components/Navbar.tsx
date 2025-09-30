@@ -20,15 +20,15 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-md border-b border-primary-dark/50 shadow-orange">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-white via-primary-light to-primary backdrop-blur-md border-b border-primary-dark/20 shadow-medium">
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-18">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <img 
               src={logo} 
               alt="22 On Sloane" 
-              className="h-10 w-auto"
+              className="h-14 w-auto"
             />
           </Link>
 
@@ -39,7 +39,7 @@ const Navbar = () => {
                 {item.href.startsWith('#') ? (
                   <a
                     href={item.href}
-                    className="flex items-center gap-1 text-white/90 hover:text-white transition-smooth font-medium"
+                    className="flex items-center gap-1 text-white/90 hover:text-white transition-smooth font-semibold text-base"
                   >
                     {item.name}
                     {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
@@ -47,7 +47,7 @@ const Navbar = () => {
                 ) : (
                   <Link
                     to={item.href}
-                    className="flex items-center gap-1 text-white/90 hover:text-white transition-smooth font-medium"
+                    className="flex items-center gap-1 text-white/90 hover:text-white transition-smooth font-semibold text-base"
                   >
                     {item.name}
                     {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
@@ -64,8 +64,8 @@ const Navbar = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10">
-                    <User className="w-4 h-4 mr-2" />
+                  <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10 text-base font-semibold">
+                    <User className="w-5 h-5 mr-2" />
                     Account
                   </Button>
                 </DropdownMenuTrigger>
@@ -78,10 +78,10 @@ const Navbar = () => {
               </DropdownMenu>
             ) : (
               <>
-                <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10" asChild>
+                <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10 text-base font-semibold" asChild>
                   <Link to="/auth">Sign In</Link>
                 </Button>
-                <Button variant="secondary" asChild>
+                <Button variant="secondary" className="text-base font-semibold" asChild>
                   <Link to="/auth">Get Started</Link>
                 </Button>
               </>

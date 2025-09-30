@@ -20,7 +20,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-md border-b border-primary-dark/50 shadow-orange">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -39,7 +39,7 @@ const Navbar = () => {
                 {item.href.startsWith('#') ? (
                   <a
                     href={item.href}
-                    className="flex items-center gap-1 text-foreground hover:text-primary transition-smooth font-medium"
+                    className="flex items-center gap-1 text-white/90 hover:text-white transition-smooth font-medium"
                   >
                     {item.name}
                     {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
@@ -47,7 +47,7 @@ const Navbar = () => {
                 ) : (
                   <Link
                     to={item.href}
-                    className="flex items-center gap-1 text-foreground hover:text-primary transition-smooth font-medium"
+                    className="flex items-center gap-1 text-white/90 hover:text-white transition-smooth font-medium"
                   >
                     {item.name}
                     {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
@@ -64,7 +64,7 @@ const Navbar = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost">
+                  <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10">
                     <User className="w-4 h-4 mr-2" />
                     Account
                   </Button>
@@ -78,10 +78,10 @@ const Navbar = () => {
               </DropdownMenu>
             ) : (
               <>
-                <Button variant="ghost" asChild>
+                <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10" asChild>
                   <Link to="/auth">Sign In</Link>
                 </Button>
-                <Button variant="hero" asChild>
+                <Button variant="secondary" asChild>
                   <Link to="/auth">Get Started</Link>
                 </Button>
               </>
@@ -90,7 +90,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-foreground hover:text-primary transition-smooth"
+            className="md:hidden p-2 text-white hover:text-white/80 transition-smooth"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -100,14 +100,14 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t border-border/50">
+          <div className="md:hidden py-4 border-t border-white/20">
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => (
                 item.href.startsWith('#') ? (
                   <a
                     key={item.name}
                     href={item.href}
-                    className="text-foreground hover:text-primary transition-smooth font-medium py-2"
+                    className="text-white/90 hover:text-white transition-smooth font-medium py-2"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
@@ -116,7 +116,7 @@ const Navbar = () => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className="text-foreground hover:text-primary transition-smooth font-medium py-2"
+                    className="text-white/90 hover:text-white transition-smooth font-medium py-2"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
@@ -124,18 +124,18 @@ const Navbar = () => {
                 )
               ))}
               
-              <div className="pt-4 border-t border-border/50 flex flex-col space-y-3">
+              <div className="pt-4 border-t border-white/20 flex flex-col space-y-3">
                 {user ? (
-                  <Button variant="outline" onClick={signOut} className="w-full">
+                  <Button variant="outline" onClick={signOut} className="w-full border-white/30 text-white hover:bg-white/10">
                     <LogOut className="w-4 h-4 mr-2" />
                     Sign Out
                   </Button>
                 ) : (
                   <>
-                    <Button variant="outline" className="w-full" asChild>
+                    <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10" asChild>
                       <Link to="/auth">Sign In</Link>
                     </Button>
-                    <Button variant="hero" className="w-full" asChild>
+                    <Button variant="secondary" className="w-full" asChild>
                       <Link to="/auth">Get Started</Link>
                     </Button>
                   </>

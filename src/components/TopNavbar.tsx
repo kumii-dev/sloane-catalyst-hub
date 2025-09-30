@@ -42,7 +42,7 @@ const TopNavbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="h-14 bg-background border-b border-border px-4 flex items-center w-full">
+    <header className="h-14 bg-primary border-b border-primary-dark px-4 flex items-center w-full shadow-orange">
       {/* Left - Brand */}
       <div className="flex items-center">
         <Link to="/" className="flex items-center">
@@ -60,10 +60,10 @@ const TopNavbar = () => {
           <Link
             key={item.href}
             to={item.href}
-            className={`text-sm font-medium transition-colors hover:text-primary ${
+            className={`text-sm font-medium transition-colors ${
               isActive(item.href) 
-                ? 'text-primary border-b-2 border-primary pb-4' 
-                : 'text-muted-foreground'
+                ? 'text-white border-b-2 border-white pb-4' 
+                : 'text-white/80 hover:text-white'
             }`}
           >
             {item.title}
@@ -75,31 +75,31 @@ const TopNavbar = () => {
       <div className="flex items-center gap-4">
         {user ? (
           <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">About</span>
+            <span className="text-sm text-white/80">About</span>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => signOut()}
-              className="text-sm"
+              className="text-sm text-white hover:text-white hover:bg-white/10"
             >
               Sign Out
             </Button>
-            <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
-              <span className="text-xs font-bold text-accent-foreground">
+            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <span className="text-xs font-bold text-white">
                 {user.email?.charAt(0).toUpperCase()}
               </span>
             </div>
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">About</span>
+            <span className="text-sm text-white/80">About</span>
             <Link to="/auth">
-              <Button variant="ghost" size="sm" className="text-sm">
+              <Button variant="ghost" size="sm" className="text-sm text-white hover:text-white hover:bg-white/10">
                 Sign In
               </Button>
             </Link>
             <Link to="/auth">
-              <Button variant="hero" size="sm" className="text-sm">
+              <Button variant="secondary" size="sm" className="text-sm">
                 Get Started
               </Button>
             </Link>

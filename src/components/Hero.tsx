@@ -1,4 +1,4 @@
-import { ArrowRight, Users, TrendingUp, Shield } from "lucide-react";
+import { ArrowRight, TrendingUp, Shield, DollarSign, FileCheck, Users, Briefcase, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -38,28 +38,55 @@ const Hero = () => {
             funding opportunities, expert mentorship, and investor readiness programs.
           </p>
 
-          {/* Feature Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 animate-fade-up">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <div className="flex items-center justify-center mb-2">
-                <Users className="h-8 w-8 text-accent" />
+          {/* Platform Services */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10 animate-fade-up">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
+              <div className="flex items-center gap-3">
+                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
+                  <TrendingUp className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-white font-medium">Access To Market</span>
               </div>
-              <div className="text-2xl font-bold text-white mb-1">500+</div>
-              <div className="text-sm text-white/80">Service Providers</div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <div className="flex items-center justify-center mb-2">
-                <TrendingUp className="h-8 w-8 text-accent" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
+              <div className="flex items-center gap-3">
+                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
+                  <DollarSign className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-white font-medium">Access To Capital</span>
               </div>
-              <div className="text-2xl font-bold text-white mb-1">R50M+</div>
-              <div className="text-sm text-white/80">Funding Facilitated</div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <div className="flex items-center justify-center mb-2">
-                <Shield className="h-8 w-8 text-accent" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
+              <div className="flex items-center gap-3">
+                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
+                  <FileCheck className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-white font-medium">Credit Scoring</span>
               </div>
-              <div className="text-2xl font-bold text-white mb-1">95%</div>
-              <div className="text-sm text-white/80">Success Rate</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
+              <div className="flex items-center gap-3">
+                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
+                  <Users className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-white font-medium">Mentorship</span>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
+              <div className="flex items-center gap-3">
+                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
+                  <Briefcase className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-white font-medium">Professional Services</span>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
+              <div className="flex items-center gap-3">
+                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
+                  <BookOpen className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-white font-medium">Resources</span>
+              </div>
             </div>
           </div>
 

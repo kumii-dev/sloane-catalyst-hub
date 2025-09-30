@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import logo from "@/assets/22-on-sloane-logo.png";
 
 const TopNavbar = () => {
   const { user, signOut } = useAuth();
@@ -44,14 +45,12 @@ const TopNavbar = () => {
     <header className="h-14 bg-background border-b border-border px-4 flex items-center w-full">
       {/* Left - Brand */}
       <div className="flex items-center">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">22</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-bold">22 On</span>
-            <span className="text-xs text-muted-foreground">Sloane</span>
-          </div>
+        <Link to="/" className="flex items-center">
+          <img 
+            src={logo} 
+            alt="22 On Sloane" 
+            className="h-8 w-auto"
+          />
         </Link>
       </div>
 

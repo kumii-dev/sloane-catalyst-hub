@@ -1,6 +1,7 @@
 import { Building2, Mail, Phone, MapPin, Twitter, Linkedin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import logo from "@/assets/22-on-sloane-logo.png";
 
 const Footer = () => {
   const footerLinks = [
@@ -50,14 +51,12 @@ const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
             {/* Brand Section */}
             <div className="lg:col-span-2">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent-light rounded-xl flex items-center justify-center">
-                  <span className="text-primary font-bold text-xl">22</span>
-                </div>
-                <div>
-                  <div className="font-bold text-2xl">22 On Sloane</div>
-                  <div className="text-sm text-primary-foreground/80">Marketplace</div>
-                </div>
+              <div className="mb-6">
+                <img 
+                  src={logo} 
+                  alt="22 On Sloane" 
+                  className="h-12 w-auto mb-2"
+                />
               </div>
               
               <p className="text-primary-foreground/80 mb-6 leading-relaxed">

@@ -2,62 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 22 On Sloane Marketplace Design System */
+/* 22 On Sloane Official Branding - Design System */
 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 215 25% 15%;
+    --foreground: 240 1% 25%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card-foreground: 240 1% 25%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover-foreground: 240 1% 25%;
 
-    /* Primary: Deep Navy for trust and professionalism */
-    --primary: 215 85% 15%;
+    /* Primary: Sloane Orange (Brand Signature Color) */
+    --primary: 20 86% 54%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 215 60% 25%;
-    --primary-dark: 215 95% 8%;
+    --primary-light: 20 86% 65%;
+    --primary-dark: 20 86% 45%;
 
-    /* Secondary: Clean grays for balance */
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 215 25% 20%;
+    /* Secondary: Brand Blue for trust and professionalism */
+    --secondary: 194 98% 40%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 210 20% 95%;
-    --muted-foreground: 215 15% 45%;
+    --muted-foreground: 240 1% 25%;
 
-    /* Accent: Premium gold for highlights */
-    --accent: 45 95% 55%;
-    --accent-foreground: 215 85% 15%;
-    --accent-light: 45 80% 70%;
+    /* Accent: Brand Purple for highlights and CTAs */
+    --accent: 237 27% 51%;
+    --accent-foreground: 0 0% 100%;
+    --accent-magenta: 323 67% 39%;
 
-    /* Success: Modern green for positive actions */
+    /* Gen Grey: Brand neutral color */
+    --gen-grey: 240 1% 25%;
+    --gen-grey-foreground: 0 0% 100%;
+
+    /* Success: Keep existing green */
     --success: 160 75% 40%;
     --success-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 15% 90%;
-    --input: 215 15% 94%;
-    --ring: 215 85% 15%;
+    --border: 210 20% 90%;
+    --input: 210 20% 94%;
+    --ring: 20 86% 54%;
 
     --radius: 0.75rem;
 
-    /* Business-focused gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(215 85% 15%), hsl(215 60% 25%));
-    --gradient-hero: linear-gradient(135deg, hsl(215 85% 15%) 0%, hsl(215 70% 20%) 50%, hsl(45 95% 55%) 100%);
-    --gradient-accent: linear-gradient(90deg, hsl(45 95% 55%), hsl(45 80% 70%));
+    /* 22 On Sloane Brand Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(20 86% 54%), hsl(194 98% 40%));
+    --gradient-hero: linear-gradient(135deg, hsl(240 1% 25%) 0%, hsl(194 98% 40%) 50%, hsl(20 86% 54%) 100%);
+    --gradient-accent: linear-gradient(90deg, hsl(20 86% 54%), hsl(20 86% 65%));
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
-    --gradient-main-light: linear-gradient(135deg, hsl(215 25% 97%) 0%, hsl(215 20% 96%) 50%, hsl(45 30% 96%) 100%);
+    --gradient-main-light: linear-gradient(135deg, hsl(0 0% 98%) 0%, hsl(210 20% 96%) 50%, hsl(20 20% 96%) 100%);
+    --gradient-orange-blue: linear-gradient(90deg, hsl(20 86% 54%), hsl(194 98% 40%));
 
-    /* Professional shadows */
-    --shadow-soft: 0 2px 20px -4px hsl(215 25% 15% / 0.1);
-    --shadow-medium: 0 8px 30px -8px hsl(215 25% 15% / 0.15);
-    --shadow-strong: 0 20px 40px -12px hsl(215 25% 15% / 0.25);
-    --shadow-glow: 0 0 40px hsl(45 95% 55% / 0.3);
+    /* Professional shadows with brand colors */
+    --shadow-soft: 0 2px 20px -4px hsl(240 1% 25% / 0.1);
+    --shadow-medium: 0 8px 30px -8px hsl(240 1% 25% / 0.15);
+    --shadow-strong: 0 20px 40px -12px hsl(240 1% 25% / 0.25);
+    --shadow-glow: 0 0 40px hsl(20 86% 54% / 0.3);
+    --shadow-orange: 0 4px 20px hsl(20 86% 54% / 0.25);
+    --shadow-blue: 0 4px 20px hsl(194 98% 40% / 0.25);
 
     /* Smooth transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -65,37 +72,39 @@
   }
 
   .dark {
-    --background: 215 85% 8%;
-    --foreground: 210 40% 95%;
+    --background: 240 1% 12%;
+    --foreground: 0 0% 95%;
 
-    --card: 215 75% 12%;
-    --card-foreground: 210 40% 95%;
+    --card: 240 1% 15%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 215 75% 12%;
-    --popover-foreground: 210 40% 95%;
+    --popover: 240 1% 15%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 45 95% 55%;
-    --primary-foreground: 215 85% 15%;
+    --primary: 20 86% 54%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 40% 20%;
-    --secondary-foreground: 210 40% 90%;
+    --secondary: 194 98% 40%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 215 40% 18%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 240 1% 20%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 45 95% 55%;
-    --accent-foreground: 215 85% 15%;
+    --accent: 237 27% 51%;
+    --accent-foreground: 0 0% 100%;
+
+    --gen-grey: 240 1% 25%;
 
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 30% 25%;
-    --input: 215 30% 20%;
-    --ring: 45 95% 55%;
+    --border: 240 1% 25%;
+    --input: 240 1% 20%;
+    --ring: 20 86% 54%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(215 85% 8%), hsl(215 60% 15%));
-    --gradient-hero: linear-gradient(135deg, hsl(215 85% 8%) 0%, hsl(215 70% 12%) 50%, hsl(45 95% 55%) 100%);
-    --gradient-main-light: linear-gradient(135deg, hsl(215 25% 18%) 0%, hsl(215 20% 16%) 50%, hsl(45 30% 20%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(20 86% 54%), hsl(194 98% 40%));
+    --gradient-hero: linear-gradient(135deg, hsl(240 1% 12%) 0%, hsl(194 98% 40%) 50%, hsl(20 86% 54%) 100%);
+    --gradient-main-light: linear-gradient(135deg, hsl(240 1% 18%) 0%, hsl(240 1% 16%) 50%, hsl(20 20% 20%) 100%);
     --shadow-soft: 0 2px 20px -4px hsl(0 0% 0% / 0.3);
     --shadow-medium: 0 8px 30px -8px hsl(0 0% 0% / 0.4);
     --shadow-strong: 0 20px 40px -12px hsl(0 0% 0% / 0.5);

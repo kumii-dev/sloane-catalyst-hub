@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
 import { Github, Mail } from 'lucide-react';
+import logo from '@/assets/22-on-sloane-logo.png';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -137,11 +138,14 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/10 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Welcome</CardTitle>
-          <CardDescription>
+    <div className="min-h-screen flex items-center justify-center main-gradient-light p-4">
+      <Card className="w-full max-w-md shadow-strong">
+        <CardHeader className="text-center space-y-4">
+          <div className="flex justify-center">
+            <img src={logo} alt="22 On Sloane" className="h-16 w-auto" />
+          </div>
+          <CardTitle className="text-2xl font-bold text-foreground">Welcome</CardTitle>
+          <CardDescription className="text-muted-foreground">
             Join our digital marketplace community
           </CardDescription>
         </CardHeader>
@@ -177,7 +181,7 @@ const Auth = () => {
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" variant="default" className="w-full" disabled={loading}>
                   {loading ? "Signing in..." : "Sign In"}
                 </Button>
               </form>
@@ -207,7 +211,7 @@ const Auth = () => {
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" variant="default" className="w-full" disabled={loading}>
                   {loading ? "Creating account..." : "Create Account"}
                 </Button>
               </form>
@@ -244,9 +248,9 @@ const Auth = () => {
         
         <CardFooter className="text-center">
           <Button 
-            variant="ghost" 
+            variant="link" 
             onClick={() => navigate('/')}
-            className="text-sm text-muted-foreground"
+            className="text-sm mx-auto"
           >
             Back to home
           </Button>

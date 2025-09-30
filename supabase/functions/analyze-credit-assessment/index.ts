@@ -13,7 +13,22 @@ serve(async (req) => {
   }
 
   try {
-    const { assessmentData, userId, startupId } = await req.json();
+    let body: any;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'Invalid JSON body' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    const { assessmentData, userId, startupId } = body;
+    if (!assessmentData || !userId || !startupId) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required fields: assessmentData, userId, startupId' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
     
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -125,24 +140,37 @@ Provide a comprehensive credit score analysis following the 10-domain framework.
       throw new Error(`AI gateway error: ${aiResponse.status}`);
     }
 
-    const aiData = await aiResponse.json();
-    const aiContent = aiData.choices[0].message.content;
+    let aiData: any;
+    let aiContent: string = '';
+    try {
+      aiData = await aiResponse.json();
+      aiContent = String(aiData?.choices?.[0]?.message?.content ?? '');
+    } catch (e) {
+      // Fallback to text if JSON parsing fails
+      const rawText = await aiResponse.text().catch(() => '');
+      console.error('AI JSON parse failed, raw text fallback used');
+      aiContent = rawText || '';
+    }
 
     console.log('AI response received:', aiContent);
 
     // Parse AI response
     let analysisResult;
     try {
-      // Extract JSON from the response (in case there's surrounding text)
-      const jsonMatch = aiContent.match(/\{[\s\S]*\}/);
+      // Clean code fences if present and extract JSON
+      const cleaned = aiContent.replace(/```json|```/g, '').trim();
+      const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         analysisResult = JSON.parse(jsonMatch[0]);
       } else {
         throw new Error('No JSON found in AI response');
       }
     } catch (parseError) {
-      console.error('Failed to parse AI response:', parseError);
-      throw new Error('Failed to parse AI analysis result');
+      console.error('Failed to parse AI response:', parseError, 'content snippet:', aiContent?.slice(0, 500));
+      return new Response(
+        JSON.stringify({ error: 'Failed to parse AI analysis result' }),
+        { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // Create the assessment record

@@ -29,7 +29,7 @@ const Hero = () => {
           {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-up text-white">
             Transform Your Business<br />
-            <span className="text-accent font-bold drop-shadow-lg">
+            <span className="text-primary font-bold drop-shadow-lg">
               Journey Into Success
             </span>
           </h1>
@@ -44,48 +44,48 @@ const Hero = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-up">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
-                  <TrendingUp className="h-6 w-6 text-white" />
+                <div className="bg-white rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary/50 transition-all">
+                  <TrendingUp className="h-6 w-6 text-primary" />
                 </div>
                 <span className="text-white font-semibold text-lg">Market Access</span>
               </div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
-                  <DollarSign className="h-6 w-6 text-white" />
+                <div className="bg-white rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary/50 transition-all">
+                  <DollarSign className="h-6 w-6 text-primary" />
                 </div>
                 <span className="text-white font-semibold text-lg">Funding Hub</span>
               </div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
-                  <FileCheck className="h-6 w-6 text-white" />
+                <div className="bg-white rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary/50 transition-all">
+                  <FileCheck className="h-6 w-6 text-primary" />
                 </div>
                 <span className="text-white font-semibold text-lg">Credit Scoring</span>
               </div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
-                  <Users className="h-6 w-6 text-white" />
+                <div className="bg-white rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary/50 transition-all">
+                  <Users className="h-6 w-6 text-primary" />
                 </div>
                 <span className="text-white font-semibold text-lg">Expert Mentorship</span>
               </div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
-                  <Briefcase className="h-6 w-6 text-white" />
+                <div className="bg-white rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary/50 transition-all">
+                  <Briefcase className="h-6 w-6 text-primary" />
                 </div>
                 <span className="text-white font-semibold text-lg">Pro Services</span>
               </div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
-                  <BookOpen className="h-6 w-6 text-white" />
+                <div className="bg-white rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary/50 transition-all">
+                  <BookOpen className="h-6 w-6 text-primary" />
                 </div>
                 <span className="text-white font-semibold text-lg">Resources</span>
               </div>

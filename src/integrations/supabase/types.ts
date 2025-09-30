@@ -633,6 +633,10 @@ export type Database = {
           first_name: string | null
           id: string
           last_name: string | null
+          onboarding_step: number | null
+          organization: string | null
+          persona_completed: boolean | null
+          persona_type: Database["public"]["Enums"]["persona_type"] | null
           profile_picture_url: string | null
           updated_at: string
           user_id: string
@@ -644,6 +648,10 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          onboarding_step?: number | null
+          organization?: string | null
+          persona_completed?: boolean | null
+          persona_type?: Database["public"]["Enums"]["persona_type"] | null
           profile_picture_url?: string | null
           updated_at?: string
           user_id: string
@@ -655,8 +663,42 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          onboarding_step?: number | null
+          organization?: string | null
+          persona_completed?: boolean | null
+          persona_type?: Database["public"]["Enums"]["persona_type"] | null
           profile_picture_url?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      progressive_profile_data: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          field_name: string
+          field_value: Json | null
+          id: string
+          persona_type: Database["public"]["Enums"]["persona_type"]
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          field_name: string
+          field_value?: Json | null
+          id?: string
+          persona_type: Database["public"]["Enums"]["persona_type"]
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          field_name?: string
+          field_value?: Json | null
+          id?: string
+          persona_type?: Database["public"]["Enums"]["persona_type"]
           user_id?: string
         }
         Relationships: []
@@ -1397,6 +1439,14 @@ export type Database = {
         | "services"
         | "other"
       mentor_status: "available" | "busy" | "unavailable"
+      persona_type:
+        | "unassigned"
+        | "smme_startup"
+        | "job_seeker"
+        | "funder"
+        | "service_provider"
+        | "mentor_advisor"
+        | "public_private_entity"
       pricing_type:
         | "free"
         | "freemium"
@@ -1593,6 +1643,15 @@ export const Constants = {
         "other",
       ],
       mentor_status: ["available", "busy", "unavailable"],
+      persona_type: [
+        "unassigned",
+        "smme_startup",
+        "job_seeker",
+        "funder",
+        "service_provider",
+        "mentor_advisor",
+        "public_private_entity",
+      ],
       pricing_type: [
         "free",
         "freemium",

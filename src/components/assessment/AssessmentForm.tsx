@@ -50,6 +50,7 @@ export const AssessmentForm = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [processingMessage, setProcessingMessage] = useState('');
   
   const [documents, setDocuments] = useState<Record<string, DocumentUpload>>(
     DOCUMENT_TYPES.reduce((acc, doc) => ({
@@ -169,8 +170,10 @@ export const AssessmentForm = () => {
       };
 
       setUploadProgress(60);
+      setProcessingMessage('Analyzing your business with AI... This may take 30-60 seconds.');
 
-      // Call AI analysis function
+      // Call AI analysis function with extended timeout
+      console.log('Calling AI analysis function...');
       const { data: result, error: analysisError } = await supabase.functions.invoke(
         'analyze-credit-assessment',
         {
@@ -178,11 +181,20 @@ export const AssessmentForm = () => {
             assessmentData,
             userId: user.id,
             startupId: startup.id,
-          }
+          },
         }
       );
 
-      if (analysisError) throw analysisError;
+      console.log('AI analysis response:', { result, analysisError });
+
+      if (analysisError) {
+        console.error('Analysis error:', analysisError);
+        throw new Error(analysisError.message || 'Failed to analyze assessment');
+      }
+
+      if (!result || !result.assessment) {
+        throw new Error('Invalid response from analysis service');
+      }
 
       setUploadProgress(100);
 
@@ -416,10 +428,15 @@ export const AssessmentForm = () => {
           <CardContent className="pt-6">
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span>Processing assessment...</span>
+                <span>{processingMessage || 'Processing assessment...'}</span>
                 <span>{Math.round(uploadProgress)}%</span>
               </div>
               <Progress value={uploadProgress} />
+              {uploadProgress >= 60 && uploadProgress < 100 && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  Please wait while our AI analyzes your documents and generates your credit score...
+                </p>
+              )}
             </div>
           </CardContent>
         </Card>

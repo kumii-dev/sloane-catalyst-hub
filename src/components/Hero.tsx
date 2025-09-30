@@ -96,7 +96,7 @@ const Hero = () => {
               Start Your Journey
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4 text-white border-white/30 hover:bg-white/10">
+            <Button variant="hero-outline" size="lg" className="text-lg px-8 py-4">
               Explore Services
             </Button>
           </div>

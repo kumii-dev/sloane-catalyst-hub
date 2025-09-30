@@ -20,7 +20,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-white via-primary-light to-primary backdrop-blur-md border-b border-primary-dark/20 shadow-medium">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-white via-white via-30% via-primary-light via-60% to-primary backdrop-blur-md border-b border-primary-dark/20 shadow-medium">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-18">
           {/* Logo */}

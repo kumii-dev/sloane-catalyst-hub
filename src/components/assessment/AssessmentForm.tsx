@@ -143,7 +143,7 @@ export const AssessmentForm = () => {
     pdf.setTextColor(255, 255, 255);
     pdf.setFontSize(24);
     pdf.setFont(undefined, 'bold');
-    pdf.text(`${assessment.overall_score}%`, pageWidth / 2, yPos + 15, { align: "center" });
+    pdf.text(`${assessment.overall_score}/1000`, pageWidth / 2, yPos + 15, { align: "center" });
     
     pdf.setFontSize(12);
     pdf.setFont(undefined, 'normal');
@@ -184,7 +184,7 @@ export const AssessmentForm = () => {
     pdf.setTextColor(...brandGrey);
     pdf.setFontSize(10);
     pdf.setFont(undefined, 'normal');
-    const explanationLines = pdf.splitTextToSize(assessment.score_explanation, pageWidth - 30);
+    const explanationLines = pdf.splitTextToSize(assessment.score_explanation, pageWidth - 35);
     pdf.text(explanationLines, 15, yPos);
     yPos += explanationLines.length * 5 + 10;
 
@@ -214,8 +214,8 @@ export const AssessmentForm = () => {
           pdf.addPage();
           yPos = 20;
         }
-        const lines = pdf.splitTextToSize(`• ${strength}`, pageWidth - 30);
-        pdf.text(lines, 15, yPos);
+        const lines = pdf.splitTextToSize(`• ${strength}`, pageWidth - 35);
+        pdf.text(lines, 18, yPos);
         yPos += lines.length * 5 + 4;
       });
       yPos += 5;
@@ -247,8 +247,8 @@ export const AssessmentForm = () => {
           pdf.addPage();
           yPos = 20;
         }
-        const lines = pdf.splitTextToSize(`• ${area}`, pageWidth - 30);
-        pdf.text(lines, 15, yPos);
+        const lines = pdf.splitTextToSize(`• ${area}`, pageWidth - 35);
+        pdf.text(lines, 18, yPos);
         yPos += lines.length * 5 + 4;
       });
       yPos += 5;
@@ -280,8 +280,8 @@ export const AssessmentForm = () => {
           pdf.addPage();
           yPos = 20;
         }
-        const lines = pdf.splitTextToSize(`• ${rec}`, pageWidth - 30);
-        pdf.text(lines, 15, yPos);
+        const lines = pdf.splitTextToSize(`• ${rec}`, pageWidth - 35);
+        pdf.text(lines, 18, yPos);
         yPos += lines.length * 5 + 4;
       });
     }

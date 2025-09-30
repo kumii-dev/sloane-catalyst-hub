@@ -1,6 +1,8 @@
 import { ArrowRight, TrendingUp, Shield, DollarSign, FileCheck, Users, Briefcase, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
+import microsoftLogo from "@/assets/microsoft-logo.png";
+import nedbankLogo from "@/assets/nedbank-logo.png";
 
 const Hero = () => {
   return (
@@ -105,17 +107,17 @@ const Hero = () => {
           <div className="mt-16 text-center animate-fade-up">
             <p className="text-base text-white/80 mb-6 font-medium">Trusted by leading organizations</p>
             <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-              <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
-                <span className="text-white font-bold text-lg">Microsoft</span>
+              <div className="bg-white/10 backdrop-blur-sm px-6 py-4 rounded-lg border border-white/20 hover:bg-white/15 transition-all">
+                <img src={microsoftLogo} alt="Microsoft" className="h-8 opacity-90 hover:opacity-100 transition-opacity" />
               </div>
-              <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
-                <span className="text-white font-bold text-lg">AWS</span>
+              <div className="bg-white/10 backdrop-blur-sm px-6 py-4 rounded-lg border border-white/20 hover:bg-white/15 transition-all">
+                <span className="text-white font-bold text-xl">AWS</span>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
-                <span className="text-white font-bold text-lg">African Bank</span>
+              <div className="bg-white/10 backdrop-blur-sm px-6 py-4 rounded-lg border border-white/20 hover:bg-white/15 transition-all">
+                <span className="text-white font-bold text-xl">African Bank</span>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
-                <span className="text-white font-bold text-lg">Nedbank</span>
+              <div className="bg-white/10 backdrop-blur-sm px-6 py-4 rounded-lg border border-white/20 hover:bg-white/15 transition-all">
+                <img src={nedbankLogo} alt="Nedbank" className="h-8 opacity-90 hover:opacity-100 transition-opacity" />
               </div>
             </div>
           </div>

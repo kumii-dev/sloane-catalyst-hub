@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AssessmentResults } from "@/components/assessment/AssessmentResults";
 import jsPDF from "jspdf";
-
+import logoImg from "@/assets/22-on-sloane-logo.png";
 
 interface DocumentUpload {
   type: string;
@@ -105,86 +105,204 @@ export const AssessmentForm = () => {
   const downloadPDF = (assessment: any) => {
     const pdf = new jsPDF();
     const pageWidth = pdf.internal.pageSize.getWidth();
-    let yPos = 20;
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    
+    // Brand colors (RGB)
+    const brandOrange: [number, number, number] = [234, 97, 43];
+    const brandBlue: [number, number, number] = [2, 163, 204];
+    const brandGrey: [number, number, number] = [63, 63, 65];
+    const lightGrey: [number, number, number] = [240, 240, 242];
+    
+    let yPos = 15;
 
-    // Title
-    pdf.setFontSize(20);
-    pdf.text("Credit Score Assessment Report", pageWidth / 2, yPos, { align: "center" });
-    yPos += 15;
-
-    // Overall Score
-    pdf.setFontSize(16);
-    pdf.text(`Overall Score: ${assessment.overall_score}/1000`, 20, yPos);
-    yPos += 10;
+    // Header with brand colors
+    pdf.setFillColor(...brandOrange);
+    pdf.rect(0, 0, pageWidth, 35, 'F');
+    
+    // Add logo
+    const img = new Image();
+    img.src = logoImg;
+    try {
+      pdf.addImage(img, 'PNG', 15, 8, 40, 20);
+    } catch (e) {
+      console.log('Logo loading issue');
+    }
+    
+    // Title on header
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(18);
+    pdf.setFont(undefined, 'bold');
+    pdf.text("Credit Score Assessment Report", pageWidth - 15, 22, { align: "right" });
+    
+    yPos = 50;
+    
+    // Overall Score Section with blue accent
+    pdf.setFillColor(...brandBlue);
+    pdf.roundedRect(15, yPos, pageWidth - 30, 35, 3, 3, 'F');
+    
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(24);
+    pdf.setFont(undefined, 'bold');
+    pdf.text(`${assessment.overall_score}%`, pageWidth / 2, yPos + 15, { align: "center" });
+    
     pdf.setFontSize(12);
-    pdf.text(`Risk Band: ${assessment.risk_band}`, 20, yPos);
-    yPos += 10;
-    pdf.text(`Funding Eligibility: ${assessment.funding_eligibility_range}`, 20, yPos);
-    yPos += 15;
-
-    // Score Explanation
-    pdf.setFontSize(14);
-    pdf.text("Assessment Summary", 20, yPos);
-    yPos += 8;
+    pdf.setFont(undefined, 'normal');
+    pdf.text("Overall Credit Score", pageWidth / 2, yPos + 25, { align: "center" });
+    
+    yPos += 45;
+    
+    // Risk Band and Funding boxes
+    pdf.setFillColor(...lightGrey);
+    pdf.roundedRect(15, yPos, (pageWidth - 35) / 2, 22, 2, 2, 'F');
+    pdf.roundedRect(pageWidth / 2 + 5, yPos, (pageWidth - 35) / 2, 22, 2, 2, 'F');
+    
+    pdf.setTextColor(...brandGrey);
     pdf.setFontSize(10);
-    const explanationLines = pdf.splitTextToSize(assessment.score_explanation, pageWidth - 40);
-    pdf.text(explanationLines, 20, yPos);
+    pdf.setFont(undefined, 'bold');
+    pdf.text("Risk Band", 20, yPos + 8);
+    pdf.text("Funding Eligibility", pageWidth / 2 + 10, yPos + 8);
+    
+    pdf.setFont(undefined, 'normal');
+    pdf.setFontSize(11);
+    pdf.text(assessment.risk_band, 20, yPos + 16);
+    pdf.text(assessment.funding_eligibility_range, pageWidth / 2 + 10, yPos + 16);
+    
+    yPos += 32;
+
+    // Assessment Summary Section
+    pdf.setDrawColor(...brandOrange);
+    pdf.setLineWidth(0.5);
+    pdf.line(15, yPos, pageWidth - 15, yPos);
+    yPos += 8;
+    
+    pdf.setTextColor(...brandOrange);
+    pdf.setFontSize(14);
+    pdf.setFont(undefined, 'bold');
+    pdf.text("Assessment Summary", 15, yPos);
+    yPos += 8;
+    
+    pdf.setTextColor(...brandGrey);
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'normal');
+    const explanationLines = pdf.splitTextToSize(assessment.score_explanation, pageWidth - 30);
+    pdf.text(explanationLines, 15, yPos);
     yPos += explanationLines.length * 5 + 10;
 
-    // Strengths
+    // Strengths Section
     if (assessment.strengths?.length > 0) {
-      pdf.setFontSize(14);
-      pdf.text("Strengths", 20, yPos);
+      if (yPos > pageHeight - 60) {
+        pdf.addPage();
+        yPos = 20;
+      }
+      
+      pdf.setDrawColor(...brandBlue);
+      pdf.line(15, yPos, pageWidth - 15, yPos);
       yPos += 8;
+      
+      pdf.setTextColor(...brandBlue);
+      pdf.setFontSize(14);
+      pdf.setFont(undefined, 'bold');
+      pdf.text("Strengths", 15, yPos);
+      yPos += 8;
+      
+      pdf.setTextColor(...brandGrey);
       pdf.setFontSize(10);
+      pdf.setFont(undefined, 'normal');
+      
       assessment.strengths.forEach((strength: string, idx: number) => {
-        const lines = pdf.splitTextToSize(`${idx + 1}. ${strength}`, pageWidth - 40);
-        pdf.text(lines, 20, yPos);
-        yPos += lines.length * 5 + 3;
-      });
-      yPos += 5;
-    }
-
-    // Weaknesses
-    if (assessment.improvement_areas?.length > 0) {
-      if (yPos > 250) {
-        pdf.addPage();
-        yPos = 20;
-      }
-      pdf.setFontSize(14);
-      pdf.text("Areas for Improvement", 20, yPos);
-      yPos += 8;
-      pdf.setFontSize(10);
-      assessment.improvement_areas.forEach((area: string, idx: number) => {
-        const lines = pdf.splitTextToSize(`${idx + 1}. ${area}`, pageWidth - 40);
-        pdf.text(lines, 20, yPos);
-        yPos += lines.length * 5 + 3;
-      });
-      yPos += 5;
-    }
-
-    // Recommendations
-    if (assessment.recommendations?.length > 0) {
-      if (yPos > 250) {
-        pdf.addPage();
-        yPos = 20;
-      }
-      pdf.setFontSize(14);
-      pdf.text("Recommendations", 20, yPos);
-      yPos += 8;
-      pdf.setFontSize(10);
-      assessment.recommendations.forEach((rec: string, idx: number) => {
-        const lines = pdf.splitTextToSize(`${idx + 1}. ${rec}`, pageWidth - 40);
-        pdf.text(lines, 20, yPos);
-        yPos += lines.length * 5 + 3;
-        if (yPos > 270) {
+        if (yPos > pageHeight - 30) {
           pdf.addPage();
           yPos = 20;
         }
+        const lines = pdf.splitTextToSize(`• ${strength}`, pageWidth - 30);
+        pdf.text(lines, 15, yPos);
+        yPos += lines.length * 5 + 4;
+      });
+      yPos += 5;
+    }
+
+    // Areas for Improvement Section
+    if (assessment.improvement_areas?.length > 0) {
+      if (yPos > pageHeight - 60) {
+        pdf.addPage();
+        yPos = 20;
+      }
+      
+      pdf.setDrawColor(...brandOrange);
+      pdf.line(15, yPos, pageWidth - 15, yPos);
+      yPos += 8;
+      
+      pdf.setTextColor(...brandOrange);
+      pdf.setFontSize(14);
+      pdf.setFont(undefined, 'bold');
+      pdf.text("Areas for Improvement", 15, yPos);
+      yPos += 8;
+      
+      pdf.setTextColor(...brandGrey);
+      pdf.setFontSize(10);
+      pdf.setFont(undefined, 'normal');
+      
+      assessment.improvement_areas.forEach((area: string, idx: number) => {
+        if (yPos > pageHeight - 30) {
+          pdf.addPage();
+          yPos = 20;
+        }
+        const lines = pdf.splitTextToSize(`• ${area}`, pageWidth - 30);
+        pdf.text(lines, 15, yPos);
+        yPos += lines.length * 5 + 4;
+      });
+      yPos += 5;
+    }
+
+    // Recommendations Section
+    if (assessment.recommendations?.length > 0) {
+      if (yPos > pageHeight - 60) {
+        pdf.addPage();
+        yPos = 20;
+      }
+      
+      pdf.setDrawColor(...brandBlue);
+      pdf.line(15, yPos, pageWidth - 15, yPos);
+      yPos += 8;
+      
+      pdf.setTextColor(...brandBlue);
+      pdf.setFontSize(14);
+      pdf.setFont(undefined, 'bold');
+      pdf.text("Recommendations", 15, yPos);
+      yPos += 8;
+      
+      pdf.setTextColor(...brandGrey);
+      pdf.setFontSize(10);
+      pdf.setFont(undefined, 'normal');
+      
+      assessment.recommendations.forEach((rec: string, idx: number) => {
+        if (yPos > pageHeight - 30) {
+          pdf.addPage();
+          yPos = 20;
+        }
+        const lines = pdf.splitTextToSize(`• ${rec}`, pageWidth - 30);
+        pdf.text(lines, 15, yPos);
+        yPos += lines.length * 5 + 4;
       });
     }
 
-    pdf.save(`credit-assessment-${new Date().toISOString().split('T')[0]}.pdf`);
+    // Footer on all pages
+    const pageCount = pdf.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      pdf.setPage(i);
+      pdf.setFillColor(...brandGrey);
+      pdf.rect(0, pageHeight - 15, pageWidth, 15, 'F');
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(8);
+      pdf.text(
+        `22 On Sloane | Generated ${new Date().toLocaleDateString()}`,
+        pageWidth / 2,
+        pageHeight - 7,
+        { align: 'center' }
+      );
+    }
+
+    pdf.save(`22OnSloane-Credit-Assessment-${new Date().toISOString().split('T')[0]}.pdf`);
   };
 
   const handleFileChange = (docType: string, file: File | null) => {

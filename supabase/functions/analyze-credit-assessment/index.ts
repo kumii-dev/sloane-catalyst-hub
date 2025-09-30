@@ -119,6 +119,7 @@ Provide a comprehensive credit score analysis following the 10-domain framework.
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
+        temperature: 0,
       }),
     });
 

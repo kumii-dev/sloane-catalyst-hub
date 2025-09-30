@@ -184,7 +184,7 @@ export const AssessmentForm = () => {
     pdf.setTextColor(...brandGrey);
     pdf.setFontSize(10);
     pdf.setFont(undefined, 'normal');
-    const explanationLines = pdf.splitTextToSize(assessment.score_explanation, pageWidth - 35);
+    const explanationLines = pdf.splitTextToSize(assessment.score_explanation, pageWidth - 45);
     pdf.text(explanationLines, 15, yPos);
     yPos += explanationLines.length * 5 + 10;
 
@@ -214,7 +214,7 @@ export const AssessmentForm = () => {
           pdf.addPage();
           yPos = 20;
         }
-        const lines = pdf.splitTextToSize(`• ${strength}`, pageWidth - 35);
+        const lines = pdf.splitTextToSize(`• ${strength}`, pageWidth - 45);
         pdf.text(lines, 18, yPos);
         yPos += lines.length * 5 + 4;
       });
@@ -247,7 +247,7 @@ export const AssessmentForm = () => {
           pdf.addPage();
           yPos = 20;
         }
-        const lines = pdf.splitTextToSize(`• ${area}`, pageWidth - 35);
+        const lines = pdf.splitTextToSize(`• ${area}`, pageWidth - 45);
         pdf.text(lines, 18, yPos);
         yPos += lines.length * 5 + 4;
       });
@@ -280,9 +280,59 @@ export const AssessmentForm = () => {
           pdf.addPage();
           yPos = 20;
         }
-        const lines = pdf.splitTextToSize(`• ${rec}`, pageWidth - 35);
+        const lines = pdf.splitTextToSize(`• ${rec}`, pageWidth - 45);
         pdf.text(lines, 18, yPos);
         yPos += lines.length * 5 + 4;
+      });
+    }
+
+    // Domain Explanations Section
+    if (assessment.domain_explanations) {
+      const domainLabels = {
+        business_profile: 'Business Profile & Age',
+        financial_health: 'Financial Health',
+        repayment_behaviour: 'Repayment Behaviour',
+        governance_compliance: 'Governance & Compliance',
+        market_position: 'Market Position & Demand',
+        operational_capacity: 'Operational Capacity',
+        technology_innovation: 'Technology & Innovation',
+        social_environmental: 'Social & Environmental Impact',
+        trust_reputation: 'Trust & Reputation',
+        growth_potential: 'Growth Potential & Strategy'
+      };
+
+      Object.entries(domainLabels).forEach(([key, label]) => {
+        const explanation = assessment.domain_explanations[key];
+        if (explanation) {
+          if (yPos > pageHeight - 60) {
+            pdf.addPage();
+            yPos = 20;
+          }
+
+          pdf.setDrawColor(...brandOrange);
+          pdf.line(15, yPos, pageWidth - 15, yPos);
+          yPos += 8;
+
+          pdf.setTextColor(...brandBlue);
+          pdf.setFontSize(12);
+          pdf.setFont(undefined, 'bold');
+          pdf.text(label, 15, yPos);
+          yPos += 8;
+
+          pdf.setTextColor(...brandGrey);
+          pdf.setFontSize(9);
+          pdf.setFont(undefined, 'normal');
+          const expLines = pdf.splitTextToSize(explanation, pageWidth - 45);
+          expLines.forEach((line: string) => {
+            if (yPos > pageHeight - 30) {
+              pdf.addPage();
+              yPos = 20;
+            }
+            pdf.text(line, 15, yPos);
+            yPos += 5;
+          });
+          yPos += 8;
+        }
       });
     }
 

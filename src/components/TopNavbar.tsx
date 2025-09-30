@@ -62,8 +62,8 @@ const TopNavbar = () => {
             to={item.href}
             className={`text-base font-semibold transition-colors ${
               isActive(item.href) 
-                ? 'text-white border-b-2 border-white pb-4' 
-                : 'text-white/90 hover:text-white'
+                ? 'text-primary-dark border-b-2 border-primary-dark pb-4' 
+                : 'text-primary-dark/80 hover:text-primary-dark'
             }`}
           >
             {item.title}
@@ -75,12 +75,12 @@ const TopNavbar = () => {
       <div className="flex items-center gap-4">
         {user ? (
           <div className="flex items-center gap-3">
-            <span className="text-base text-white/90 font-medium">About</span>
+            <span className="text-base text-white font-medium">About</span>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => signOut()}
-              className="text-base text-white hover:text-white hover:bg-white/10"
+              className="text-base text-white hover:text-white hover:bg-white/20"
             >
               Sign Out
             </Button>
@@ -92,9 +92,9 @@ const TopNavbar = () => {
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <span className="text-base text-white/90 font-medium">About</span>
+            <span className="text-base text-white font-medium">About</span>
             <Link to="/auth">
-              <Button variant="ghost" size="sm" className="text-base text-white hover:text-white hover:bg-white/10">
+              <Button variant="ghost" size="sm" className="text-base text-white hover:text-white hover:bg-white/20">
                 Sign In
               </Button>
             </Link>

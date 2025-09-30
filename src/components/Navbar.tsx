@@ -39,7 +39,7 @@ const Navbar = () => {
                 {item.href.startsWith('#') ? (
                   <a
                     href={item.href}
-                    className="flex items-center gap-1 text-white/90 hover:text-white transition-smooth font-semibold text-base"
+                    className="flex items-center gap-1 text-primary-dark/80 hover:text-primary-dark transition-smooth font-semibold text-base"
                   >
                     {item.name}
                     {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
@@ -47,7 +47,7 @@ const Navbar = () => {
                 ) : (
                   <Link
                     to={item.href}
-                    className="flex items-center gap-1 text-white/90 hover:text-white transition-smooth font-semibold text-base"
+                    className="flex items-center gap-1 text-primary-dark/80 hover:text-primary-dark transition-smooth font-semibold text-base"
                   >
                     {item.name}
                     {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
@@ -64,7 +64,7 @@ const Navbar = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10 text-base font-semibold">
+                  <Button variant="ghost" className="text-white hover:text-white hover:bg-white/20 text-base font-semibold">
                     <User className="w-5 h-5 mr-2" />
                     Account
                   </Button>
@@ -78,7 +78,7 @@ const Navbar = () => {
               </DropdownMenu>
             ) : (
               <>
-                <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10 text-base font-semibold" asChild>
+                <Button variant="ghost" className="text-white hover:text-white hover:bg-white/20 text-base font-semibold" asChild>
                   <Link to="/auth">Sign In</Link>
                 </Button>
                 <Button variant="secondary" className="text-base font-semibold" asChild>

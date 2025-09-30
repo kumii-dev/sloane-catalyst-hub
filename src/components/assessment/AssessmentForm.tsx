@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Upload, FileText, CheckCircle2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 interface DocumentUpload {
   type: string;
@@ -71,6 +72,7 @@ export const AssessmentForm = () => {
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [processingMessage, setProcessingMessage] = useState('');
+  const [testMode, setTestMode] = useState(true);
   
   const [documents, setDocuments] = useState<Record<string, DocumentUpload>>(
     DOCUMENT_TYPES.reduce((acc, doc) => ({
@@ -164,27 +166,46 @@ export const AssessmentForm = () => {
         startup = newStartup;
       }
 
-      // Upload documents
+      // Upload documents (skipped in test mode)
       const documentUrls: Record<string, string> = {};
-      const totalDocs = Object.values(documents).filter(d => d.file).length;
-      let uploadedCount = 0;
+      if (!testMode) {
+        const totalDocs = Object.values(documents).filter(d => d.file).length;
+        let uploadedCount = 0;
 
-      for (const [key, doc] of Object.entries(documents)) {
-        if (doc.file) {
-          try {
-            const url = await uploadDocument(key, doc.file, user.id);
-            documentUrls[key] = url;
-            uploadedCount++;
-            setUploadProgress((uploadedCount / totalDocs) * 50); // 50% for uploads
-          } catch (error) {
-            console.error(`Failed to upload ${key}:`, error);
+        for (const [key, doc] of Object.entries(documents)) {
+          if (doc.file) {
+            try {
+              const url = await uploadDocument(key, doc.file, user.id);
+              documentUrls[key] = url;
+              uploadedCount++;
+              setUploadProgress((uploadedCount / Math.max(totalDocs, 1)) * 50); // 50% for uploads
+            } catch (error) {
+              console.error(`Failed to upload ${key}:`, error);
+            }
           }
         }
+      } else {
+        setProcessingMessage('Test mode enabled: Skipping document uploads...');
+        setUploadProgress(60);
       }
 
       // Prepare assessment data
+      const testOverrides = testMode
+        ? {
+            company_name: formData.company_name || 'TestCo Pty Ltd',
+            founded_year: formData.founded_year || String(new Date().getFullYear() - 3),
+            industry: formData.industry || 'services',
+            annual_revenue: formData.annual_revenue || '500000-1000000',
+            team_size: formData.team_size || '1-10',
+            funding_needed: formData.funding_needed || '500000-750000',
+            business_description:
+              formData.business_description || 'Test company used to validate assessment flow and results.',
+          }
+        : {};
+
       const assessmentData = {
         ...formData,
+        ...testOverrides,
         document_urls: documentUrls,
         submitted_at: new Date().toISOString(),
       };
@@ -396,45 +417,58 @@ export const AssessmentForm = () => {
           <CardDescription>
             Upload required documents for credit assessment (* = required)
           </CardDescription>
+          <div className="flex items-center justify-between pt-2">
+            <div className="text-sm text-muted-foreground">Enable test mode to bypass uploads</div>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="test-mode">Test mode</Label>
+              <Switch id="test-mode" checked={testMode} onCheckedChange={setTestMode} />
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          {DOCUMENT_TYPES.map((doc) => (
-            <div key={doc.key} className="flex items-center justify-between p-4 border rounded-lg">
-              <div className="flex-1">
-                <Label htmlFor={doc.key} className="text-base">
-                  {doc.label} {doc.required && '*'}
-                </Label>
-                <p className="text-sm text-muted-foreground mt-1">
-                  PDF, DOCX, XLSX, JPG, or PNG (max 10MB)
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                {documents[doc.key]?.file ? (
-                  <div className="flex items-center gap-2 text-green-600">
-                    <CheckCircle2 className="w-5 h-5" />
-                    <span className="text-sm">{documents[doc.key].file?.name}</span>
-                  </div>
-                ) : (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => document.getElementById(`file-${doc.key}`)?.click()}
-                  >
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload
-                  </Button>
-                )}
-                <Input
-                  id={`file-${doc.key}`}
-                  type="file"
-                  className="hidden"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
-                  onChange={(e) => handleFileChange(doc.key, e.target.files?.[0] || null)}
-                />
-              </div>
+          {testMode ? (
+            <div className="text-sm text-muted-foreground">
+              Test mode is enabled. Document uploads are bypassed for faster testing.
             </div>
-          ))}
+          ) : (
+            DOCUMENT_TYPES.map((doc) => (
+              <div key={doc.key} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex-1">
+                  <Label htmlFor={doc.key} className="text-base">
+                    {doc.label} {doc.required && '*'}
+                  </Label>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    PDF, DOCX, XLSX, JPG, or PNG (max 10MB)
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  {documents[doc.key]?.file ? (
+                    <div className="flex items-center gap-2 text-green-600">
+                      <CheckCircle2 className="w-5 h-5" />
+                      <span className="text-sm">{documents[doc.key].file?.name}</span>
+                    </div>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => document.getElementById(`file-${doc.key}`)?.click()}
+                    >
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload
+                    </Button>
+                  )}
+                  <Input
+                    id={`file-${doc.key}`}
+                    type="file"
+                    className="hidden"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                    onChange={(e) => handleFileChange(doc.key, e.target.files?.[0] || null)}
+                  />
+                </div>
+              </div>
+            ))
+          )}
         </CardContent>
       </Card>
 
@@ -484,7 +518,7 @@ export const AssessmentForm = () => {
         type="submit"
         size="lg"
         className="w-full"
-        disabled={loading || !requiredDocsUploaded || !formData.consent_to_share}
+        disabled={loading || (!requiredDocsUploaded && !testMode) || !formData.consent_to_share}
       >
         {loading ? (
           <>

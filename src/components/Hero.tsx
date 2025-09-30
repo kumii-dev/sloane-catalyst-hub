@@ -29,7 +29,7 @@ const Hero = () => {
           {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-up text-white">
             Transform Your Business<br />
-            <span className="text-primary-dark font-bold drop-shadow-lg">
+            <span className="font-bold drop-shadow-lg" style={{ color: 'hsl(20 76% 38%)' }}>
               Journey Into Success
             </span>
           </h1>
@@ -44,7 +44,7 @@ const Hero = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-up">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-primary-dark rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary-dark/50 transition-all">
+                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(20 76% 38%)' }}>
                   <TrendingUp className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-lg">Market Access</span>
@@ -52,7 +52,7 @@ const Hero = () => {
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-primary-dark rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary-dark/50 transition-all">
+                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(20 76% 38%)' }}>
                   <DollarSign className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-lg">Funding Hub</span>
@@ -60,7 +60,7 @@ const Hero = () => {
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-primary-dark rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary-dark/50 transition-all">
+                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(20 76% 38%)' }}>
                   <FileCheck className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-lg">Credit Scoring</span>
@@ -68,7 +68,7 @@ const Hero = () => {
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-primary-dark rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary-dark/50 transition-all">
+                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(20 76% 38%)' }}>
                   <Users className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-lg">Expert Mentorship</span>
@@ -76,7 +76,7 @@ const Hero = () => {
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-primary-dark rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary-dark/50 transition-all">
+                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(20 76% 38%)' }}>
                   <Briefcase className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-lg">Pro Services</span>
@@ -84,7 +84,7 @@ const Hero = () => {
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
-                <div className="bg-primary-dark rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-primary-dark/50 transition-all">
+                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(20 76% 38%)' }}>
                   <BookOpen className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-lg">Resources</span>

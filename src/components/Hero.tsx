@@ -29,7 +29,7 @@ const Hero = () => {
           {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-up text-white">
             Transform Your Business<br />
-            <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
+            <span className="text-accent font-bold drop-shadow-lg">
               Journey Into Success
             </span>
           </h1>

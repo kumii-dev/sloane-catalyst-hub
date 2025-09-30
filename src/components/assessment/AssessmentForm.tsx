@@ -32,10 +32,15 @@ const DOCUMENT_TYPES = [
 ];
 
 const INDUSTRIES = [
-  'Technology', 'Financial Services', 'Healthcare', 'E-commerce', 'Manufacturing',
-  'Agriculture', 'Education', 'Real Estate', 'Retail', 'Food & Beverage',
-  'Transportation', 'Energy', 'Construction', 'Media & Entertainment', 'Professional Services',
-  'Tourism & Hospitality', 'Telecommunications', 'Fashion & Apparel', 'Other'
+  { value: 'fintech', label: 'Financial Technology' },
+  { value: 'healthtech', label: 'Healthcare & Health Technology' },
+  { value: 'edtech', label: 'Education Technology' },
+  { value: 'agritech', label: 'Agriculture Technology' },
+  { value: 'cleantech', label: 'Clean & Sustainable Technology' },
+  { value: 'retail', label: 'Retail & E-commerce' },
+  { value: 'manufacturing', label: 'Manufacturing' },
+  { value: 'services', label: 'Professional Services' },
+  { value: 'other', label: 'Other' },
 ];
 
 const TEAM_SIZE_OPTIONS = [
@@ -272,8 +277,8 @@ export const AssessmentForm = () => {
                 </SelectTrigger>
                 <SelectContent>
                   {INDUSTRIES.map((industry) => (
-                    <SelectItem key={industry} value={industry}>
-                      {industry}
+                    <SelectItem key={industry.value} value={industry.value}>
+                      {industry.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

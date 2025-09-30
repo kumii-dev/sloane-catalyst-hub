@@ -1,1 +1,4 @@
 project_id = "qypazgkngxhazgkuevwq"
+
+[functions.analyze-credit-assessment]
+verify_jwt = true

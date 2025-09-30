@@ -16,68 +16,104 @@ export type Database = {
     Tables: {
       credit_assessments: {
         Row: {
+          ai_analysis: Json | null
           assessed_at: string | null
           assessment_data: Json | null
+          business_profile_score: number | null
           compliance_score: number | null
           consent_timestamp: string | null
           consent_to_share: boolean | null
           created_at: string
+          document_urls: Json | null
+          domain_explanations: Json | null
           expires_at: string | null
           financial_health_score: number | null
+          funding_eligibility_range: string | null
           governance_score: number | null
           growth_readiness_score: number | null
           id: string
           improvement_areas: string[] | null
           market_access_score: number | null
+          operational_capacity_score: number | null
           overall_score: number | null
           recommendations: string[] | null
+          repayment_behaviour_score: number | null
+          risk_band: string | null
+          score_explanation: string | null
           skills_score: number | null
+          social_environmental_score: number | null
           startup_id: string
           status: Database["public"]["Enums"]["assessment_status"]
+          technology_innovation_score: number | null
+          trust_reputation_score: number | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          ai_analysis?: Json | null
           assessed_at?: string | null
           assessment_data?: Json | null
+          business_profile_score?: number | null
           compliance_score?: number | null
           consent_timestamp?: string | null
           consent_to_share?: boolean | null
           created_at?: string
+          document_urls?: Json | null
+          domain_explanations?: Json | null
           expires_at?: string | null
           financial_health_score?: number | null
+          funding_eligibility_range?: string | null
           governance_score?: number | null
           growth_readiness_score?: number | null
           id?: string
           improvement_areas?: string[] | null
           market_access_score?: number | null
+          operational_capacity_score?: number | null
           overall_score?: number | null
           recommendations?: string[] | null
+          repayment_behaviour_score?: number | null
+          risk_band?: string | null
+          score_explanation?: string | null
           skills_score?: number | null
+          social_environmental_score?: number | null
           startup_id: string
           status?: Database["public"]["Enums"]["assessment_status"]
+          technology_innovation_score?: number | null
+          trust_reputation_score?: number | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          ai_analysis?: Json | null
           assessed_at?: string | null
           assessment_data?: Json | null
+          business_profile_score?: number | null
           compliance_score?: number | null
           consent_timestamp?: string | null
           consent_to_share?: boolean | null
           created_at?: string
+          document_urls?: Json | null
+          domain_explanations?: Json | null
           expires_at?: string | null
           financial_health_score?: number | null
+          funding_eligibility_range?: string | null
           governance_score?: number | null
           growth_readiness_score?: number | null
           id?: string
           improvement_areas?: string[] | null
           market_access_score?: number | null
+          operational_capacity_score?: number | null
           overall_score?: number | null
           recommendations?: string[] | null
+          repayment_behaviour_score?: number | null
+          risk_band?: string | null
+          score_explanation?: string | null
           skills_score?: number | null
+          social_environmental_score?: number | null
           startup_id?: string
           status?: Database["public"]["Enums"]["assessment_status"]
+          technology_innovation_score?: number | null
+          trust_reputation_score?: number | null
           updated_at?: string
           user_id?: string
         }

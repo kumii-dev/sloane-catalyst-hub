@@ -23,6 +23,8 @@ import ResourceCategory from "./pages/ResourceCategory";
 import ResourceDetail from "./pages/ResourceDetail";
 import AccessToMarket from "./pages/AccessToMarket";
 import CreditScore from "./pages/CreditScore";
+import CreditScoreAssessment from "./pages/CreditScoreAssessment";
+import CreditScoreResults from "./pages/CreditScoreResults";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,7 +48,9 @@ const App = () => (
             <Route path="/funding/startup-dashboard" element={<StartupDashboard />} />
             <Route path="/funding/funder-dashboard" element={<FunderDashboard />} />
             <Route path="/access-to-market" element={<AccessToMarket />} />
-            <Route path="/credit-score" element={<CreditScore />} />
+          <Route path="/credit-score" element={<CreditScore />} />
+          <Route path="/credit-score/assessment" element={<CreditScoreAssessment />} />
+          <Route path="/credit-score/results/:assessmentId" element={<CreditScoreResults />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/category/:slug" element={<ServiceCategory />} />
             <Route path="/services/:id" element={<ServiceDetail />} />

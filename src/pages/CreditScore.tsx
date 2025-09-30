@@ -90,7 +90,7 @@ const CreditScore = () => {
             ) : (
               <div className="flex flex-wrap justify-center gap-4">
                 <Button size="lg" asChild>
-                  <a href="/auth">
+                  <a href="/credit-score/assessment">
                     Start Assessment
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </a>

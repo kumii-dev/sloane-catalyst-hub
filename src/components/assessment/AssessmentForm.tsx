@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Upload, FileText, CheckCircle2 } from "lucide-react";
@@ -29,6 +30,20 @@ const DOCUMENT_TYPES = [
   { key: 'reputation', label: 'Reputation Evidence', required: false },
   { key: 'growth_plan', label: 'Business Growth Plan', required: false },
 ];
+
+const INDUSTRIES = [
+  'Technology', 'Financial Services', 'Healthcare', 'E-commerce', 'Manufacturing',
+  'Agriculture', 'Education', 'Real Estate', 'Retail', 'Food & Beverage',
+  'Transportation', 'Energy', 'Construction', 'Media & Entertainment', 'Professional Services',
+  'Tourism & Hospitality', 'Telecommunications', 'Fashion & Apparel', 'Other'
+];
+
+const TEAM_SIZE_OPTIONS = [
+  '1-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100', '100+'
+];
+
+const currentYear = new Date().getFullYear();
+const YEARS = Array.from({ length: currentYear - 1979 }, (_, i) => currentYear - i);
 
 export const AssessmentForm = () => {
   const navigate = useNavigate();
@@ -216,32 +231,60 @@ export const AssessmentForm = () => {
             </div>
             <div>
               <Label htmlFor="founded_year">Founded Year *</Label>
-              <Input
-                id="founded_year"
-                type="number"
+              <Select
                 required
                 value={formData.founded_year}
-                onChange={(e) => setFormData({ ...formData, founded_year: e.target.value })}
-              />
+                onValueChange={(value) => setFormData({ ...formData, founded_year: value })}
+              >
+                <SelectTrigger id="founded_year">
+                  <SelectValue placeholder="Select year" />
+                </SelectTrigger>
+                <SelectContent>
+                  {YEARS.map((year) => (
+                    <SelectItem key={year} value={year.toString()}>
+                      {year}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label htmlFor="industry">Industry *</Label>
-              <Input
-                id="industry"
+              <Select
                 required
                 value={formData.industry}
-                onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-              />
+                onValueChange={(value) => setFormData({ ...formData, industry: value })}
+              >
+                <SelectTrigger id="industry">
+                  <SelectValue placeholder="Select industry" />
+                </SelectTrigger>
+                <SelectContent>
+                  {INDUSTRIES.map((industry) => (
+                    <SelectItem key={industry} value={industry}>
+                      {industry}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label htmlFor="team_size">Team Size *</Label>
-              <Input
-                id="team_size"
-                type="number"
+              <Select
                 required
                 value={formData.team_size}
-                onChange={(e) => setFormData({ ...formData, team_size: e.target.value })}
-              />
+                onValueChange={(value) => setFormData({ ...formData, team_size: value })}
+              >
+                <SelectTrigger id="team_size">
+                  <SelectValue placeholder="Select team size" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TEAM_SIZE_OPTIONS.map((size) => (
+                    <SelectItem key={size} value={size}>
+                      {size}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label htmlFor="annual_revenue">Annual Revenue (ZAR)</Label>

@@ -47,6 +47,21 @@ const TEAM_SIZE_OPTIONS = [
   '1-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100', '100+'
 ];
 
+const REVENUE_RANGES = [
+  { value: '0-99000', label: 'R0 - R99,000' },
+  { value: '100000-249000', label: 'R100,000 - R249,000' },
+  { value: '250000-499000', label: 'R250,000 - R499,000' },
+  { value: '500000-1000000', label: 'R500,000 - R1,000,000' },
+  { value: '>1000000', label: 'Above R1,000,000' },
+];
+
+const FUNDING_RANGES = [
+  { value: '<500000', label: 'Below R500,000' },
+  { value: '500000-750000', label: 'R500,000 - R750,000' },
+  { value: '750000-1000000', label: 'R750,000 - R1,000,000' },
+  { value: '>1000000', label: 'Above R1,000,000' },
+];
+
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: currentYear - 1979 }, (_, i) => currentYear - i);
 
@@ -136,9 +151,9 @@ export const AssessmentForm = () => {
             industry: formData.industry as any,
             stage: 'seed' as any,
             founded_year: parseInt(formData.founded_year) || null,
-            annual_revenue: parseFloat(formData.annual_revenue) || null,
+            annual_revenue: formData.annual_revenue ? parseFloat(formData.annual_revenue.split('-')[0].replace(/[<>]/g, '')) : null,
             team_size: parseInt(formData.team_size) || null,
-            funding_needed: parseFloat(formData.funding_needed) || null,
+            funding_needed: formData.funding_needed ? parseFloat(formData.funding_needed.split('-')[0].replace(/[<>]/g, '')) : null,
             description: formData.business_description,
             consent_data_sharing: formData.consent_to_share,
           })
@@ -305,21 +320,39 @@ export const AssessmentForm = () => {
             </div>
             <div>
               <Label htmlFor="annual_revenue">Annual Revenue (ZAR)</Label>
-              <Input
-                id="annual_revenue"
-                type="number"
+              <Select
                 value={formData.annual_revenue}
-                onChange={(e) => setFormData({ ...formData, annual_revenue: e.target.value })}
-              />
+                onValueChange={(value) => setFormData({ ...formData, annual_revenue: value })}
+              >
+                <SelectTrigger id="annual_revenue">
+                  <SelectValue placeholder="Select revenue range" />
+                </SelectTrigger>
+                <SelectContent>
+                  {REVENUE_RANGES.map((range) => (
+                    <SelectItem key={range.value} value={range.value}>
+                      {range.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label htmlFor="funding_needed">Funding Needed (ZAR)</Label>
-              <Input
-                id="funding_needed"
-                type="number"
+              <Select
                 value={formData.funding_needed}
-                onChange={(e) => setFormData({ ...formData, funding_needed: e.target.value })}
-              />
+                onValueChange={(value) => setFormData({ ...formData, funding_needed: value })}
+              >
+                <SelectTrigger id="funding_needed">
+                  <SelectValue placeholder="Select funding range" />
+                </SelectTrigger>
+                <SelectContent>
+                  {FUNDING_RANGES.map((range) => (
+                    <SelectItem key={range.value} value={range.value}>
+                      {range.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <div>

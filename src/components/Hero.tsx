@@ -26,66 +26,66 @@ const Hero = () => {
 
           {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-up text-white">
-            Empowering SMMEs &<br />
+            Transform Your Business<br />
             <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
-              Startup Success
+              Journey Into Success
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed max-w-3xl mx-auto animate-fade-up">
-            Your comprehensive marketplace connecting startups with essential services, 
-            funding opportunities, expert mentorship, and investor readiness programs.
+          <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed max-w-3xl mx-auto animate-fade-up">
+            Your all-in-one platform connecting entrepreneurs with funding, 
+            expert mentorship, market access, and growth-enabling services.
           </p>
 
           {/* Platform Services */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10 animate-fade-up">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
-              <div className="flex items-center gap-3">
-                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
-                  <TrendingUp className="h-5 w-5 text-white" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-up">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-4">
+                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
+                  <TrendingUp className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-white font-medium">Access To Market</span>
+                <span className="text-white font-semibold text-lg">Market Access</span>
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
-              <div className="flex items-center gap-3">
-                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
-                  <DollarSign className="h-5 w-5 text-white" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-4">
+                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
+                  <DollarSign className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-white font-medium">Access To Capital</span>
+                <span className="text-white font-semibold text-lg">Funding Hub</span>
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
-              <div className="flex items-center gap-3">
-                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
-                  <FileCheck className="h-5 w-5 text-white" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-4">
+                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
+                  <FileCheck className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-white font-medium">Credit Scoring</span>
+                <span className="text-white font-semibold text-lg">Credit Scoring</span>
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
-              <div className="flex items-center gap-3">
-                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
-                  <Users className="h-5 w-5 text-white" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-4">
+                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
+                  <Users className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-white font-medium">Mentorship</span>
+                <span className="text-white font-semibold text-lg">Expert Mentorship</span>
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
-              <div className="flex items-center gap-3">
-                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
-                  <Briefcase className="h-5 w-5 text-white" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-4">
+                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
+                  <Briefcase className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-white font-medium">Professional Services</span>
+                <span className="text-white font-semibold text-lg">Pro Services</span>
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/15 transition-all">
-              <div className="flex items-center gap-3">
-                <div className="bg-accent rounded-lg p-2 flex-shrink-0">
-                  <BookOpen className="h-5 w-5 text-white" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-4">
+                <div className="bg-accent rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
+                  <BookOpen className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-white font-medium">Resources</span>
+                <span className="text-white font-semibold text-lg">Resources</span>
               </div>
             </div>
           </div>

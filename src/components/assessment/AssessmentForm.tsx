@@ -116,7 +116,7 @@ export const AssessmentForm = () => {
     pdf.setFont(undefined, 'bold');
     const nameWidth = pdf.getTextWidth(companyName);
     const boxWidth = Math.min(nameWidth + 20, 120);
-    const boxX = (pageWidth - boxWidth) / 2 - 50;
+    const boxX = (pageWidth - boxWidth) / 2;
     
     pdf.setFillColor(255, 255, 255);
     pdf.roundedRect(boxX, 12, boxWidth, 16, 3, 3, 'F');
@@ -230,23 +230,32 @@ export const AssessmentForm = () => {
     
     yPos += 80;
     
-    // Risk Band and Funding boxes
+    // Risk Band and Funding boxes (with wrapping)
+    // Pre-compute wrapped funding text to size boxes correctly
+    pdf.setFont(undefined, 'normal');
+    pdf.setFontSize(11);
+    const rightBoxInnerWidth = (pageWidth - 35) / 2 - 20; // padding inside right box
+    const fundingText = assessment.funding_eligibility_range || '';
+    const fundingLines = pdf.splitTextToSize(fundingText, rightBoxInnerWidth);
+    const lineHeight = 5;
+    const boxHeight = Math.max(22, 12 + fundingLines.length * lineHeight);
+
     pdf.setFillColor(...lightGrey);
-    pdf.roundedRect(15, yPos, (pageWidth - 35) / 2, 22, 2, 2, 'F');
-    pdf.roundedRect(pageWidth / 2 + 5, yPos, (pageWidth - 35) / 2, 22, 2, 2, 'F');
-    
+    pdf.roundedRect(15, yPos, (pageWidth - 35) / 2, boxHeight, 2, 2, 'F');
+    pdf.roundedRect(pageWidth / 2 + 5, yPos, (pageWidth - 35) / 2, boxHeight, 2, 2, 'F');
+
     pdf.setTextColor(...brandGrey);
     pdf.setFontSize(10);
     pdf.setFont(undefined, 'bold');
     pdf.text("Risk Band", 20, yPos + 8);
     pdf.text("Funding Eligibility", pageWidth / 2 + 10, yPos + 8);
-    
+
     pdf.setFont(undefined, 'normal');
     pdf.setFontSize(11);
-    pdf.text(assessment.risk_band, 20, yPos + 16);
-    pdf.text(assessment.funding_eligibility_range, pageWidth / 2 + 10, yPos + 16);
-    
-    yPos += 32;
+    pdf.text(assessment.risk_band || '', 20, yPos + 16);
+    pdf.text(fundingLines, pageWidth / 2 + 10, yPos + 16);
+
+    yPos += boxHeight + 10;
 
     // Assessment Summary Section
     pdf.setDrawColor(...brandOrange);

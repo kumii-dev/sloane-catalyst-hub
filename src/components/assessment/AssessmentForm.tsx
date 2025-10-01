@@ -48,6 +48,16 @@ const INDUSTRIES = [
   { value: 'other', label: 'Other' },
 ];
 
+// Credit Score Grade Mapping (Kudough-based scale for 0-1000 range)
+const getGradeFromScore = (score: number): { grade: string; label: string; color: [number, number, number] } => {
+  if (score >= 900) return { grade: 'A+', label: 'Excellent', color: [16, 185, 129] as [number, number, number] };
+  if (score >= 750) return { grade: 'B', label: 'Good', color: [34, 197, 94] as [number, number, number] };
+  if (score >= 600) return { grade: 'C', label: 'Average', color: [132, 204, 22] as [number, number, number] };
+  if (score >= 450) return { grade: 'D', label: 'Fair', color: [234, 179, 8] as [number, number, number] };
+  if (score >= 300) return { grade: 'E', label: 'Poor', color: [249, 115, 22] as [number, number, number] };
+  return { grade: 'F', label: 'Very Poor', color: [239, 68, 68] as [number, number, number] };
+};
+
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: currentYear - 1979 }, (_, i) => currentYear - i);
 
@@ -118,20 +128,35 @@ export const AssessmentForm = () => {
     
     yPos = 50;
     
-    // Overall Score Section with blue accent
-    pdf.setFillColor(...brandBlue);
-    pdf.roundedRect(15, yPos, pageWidth - 30, 35, 3, 3, 'F');
+    // Overall Score Section with Letter Grade
+    const overallGrade = getGradeFromScore(assessment.overall_score || 0);
     
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(24);
-    pdf.setFont(undefined, 'bold');
-    pdf.text(`${assessment.overall_score}/1000`, pageWidth / 2, yPos + 15, { align: "center" });
+    pdf.setFillColor(...lightGrey);
+    pdf.roundedRect(15, yPos, pageWidth - 30, 45, 3, 3, 'F');
     
+    pdf.setTextColor(...brandGrey);
     pdf.setFontSize(12);
-    pdf.setFont(undefined, 'normal');
-    pdf.text("Overall Credit Score", pageWidth / 2, yPos + 25, { align: "center" });
+    pdf.setFont(undefined, 'bold');
+    pdf.text("Overall Credit Score", pageWidth / 2, yPos + 10, { align: "center" });
     
-    yPos += 45;
+    // Letter Grade with color
+    pdf.setTextColor(...overallGrade.color);
+    pdf.setFontSize(36);
+    pdf.setFont(undefined, 'bold');
+    pdf.text(overallGrade.grade, pageWidth / 2 - 25, yPos + 32, { align: "center" });
+    
+    // Label
+    pdf.setTextColor(...brandGrey);
+    pdf.setFontSize(14);
+    pdf.setFont(undefined, 'normal');
+    pdf.text(overallGrade.label, pageWidth / 2, yPos + 32, { align: "center" });
+    
+    // Numeric Score
+    pdf.setFontSize(10);
+    pdf.setTextColor(100, 100, 100);
+    pdf.text(`(${assessment.overall_score}/1000)`, pageWidth / 2 + 28, yPos + 32, { align: "center" });
+    
+    yPos += 55;
     
     // Risk Band and Funding boxes
     pdf.setFillColor(...lightGrey);
@@ -268,28 +293,30 @@ export const AssessmentForm = () => {
       });
     }
 
-    // Domain Explanations Section
+    // Domain Explanations Section with Letter Grades
     if (assessment.domain_explanations) {
       const domainLabels = {
-        business_profile: 'Business Profile & Age',
-        financial_health: 'Financial Health',
-        repayment_behaviour: 'Repayment Behaviour',
-        governance_compliance: 'Governance & Compliance',
-        market_position: 'Market Position & Demand',
-        operational_capacity: 'Operational Capacity',
-        technology_innovation: 'Technology & Innovation',
-        social_environmental: 'Social & Environmental Impact',
-        trust_reputation: 'Trust & Reputation',
-        growth_potential: 'Growth Potential & Strategy'
+        business_profile: { label: 'Business Profile & Age', score: assessment.business_profile_score || 0 },
+        financial_health: { label: 'Financial Health', score: assessment.financial_health_score || 0 },
+        repayment_behaviour: { label: 'Repayment Behaviour', score: assessment.repayment_behaviour_score || 0 },
+        governance_compliance: { label: 'Governance & Compliance', score: assessment.governance_score || 0 },
+        market_position: { label: 'Market Position & Demand', score: assessment.market_access_score || 0 },
+        operational_capacity: { label: 'Operational Capacity', score: assessment.operational_capacity_score || 0 },
+        technology_innovation: { label: 'Technology & Innovation', score: assessment.technology_innovation_score || 0 },
+        social_environmental: { label: 'Social & Environmental Impact', score: assessment.social_environmental_score || 0 },
+        trust_reputation: { label: 'Trust & Reputation', score: assessment.trust_reputation_score || 0 },
+        growth_potential: { label: 'Growth Potential & Strategy', score: assessment.growth_readiness_score || 0 }
       };
 
-      Object.entries(domainLabels).forEach(([key, label]) => {
+      Object.entries(domainLabels).forEach(([key, domain]) => {
         const explanation = assessment.domain_explanations[key];
         if (explanation) {
           if (yPos > pageHeight - 60) {
             pdf.addPage();
             yPos = 20;
           }
+
+          const domainGrade = getGradeFromScore(domain.score);
 
           pdf.setDrawColor(...brandOrange);
           pdf.line(15, yPos, pageWidth - 15, yPos);
@@ -298,13 +325,23 @@ export const AssessmentForm = () => {
           pdf.setTextColor(...brandBlue);
           pdf.setFontSize(12);
           pdf.setFont(undefined, 'bold');
-          pdf.text(label, 15, yPos);
+          pdf.text(domain.label, 15, yPos);
+          
+          // Show letter grade and numeric score
+          pdf.setTextColor(...domainGrade.color);
+          pdf.setFontSize(11);
+          pdf.text(`${domainGrade.grade}`, pageWidth - 35, yPos);
+          
+          pdf.setTextColor(100, 100, 100);
+          pdf.setFontSize(9);
+          pdf.text(`(${domain.score})`, pageWidth - 15, yPos, { align: 'right' });
+          
           yPos += 8;
 
           pdf.setTextColor(...brandGrey);
           pdf.setFontSize(9);
           pdf.setFont(undefined, 'normal');
-          const expLines = pdf.splitTextToSize(explanation, pageWidth - 45);
+          const expLines = pdf.splitTextToSize(explanation, pageWidth - 50);
           expLines.forEach((line: string) => {
             if (yPos > pageHeight - 30) {
               pdf.addPage();

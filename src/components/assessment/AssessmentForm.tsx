@@ -108,31 +108,35 @@ export const AssessmentForm = () => {
 
     // Header with brand colors
     pdf.setFillColor(...brandOrange);
-    pdf.rect(0, 0, pageWidth, 35, 'F');
+    pdf.rect(0, 0, pageWidth, 40, 'F');
     
-    // Add company name in a nice box
-    pdf.setFillColor(255, 255, 255);
-    pdf.roundedRect(15, 8, 90, 20, 3, 3, 'F');
-    
-    pdf.setTextColor(...brandBlue);
+    // Add company name in a nice box (centered)
+    const companyName = assessment.business_name || formData.company_name || 'Company Name';
     pdf.setFontSize(14);
     pdf.setFont(undefined, 'bold');
-    const companyName = assessment.business_name || formData.company_name || 'Company Name';
-    pdf.text(companyName, 60, 20, { align: 'center' });
+    const nameWidth = pdf.getTextWidth(companyName);
+    const boxWidth = Math.min(nameWidth + 20, 120);
+    const boxX = (pageWidth - boxWidth) / 2 - 50;
+    
+    pdf.setFillColor(255, 255, 255);
+    pdf.roundedRect(boxX, 12, boxWidth, 16, 3, 3, 'F');
+    
+    pdf.setTextColor(...brandBlue);
+    pdf.text(companyName, boxX + boxWidth / 2, 22, { align: 'center' });
     
     // Title on header
     pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(18);
+    pdf.setFontSize(16);
     pdf.setFont(undefined, 'bold');
-    pdf.text("Credit Score Assessment Report", pageWidth - 15, 22, { align: "right" });
+    pdf.text("Credit Score Assessment Report", pageWidth - 15, 24, { align: "right" });
     
-    yPos = 50;
+    yPos = 55;
     
     // Overall Score Section with Letter Grade
     const overallGrade = getGradeFromScore(assessment.overall_score || 0);
     
     pdf.setFillColor(...lightGrey);
-    pdf.roundedRect(15, yPos, pageWidth - 30, 45, 3, 3, 'F');
+    pdf.roundedRect(15, yPos, pageWidth - 30, 70, 3, 3, 'F');
     
     pdf.setTextColor(...brandGrey);
     pdf.setFontSize(12);
@@ -143,20 +147,88 @@ export const AssessmentForm = () => {
     pdf.setTextColor(...overallGrade.color);
     pdf.setFontSize(36);
     pdf.setFont(undefined, 'bold');
-    pdf.text(overallGrade.grade, pageWidth / 2 - 25, yPos + 32, { align: "center" });
+    pdf.text(overallGrade.grade, pageWidth / 2 - 35, yPos + 32, { align: "center" });
     
     // Label
     pdf.setTextColor(...brandGrey);
     pdf.setFontSize(14);
     pdf.setFont(undefined, 'normal');
-    pdf.text(overallGrade.label, pageWidth / 2, yPos + 32, { align: "center" });
+    pdf.text(overallGrade.label, pageWidth / 2 + 5, yPos + 32, { align: "center" });
     
     // Numeric Score
     pdf.setFontSize(10);
     pdf.setTextColor(100, 100, 100);
-    pdf.text(`(${assessment.overall_score}/1000)`, pageWidth / 2 + 28, yPos + 32, { align: "center" });
+    pdf.text(`(${assessment.overall_score}/1000)`, pageWidth / 2 + 40, yPos + 32, { align: "center" });
     
-    yPos += 55;
+    // Grade Scale Visualization
+    const scaleY = yPos + 45;
+    const scaleX = 30;
+    const scaleWidth = pageWidth - 60;
+    const grades = [
+      { grade: 'F', label: 'Very Poor', minScore: 0, color: [239, 68, 68] as [number, number, number] },
+      { grade: 'E', label: 'Poor', minScore: 300, color: [249, 115, 22] as [number, number, number] },
+      { grade: 'D', label: 'Fair', minScore: 450, color: [234, 179, 8] as [number, number, number] },
+      { grade: 'C', label: 'Average', minScore: 600, color: [132, 204, 22] as [number, number, number] },
+      { grade: 'B', label: 'Good', minScore: 750, color: [34, 197, 94] as [number, number, number] },
+      { grade: 'A+', label: 'Excellent', minScore: 900, color: [16, 185, 129] as [number, number, number] }
+    ];
+    
+    // Draw gradient bar (segmented by color)
+    const segmentWidth = scaleWidth / grades.length;
+    grades.forEach((g, idx) => {
+      pdf.setFillColor(...g.color);
+      pdf.rect(scaleX + idx * segmentWidth, scaleY, segmentWidth, 3, 'F');
+    });
+    
+    // Draw grade markers and highlight user's position
+    const userScore = assessment.overall_score || 0;
+    grades.forEach((g, idx) => {
+      const x = scaleX + idx * segmentWidth + segmentWidth / 2;
+      
+      // Draw circle for each grade
+      const isUserGrade = overallGrade.grade === g.grade;
+      pdf.setFillColor(g.color[0], g.color[1], g.color[2]);
+      if (isUserGrade) {
+        pdf.circle(x, scaleY + 1.5, 4, 'F');
+      } else {
+        pdf.setFillColor(200, 200, 200);
+        pdf.circle(x, scaleY + 1.5, 3, 'F');
+      }
+      
+      // Add border to user's grade
+      if (isUserGrade) {
+        pdf.setDrawColor(255, 255, 255);
+        pdf.setLineWidth(0.5);
+        pdf.circle(x, scaleY + 1.5, 4, 'S');
+        
+        // Add "You" label above
+        pdf.setFontSize(7);
+        pdf.setTextColor(...brandGrey);
+        pdf.setFont(undefined, 'bold');
+        pdf.text("You", x, scaleY - 3, { align: "center" });
+      }
+      
+      // Grade letter inside circle
+      pdf.setFontSize(isUserGrade ? 7 : 6);
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFont(undefined, 'bold');
+      pdf.text(g.grade, x, scaleY + 2.5, { align: "center" });
+      
+      // Label below
+      pdf.setFontSize(6);
+      pdf.setTextColor(g.color[0], g.color[1], g.color[2]);
+      pdf.setFont(undefined, 'normal');
+      pdf.text(g.label, x, scaleY + 9, { align: "center" });
+    });
+    
+    // Add "Target" label at A+
+    const targetX = scaleX + 5 * segmentWidth + segmentWidth / 2;
+    pdf.setFontSize(7);
+    pdf.setTextColor(...brandGrey);
+    pdf.setFont(undefined, 'bold');
+    pdf.text("Target", targetX, scaleY - 3, { align: "center" });
+    
+    yPos += 80;
     
     // Risk Band and Funding boxes
     pdf.setFillColor(...lightGrey);
@@ -191,7 +263,7 @@ export const AssessmentForm = () => {
     pdf.setTextColor(...brandGrey);
     pdf.setFontSize(10);
     pdf.setFont(undefined, 'normal');
-    const explanationLines = pdf.splitTextToSize(assessment.score_explanation, pageWidth - 45);
+    const explanationLines = pdf.splitTextToSize(assessment.score_explanation, pageWidth - 40);
     pdf.text(explanationLines, 15, yPos);
     yPos += explanationLines.length * 5 + 10;
 
@@ -221,7 +293,7 @@ export const AssessmentForm = () => {
           pdf.addPage();
           yPos = 20;
         }
-        const lines = pdf.splitTextToSize(`• ${strength}`, pageWidth - 45);
+        const lines = pdf.splitTextToSize(`• ${strength}`, pageWidth - 40);
         pdf.text(lines, 18, yPos);
         yPos += lines.length * 5 + 4;
       });
@@ -254,7 +326,7 @@ export const AssessmentForm = () => {
           pdf.addPage();
           yPos = 20;
         }
-        const lines = pdf.splitTextToSize(`• ${area}`, pageWidth - 45);
+        const lines = pdf.splitTextToSize(`• ${area}`, pageWidth - 40);
         pdf.text(lines, 18, yPos);
         yPos += lines.length * 5 + 4;
       });
@@ -287,7 +359,7 @@ export const AssessmentForm = () => {
           pdf.addPage();
           yPos = 20;
         }
-        const lines = pdf.splitTextToSize(`• ${rec}`, pageWidth - 45);
+        const lines = pdf.splitTextToSize(`• ${rec}`, pageWidth - 40);
         pdf.text(lines, 18, yPos);
         yPos += lines.length * 5 + 4;
       });
@@ -341,7 +413,7 @@ export const AssessmentForm = () => {
           pdf.setTextColor(...brandGrey);
           pdf.setFontSize(9);
           pdf.setFont(undefined, 'normal');
-          const expLines = pdf.splitTextToSize(explanation, pageWidth - 50);
+          const expLines = pdf.splitTextToSize(explanation, pageWidth - 40);
           expLines.forEach((line: string) => {
             if (yPos > pageHeight - 30) {
               pdf.addPage();

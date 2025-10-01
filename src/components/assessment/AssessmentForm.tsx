@@ -116,7 +116,7 @@ export const AssessmentForm = () => {
     pdf.setFont(undefined, 'bold');
     const nameWidth = pdf.getTextWidth(companyName);
     const boxWidth = Math.min(nameWidth + 20, 120);
-    const boxX = (pageWidth - boxWidth) / 2;
+    const boxX = 15;
     
     pdf.setFillColor(255, 255, 255);
     pdf.roundedRect(boxX, 12, boxWidth, 16, 3, 3, 'F');

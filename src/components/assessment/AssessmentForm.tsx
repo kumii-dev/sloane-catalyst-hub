@@ -93,7 +93,7 @@ export const AssessmentForm = () => {
     consent_to_share: false,
   });
 
-  const downloadPDF = (assessment: any) => {
+  const downloadPDF = async (assessment: any) => {
     const pdf = new jsPDF();
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
@@ -452,7 +452,31 @@ export const AssessmentForm = () => {
       );
     }
 
-    pdf.save(`22OnSloane-Credit-Assessment-${new Date().toISOString().split('T')[0]}.pdf`);
+    // Encrypt PDF with password (companyName + 2025)
+    const password = `${companyName}2025`;
+    const pdfData = pdf.output('datauristring').split(',')[1]; // Get base64 data
+    
+    try {
+      const response = await supabase.functions.invoke('encrypt-pdf', {
+        body: { pdfData, password }
+      });
+
+      if (response.error) throw response.error;
+
+      // Download the encrypted PDF
+      const encryptedPdfBytes = Uint8Array.from(atob(response.data.encryptedPdf), c => c.charCodeAt(0));
+      const blob = new Blob([encryptedPdfBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `22OnSloane-Credit-Assessment-${new Date().toISOString().split('T')[0]}.pdf`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error encrypting PDF:', error);
+      // Fallback to unencrypted PDF if encryption fails
+      pdf.save(`22OnSloane-Credit-Assessment-${new Date().toISOString().split('T')[0]}.pdf`);
+    }
   };
 
   const handleFileChange = (docType: string, file: File | null) => {

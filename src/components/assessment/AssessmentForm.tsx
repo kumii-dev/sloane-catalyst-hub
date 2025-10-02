@@ -160,21 +160,6 @@ export const AssessmentForm = () => {
     const scaleWidth = scaleEndX - scaleStartX;
     const segmentWidth = scaleWidth / 6;
     
-    // Calculate position based on score (0-1000 scale)
-    const scorePosition = (assessment.overall_score / 1000) * scaleWidth + scaleStartX;
-    
-    // Letter Grade with color - positioned above the scale at score position
-    pdf.setTextColor(...overallGrade.color);
-    pdf.setFontSize(48);
-    pdf.setFont(undefined, 'bold');
-    pdf.text(overallGrade.grade, scorePosition, yPos + 38, { align: "center" });
-    
-    // Label next to the grade (to the right)
-    pdf.setFontSize(12);
-    pdf.setTextColor(...overallGrade.color);
-    pdf.setFont(undefined, 'normal');
-    pdf.text(overallGrade.label, scorePosition + 25, yPos + 38, { align: "left" });
-    
     const grades = [
       { grade: 'F', label: 'Very Poor', minScore: 0, color: [239, 68, 68] as [number, number, number] },
       { grade: 'E', label: 'Poor', minScore: 300, color: [249, 115, 22] as [number, number, number] },
@@ -183,6 +168,22 @@ export const AssessmentForm = () => {
       { grade: 'B', label: 'Good', minScore: 750, color: [34, 197, 94] as [number, number, number] },
       { grade: 'A+', label: 'Excellent', minScore: 900, color: [16, 185, 129] as [number, number, number] }
     ];
+    
+    // Find the index of the user's grade to align with the circle position
+    const userGradeIndex = grades.findIndex(g => g.grade === overallGrade.grade);
+    const gradeCircleX = scaleStartX + userGradeIndex * segmentWidth + segmentWidth / 2;
+    
+    // Letter Grade with color - positioned above the scale at exact circle position
+    pdf.setTextColor(...overallGrade.color);
+    pdf.setFontSize(48);
+    pdf.setFont(undefined, 'bold');
+    pdf.text(overallGrade.grade, gradeCircleX, yPos + 38, { align: "center" });
+    
+    // Label next to the grade (to the right) with reduced gap
+    pdf.setFontSize(12);
+    pdf.setTextColor(...overallGrade.color);
+    pdf.setFont(undefined, 'normal');
+    pdf.text(overallGrade.label, gradeCircleX + 18, yPos + 38, { align: "left" });
     
     // Draw gradient bar (segmented by color)
     grades.forEach((g, idx) => {

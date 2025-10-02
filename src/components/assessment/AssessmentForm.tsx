@@ -58,6 +58,16 @@ const getGradeFromScore = (score: number): { grade: string; label: string; color
   return { grade: 'F', label: 'Very Poor', color: [239, 68, 68] as [number, number, number] };
 };
 
+// Grade mapping for individual domains (0-100 scale)
+const getDomainGrade = (score: number): { grade: string; label: string; color: [number, number, number] } => {
+  if (score >= 90) return { grade: 'A+', label: 'Excellent', color: [16, 185, 129] as [number, number, number] };
+  if (score >= 75) return { grade: 'B', label: 'Good', color: [34, 197, 94] as [number, number, number] };
+  if (score >= 60) return { grade: 'C', label: 'Average', color: [132, 204, 22] as [number, number, number] };
+  if (score >= 45) return { grade: 'D', label: 'Fair', color: [234, 179, 8] as [number, number, number] };
+  if (score >= 30) return { grade: 'E', label: 'Poor', color: [249, 115, 22] as [number, number, number] };
+  return { grade: 'F', label: 'Very Poor', color: [239, 68, 68] as [number, number, number] };
+};
+
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: currentYear - 1979 }, (_, i) => currentYear - i);
 
@@ -141,24 +151,19 @@ export const AssessmentForm = () => {
     pdf.setTextColor(...brandGrey);
     pdf.setFontSize(12);
     pdf.setFont(undefined, 'bold');
-    pdf.text("Overall Credit Score", pageWidth / 2, yPos + 10, { align: "center" });
+    pdf.text(`Overall Credit Score: ${assessment.overall_score}/1000`, pageWidth / 2, yPos + 10, { align: "center" });
     
-    // Letter Grade with color
+    // Letter Grade with color (left side)
     pdf.setTextColor(...overallGrade.color);
-    pdf.setFontSize(36);
+    pdf.setFontSize(48);
     pdf.setFont(undefined, 'bold');
-    pdf.text(overallGrade.grade, pageWidth / 2 - 35, yPos + 32, { align: "center" });
+    pdf.text(overallGrade.grade, 50, yPos + 38, { align: "center" });
     
-    // Label
-    pdf.setTextColor(...brandGrey);
-    pdf.setFontSize(14);
-    pdf.setFont(undefined, 'normal');
-    pdf.text(overallGrade.label, pageWidth / 2 + 5, yPos + 32, { align: "center" });
-    
-    // Numeric Score
+    // Label below the grade
     pdf.setFontSize(10);
-    pdf.setTextColor(100, 100, 100);
-    pdf.text(`(${assessment.overall_score}/1000)`, pageWidth / 2 + 40, yPos + 32, { align: "center" });
+    pdf.setTextColor(...overallGrade.color);
+    pdf.setFont(undefined, 'normal');
+    pdf.text(overallGrade.label, 50, yPos + 50, { align: "center" });
     
     // Grade Scale Visualization
     const scaleY = yPos + 45;
@@ -397,7 +402,7 @@ export const AssessmentForm = () => {
             yPos = 20;
           }
 
-          const domainGrade = getGradeFromScore(domain.score);
+          const domainGrade = getDomainGrade(domain.score);
 
           pdf.setDrawColor(...brandOrange);
           pdf.line(15, yPos, pageWidth - 15, yPos);

@@ -153,22 +153,28 @@ export const AssessmentForm = () => {
     pdf.setFont(undefined, 'bold');
     pdf.text(`Overall Credit Score: ${assessment.overall_score}/1000`, pageWidth / 2, yPos + 10, { align: "center" });
     
-    // Letter Grade with color (left side)
+    // Grade Scale Visualization positioning first
+    const scaleY = yPos + 55;
+    const scaleStartX = 50;
+    const scaleEndX = pageWidth - 50;
+    const scaleWidth = scaleEndX - scaleStartX;
+    const segmentWidth = scaleWidth / 6;
+    
+    // Calculate position based on score (0-1000 scale)
+    const scorePosition = (assessment.overall_score / 1000) * scaleWidth + scaleStartX;
+    
+    // Letter Grade with color - positioned above the scale at score position
     pdf.setTextColor(...overallGrade.color);
     pdf.setFontSize(48);
     pdf.setFont(undefined, 'bold');
-    pdf.text(overallGrade.grade, 50, yPos + 38, { align: "center" });
+    pdf.text(overallGrade.grade, scorePosition, yPos + 38, { align: "center" });
     
-    // Label below the grade
-    pdf.setFontSize(10);
+    // Label next to the grade (to the right)
+    pdf.setFontSize(12);
     pdf.setTextColor(...overallGrade.color);
     pdf.setFont(undefined, 'normal');
-    pdf.text(overallGrade.label, 50, yPos + 50, { align: "center" });
+    pdf.text(overallGrade.label, scorePosition + 25, yPos + 38, { align: "left" });
     
-    // Grade Scale Visualization
-    const scaleY = yPos + 45;
-    const scaleX = 30;
-    const scaleWidth = pageWidth - 60;
     const grades = [
       { grade: 'F', label: 'Very Poor', minScore: 0, color: [239, 68, 68] as [number, number, number] },
       { grade: 'E', label: 'Poor', minScore: 300, color: [249, 115, 22] as [number, number, number] },
@@ -179,16 +185,15 @@ export const AssessmentForm = () => {
     ];
     
     // Draw gradient bar (segmented by color)
-    const segmentWidth = scaleWidth / grades.length;
     grades.forEach((g, idx) => {
       pdf.setFillColor(...g.color);
-      pdf.rect(scaleX + idx * segmentWidth, scaleY, segmentWidth, 3, 'F');
+      pdf.rect(scaleStartX + idx * segmentWidth, scaleY, segmentWidth, 3, 'F');
     });
     
     // Draw grade markers and highlight user's position
     const userScore = assessment.overall_score || 0;
     grades.forEach((g, idx) => {
-      const x = scaleX + idx * segmentWidth + segmentWidth / 2;
+      const x = scaleStartX + idx * segmentWidth + segmentWidth / 2;
       
       // Draw circle for each grade
       const isUserGrade = overallGrade.grade === g.grade;
@@ -227,7 +232,7 @@ export const AssessmentForm = () => {
     });
     
     // Add "Target" label at A+
-    const targetX = scaleX + 5 * segmentWidth + segmentWidth / 2;
+    const targetX = scaleStartX + 5 * segmentWidth + segmentWidth / 2;
     pdf.setFontSize(7);
     pdf.setTextColor(...brandGrey);
     pdf.setFont(undefined, 'bold');

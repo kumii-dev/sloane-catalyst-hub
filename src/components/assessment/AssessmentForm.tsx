@@ -447,6 +447,123 @@ export const AssessmentForm = () => {
       });
     }
 
+    // Platform Resources & Recommendations Section
+    const platformRecommendations: Array<{category: string; issue: string; solution: string; link: string}> = [];
+    
+    // Map weak domains to platform resources
+    const domainScores = {
+      financial_health: { score: assessment.financial_health_score || 0, category: 'Funding Hub', issue: 'Financial Health', solution: 'Access funding opportunities and financial advisory services', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/funding-hub' },
+      governance_compliance: { score: assessment.governance_score || 0, category: 'Services', issue: 'Governance & Compliance', solution: 'Find legal, compliance, and governance consulting services', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/services' },
+      technology_innovation: { score: assessment.technology_innovation_score || 0, category: 'Services', issue: 'Technology & Innovation', solution: 'Access technology development and innovation support services', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/services' },
+      market_position: { score: assessment.market_access_score || 0, category: 'Access to Market', issue: 'Market Position & Demand', solution: 'Connect with enterprise buyers and expand your market reach', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/access-to-market' },
+      growth_potential: { score: assessment.growth_readiness_score || 0, category: 'Mentorship', issue: 'Growth Potential & Strategy', solution: 'Get guidance from experienced mentors on growth strategies', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/mentorship' },
+      operational_capacity: { score: assessment.operational_capacity_score || 0, category: 'Resources', issue: 'Operational Capacity', solution: 'Access templates, guides, and tools to improve operations', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/resources' },
+    };
+
+    Object.values(domainScores).forEach(domain => {
+      if (domain.score < 60) {
+        platformRecommendations.push({
+          category: domain.category,
+          issue: domain.issue,
+          solution: domain.solution,
+          link: domain.link
+        });
+      }
+    });
+
+    if (platformRecommendations.length > 0) {
+      // Start new page for recommendations
+      pdf.addPage();
+      yPos = 20;
+
+      pdf.setDrawColor(...brandOrange);
+      pdf.setLineWidth(0.8);
+      pdf.line(15, yPos, pageWidth - 15, yPos);
+      yPos += 10;
+      
+      pdf.setTextColor(...brandOrange);
+      pdf.setFontSize(16);
+      pdf.setFont(undefined, 'bold');
+      pdf.text("🚀 Platform Resources to Help You Improve", 15, yPos);
+      yPos += 6;
+      
+      pdf.setTextColor(...brandGrey);
+      pdf.setFontSize(9);
+      pdf.setFont(undefined, 'normal');
+      pdf.text("Based on your assessment, we recommend exploring these platform resources:", 15, yPos);
+      yPos += 12;
+
+      platformRecommendations.forEach((rec, idx) => {
+        if (yPos > pageHeight - 50) {
+          pdf.addPage();
+          yPos = 20;
+        }
+
+        // Category header box
+        pdf.setFillColor(...brandBlue);
+        pdf.roundedRect(15, yPos, pageWidth - 30, 10, 2, 2, 'F');
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(10);
+        pdf.setFont(undefined, 'bold');
+        pdf.text(`${idx + 1}. ${rec.category}`, 18, yPos + 7);
+        yPos += 14;
+
+        // Issue
+        pdf.setTextColor(...brandGrey);
+        pdf.setFontSize(9);
+        pdf.setFont(undefined, 'bold');
+        pdf.text("Area for Improvement:", 18, yPos);
+        yPos += 5;
+        
+        pdf.setFont(undefined, 'normal');
+        const issueLines = pdf.splitTextToSize(rec.issue, pageWidth - 50);
+        pdf.text(issueLines, 18, yPos);
+        yPos += issueLines.length * 5 + 3;
+
+        // Solution
+        pdf.setFont(undefined, 'bold');
+        pdf.text("How We Can Help:", 18, yPos);
+        yPos += 5;
+        
+        pdf.setFont(undefined, 'normal');
+        const solutionLines = pdf.splitTextToSize(rec.solution, pageWidth - 50);
+        pdf.text(solutionLines, 18, yPos);
+        yPos += solutionLines.length * 5 + 3;
+
+        // Link
+        pdf.setTextColor(...brandBlue);
+        pdf.setFont(undefined, 'bold');
+        pdf.textWithLink("→ Visit Platform Resource", 18, yPos, { url: rec.link });
+        yPos += 10;
+      });
+
+      // General platform invitation
+      yPos += 5;
+      if (yPos > pageHeight - 40) {
+        pdf.addPage();
+        yPos = 20;
+      }
+
+      pdf.setFillColor(...lightGrey);
+      pdf.roundedRect(15, yPos, pageWidth - 30, 25, 3, 3, 'F');
+      
+      pdf.setTextColor(...brandGrey);
+      pdf.setFontSize(10);
+      pdf.setFont(undefined, 'bold');
+      pdf.text("Ready to take the next step?", pageWidth / 2, yPos + 8, { align: 'center' });
+      
+      pdf.setFont(undefined, 'normal');
+      pdf.setFontSize(9);
+      pdf.text("Visit our platform to explore all available services and resources", pageWidth / 2, yPos + 14, { align: 'center' });
+      
+      pdf.setTextColor(...brandBlue);
+      pdf.setFont(undefined, 'bold');
+      pdf.textWithLink("→ Go to 22 On Sloane Platform", pageWidth / 2, yPos + 20, { 
+        url: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d',
+        align: 'center' 
+      });
+    }
+
     // Footer on all pages
     const pageCount = pdf.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {

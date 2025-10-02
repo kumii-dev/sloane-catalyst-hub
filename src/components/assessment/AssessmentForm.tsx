@@ -212,11 +212,11 @@ export const AssessmentForm = () => {
         pdf.setLineWidth(0.5);
         pdf.circle(x, scaleY + 1.5, 4, 'S');
         
-        // Add "You" label above
+        // Add company name label above
         pdf.setFontSize(7);
         pdf.setTextColor(...brandGrey);
         pdf.setFont(undefined, 'bold');
-        pdf.text("You", x, scaleY - 3, { align: "center" });
+        pdf.text(formData.company_name || "You", x, scaleY - 3, { align: "center" });
       }
       
       // Grade letter inside circle

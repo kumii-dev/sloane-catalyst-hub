@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Upload, FileText, CheckCircle2 } from "lucide-react";
+import { Loader2, Upload, FileText, CheckCircle2, Download } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AssessmentResults } from "@/components/assessment/AssessmentResults";
@@ -1110,6 +1110,13 @@ export const AssessmentForm = () => {
             <div className="space-y-4">
               <AssessmentResults assessment={assessmentResult} />
               <div className="flex justify-end gap-2 pt-2">
+                <Button
+                  variant="outline"
+                  onClick={() => downloadPDF(assessmentResult)}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download PDF Report
+                </Button>
                 {assessmentResult?.id && (
                   <Button
                     variant="outline"

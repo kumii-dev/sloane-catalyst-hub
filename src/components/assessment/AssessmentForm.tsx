@@ -183,7 +183,7 @@ export const AssessmentForm = () => {
     pdf.setFontSize(12);
     pdf.setTextColor(...overallGrade.color);
     pdf.setFont(undefined, 'normal');
-    pdf.text(overallGrade.label, gradeCircleX + 18, yPos + 38, { align: "left" });
+    pdf.text(overallGrade.label, gradeCircleX + 10, yPos + 38, { align: "left" });
     
     // Draw gradient bar (segmented by color)
     grades.forEach((g, idx) => {

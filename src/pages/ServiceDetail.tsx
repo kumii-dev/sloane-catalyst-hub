@@ -366,15 +366,51 @@ const ServiceDetail = () => {
                 <CardTitle>Pricing</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 mb-4">
-                  <div className="text-3xl font-bold text-primary">
-                    50 Kumii Credits
+                <div className="space-y-4 mb-4">
+                  <div>
+                    <h3 className="font-semibold mb-3">Subscription Packages</h3>
+                    
+                    {/* Kumii Credits Packages */}
+                    <div className="space-y-2 mb-4 p-3 bg-orange-50 dark:bg-orange-950/20 rounded-lg">
+                      <p className="text-sm font-medium text-orange-700 dark:text-orange-400 mb-2">Kumii Credits</p>
+                      <div className="space-y-1 text-sm">
+                        <div className="flex justify-between">
+                          <span>1 Month</span>
+                          <span className="font-semibold">20 Credits</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>3 Months</span>
+                          <span className="font-semibold">50 Credits</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span>6 Months</span>
+                          <span className="font-semibold">90 Credits <Badge variant="secondary" className="ml-2 text-xs">Save 10%</Badge></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Credit Card Packages */}
+                    <div className="space-y-2 p-3 bg-primary/5 rounded-lg">
+                      <p className="text-sm font-medium text-primary mb-2">Credit Card (ZAR)</p>
+                      <div className="space-y-1 text-sm">
+                        <div className="flex justify-between">
+                          <span>1 Month</span>
+                          <span className="font-semibold">R200</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>3 Months</span>
+                          <span className="font-semibold">R500</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span>6 Months</span>
+                          <span className="font-semibold">R900 <Badge variant="secondary" className="ml-2 text-xs">Save 10%</Badge></span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-lg text-muted-foreground">
-                    or R500 with credit card
-                  </div>
-                  <div className="text-sm text-green-600 font-medium">
-                    Exclusive access for sponsored programme members
+
+                  <div className="text-sm text-green-600 dark:text-green-400 font-medium bg-green-50 dark:bg-green-950/20 p-3 rounded-lg">
+                    ✓ Exclusive access for sponsored programme members
                   </div>
                 </div>
                 <Button className="w-full mb-4" onClick={handleSubscribe}>

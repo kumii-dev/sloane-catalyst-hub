@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Star, Users, Zap, Award, Plus, List, Coins, BarChart3 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Search, Star, Users, Zap, Award } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -16,7 +15,6 @@ interface ServiceCategory {
   description: string;
   icon: string;
   slug: string;
-  parent_id?: string;
   sort_order: number;
 }
 
@@ -49,7 +47,6 @@ const Services = () => {
   const [featuredServices, setFeaturedServices] = useState<Service[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("all");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -58,12 +55,13 @@ const Services = () => {
 
   const fetchData = async () => {
     try {
-      // Fetch main categories (no parent_id)
+      // Fetch professional service categories (exclude software-services slug)
       const { data: categoriesData, error: categoriesError } = await supabase
         .from("service_categories")
         .select("*")
         .is("parent_id", null)
         .eq("is_active", true)
+        .neq("slug", "software-services")
         .order("sort_order");
 
       if (categoriesError) throw categoriesError;
@@ -96,23 +94,7 @@ const Services = () => {
     }
   };
 
-  // Group categories by tier
-  const businessEssentials = categories.filter(cat => 
-    ['business-operations', 'accounting-finance', 'hr-people', 'customer-sales', 'marketing-analytics'].includes(cat.slug)
-  );
-
-  const growthInnovation = categories.filter(cat => 
-    ['data-ai-analytics', 'integration-automation', 'industry-specific', 'developer-tools', 'startup-support'].includes(cat.slug)
-  );
-
-  const securityCompliance = categories.filter(cat => 
-    ['cybersecurity-compliance', 'legal-governance', 'cloud-infrastructure', 'project-management', 'ecommerce-retail'].includes(cat.slug)
-  );
-
-  const filteredCategories = (activeTab === "all" ? categories : 
-    activeTab === "business" ? businessEssentials :
-    activeTab === "growth" ? growthInnovation : securityCompliance
-  ).filter((category) =>
+  const filteredCategories = categories.filter((category) =>
     category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     category.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -148,57 +130,21 @@ const Services = () => {
       <section className="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Software & Services Marketplace
+            Professional Services
           </h1>
           <p className="text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">
-            Discover the best tools and services to grow your startup or SMME
+            Connect with experts and service providers to grow your business
           </p>
           
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto relative mb-8">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
             <Input
-              placeholder="Search categories, services, or providers..."
+              placeholder="Search services, categories, or providers..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 h-12 text-lg"
             />
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap gap-3 justify-center mb-8">
-            <Button 
-              variant="secondary" 
-              size="default"
-              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              <span className="font-semibold">Post New Listings</span>
-            </Button>
-            <Button 
-              variant="secondary" 
-              size="default"
-              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
-            >
-              <List className="h-4 w-4 mr-2" />
-              <span className="font-semibold">My Listings</span>
-            </Button>
-            <Button 
-              variant="secondary" 
-              size="default"
-              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
-            >
-              <Coins className="h-4 w-4 mr-2" />
-              <span className="font-semibold">Earn Credits</span>
-            </Button>
-            <Button 
-              variant="secondary" 
-              size="default"
-              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
-            >
-              <BarChart3 className="h-4 w-4 mr-2" />
-              <span className="font-semibold">Subscription Insight</span>
-            </Button>
           </div>
 
           <div className="flex flex-wrap gap-4 justify-center">
@@ -208,35 +154,21 @@ const Services = () => {
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
               <Users className="h-4 w-4 mr-2" />
-              Trusted Providers
+              Verified Providers
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
               <Award className="h-4 w-4 mr-2" />
-              Cohort Benefits
+              Quality Services
             </Badge>
           </div>
         </div>
       </section>
 
       <div className="container mx-auto px-4 py-12">
-        {/* Category Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="business">🏢 Business</TabsTrigger>
-            <TabsTrigger value="growth">💡 Growth</TabsTrigger>
-            <TabsTrigger value="security">🛡️ Security</TabsTrigger>
-          </TabsList>
-        </Tabs>
-
         {/* Service Categories */}
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold">
-              {activeTab === "all" ? "All Categories" :
-               activeTab === "business" ? "Business Essentials" :
-               activeTab === "growth" ? "Growth & Innovation" : "Security & Infrastructure"}
-            </h2>
+            <h2 className="text-3xl font-bold">Service Categories</h2>
             <Badge variant="outline" className="text-lg px-4 py-2">
               {filteredCategories.length} {filteredCategories.length === 1 ? 'Category' : 'Categories'}
             </Badge>
@@ -245,12 +177,12 @@ const Services = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCategories.map((category) => (
               <Link key={category.id} to={`/services/category/${category.slug}`}>
-                <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group border-2 hover:border-primary/50">
+                <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
                   <CardHeader className="text-center">
-                    <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:from-primary/20 group-hover:to-secondary/20 transition-all transform group-hover:scale-110">
-                      <span className="text-4xl">{category.icon}</span>
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                      <span className="text-3xl">{category.icon}</span>
                     </div>
-                    <CardTitle className="group-hover:text-primary transition-colors text-xl">
+                    <CardTitle className="group-hover:text-primary transition-colors">
                       {category.name}
                     </CardTitle>
                     <CardDescription className="text-sm mt-2">
@@ -258,7 +190,7 @@ const Services = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="text-center">
-                    <Button variant="ghost" className="w-full group-hover:bg-primary/10 group-hover:text-primary font-semibold">
+                    <Button variant="ghost" className="w-full group-hover:bg-primary/10">
                       Explore Services →
                     </Button>
                   </CardContent>

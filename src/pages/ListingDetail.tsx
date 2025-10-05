@@ -111,7 +111,7 @@ const ListingDetail = () => {
         description: error.message,
         variant: "destructive",
       });
-      navigate("/marketplace");
+      navigate("/services");
     } finally {
       setLoading(false);
     }

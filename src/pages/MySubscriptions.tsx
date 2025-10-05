@@ -250,8 +250,8 @@ const MySubscriptions = () => {
                   <p className="text-muted-foreground mb-4">
                     You don't have any subscriptions yet
                   </p>
-                  <Button onClick={() => navigate("/marketplace")}>
-                    Browse Marketplace
+                  <Button onClick={() => navigate("/services")}>
+                    Browse Services
                   </Button>
                 </CardContent>
               </Card>
@@ -269,8 +269,8 @@ const MySubscriptions = () => {
                   <p className="text-muted-foreground mb-4">
                     No active subscriptions
                   </p>
-                  <Button onClick={() => navigate("/marketplace")}>
-                    Browse Marketplace
+                  <Button onClick={() => navigate("/services")}>
+                    Browse Services
                   </Button>
                 </CardContent>
               </Card>

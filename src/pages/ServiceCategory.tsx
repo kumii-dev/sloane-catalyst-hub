@@ -393,16 +393,6 @@ const ServiceCategory = () => {
                 <span className="font-semibold">My Listings</span>
               </Button>
             </Link>
-            <Link to="/marketplace">
-              <Button 
-                variant="secondary" 
-                size="default"
-                className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
-              >
-                <Zap className="h-4 w-4 mr-2" />
-                <span className="font-semibold">Browse All Listings</span>
-              </Button>
-            </Link>
           </div>
         </div>
       </section>

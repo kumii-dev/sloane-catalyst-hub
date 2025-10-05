@@ -13,6 +13,11 @@ const TopNavbar = () => {
 
   const navItems = [
     { 
+      title: "Marketplace", 
+      href: "/marketplace",
+      description: "Browse services and opportunities"
+    },
+    { 
       title: "Access to Market", 
       href: "/access-to-market",
       description: "Connect with market opportunities"

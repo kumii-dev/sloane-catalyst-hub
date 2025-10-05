@@ -29,6 +29,8 @@ import Marketplace from "./pages/Marketplace";
 import CreateListing from "./pages/CreateListing";
 import ListingDetail from "./pages/ListingDetail";
 import MySubscriptions from "./pages/MySubscriptions";
+import AdminDashboard from "./pages/AdminDashboard";
+import CohortManager from "./pages/CohortManager";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -59,6 +61,8 @@ const App = () => (
             <Route path="/listings/create" element={<CreateListing />} />
             <Route path="/listings/:id" element={<ListingDetail />} />
             <Route path="/my-subscriptions" element={<MySubscriptions />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/cohorts" element={<CohortManager />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/category/:slug" element={<ServiceCategory />} />
             <Route path="/services/:id" element={<ServiceDetail />} />

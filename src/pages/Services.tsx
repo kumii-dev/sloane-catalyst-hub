@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Star, Users, Zap, Award } from "lucide-react";
+import { Search, Filter, Star, Users, Zap, Award, Code, Briefcase, TrendingUp } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -102,6 +102,15 @@ const Services = () => {
     return 'View pricing';
   };
 
+  const getIconComponent = (iconName: string) => {
+    const icons: Record<string, typeof Code> = {
+      'Code': Code,
+      'Briefcase': Briefcase,
+      'TrendingUp': TrendingUp,
+    };
+    return icons[iconName] || Briefcase;
+  };
+
   if (loading) {
     return (
       <Layout showSidebar={true}>
@@ -173,38 +182,37 @@ const Services = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories.filter((category) => category.slug !== 'software-services').map((category) => (
-              <Link
-                key={category.id}
-                to={`/services/category/${category.slug}`}
-                className="group"
-              >
-                <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">
-                  <CardHeader className="text-center pb-4">
-                    <div className={`w-16 h-16 rounded-xl ${
-                      category.icon === 'Code' ? 'bg-gradient-to-br from-blue-500 to-blue-600' :
-                      category.icon === 'Briefcase' ? 'bg-gradient-to-br from-purple-500 to-purple-600' :
-                      'bg-gradient-to-br from-orange-500 to-orange-600'
-                    } flex items-center justify-center mx-auto mb-4 relative`}>
-                      <span className="text-white text-3xl">
-                        {category.icon === 'Code' && '💻'}
-                        {category.icon === 'Briefcase' && '💼'}
-                        {category.icon === 'TrendingUp' && '📈'}
-                      </span>
-                      <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs bg-background text-foreground border border-border">
-                        0
-                      </Badge>
-                    </div>
-                    <CardTitle className="text-xl group-hover:text-primary transition-colors mb-2">
-                      {category.name}
-                    </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed">
-                      {category.description}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              </Link>
-            ))}
+            {categories.filter((category) => category.slug !== 'software-services').map((category) => {
+              const IconComponent = getIconComponent(category.icon);
+              return (
+                <Link
+                  key={category.id}
+                  to={`/services/category/${category.slug}`}
+                  className="group"
+                >
+                  <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">
+                    <CardHeader className="text-center pb-4">
+                      <div className={`w-16 h-16 rounded-xl ${
+                        category.icon === 'Code' ? 'bg-gradient-to-br from-blue-500 to-blue-600' :
+                        category.icon === 'Briefcase' ? 'bg-gradient-to-br from-purple-500 to-purple-600' :
+                        'bg-gradient-to-br from-orange-500 to-orange-600'
+                      } flex items-center justify-center mx-auto mb-4 relative`}>
+                        <IconComponent className="h-8 w-8 text-white" />
+                        <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs bg-background text-foreground border border-border">
+                          0
+                        </Badge>
+                      </div>
+                      <CardTitle className="text-xl group-hover:text-primary transition-colors mb-2">
+                        {category.name}
+                      </CardTitle>
+                      <CardDescription className="text-sm leading-relaxed">
+                        {category.description}
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         </section>
 

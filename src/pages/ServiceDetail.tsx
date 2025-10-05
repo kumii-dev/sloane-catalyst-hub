@@ -486,7 +486,7 @@ const ServiceDetail = () => {
                   <div className="flex-1">
                     <h3 className="font-semibold mb-1">Credit Card</h3>
                     <p className="text-sm text-muted-foreground mb-2">
-                      Pay ${service?.base_price} with your credit card
+                      Pay ${service?.base_price || 'TBD'} with your credit card
                     </p>
                     <Badge variant="outline">Secure Payment</Badge>
                   </div>
@@ -494,45 +494,41 @@ const ServiceDetail = () => {
               </CardContent>
             </Card>
 
-            {/* Credits Option */}
-            {service?.credits_price && (
-              <Card className="cursor-pointer hover:border-primary transition-colors" onClick={() => handlePaymentMethod('credits')}>
-                <CardContent className="p-4">
-                  <div className="flex items-start space-x-4">
-                    <div className="rounded-full bg-orange-500/10 p-3">
-                      <Coins className="h-6 w-6 text-orange-500" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold mb-1">Use Credits</h3>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        Pay {service.credits_price} Sloane credits
-                      </p>
-                      <Badge variant="outline">Instant Access</Badge>
-                    </div>
+            {/* Kumii Credits Option */}
+            <Card className="cursor-pointer hover:border-primary transition-colors" onClick={() => handlePaymentMethod('credits')}>
+              <CardContent className="p-4">
+                <div className="flex items-start space-x-4">
+                  <div className="rounded-full bg-orange-500/10 p-3">
+                    <Coins className="h-6 w-6 text-orange-500" />
                   </div>
-                </CardContent>
-              </Card>
-            )}
+                  <div className="flex-1">
+                    <h3 className="font-semibold mb-1">Kumii Credits</h3>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Pay {service?.credits_price || 'TBD'} Kumii credits
+                    </p>
+                    <Badge variant="outline">Instant Access</Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-            {/* Cohort Access Option */}
-            {service?.service_providers.is_cohort_partner && service?.cohort_benefits && (
-              <Card className="cursor-pointer hover:border-primary transition-colors" onClick={() => handlePaymentMethod('cohort')}>
-                <CardContent className="p-4">
-                  <div className="flex items-start space-x-4">
-                    <div className="rounded-full bg-green-500/10 p-3">
-                      <UsersIcon className="h-6 w-6 text-green-500" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold mb-1">Cohort Member Access</h3>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {service.cohort_benefits}
-                      </p>
-                      <Badge className="bg-green-500">Exclusive Benefit</Badge>
-                    </div>
+            {/* Cohort Member Access Option */}
+            <Card className="cursor-pointer hover:border-primary transition-colors" onClick={() => handlePaymentMethod('cohort')}>
+              <CardContent className="p-4">
+                <div className="flex items-start space-x-4">
+                  <div className="rounded-full bg-green-500/10 p-3">
+                    <UsersIcon className="h-6 w-6 text-green-500" />
                   </div>
-                </CardContent>
-              </Card>
-            )}
+                  <div className="flex-1">
+                    <h3 className="font-semibold mb-1">Cohort Member Access</h3>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {service?.cohort_benefits || 'Exclusive access for SMME & startup cohort members'}
+                    </p>
+                    <Badge className="bg-green-500">Exclusive Benefit</Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </DialogContent>
       </Dialog>

@@ -373,30 +373,36 @@ const ServiceCategory = () => {
 
           {/* Action Badge Buttons */}
           <div className="flex flex-wrap gap-3 justify-center">
-            <Button 
-              variant="secondary" 
-              size="default"
-              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              <span className="font-semibold">Post New Listings</span>
-            </Button>
-            <Button 
-              variant="secondary" 
-              size="default"
-              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
-            >
-              <List className="h-4 w-4 mr-2" />
-              <span className="font-semibold">My Listings</span>
-            </Button>
-            <Button 
-              variant="secondary" 
-              size="default"
-              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
-            >
-              <Zap className="h-4 w-4 mr-2" />
-              <span className="font-semibold">Explore Software</span>
-            </Button>
+            <Link to="/listings/create">
+              <Button 
+                variant="secondary" 
+                size="default"
+                className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                <span className="font-semibold">Post New Listings</span>
+              </Button>
+            </Link>
+            <Link to="/my-listings">
+              <Button 
+                variant="secondary" 
+                size="default"
+                className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
+              >
+                <List className="h-4 w-4 mr-2" />
+                <span className="font-semibold">My Listings</span>
+              </Button>
+            </Link>
+            <Link to="/marketplace">
+              <Button 
+                variant="secondary" 
+                size="default"
+                className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
+              >
+                <Zap className="h-4 w-4 mr-2" />
+                <span className="font-semibold">Browse All Listings</span>
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

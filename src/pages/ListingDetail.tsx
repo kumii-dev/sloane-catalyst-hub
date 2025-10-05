@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Star, MapPin, Clock, Coins, ArrowLeft, Shield, CheckCircle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import Layout from "@/components/Layout";
+import { Layout } from "@/components/Layout";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
 
@@ -70,31 +70,40 @@ const ListingDetail = () => {
 
   const fetchListingDetails = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: listing, error } = await supabase
         .from("listings")
-        .select(`
-          *,
-          profiles!provider_id(id, first_name, last_name, email),
-          listing_reviews(
-            id,
-            rating,
-            review_text,
-            created_at,
-            profiles!user_id(first_name, last_name)
-          )
-        `)
+        .select("*")
         .eq("id", id)
         .single();
 
       if (error) throw error;
 
+      // Fetch provider profile
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("id, first_name, last_name, email")
+        .eq("user_id", listing.provider_id)
+        .single();
+
+      // Fetch reviews
+      const { data: reviews } = await supabase
+        .from("listing_reviews")
+        .select(`
+          id,
+          rating,
+          review_text,
+          created_at,
+          profiles!user_id(first_name, last_name)
+        `)
+        .eq("listing_id", id);
+
       setListing({
-        ...data,
-        provider: data.profiles,
-        reviews: data.listing_reviews.map((review: any) => ({
+        ...listing,
+        provider: profile || { id: "", first_name: "", last_name: "", email: "" },
+        reviews: reviews?.map((review: any) => ({
           ...review,
-          user: review.profiles
-        }))
+          user: review.profiles || { first_name: "", last_name: "" }
+        })) || []
       });
     } catch (error: any) {
       toast({
@@ -197,14 +206,32 @@ const ListingDetail = () => {
 
       // Deduct credits if paid with credits
       if (paymentMethod === "credits" && listing?.credits_price) {
-        const { error: walletError } = await supabase.rpc("deduct_credits", {
-          user_id: user.id,
-          amount: listing.credits_price,
-          transaction_type: "subscription",
-          reference_id: id,
-        });
+        // Update wallet balance
+        const { data: wallet } = await supabase
+          .from("credits_wallet")
+          .select("balance")
+          .eq("user_id", user.id)
+          .single();
 
-        if (walletError) throw walletError;
+        if (wallet) {
+          const newBalance = wallet.balance - listing.credits_price;
+          await supabase
+            .from("credits_wallet")
+            .update({ balance: newBalance, total_spent: newBalance })
+            .eq("user_id", user.id);
+
+          // Log transaction
+          await supabase
+            .from("credits_transactions")
+            .insert({
+              user_id: user.id,
+              amount: -listing.credits_price,
+              transaction_type: "subscription",
+              reference_id: id,
+              description: `Subscription to ${listing.title}`,
+              balance_after: newBalance
+            });
+        }
       }
 
       toast({

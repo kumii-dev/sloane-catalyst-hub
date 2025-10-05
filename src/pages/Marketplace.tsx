@@ -10,7 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { Search, Filter, Plus, Star, MapPin, Clock, Coins } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import Layout from "@/components/Layout";
+import { Layout } from "@/components/Layout";
 
 interface Listing {
   id: string;
@@ -64,18 +64,17 @@ const Marketplace = () => {
           rating,
           total_reviews,
           total_subscriptions,
-          cohort_visibility,
-          profiles!provider_id(first_name, last_name)
+          cohort_visibility
         `)
         .eq("status", "active")
         .order("created_at", { ascending: false });
 
       if (listingType !== "all") {
-        query = query.eq("listing_type", listingType);
+        query = query.eq("listing_type", listingType as any);
       }
 
       if (deliveryMode !== "all") {
-        query = query.eq("delivery_mode", deliveryMode);
+        query = query.eq("delivery_mode", deliveryMode as any);
       }
 
       const { data, error } = await query;
@@ -84,7 +83,10 @@ const Marketplace = () => {
 
       const formattedListings = data.map((listing: any) => ({
         ...listing,
-        provider: listing.profiles,
+        provider: {
+          first_name: "",
+          last_name: ""
+        },
         cohort_tags: listing.cohort_visibility || []
       }));
 

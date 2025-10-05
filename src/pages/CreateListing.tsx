@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { ArrowLeft, Upload, Loader2 } from "lucide-react";
-import Layout from "@/components/Layout";
+import { Layout } from "@/components/Layout";
 
 const listingSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),

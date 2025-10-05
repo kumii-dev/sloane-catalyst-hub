@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle, Clock, XCircle, ExternalLink, Loader2 } from "lucide-react";
-import Layout from "@/components/Layout";
+import { Layout } from "@/components/Layout";
 
 interface Subscription {
   id: string;
@@ -48,23 +48,33 @@ const MySubscriptions = () => {
 
   const fetchSubscriptions = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: subs, error } = await supabase
         .from("user_subscriptions")
-        .select(`
-          *,
-          listings(id, title, short_description, thumbnail_url, listing_type),
-          cohorts(name, sponsor_name)
-        `)
+        .select("*")
         .eq("user_id", user?.id)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
 
+      // Fetch related listings and cohorts
+      const listingIds = subs.map(s => s.listing_id);
+      const cohortIds = subs.filter(s => s.cohort_id).map(s => s.cohort_id);
+
+      const { data: listings } = await supabase
+        .from("listings")
+        .select("id, title, short_description, thumbnail_url, listing_type")
+        .in("id", listingIds);
+
+      const { data: cohorts } = cohortIds.length > 0 ? await supabase
+        .from("cohorts")
+        .select("id, name, sponsor_name")
+        .in("id", cohortIds) : { data: [] };
+
       setSubscriptions(
-        data.map((sub: any) => ({
+        subs.map((sub: any) => ({
           ...sub,
-          listing: sub.listings,
-          cohort: sub.cohorts,
+          listing: listings?.find(l => l.id === sub.listing_id),
+          cohort: cohorts?.find(c => c.id === sub.cohort_id) || null,
         }))
       );
     } catch (error: any) {

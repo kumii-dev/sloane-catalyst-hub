@@ -300,43 +300,49 @@ const ServiceCategory = () => {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-5xl mx-auto mb-8">
-            <Button variant="default" className="h-auto py-4 flex flex-col gap-2">
-              <Plus className="h-5 w-5" />
-              <span className="text-sm font-semibold">Post New Listing</span>
-            </Button>
-            <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
-              <List className="h-5 w-5" />
-              <span className="text-sm font-semibold">My Listings</span>
-            </Button>
-            <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
-              <Coins className="h-5 w-5" />
-              <span className="text-sm font-semibold">Earn Credits</span>
-            </Button>
-            <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
-              <BarChart3 className="h-5 w-5" />
-              <span className="text-sm font-semibold">Subscription Insights</span>
-            </Button>
-            <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
-              <Gift className="h-5 w-5" />
-              <span className="text-sm font-semibold">Cohort Benefits</span>
-            </Button>
-          </div>
 
+          {/* Action Badge Buttons */}
           <div className="flex flex-wrap gap-4 justify-center">
-            <Badge variant="secondary" className="px-4 py-2">
-              <Zap className="h-4 w-4 mr-2" />
-              {services.length} Services
-            </Badge>
-            <Badge variant="secondary" className="px-4 py-2">
-              <Users className="h-4 w-4 mr-2" />
-              Trusted Providers
-            </Badge>
-            <Badge variant="secondary" className="px-4 py-2">
-              <Award className="h-4 w-4 mr-2" />
-              Cohort Benefits Available
-            </Badge>
+            <Button 
+              variant="secondary" 
+              size="lg"
+              className="rounded-full px-8 py-6 bg-primary/80 hover:bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+            >
+              <Plus className="h-5 w-5 mr-3" />
+              <span className="font-semibold text-lg">Post New Listings</span>
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="lg"
+              className="rounded-full px-8 py-6 bg-primary/80 hover:bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+            >
+              <List className="h-5 w-5 mr-3" />
+              <span className="font-semibold text-lg">My Listings</span>
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="lg"
+              className="rounded-full px-8 py-6 bg-primary/80 hover:bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+            >
+              <Zap className="h-5 w-5 mr-3" />
+              <span className="font-semibold text-lg">Explore Software</span>
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="lg"
+              className="rounded-full px-8 py-6 bg-primary/80 hover:bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+            >
+              <Coins className="h-5 w-5 mr-3" />
+              <span className="font-semibold text-lg">Earn Credits</span>
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="lg"
+              className="rounded-full px-8 py-6 bg-primary/80 hover:bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+            >
+              <BarChart3 className="h-5 w-5 mr-3" />
+              <span className="font-semibold text-lg">Subscription Insight</span>
+            </Button>
           </div>
         </div>
       </section>

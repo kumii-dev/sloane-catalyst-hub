@@ -176,6 +176,19 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                         {item.title}
                       </Link>
                     ))}
+                    <Link
+                      to="/services/category/software-services"
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                        isActive('/services/category/software-services') 
+                          ? 'bg-accent text-accent-foreground' 
+                          : 'hover:bg-muted text-foreground'
+                      }`}
+                    >
+                      <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
+                        <TrendingUp className="h-3 w-3 text-primary-foreground" />
+                      </div>
+                      Software Services
+                    </Link>
                   </div>
                 </div>
 

@@ -168,7 +168,7 @@ const Services = () => {
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8">Browse by Category</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {categories.map((category) => (
+            {categories.filter((category) => category.slug !== 'software-services').map((category) => (
               <Link key={category.id} to={`/services/category/${category.slug}`}>
                 <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
                   <CardHeader className="text-center">

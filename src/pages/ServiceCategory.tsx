@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, Star, Users, Zap, Award, ArrowLeft } from "lucide-react";
+import { Search, Filter, Star, Users, Zap, Award, ArrowLeft, Plus, List, Coins, BarChart3, Gift } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -53,6 +53,8 @@ const ServiceCategory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [pricingFilter, setPricingFilter] = useState<string>("all");
+  const [providerFilter, setProviderFilter] = useState<string>("all");
+  const [ratingFilter, setRatingFilter] = useState<string>("all");
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -66,7 +68,7 @@ const ServiceCategory = () => {
     if (category) {
       fetchServices();
     }
-  }, [category, sortBy, pricingFilter, searchQuery]);
+  }, [category, sortBy, pricingFilter, providerFilter, ratingFilter, searchQuery]);
 
   const fetchCategoryData = async () => {
     try {
@@ -124,6 +126,19 @@ const ServiceCategory = () => {
       // Apply pricing filter
       if (pricingFilter !== "all") {
         query = query.eq("pricing_type", pricingFilter as any);
+      }
+
+      // Apply provider filter
+      if (providerFilter === "verified") {
+        query = query.eq("service_providers.is_verified", true);
+      } else if (providerFilter === "cohort") {
+        query = query.eq("service_providers.is_cohort_partner", true);
+      }
+
+      // Apply rating filter
+      if (ratingFilter !== "all") {
+        const minRating = parseFloat(ratingFilter);
+        query = query.gte("rating", minRating);
       }
 
       // Apply sorting
@@ -211,31 +226,101 @@ const ServiceCategory = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center mb-4">
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-              <div className="text-primary font-semibold text-3xl">
-                {category.icon === 'Code' && '💻'}
-                {category.icon === 'Briefcase' && '💼'}
-                {category.icon === 'TrendingUp' && '📈'}
-              </div>
+              <div className="text-primary font-semibold text-3xl">💻</div>
             </div>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            {category.name}
+            Software Services
           </h1>
           <p className="text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">
-            {category.description}
+            CRM, ERP, Accounting, HR, Marketing, Security, Analytics, and AI Tools
           </p>
           
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto relative mb-8">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-            <Input
-              placeholder="Search services, providers, or categories..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-12 h-12 text-lg"
-            />
-            <Button size="sm" className="absolute right-2 top-1/2 transform -translate-y-1/2">
-              <Filter className="h-4 w-4" />
+          {/* Search Bar with Enhanced Filters */}
+          <div className="max-w-4xl mx-auto mb-8">
+            <div className="relative mb-4">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+              <Input
+                placeholder="Smart Search: Find CRM, ERP, HR tools and more..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 h-12 text-lg"
+              />
+            </div>
+            
+            {/* Filter Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+              <Select value={providerFilter} onValueChange={setProviderFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Provider Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Providers</SelectItem>
+                  <SelectItem value="verified">Verified Only</SelectItem>
+                  <SelectItem value="cohort">Cohort Partners</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={pricingFilter} onValueChange={setPricingFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Pricing" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Pricing</SelectItem>
+                  <SelectItem value="free">Free</SelectItem>
+                  <SelectItem value="freemium">Freemium</SelectItem>
+                  <SelectItem value="paid">Paid</SelectItem>
+                  <SelectItem value="credits_only">Credits Only</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={ratingFilter} onValueChange={setRatingFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Rating" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Ratings</SelectItem>
+                  <SelectItem value="4">4+ Stars</SelectItem>
+                  <SelectItem value="3">3+ Stars</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="featured">Featured</SelectItem>
+                  <SelectItem value="rating">Highest Rated</SelectItem>
+                  <SelectItem value="popular">Most Popular</SelectItem>
+                  <SelectItem value="price_low">Price: Low to High</SelectItem>
+                  <SelectItem value="price_high">Price: High to Low</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-5xl mx-auto mb-8">
+            <Button variant="default" className="h-auto py-4 flex flex-col gap-2">
+              <Plus className="h-5 w-5" />
+              <span className="text-sm font-semibold">Post New Listing</span>
+            </Button>
+            <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
+              <List className="h-5 w-5" />
+              <span className="text-sm font-semibold">My Listings</span>
+            </Button>
+            <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
+              <Coins className="h-5 w-5" />
+              <span className="text-sm font-semibold">Earn Credits</span>
+            </Button>
+            <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
+              <BarChart3 className="h-5 w-5" />
+              <span className="text-sm font-semibold">Subscription Insights</span>
+            </Button>
+            <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
+              <Gift className="h-5 w-5" />
+              <span className="text-sm font-semibold">Cohort Benefits</span>
             </Button>
           </div>
 
@@ -250,7 +335,7 @@ const ServiceCategory = () => {
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
               <Award className="h-4 w-4 mr-2" />
-              Cohort Benefits
+              Cohort Benefits Available
             </Badge>
           </div>
         </div>
@@ -283,34 +368,10 @@ const ServiceCategory = () => {
         {/* Services Section */}
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold">Available Services</h2>
-            <div className="flex gap-4 items-center">
-              <Select value={pricingFilter} onValueChange={setPricingFilter}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="Pricing" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Pricing</SelectItem>
-                  <SelectItem value="free">Free</SelectItem>
-                  <SelectItem value="freemium">Freemium</SelectItem>
-                  <SelectItem value="paid">Paid</SelectItem>
-                  <SelectItem value="credits_only">Credits Only</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="featured">Featured</SelectItem>
-                  <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="popular">Most Popular</SelectItem>
-                  <SelectItem value="price_low">Price: Low to High</SelectItem>
-                  <SelectItem value="price_high">Price: High to Low</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <h2 className="text-3xl font-bold">Available Software Services</h2>
+            <Button variant="ghost" onClick={() => { setSearchQuery(""); setPricingFilter("all"); setProviderFilter("all"); setRatingFilter("all"); }}>
+              Clear All Filters
+            </Button>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -385,8 +446,8 @@ const ServiceCategory = () => {
         {services.length === 0 && (
           <div className="text-center py-12">
             <p className="text-lg text-muted-foreground mb-4">No services found matching your criteria.</p>
-            <Button onClick={() => { setSearchQuery(""); setPricingFilter("all"); }}>
-              Clear Filters
+            <Button onClick={() => { setSearchQuery(""); setPricingFilter("all"); setProviderFilter("all"); setRatingFilter("all"); }}>
+              Clear All Filters
             </Button>
           </div>
         )}

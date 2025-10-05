@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Star, Users, Zap, Award } from "lucide-react";
+import { Search, Filter, Star, Users, Zap, Award } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -15,6 +15,7 @@ interface ServiceCategory {
   description: string;
   icon: string;
   slug: string;
+  parent_id?: string;
   sort_order: number;
 }
 
@@ -55,13 +56,12 @@ const Services = () => {
 
   const fetchData = async () => {
     try {
-      // Fetch professional service categories (exclude software-services slug)
+      // Fetch main categories (no parent_id)
       const { data: categoriesData, error: categoriesError } = await supabase
         .from("service_categories")
         .select("*")
         .is("parent_id", null)
         .eq("is_active", true)
-        .neq("slug", "software-services")
         .order("sort_order");
 
       if (categoriesError) throw categoriesError;
@@ -94,11 +94,6 @@ const Services = () => {
     }
   };
 
-  const filteredCategories = categories.filter((category) =>
-    category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    category.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   const formatPrice = (service: Service) => {
     if (service.pricing_type === 'free') return 'Free';
     if (service.pricing_type === 'contact_for_pricing') return 'Contact for pricing';
@@ -130,35 +125,39 @@ const Services = () => {
       <section className="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Professional Services
+            Services Marketplace
           </h1>
           <p className="text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">
-            Connect with experts and service providers to grow your business
+            Discover essential services for your startup growth. From software solutions to professional services, 
+            find everything you need in one place.
           </p>
           
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto relative mb-8">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
             <Input
-              placeholder="Search services, categories, or providers..."
+              placeholder="Search services, providers, or categories..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-12 text-lg"
+              className="pl-10 pr-12 h-12 text-lg"
             />
+            <Button size="sm" className="absolute right-2 top-1/2 transform -translate-y-1/2">
+              <Filter className="h-4 w-4" />
+            </Button>
           </div>
 
           <div className="flex flex-wrap gap-4 justify-center">
             <Badge variant="secondary" className="px-4 py-2">
               <Zap className="h-4 w-4 mr-2" />
-              {categories.length} Categories
+              500+ Services
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
               <Users className="h-4 w-4 mr-2" />
-              Verified Providers
+              Trusted Providers
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
               <Award className="h-4 w-4 mr-2" />
-              Quality Services
+              Cohort Benefits
             </Badge>
           </div>
         </div>
@@ -167,43 +166,30 @@ const Services = () => {
       <div className="container mx-auto px-4 py-12">
         {/* Service Categories */}
         <section className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold">Service Categories</h2>
-            <Badge variant="outline" className="text-lg px-4 py-2">
-              {filteredCategories.length} {filteredCategories.length === 1 ? 'Category' : 'Categories'}
-            </Badge>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCategories.map((category) => (
+          <h2 className="text-3xl font-bold mb-8">Browse by Category</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {categories.filter((category) => category.slug !== 'software-services').map((category) => (
               <Link key={category.id} to={`/services/category/${category.slug}`}>
                 <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
                   <CardHeader className="text-center">
-                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-                      <span className="text-3xl">{category.icon}</span>
+                    <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                      <div className="text-primary font-semibold text-2xl">
+                        {category.icon === 'Code' && '💻'}
+                        {category.icon === 'Briefcase' && '💼'}
+                        {category.icon === 'TrendingUp' && '📈'}
+                      </div>
                     </div>
                     <CardTitle className="group-hover:text-primary transition-colors">
                       {category.name}
                     </CardTitle>
-                    <CardDescription className="text-sm mt-2">
+                    <CardDescription className="text-sm">
                       {category.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="text-center">
-                    <Button variant="ghost" className="w-full group-hover:bg-primary/10">
-                      Explore Services →
-                    </Button>
-                  </CardContent>
                 </Card>
               </Link>
             ))}
           </div>
-
-          {filteredCategories.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-lg text-muted-foreground">No categories found matching your search.</p>
-            </div>
-          )}
         </section>
 
         {/* Featured Services */}

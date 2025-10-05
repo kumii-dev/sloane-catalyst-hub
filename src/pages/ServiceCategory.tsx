@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Filter, Star, Users, Zap, Award, ArrowLeft, Plus, List, Coins, BarChart3, Gift } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
@@ -56,7 +55,6 @@ const ServiceCategory = () => {
   const [pricingFilter, setPricingFilter] = useState<string>("all");
   const [providerFilter, setProviderFilter] = useState<string>("all");
   const [ratingFilter, setRatingFilter] = useState<string>("all");
-  const [activeTab, setActiveTab] = useState("all");
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -350,82 +348,28 @@ const ServiceCategory = () => {
       </section>
 
       <div className="container mx-auto px-4 py-12">
-        {/* Category Tabs - Only show for software-services */}
-        {slug === "software-services" && subCategories.length > 0 && (
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="business">🏢 Business</TabsTrigger>
-              <TabsTrigger value="growth">💡 Growth</TabsTrigger>
-              <TabsTrigger value="security">🛡️ Security</TabsTrigger>
-            </TabsList>
-          </Tabs>
-        )}
-
         {/* Subcategories */}
-        {subCategories.length > 0 && (() => {
-          // Group categories by tier for software-services
-          const businessEssentials = subCategories.filter(cat => 
-            ['hr-payroll', 'task-management', 'document-management', 'workflow-automation', 
-             'crm-systems', 'sales-pipeline', 'email-marketing', 'customer-support',
-             'accounting-software', 'invoicing', 'expense-tracking', 'pos-systems',
-             'social-media', 'seo-tools', 'analytics-dashboards'].includes(cat.slug)
-          );
-          
-          const growthInnovation = subCategories.filter(cat => 
-            ['edtech', 'fintech', 'healthtech', 'agritech'].includes(cat.slug)
-          );
-          
-          const securityCompliance = subCategories.filter(cat => 
-            ['online-stores', 'inventory-management', 'payment-integrations'].includes(cat.slug)
-          );
-
-          const filteredSubCategories = slug === "software-services" 
-            ? (activeTab === "all" ? subCategories : 
-               activeTab === "business" ? businessEssentials :
-               activeTab === "growth" ? growthInnovation : securityCompliance)
-            : subCategories;
-
-          return (
-            <section className="mb-16">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold">
-                  {slug === "software-services" && activeTab !== "all" 
-                    ? (activeTab === "business" ? "🏢 Business Essentials" :
-                       activeTab === "growth" ? "💡 Growth & Innovation" : "🛡️ Security & Infrastructure")
-                    : "Browse Subcategories"}
-                </h2>
-                <Badge variant="outline" className="text-lg px-4 py-2">
-                  {filteredSubCategories.length} {filteredSubCategories.length === 1 ? 'Category' : 'Categories'}
-                </Badge>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredSubCategories.map((subCategory) => (
-                  <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
-                    <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group border-2 hover:border-primary/50">
-                      <CardHeader className="text-center">
-                        <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:from-primary/20 group-hover:to-secondary/20 transition-all">
-                          <span className="text-3xl">📦</span>
-                        </div>
-                        <CardTitle className="group-hover:text-primary transition-colors">
-                          {subCategory.name}
-                        </CardTitle>
-                        <CardDescription className="text-sm mt-2">
-                          {subCategory.description}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="text-center">
-                        <Button variant="ghost" className="w-full group-hover:bg-primary/10 group-hover:text-primary font-semibold">
-                          View Services →
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          );
-        })()}
+        {subCategories.length > 0 && (
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8">Browse Subcategories</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {subCategories.map((subCategory) => (
+                <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
+                  <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
+                    <CardHeader className="text-center">
+                      <CardTitle className="group-hover:text-primary transition-colors">
+                        {subCategory.name}
+                      </CardTitle>
+                      <CardDescription className="text-sm">
+                        {subCategory.description}
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Services Section */}
         <section className="mb-16">

@@ -25,7 +25,6 @@ import AccessToMarket from "./pages/AccessToMarket";
 import CreditScore from "./pages/CreditScore";
 import CreditScoreAssessment from "./pages/CreditScoreAssessment";
 import CreditScoreResults from "./pages/CreditScoreResults";
-import Marketplace from "./pages/Marketplace";
 import CreateListing from "./pages/CreateListing";
 import ListingDetail from "./pages/ListingDetail";
 import MyListings from "./pages/MyListings";
@@ -58,7 +57,6 @@ const App = () => (
           <Route path="/credit-score" element={<CreditScore />} />
           <Route path="/credit-score/assessment" element={<CreditScoreAssessment />} />
           <Route path="/credit-score/results/:assessmentId" element={<CreditScoreResults />} />
-            <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/listings/create" element={<CreateListing />} />
             <Route path="/listings/:id" element={<ListingDetail />} />
             <Route path="/my-listings" element={<MyListings />} />

@@ -55,6 +55,8 @@ const ServiceCategory = () => {
   const [pricingFilter, setPricingFilter] = useState<string>("all");
   const [providerFilter, setProviderFilter] = useState<string>("all");
   const [ratingFilter, setRatingFilter] = useState<string>("all");
+  const [useCaseFilter, setUseCaseFilter] = useState<string>("all");
+  const [cohortFilter, setCohortFilter] = useState<string>("all");
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -68,7 +70,7 @@ const ServiceCategory = () => {
     if (category) {
       fetchServices();
     }
-  }, [category, sortBy, pricingFilter, providerFilter, ratingFilter, searchQuery]);
+  }, [category, sortBy, pricingFilter, providerFilter, ratingFilter, useCaseFilter, cohortFilter, searchQuery]);
 
   const fetchCategoryData = async () => {
     try {
@@ -249,21 +251,22 @@ const ServiceCategory = () => {
             </div>
             
             {/* Filter Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-              <Select value={providerFilter} onValueChange={setProviderFilter}>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+              <Select value={useCaseFilter} onValueChange={setUseCaseFilter}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Provider Type" />
+                  <SelectValue placeholder="Use Case" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Providers</SelectItem>
-                  <SelectItem value="verified">Verified Only</SelectItem>
-                  <SelectItem value="cohort">Cohort Partners</SelectItem>
+                  <SelectItem value="all">All Use Cases</SelectItem>
+                  <SelectItem value="startup">Startup</SelectItem>
+                  <SelectItem value="growing_sme">Growing SME</SelectItem>
+                  <SelectItem value="corporate">Corporate Partner</SelectItem>
                 </SelectContent>
               </Select>
 
               <Select value={pricingFilter} onValueChange={setPricingFilter}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Pricing" />
+                  <SelectValue placeholder="Pricing Model" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Pricing</SelectItem>
@@ -271,6 +274,31 @@ const ServiceCategory = () => {
                   <SelectItem value="freemium">Freemium</SelectItem>
                   <SelectItem value="paid">Paid</SelectItem>
                   <SelectItem value="credits_only">Credits Only</SelectItem>
+                  <SelectItem value="discounted">Discounted</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={cohortFilter} onValueChange={setCohortFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Cohort Access" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Access</SelectItem>
+                  <SelectItem value="microsoft">Microsoft Cohort</SelectItem>
+                  <SelectItem value="aws">AWS Cohort</SelectItem>
+                  <SelectItem value="african_bank">African Bank</SelectItem>
+                  <SelectItem value="public">Public Access</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={providerFilter} onValueChange={setProviderFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Provider" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Providers</SelectItem>
+                  <SelectItem value="verified">Verified Only</SelectItem>
+                  <SelectItem value="cohort">Cohort Partners</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -332,8 +360,117 @@ const ServiceCategory = () => {
       </section>
 
       <div className="container mx-auto px-4 py-12">
-        {/* Subcategories */}
-        {subCategories.length > 0 && (
+        {/* Three-Tier Category Grouping for Software Services */}
+        {slug === 'software-services' && subCategories.length > 0 && (
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">Explore by Category Tier</h2>
+            
+            {/* Business Essentials */}
+            <div className="mb-12">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-2xl">
+                  🏢
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">Business Essentials</h3>
+                  <p className="text-muted-foreground">Operations, Finance, HR, CRM, Marketing</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {subCategories
+                  .filter(sub => ['accounting-finance', 'hr-payroll', 'crm', 'operations-productivity', 'marketing-branding'].some(slug => sub.slug.includes(slug)))
+                  .map((subCategory) => (
+                    <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
+                      <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 hover:border-primary bg-gradient-to-br from-background to-muted/30">
+                        <CardHeader className="text-center p-6">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                            💼
+                          </div>
+                          <CardTitle className="group-hover:text-primary transition-colors text-lg">
+                            {subCategory.name}
+                          </CardTitle>
+                          <CardDescription className="text-sm mt-2">
+                            {subCategory.description}
+                          </CardDescription>
+                        </CardHeader>
+                      </Card>
+                    </Link>
+                  ))}
+              </div>
+            </div>
+
+            {/* Growth & Innovation */}
+            <div className="mb-12">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-2xl">
+                  💡
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">Growth & Innovation</h3>
+                  <p className="text-muted-foreground">AI, Analytics, Automation, Industry Solutions</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {subCategories
+                  .filter(sub => ['ai-analytics', 'automation', 'industry-solutions', 'developer-tools', 'ecommerce'].some(slug => sub.slug.includes(slug)))
+                  .map((subCategory) => (
+                    <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
+                      <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 hover:border-primary bg-gradient-to-br from-background to-muted/30">
+                        <CardHeader className="text-center p-6">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-purple-600/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                            🚀
+                          </div>
+                          <CardTitle className="group-hover:text-primary transition-colors text-lg">
+                            {subCategory.name}
+                          </CardTitle>
+                          <CardDescription className="text-sm mt-2">
+                            {subCategory.description}
+                          </CardDescription>
+                        </CardHeader>
+                      </Card>
+                    </Link>
+                  ))}
+              </div>
+            </div>
+
+            {/* Security & Compliance */}
+            <div className="mb-12">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-2xl">
+                  🛡️
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">Security & Compliance</h3>
+                  <p className="text-muted-foreground">Cybersecurity, Risk Management, Governance</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {subCategories
+                  .filter(sub => ['cybersecurity', 'compliance', 'risk-management', 'legal-governance'].some(slug => sub.slug.includes(slug)))
+                  .map((subCategory) => (
+                    <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
+                      <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 hover:border-primary bg-gradient-to-br from-background to-muted/30">
+                        <CardHeader className="text-center p-6">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-green-500/10 to-green-600/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                            🔒
+                          </div>
+                          <CardTitle className="group-hover:text-primary transition-colors text-lg">
+                            {subCategory.name}
+                          </CardTitle>
+                          <CardDescription className="text-sm mt-2">
+                            {subCategory.description}
+                          </CardDescription>
+                        </CardHeader>
+                      </Card>
+                    </Link>
+                  ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Original Subcategories for non-software services */}
+        {slug !== 'software-services' && subCategories.length > 0 && (
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8">Browse Subcategories</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -359,7 +496,14 @@ const ServiceCategory = () => {
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold">Available Software Services</h2>
-            <Button variant="ghost" onClick={() => { setSearchQuery(""); setPricingFilter("all"); setProviderFilter("all"); setRatingFilter("all"); }}>
+            <Button variant="ghost" onClick={() => { 
+              setSearchQuery(""); 
+              setPricingFilter("all"); 
+              setProviderFilter("all"); 
+              setRatingFilter("all"); 
+              setUseCaseFilter("all");
+              setCohortFilter("all");
+            }}>
               Clear All Filters
             </Button>
           </div>
@@ -372,12 +516,26 @@ const ServiceCategory = () => {
                     <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-t-lg"></div>
                   )}
                   <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                       <Badge variant="secondary" className="text-xs">
                         {category.name}
                       </Badge>
                       {service.service_providers.is_cohort_partner && (
-                        <Badge className="text-xs bg-orange-500">Cohort Partner</Badge>
+                        <Badge className="text-xs bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0">
+                          <Gift className="h-3 w-3 mr-1" />
+                          Cohort Benefits
+                        </Badge>
+                      )}
+                      {service.pricing_type === 'free' && (
+                        <Badge className="text-xs bg-gradient-to-r from-green-500 to-green-600 text-white border-0">
+                          Free
+                        </Badge>
+                      )}
+                      {service.credits_price && (
+                        <Badge className="text-xs bg-gradient-to-r from-purple-500 to-purple-600 text-white border-0">
+                          <Coins className="h-3 w-3 mr-1" />
+                          {service.credits_price} Credits
+                        </Badge>
                       )}
                     </div>
                     <CardTitle className="group-hover:text-primary transition-colors line-clamp-1">
@@ -436,7 +594,14 @@ const ServiceCategory = () => {
         {services.length === 0 && (
           <div className="text-center py-12">
             <p className="text-lg text-muted-foreground mb-4">No services found matching your criteria.</p>
-            <Button onClick={() => { setSearchQuery(""); setPricingFilter("all"); setProviderFilter("all"); setRatingFilter("all"); }}>
+            <Button onClick={() => { 
+              setSearchQuery(""); 
+              setPricingFilter("all"); 
+              setProviderFilter("all"); 
+              setRatingFilter("all");
+              setUseCaseFilter("all");
+              setCohortFilter("all");
+            }}>
               Clear All Filters
             </Button>
           </div>

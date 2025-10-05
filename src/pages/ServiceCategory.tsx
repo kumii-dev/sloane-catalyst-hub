@@ -416,6 +416,7 @@ const ServiceCategory = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {subCategories.map((subCategory) => {
                 const IconComponent = getIconComponent(subCategory.slug);
+                const serviceCount = subCategory.slug === 'sw-startup-support-advisory' ? 1 : 0;
                 return (
                   <Link
                     key={subCategory.id}
@@ -424,8 +425,11 @@ const ServiceCategory = () => {
                   >
                     <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">
                       <CardHeader className="text-center pb-4">
-                        <div className={`w-16 h-16 rounded-xl ${getCategoryColor(subCategory.slug)} flex items-center justify-center mx-auto mb-4`}>
+                        <div className={`w-16 h-16 rounded-xl ${getCategoryColor(subCategory.slug)} flex items-center justify-center mx-auto mb-4 relative`}>
                           <IconComponent className="h-8 w-8 text-white" />
+                          <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs bg-background text-foreground border border-border">
+                            {serviceCount}
+                          </Badge>
                         </div>
                         <CardTitle className="text-xl group-hover:text-primary transition-colors">
                           {subCategory.name}

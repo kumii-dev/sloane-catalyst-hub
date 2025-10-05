@@ -172,12 +172,15 @@ const Services = () => {
               <Link key={category.id} to={`/services/category/${category.slug}`}>
                 <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
                   <CardHeader className="text-center">
-                    <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors relative">
                       <div className="text-primary font-semibold text-2xl">
                         {category.icon === 'Code' && '💻'}
                         {category.icon === 'Briefcase' && '💼'}
                         {category.icon === 'TrendingUp' && '📈'}
                       </div>
+                      <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs">
+                        0
+                      </Badge>
                     </div>
                     <CardTitle className="group-hover:text-primary transition-colors">
                       {category.name}

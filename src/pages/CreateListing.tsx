@@ -88,7 +88,7 @@ const CreateListing = () => {
         thumbnail_url = urlData.publicUrl;
       }
 
-      // Create listing
+      // Create listing (auto-approved)
       const { error } = await supabase.from("listings").insert({
         provider_id: user.id,
         title: data.title,
@@ -107,14 +107,16 @@ const CreateListing = () => {
         visible_to_all: data.visible_to_all,
         tags: data.tags ? data.tags.split(",").map((t) => t.trim()) : [],
         thumbnail_url,
-        status: "pending_approval",
+        status: "active",
+        approved_at: new Date().toISOString(),
+        approved_by: user.id,
       });
 
       if (error) throw error;
 
       toast({
         title: "Listing created successfully",
-        description: "Your listing is pending admin approval",
+        description: "Your listing is now live on the marketplace",
       });
 
       navigate("/my-listings");
@@ -410,7 +412,7 @@ const CreateListing = () => {
                   </Button>
                   <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                    Submit for Approval
+                    Create Listing
                   </Button>
                 </div>
               </form>

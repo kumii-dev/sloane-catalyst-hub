@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import logo from "@/assets/22-on-sloane-logo.png";
+import logo from "@/assets/kumi-logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +28,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-3">
             <img 
               src={logo} 
-              alt="22 On Sloane" 
+              alt="Kumii" 
               className="h-14 w-auto"
             />
           </Link>

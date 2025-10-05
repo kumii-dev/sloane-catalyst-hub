@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AssessmentResults } from "@/components/assessment/AssessmentResults";
 import jsPDF from "jspdf";
-import logoImg from "@/assets/22-on-sloane-logo.png";
+import logoImg from "@/assets/kumi-logo.png";
 
 interface DocumentUpload {
   type: string;
@@ -558,9 +558,9 @@ export const AssessmentForm = () => {
       
       pdf.setTextColor(...brandBlue);
       pdf.setFont(undefined, 'bold');
-      pdf.textWithLink("→ Go to 22 On Sloane Platform", pageWidth / 2, yPos + 20, { 
+      pdf.textWithLink("→ Go to Kumii Platform", pageWidth / 2, yPos + 20, { 
         url: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d',
-        align: 'center' 
+        align: 'center'
       });
     }
 
@@ -573,7 +573,7 @@ export const AssessmentForm = () => {
       pdf.setTextColor(255, 255, 255);
       pdf.setFontSize(8);
       pdf.text(
-        `22 On Sloane | Generated ${new Date().toLocaleDateString()}`,
+        `Kumii | Generated ${new Date().toLocaleDateString()}`,
         pageWidth / 2,
         pageHeight - 7,
         { align: 'center' }
@@ -597,13 +597,13 @@ export const AssessmentForm = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `22OnSloane-Credit-Assessment-${new Date().toISOString().split('T')[0]}.pdf`;
+      link.download = `Kumii-Credit-Assessment-${new Date().toISOString().split('T')[0]}.pdf`;
       link.click();
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Error encrypting PDF:', error);
       // Fallback to unencrypted PDF if encryption fails
-      pdf.save(`22OnSloane-Credit-Assessment-${new Date().toISOString().split('T')[0]}.pdf`);
+      pdf.save(`Kumii-Credit-Assessment-${new Date().toISOString().split('T')[0]}.pdf`);
     }
   };
 

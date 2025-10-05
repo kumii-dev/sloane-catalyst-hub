@@ -384,9 +384,9 @@ const BrowseFunding = () => {
                         
                         {opportunity.sloane_credits_allocation > 0 && (
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Credits</span>
+                            <span className="text-muted-foreground">Kumii Credits</span>
                             <Badge variant="outline" className="text-accent">
-                              +{opportunity.sloane_credits_allocation} Credits
+                              +{opportunity.sloane_credits_allocation} Kumii Credits
                             </Badge>
                           </div>
                         )}

@@ -429,7 +429,7 @@ const ListingDetail = () => {
                   {listing.credits_price && (
                     <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
                       <Coins className="w-4 h-4" />
-                      or {listing.credits_price} Sloane Credits
+                      or {listing.credits_price} Kumii Credits
                     </p>
                   )}
                 </div>

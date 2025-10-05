@@ -145,7 +145,7 @@ const CreateListing = () => {
           <CardHeader>
             <CardTitle className="text-3xl">Create New Listing</CardTitle>
             <CardDescription>
-              List your services, products, or opportunities on the 22 On Sloane marketplace
+              List your services, products, or opportunities on the Kumii marketplace
             </CardDescription>
           </CardHeader>
 
@@ -287,7 +287,7 @@ const CreateListing = () => {
                           <FormControl>
                             <Input type="number" placeholder="0" {...field} />
                           </FormControl>
-                          <FormDescription>Cost in Sloane Credits</FormDescription>
+                          <FormDescription>Cost in Kumii Credits</FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}

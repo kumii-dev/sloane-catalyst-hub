@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import logo from "@/assets/22-on-sloane-logo.png";
+import logo from "@/assets/kumi-logo.png";
 
 const TopNavbar = () => {
   const { user, signOut } = useAuth();
@@ -53,7 +53,7 @@ const TopNavbar = () => {
         <Link to="/" className="flex items-center">
           <img 
             src={logo} 
-            alt="22 On Sloane" 
+            alt="Kumii" 
             className="h-12 w-auto"
           />
         </Link>

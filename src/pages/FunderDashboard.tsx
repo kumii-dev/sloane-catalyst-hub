@@ -256,13 +256,13 @@ const FunderDashboard = () => {
           </Card>
         </div>
 
-        {/* Sloane Credits Balance */}
+        {/* Kumii Credits Balance */}
         {funderProfile && funderProfile.sloane_credits_balance > 0 && (
           <Card className="mb-8 bg-gradient-to-r from-accent/10 to-primary/10">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">Sloane Credits Balance</h3>
+                  <h3 className="text-lg font-semibold">Kumii Credits Balance</h3>
                   <p className="text-sm text-muted-foreground">
                     Allocate credits to your funding programs to boost startup engagement
                   </p>

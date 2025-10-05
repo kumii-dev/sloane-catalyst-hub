@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
 import { Github, Mail } from 'lucide-react';
-import logo from '@/assets/22-on-sloane-logo.png';
+import logo from '@/assets/kumi-logo.png';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -72,7 +72,7 @@ const Auth = () => {
     } else {
       toast({
         title: "Success!",
-        description: "Account created successfully. Welcome to 22 On Sloane!",
+        description: "Account created successfully. Welcome to Kumii!",
       });
     }
     setLoading(false);
@@ -148,7 +148,7 @@ const Auth = () => {
       <Card className="w-full max-w-md shadow-strong">
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">
-            <img src={logo} alt="22 On Sloane" className="h-16 w-auto" />
+            <img src={logo} alt="Kumii" className="h-16 w-auto" />
           </div>
           <CardTitle className="text-2xl font-bold text-foreground">Welcome</CardTitle>
           <CardDescription className="text-muted-foreground">

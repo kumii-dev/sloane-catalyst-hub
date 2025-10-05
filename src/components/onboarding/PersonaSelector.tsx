@@ -51,7 +51,7 @@ const PersonaSelector = ({ onSelectPersona, onSkip }: PersonaSelectorProps) => {
     <div className="min-h-screen flex items-center justify-center p-4 main-gradient-light">
       <Card className="w-full max-w-4xl shadow-strong">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl">Welcome to 22 On Sloane</CardTitle>
+          <CardTitle className="text-3xl">Welcome to Kumii</CardTitle>
           <CardDescription className="text-lg">
             Help us customise your experience by selecting your role
           </CardDescription>

@@ -1,7 +1,7 @@
 import { Building2, Mail, Phone, MapPin, Twitter, Linkedin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import logo from "@/assets/22-on-sloane-logo.png";
+import logo from "@/assets/kumi-logo.png";
 
 const Footer = () => {
   const footerLinks = [
@@ -54,7 +54,7 @@ const Footer = () => {
               <div className="mb-6">
                 <img 
                   src={logo} 
-                  alt="22 On Sloane" 
+                  alt="Kumii" 
                   className="h-12 w-auto mb-2"
                 />
               </div>
@@ -68,11 +68,11 @@ const Footer = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm">
                   <MapPin className="h-4 w-4 text-accent flex-shrink-0" />
-                  <span>22 On Sloane, Johannesburg, South Africa</span>
+                  <span>Johannesburg, South Africa</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Mail className="h-4 w-4 text-accent flex-shrink-0" />
-                  <span>hello@22onsloane.co.za</span>
+                  <span>hello@kumii.co.za</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Phone className="h-4 w-4 text-accent flex-shrink-0" />
@@ -126,7 +126,7 @@ const Footer = () => {
         <div className="border-t border-primary-foreground/20 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-primary-foreground/80">
-              © 2024 22 On Sloane Marketplace. All rights reserved.
+              © 2024 Kumii Marketplace. All rights reserved.
             </div>
             
             {/* Social Links */}

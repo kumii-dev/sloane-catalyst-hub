@@ -366,8 +366,16 @@ const ServiceDetail = () => {
                 <CardTitle>Pricing</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-primary mb-4">
-                  {formatPrice()}
+                <div className="space-y-2 mb-4">
+                  <div className="text-3xl font-bold text-primary">
+                    50 Kumii Credits
+                  </div>
+                  <div className="text-lg text-muted-foreground">
+                    or R500 with credit card
+                  </div>
+                  <div className="text-sm text-green-600 font-medium">
+                    Exclusive access for sponsored programme members
+                  </div>
                 </div>
                 <Button className="w-full mb-4" onClick={handleSubscribe}>
                   {service.service_type === 'subscription' ? 'Subscribe' : 

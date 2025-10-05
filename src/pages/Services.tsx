@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Star, Users, Zap, Award, Code, Briefcase, TrendingUp } from "lucide-react";
+import { Search, Filter, Star, Users, Zap, Award, Code, Briefcase, TrendingUp, Headphones, GraduationCap, Building2, Palette, Megaphone, Scale, DollarSign, UserCheck, Sparkles } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -107,8 +107,35 @@ const Services = () => {
       'Code': Code,
       'Briefcase': Briefcase,
       'TrendingUp': TrendingUp,
+      'Headphones': Headphones,
+      'GraduationCap': GraduationCap,
+      'Building2': Building2,
+      'Palette': Palette,
+      'Megaphone': Megaphone,
+      'Scale': Scale,
+      'DollarSign': DollarSign,
+      'UserCheck': UserCheck,
+      'Sparkles': Sparkles,
     };
     return icons[iconName] || Briefcase;
+  };
+
+  const getCategoryColor = (iconName: string) => {
+    const colors: Record<string, string> = {
+      'Code': 'bg-gradient-to-br from-blue-500 to-blue-600',
+      'Briefcase': 'bg-gradient-to-br from-purple-500 to-purple-600',
+      'TrendingUp': 'bg-gradient-to-br from-orange-500 to-orange-600',
+      'Headphones': 'bg-gradient-to-br from-pink-500 to-pink-600',
+      'GraduationCap': 'bg-gradient-to-br from-green-500 to-green-600',
+      'Building2': 'bg-gradient-to-br from-indigo-500 to-indigo-600',
+      'Palette': 'bg-gradient-to-br from-rose-500 to-rose-600',
+      'Megaphone': 'bg-gradient-to-br from-amber-500 to-amber-600',
+      'Scale': 'bg-gradient-to-br from-slate-500 to-slate-600',
+      'DollarSign': 'bg-gradient-to-br from-emerald-500 to-emerald-600',
+      'UserCheck': 'bg-gradient-to-br from-cyan-500 to-cyan-600',
+      'Sparkles': 'bg-gradient-to-br from-violet-500 to-violet-600',
+    };
+    return colors[iconName] || 'bg-gradient-to-br from-gray-500 to-gray-600';
   };
 
   if (loading) {
@@ -184,6 +211,7 @@ const Services = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {categories.filter((category) => category.slug !== 'software-services').map((category) => {
               const IconComponent = getIconComponent(category.icon);
+              const colorClass = getCategoryColor(category.icon);
               return (
                 <Link
                   key={category.id}
@@ -192,11 +220,7 @@ const Services = () => {
                 >
                   <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">
                     <CardHeader className="text-center pb-4">
-                      <div className={`w-16 h-16 rounded-xl ${
-                        category.icon === 'Code' ? 'bg-gradient-to-br from-blue-500 to-blue-600' :
-                        category.icon === 'Briefcase' ? 'bg-gradient-to-br from-purple-500 to-purple-600' :
-                        'bg-gradient-to-br from-orange-500 to-orange-600'
-                      } flex items-center justify-center mx-auto mb-4 relative`}>
+                      <div className={`w-16 h-16 rounded-xl ${colorClass} flex items-center justify-center mx-auto mb-4 relative`}>
                         <IconComponent className="h-8 w-8 text-white" />
                         <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs bg-background text-foreground border border-border">
                           0

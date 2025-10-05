@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const CreditScore = () => {
   const { user } = useAuth();
@@ -81,25 +82,25 @@ const CreditScore = () => {
             </p>
             
             {!user ? (
-              <Button size="lg" asChild>
-                <a href="/auth">
-                  Get Started - Free Assessment
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </a>
-              </Button>
-            ) : (
-              <div className="flex flex-wrap justify-center gap-4">
                 <Button size="lg" asChild>
-                  <a href="/credit-score/assessment">
-                    Start Assessment
+                  <Link to="/auth">
+                    Get Started - Free Assessment
                     <ArrowRight className="w-4 h-4 ml-2" />
-                  </a>
+                  </Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <a href="/funding/startup-dashboard">
-                    View My Profile
-                  </a>
-                </Button>
+              ) : (
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button size="lg" asChild>
+                    <Link to="/credit-score/assessment">
+                      Start Assessment
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+                  <Button size="lg" variant="outline" asChild>
+                    <Link to="/funding/startup-dashboard">
+                      View My Profile
+                    </Link>
+                  </Button>
               </div>
             )}
           </div>

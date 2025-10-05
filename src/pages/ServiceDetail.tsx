@@ -8,8 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Star, Users, Globe, Mail, Phone, Check, ExternalLink, ArrowLeft, CreditCard, Coins, UsersIcon } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
 interface ServiceDetail {
@@ -154,8 +153,7 @@ const ServiceDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <Layout showSidebar={true}>
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-8">
             <div className="h-8 bg-muted rounded w-48"></div>
@@ -168,15 +166,13 @@ const ServiceDetail = () => {
             </div>
           </div>
         </div>
-        <Footer />
-      </div>
+      </Layout>
     );
   }
 
   if (!service) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <Layout showSidebar={true}>
         <div className="container mx-auto px-4 py-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Service Not Found</h1>
           <p className="text-muted-foreground mb-8">The service you're looking for doesn't exist or has been removed.</p>
@@ -187,15 +183,12 @@ const ServiceDetail = () => {
             </Button>
           </Link>
         </div>
-        <Footer />
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
+    <Layout showSidebar={true}>
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
@@ -473,8 +466,6 @@ const ServiceDetail = () => {
         </div>
       </div>
 
-      <Footer />
-
       {/* Payment Options Dialog */}
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
         <DialogContent className="sm:max-w-md">
@@ -545,7 +536,7 @@ const ServiceDetail = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </Layout>
   );
 };
 

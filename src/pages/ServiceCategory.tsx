@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, Star, Users, ArrowLeft, SlidersHorizontal } from "lucide-react";
+import { Search, Filter, Star, Users, Zap, Award, ArrowLeft } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -206,41 +206,67 @@ const ServiceCategory = () => {
 
   return (
     <Layout showSidebar={true}>
-      <div className="container mx-auto px-4 py-8">
-        {/* Breadcrumb */}
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
-          <Link to="/services" className="hover:text-primary">Services</Link>
-          <span>/</span>
-          <span>{category.name}</span>
-        </div>
-
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center mb-4">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-              <div className="text-primary font-semibold text-2xl">
+      {/* Hero Section */}
+      <section className="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div className="container mx-auto px-4 text-center">
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+              <div className="text-primary font-semibold text-3xl">
                 {category.icon === 'Code' && '💻'}
                 {category.icon === 'Briefcase' && '💼'}
                 {category.icon === 'TrendingUp' && '📈'}
               </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold">{category.name}</h1>
-              <p className="text-lg text-muted-foreground">{category.description}</p>
-            </div>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            {category.name}
+          </h1>
+          <p className="text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">
+            {category.description}
+          </p>
+          
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto relative mb-8">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+            <Input
+              placeholder="Search services, providers, or categories..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-12 h-12 text-lg"
+            />
+            <Button size="sm" className="absolute right-2 top-1/2 transform -translate-y-1/2">
+              <Filter className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Badge variant="secondary" className="px-4 py-2">
+              <Zap className="h-4 w-4 mr-2" />
+              {services.length} Services
+            </Badge>
+            <Badge variant="secondary" className="px-4 py-2">
+              <Users className="h-4 w-4 mr-2" />
+              Trusted Providers
+            </Badge>
+            <Badge variant="secondary" className="px-4 py-2">
+              <Award className="h-4 w-4 mr-2" />
+              Cohort Benefits
+            </Badge>
           </div>
         </div>
+      </section>
 
+      <div className="container mx-auto px-4 py-12">
         {/* Subcategories */}
         {subCategories.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Browse Subcategories</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8">Browse Subcategories</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {subCategories.map((subCategory) => (
                 <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
-                  <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
-                    <CardHeader>
-                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                  <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
+                    <CardHeader className="text-center">
+                      <CardTitle className="group-hover:text-primary transition-colors">
                         {subCategory.name}
                       </CardTitle>
                       <CardDescription className="text-sm">
@@ -251,24 +277,13 @@ const ServiceCategory = () => {
                 </Link>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
-        {/* Filters and Search */}
-        <div className="mb-8">
-          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-            <div className="flex-1 max-w-md">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  placeholder="Search services..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9"
-                />
-              </div>
-            </div>
-            
+        {/* Services Section */}
+        <section className="mb-16">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold">Available Services</h2>
             <div className="flex gap-4 items-center">
               <Select value={pricingFilter} onValueChange={setPricingFilter}>
                 <SelectTrigger className="w-40">
@@ -297,78 +312,75 @@ const ServiceCategory = () => {
               </Select>
             </div>
           </div>
-        </div>
-
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => (
-            <Link key={service.id} to={`/services/${service.id}`}>
-              <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
-                {service.banner_image_url && (
-                  <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-t-lg"></div>
-                )}
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      {service.is_featured && (
-                        <Badge className="text-xs">Featured</Badge>
-                      )}
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((service) => (
+              <Link key={service.id} to={`/services/${service.id}`}>
+                <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
+                  {service.banner_image_url && (
+                    <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-t-lg"></div>
+                  )}
+                  <CardHeader>
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge variant="secondary" className="text-xs">
+                        {category.name}
+                      </Badge>
                       {service.service_providers.is_cohort_partner && (
                         <Badge className="text-xs bg-orange-500">Cohort Partner</Badge>
                       )}
                     </div>
-                  </div>
-                  <CardTitle className="group-hover:text-primary transition-colors line-clamp-1">
-                    {service.name}
-                  </CardTitle>
-                  <CardDescription className="line-clamp-2">
-                    {service.short_description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center text-sm text-muted-foreground">
-                      <div className="flex items-center mr-4">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                        <span>{service.rating}</span>
-                        <span className="ml-1">({service.total_reviews})</span>
+                    <CardTitle className="group-hover:text-primary transition-colors line-clamp-1">
+                      {service.name}
+                    </CardTitle>
+                    <CardDescription className="line-clamp-2">
+                      {service.short_description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <div className="flex items-center mr-4">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+                          <span>{service.rating}</span>
+                          <span className="ml-1">({service.total_reviews})</span>
+                        </div>
+                        <div className="flex items-center">
+                          <Users className="h-4 w-4 mr-1" />
+                          <span>{service.total_subscribers}</span>
+                        </div>
                       </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-1" />
-                        <span>{service.total_subscribers}</span>
+                        {service.service_providers.logo_url ? (
+                          <img 
+                            src={service.service_providers.logo_url} 
+                            alt={service.service_providers.company_name}
+                            className="w-6 h-6 rounded mr-2"
+                          />
+                        ) : (
+                          <div className="w-6 h-6 bg-muted rounded mr-2"></div>
+                        )}
+                        <span className="text-sm text-muted-foreground">
+                          {service.service_providers.company_name}
+                        </span>
+                        {service.service_providers.is_verified && (
+                          <Badge variant="outline" className="ml-2 text-xs">Verified</Badge>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        <div className="font-semibold text-primary">
+                          {formatPrice(service)}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      {service.service_providers.logo_url ? (
-                        <img 
-                          src={service.service_providers.logo_url} 
-                          alt={service.service_providers.company_name}
-                          className="w-6 h-6 rounded mr-2"
-                        />
-                      ) : (
-                        <div className="w-6 h-6 bg-muted rounded mr-2"></div>
-                      )}
-                      <span className="text-sm text-muted-foreground">
-                        {service.service_providers.company_name}
-                      </span>
-                      {service.service_providers.is_verified && (
-                        <Badge variant="outline" className="ml-2 text-xs">Verified</Badge>
-                      )}
-                    </div>
-                    <div className="text-right">
-                      <div className="font-semibold text-primary">
-                        {formatPrice(service)}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {services.length === 0 && (
           <div className="text-center py-12">
@@ -377,6 +389,31 @@ const ServiceCategory = () => {
               Clear Filters
             </Button>
           </div>
+        )}
+
+        {/* Stats Section */}
+        {services.length > 0 && (
+          <section className="bg-muted/30 rounded-lg p-8 text-center">
+            <h3 className="text-2xl font-bold mb-4">Trusted by the Community</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div>
+                <div className="text-3xl font-bold text-primary mb-2">{services.length}+</div>
+                <div className="text-muted-foreground">Services Available</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-primary mb-2">
+                  {new Set(services.map(s => s.service_providers.company_name)).size}+
+                </div>
+                <div className="text-muted-foreground">Trusted Providers</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-primary mb-2">
+                  {services.reduce((acc, s) => acc + s.total_subscribers, 0)}+
+                </div>
+                <div className="text-muted-foreground">Active Subscribers</div>
+              </div>
+            </div>
+          </section>
         )}
       </div>
     </Layout>

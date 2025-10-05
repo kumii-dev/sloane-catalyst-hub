@@ -415,88 +415,91 @@ const ServiceCategory = () => {
               </div>
             </div>
 
-            {/* Tier 2: Growth & Innovation */}
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-purple-400/5 to-purple-500/5 rounded-3xl"></div>
-              <div className="relative p-8 border-2 border-purple-500/20 rounded-3xl bg-background/50 backdrop-blur-sm">
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-3xl shadow-lg shadow-purple-500/30">
-                      💡
+            {/* Tiers 2 & 3: Growth & Innovation + Security & Compliance - Side by Side */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Tier 2: Growth & Innovation */}
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-purple-400/5 to-purple-500/5 rounded-3xl"></div>
+                <div className="relative p-8 border-2 border-purple-500/20 rounded-3xl bg-background/50 backdrop-blur-sm h-full">
+                  <div className="flex flex-col mb-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-2xl shadow-lg shadow-purple-500/30">
+                        💡
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-foreground">Growth & Innovation</h3>
+                      </div>
+                      <Badge variant="outline" className="text-purple-600 border-purple-600 px-3 py-1 text-xs font-semibold">
+                        {subCategories.filter(sub => ['ai', 'analytics', 'automation', 'industry', 'developer', 'dev', 'tech', 'ecommerce', 'commerce', 'integration'].some(keyword => sub.slug.toLowerCase().includes(keyword))).length} Categories
+                      </Badge>
                     </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-foreground">Growth & Innovation</h3>
-                      <p className="text-muted-foreground text-lg">Advanced tools for scaling and transformation</p>
-                    </div>
+                    <p className="text-muted-foreground text-sm ml-[68px]">Advanced tools for scaling and transformation</p>
                   </div>
-                  <Badge variant="outline" className="text-purple-600 border-purple-600 px-4 py-2 text-sm font-semibold">
-                    {subCategories.filter(sub => ['ai', 'analytics', 'automation', 'industry', 'developer', 'dev', 'tech', 'ecommerce', 'commerce', 'integration'].some(keyword => sub.slug.toLowerCase().includes(keyword))).length} Categories
-                  </Badge>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                  {subCategories
-                    .filter(sub => ['ai', 'analytics', 'automation', 'industry', 'developer', 'dev', 'tech', 'ecommerce', 'commerce', 'integration'].some(keyword => sub.slug.toLowerCase().includes(keyword)))
-                    .map((subCategory, index) => (
-                      <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
-                        <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 border-transparent hover:border-purple-500 bg-gradient-to-br from-background via-purple-50/5 to-background overflow-hidden animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
-                          <CardHeader className="text-center p-5">
-                            <div className="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center text-2xl group-hover:scale-110 group-hover:rotate-3 transition-all shadow-md">
-                              🚀
-                            </div>
-                            <CardTitle className="group-hover:text-purple-600 transition-colors text-base font-bold leading-tight">
-                              {subCategory.name}
-                            </CardTitle>
-                            <CardDescription className="text-xs mt-2 line-clamp-2">
-                              {subCategory.description || 'Innovation & growth tools'}
-                            </CardDescription>
-                          </CardHeader>
-                        </Card>
-                      </Link>
-                    ))}
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {subCategories
+                      .filter(sub => ['ai', 'analytics', 'automation', 'industry', 'developer', 'dev', 'tech', 'ecommerce', 'commerce', 'integration'].some(keyword => sub.slug.toLowerCase().includes(keyword)))
+                      .map((subCategory, index) => (
+                        <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
+                          <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 border-transparent hover:border-purple-500 bg-gradient-to-br from-background via-purple-50/5 to-background overflow-hidden animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+                            <CardHeader className="text-center p-5">
+                              <div className="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center text-2xl group-hover:scale-110 group-hover:rotate-3 transition-all shadow-md">
+                                🚀
+                              </div>
+                              <CardTitle className="group-hover:text-purple-600 transition-colors text-base font-bold leading-tight">
+                                {subCategory.name}
+                              </CardTitle>
+                              <CardDescription className="text-xs mt-2 line-clamp-2">
+                                {subCategory.description || 'Innovation & growth tools'}
+                              </CardDescription>
+                            </CardHeader>
+                          </Card>
+                        </Link>
+                      ))}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Tier 3: Security & Compliance */}
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-green-400/5 to-green-500/5 rounded-3xl"></div>
-              <div className="relative p-8 border-2 border-green-500/20 rounded-3xl bg-background/50 backdrop-blur-sm">
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-3xl shadow-lg shadow-green-500/30">
-                      🛡️
+              {/* Tier 3: Security & Compliance */}
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-green-400/5 to-green-500/5 rounded-3xl"></div>
+                <div className="relative p-8 border-2 border-green-500/20 rounded-3xl bg-background/50 backdrop-blur-sm h-full">
+                  <div className="flex flex-col mb-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-2xl shadow-lg shadow-green-500/30">
+                        🛡️
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-foreground">Security & Compliance</h3>
+                      </div>
+                      <Badge variant="outline" className="text-green-600 border-green-600 px-3 py-1 text-xs font-semibold">
+                        {subCategories.filter(sub => ['security', 'cyber', 'compliance', 'risk', 'legal', 'governance', 'audit'].some(keyword => sub.slug.toLowerCase().includes(keyword))).length} Categories
+                      </Badge>
                     </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-foreground">Security & Compliance</h3>
-                      <p className="text-muted-foreground text-lg">Protection, risk management, and governance</p>
-                    </div>
+                    <p className="text-muted-foreground text-sm ml-[68px]">Protection, risk management, and governance</p>
                   </div>
-                  <Badge variant="outline" className="text-green-600 border-green-600 px-4 py-2 text-sm font-semibold">
-                    {subCategories.filter(sub => ['security', 'cyber', 'compliance', 'risk', 'legal', 'governance', 'audit'].some(keyword => sub.slug.toLowerCase().includes(keyword))).length} Categories
-                  </Badge>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                  {subCategories
-                    .filter(sub => ['security', 'cyber', 'compliance', 'risk', 'legal', 'governance', 'audit'].some(keyword => sub.slug.toLowerCase().includes(keyword)))
-                    .map((subCategory, index) => (
-                      <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
-                        <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 border-transparent hover:border-green-500 bg-gradient-to-br from-background via-green-50/5 to-background overflow-hidden animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
-                          <CardHeader className="text-center p-5">
-                            <div className="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/20 flex items-center justify-center text-2xl group-hover:scale-110 group-hover:rotate-3 transition-all shadow-md">
-                              🔒
-                            </div>
-                            <CardTitle className="group-hover:text-green-600 transition-colors text-base font-bold leading-tight">
-                              {subCategory.name}
-                            </CardTitle>
-                            <CardDescription className="text-xs mt-2 line-clamp-2">
-                              {subCategory.description || 'Security & compliance solutions'}
-                            </CardDescription>
-                          </CardHeader>
-                        </Card>
-                      </Link>
-                    ))}
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {subCategories
+                      .filter(sub => ['security', 'cyber', 'compliance', 'risk', 'legal', 'governance', 'audit'].some(keyword => sub.slug.toLowerCase().includes(keyword)))
+                      .map((subCategory, index) => (
+                        <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
+                          <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 border-transparent hover:border-green-500 bg-gradient-to-br from-background via-green-50/5 to-background overflow-hidden animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+                            <CardHeader className="text-center p-5">
+                              <div className="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/20 flex items-center justify-center text-2xl group-hover:scale-110 group-hover:rotate-3 transition-all shadow-md">
+                                🔒
+                              </div>
+                              <CardTitle className="group-hover:text-green-600 transition-colors text-base font-bold leading-tight">
+                                {subCategory.name}
+                              </CardTitle>
+                              <CardDescription className="text-xs mt-2 line-clamp-2">
+                                {subCategory.description || 'Security & compliance solutions'}
+                              </CardDescription>
+                            </CardHeader>
+                          </Card>
+                        </Link>
+                      ))}
+                  </div>
                 </div>
               </div>
             </div>

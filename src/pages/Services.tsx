@@ -206,62 +206,79 @@ const Services = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredServices.map((service) => (
-              <Link key={service.id} to={`/services/${service.id}`}>
-                <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
+              <Link key={service.id} to={`/services/${service.id}`} className="group">
+                <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">
                   {service.banner_image_url && (
-                    <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-t-lg"></div>
+                    <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-t-lg overflow-hidden">
+                      <img 
+                        src={service.banner_image_url} 
+                        alt={service.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   )}
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
-                      <Badge variant="secondary" className="text-xs">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <Badge variant="secondary" className="text-xs font-medium">
                         {service.service_categories.name}
                       </Badge>
                       {service.service_providers.is_cohort_partner && (
-                        <Badge className="text-xs bg-orange-500">Cohort Partner</Badge>
+                        <Badge className="text-xs bg-orange-500 hover:bg-orange-600">
+                          Cohort Partner
+                        </Badge>
                       )}
                     </div>
-                    <CardTitle className="group-hover:text-primary transition-colors line-clamp-1">
+                    <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors line-clamp-2">
                       {service.name}
                     </CardTitle>
-                    <CardDescription className="line-clamp-2">
+                    <CardDescription className="text-sm line-clamp-2 min-h-[2.5rem]">
                       {service.short_description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center text-sm text-muted-foreground">
-                        <div className="flex items-center mr-4">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                          <span>{service.rating}</span>
-                          <span className="ml-1">({service.total_reviews})</span>
+                  <CardContent className="space-y-4">
+                    {/* Ratings and Subscribers */}
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="font-medium">{service.rating}</span>
+                          <span className="text-muted-foreground">({service.total_reviews})</span>
                         </div>
-                        <div className="flex items-center">
-                          <Users className="h-4 w-4 mr-1" />
+                        <div className="flex items-center gap-1 text-muted-foreground">
+                          <Users className="h-4 w-4" />
                           <span>{service.total_subscribers}</span>
                         </div>
                       </div>
                     </div>
                     
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
+                    {/* Divider */}
+                    <div className="border-t border-border/50"></div>
+                    
+                    {/* Provider and Price */}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
                         {service.service_providers.logo_url ? (
                           <img 
                             src={service.service_providers.logo_url} 
                             alt={service.service_providers.company_name}
-                            className="w-6 h-6 rounded mr-2"
+                            className="w-6 h-6 rounded-sm flex-shrink-0 object-contain"
                           />
                         ) : (
-                          <div className="w-6 h-6 bg-muted rounded mr-2"></div>
+                          <div className="w-6 h-6 bg-muted rounded-sm flex-shrink-0"></div>
                         )}
-                        <span className="text-sm text-muted-foreground">
-                          {service.service_providers.company_name}
-                        </span>
-                        {service.service_providers.is_verified && (
-                          <Badge variant="outline" className="ml-2 text-xs">Verified</Badge>
-                        )}
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="text-sm text-muted-foreground truncate">
+                            {service.service_providers.company_name}
+                          </span>
+                          {service.service_providers.is_verified && (
+                            <Badge variant="outline" className="text-xs px-1 py-0 h-5 flex-shrink-0">
+                              ✓
+                            </Badge>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <div className="font-semibold text-primary">
+                      <div className="text-right flex-shrink-0">
+                        <div className="font-semibold text-primary text-sm">
                           {formatPrice(service)}
                         </div>
                       </div>

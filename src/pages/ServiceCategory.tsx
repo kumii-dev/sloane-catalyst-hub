@@ -7,8 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter, Star, Users, ArrowLeft, SlidersHorizontal } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
 interface Service {
@@ -172,8 +171,7 @@ const ServiceCategory = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <Layout showSidebar={true}>
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-8">
             <div className="h-8 bg-muted rounded w-48"></div>
@@ -185,15 +183,13 @@ const ServiceCategory = () => {
             </div>
           </div>
         </div>
-        <Footer />
-      </div>
+      </Layout>
     );
   }
 
   if (!category) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <Layout showSidebar={true}>
         <div className="container mx-auto px-4 py-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Category Not Found</h1>
           <p className="text-muted-foreground mb-8">The category you're looking for doesn't exist.</p>
@@ -204,15 +200,12 @@ const ServiceCategory = () => {
             </Button>
           </Link>
         </div>
-        <Footer />
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
+    <Layout showSidebar={true}>
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
@@ -386,9 +379,7 @@ const ServiceCategory = () => {
           </div>
         )}
       </div>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

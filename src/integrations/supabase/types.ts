@@ -14,6 +14,119 @@ export type Database = {
   }
   public: {
     Tables: {
+      cohort_funded_listings: {
+        Row: {
+          cohort_id: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          listing_id: string
+        }
+        Insert: {
+          cohort_id: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          listing_id: string
+        }
+        Update: {
+          cohort_id?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          listing_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cohort_funded_listings_cohort_id_fkey"
+            columns: ["cohort_id"]
+            isOneToOne: false
+            referencedRelation: "cohorts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cohort_funded_listings_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cohort_memberships: {
+        Row: {
+          cohort_id: string
+          id: string
+          is_active: boolean | null
+          joined_at: string | null
+          user_id: string
+        }
+        Insert: {
+          cohort_id: string
+          id?: string
+          is_active?: boolean | null
+          joined_at?: string | null
+          user_id: string
+        }
+        Update: {
+          cohort_id?: string
+          id?: string
+          is_active?: boolean | null
+          joined_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cohort_memberships_cohort_id_fkey"
+            columns: ["cohort_id"]
+            isOneToOne: false
+            referencedRelation: "cohorts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cohorts: {
+        Row: {
+          created_at: string | null
+          credits_allocated: number | null
+          description: string | null
+          end_date: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          sponsor_logo_url: string | null
+          sponsor_name: string
+          start_date: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          credits_allocated?: number | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          sponsor_logo_url?: string | null
+          sponsor_name: string
+          start_date?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          credits_allocated?: number | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          sponsor_logo_url?: string | null
+          sponsor_name?: string
+          start_date?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       credit_assessments: {
         Row: {
           ai_analysis: Json | null
@@ -126,6 +239,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      credits_transactions: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string | null
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_wallet: {
+        Row: {
+          balance: number | null
+          created_at: string | null
+          id: string
+          total_earned: number | null
+          total_spent: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          balance?: number | null
+          created_at?: string | null
+          id?: string
+          total_earned?: number | null
+          total_spent?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          balance?: number | null
+          created_at?: string | null
+          id?: string
+          total_earned?: number | null
+          total_spent?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       event_registrations: {
         Row: {
@@ -496,6 +672,204 @@ export type Database = {
             columns: ["funder_id"]
             isOneToOne: false
             referencedRelation: "funders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_categories: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          parent_id: string | null
+          slug: string
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          parent_id?: string | null
+          slug: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          parent_id?: string | null
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "listing_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_reviews: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_verified_purchase: boolean | null
+          listing_id: string
+          rating: number
+          review_text: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_verified_purchase?: boolean | null
+          listing_id: string
+          rating: number
+          review_text?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_verified_purchase?: boolean | null
+          listing_id?: string
+          rating?: number
+          review_text?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_reviews_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listings: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          attachments: Json | null
+          available_slots: Json | null
+          base_price: number | null
+          capacity: number | null
+          category_id: string | null
+          cohort_visibility: string[] | null
+          created_at: string | null
+          credits_price: number | null
+          delivery_mode: Database["public"]["Enums"]["delivery_mode"]
+          description: string
+          gallery_images: string[] | null
+          id: string
+          is_featured: boolean | null
+          is_subscription: boolean | null
+          listing_type: Database["public"]["Enums"]["listing_type"]
+          provider_id: string
+          published_at: string | null
+          rating: number | null
+          short_description: string | null
+          slug: string
+          status: Database["public"]["Enums"]["listing_status"] | null
+          subscription_duration_days: number | null
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          total_reviews: number | null
+          total_subscriptions: number | null
+          updated_at: string | null
+          visible_to_all: boolean | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          attachments?: Json | null
+          available_slots?: Json | null
+          base_price?: number | null
+          capacity?: number | null
+          category_id?: string | null
+          cohort_visibility?: string[] | null
+          created_at?: string | null
+          credits_price?: number | null
+          delivery_mode?: Database["public"]["Enums"]["delivery_mode"]
+          description: string
+          gallery_images?: string[] | null
+          id?: string
+          is_featured?: boolean | null
+          is_subscription?: boolean | null
+          listing_type: Database["public"]["Enums"]["listing_type"]
+          provider_id: string
+          published_at?: string | null
+          rating?: number | null
+          short_description?: string | null
+          slug: string
+          status?: Database["public"]["Enums"]["listing_status"] | null
+          subscription_duration_days?: number | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          total_reviews?: number | null
+          total_subscriptions?: number | null
+          updated_at?: string | null
+          visible_to_all?: boolean | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          attachments?: Json | null
+          available_slots?: Json | null
+          base_price?: number | null
+          capacity?: number | null
+          category_id?: string | null
+          cohort_visibility?: string[] | null
+          created_at?: string | null
+          credits_price?: number | null
+          delivery_mode?: Database["public"]["Enums"]["delivery_mode"]
+          description?: string
+          gallery_images?: string[] | null
+          id?: string
+          is_featured?: boolean | null
+          is_subscription?: boolean | null
+          listing_type?: Database["public"]["Enums"]["listing_type"]
+          provider_id?: string
+          published_at?: string | null
+          rating?: number | null
+          short_description?: string | null
+          slug?: string
+          status?: Database["public"]["Enums"]["listing_status"] | null
+          subscription_duration_days?: number | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          total_reviews?: number | null
+          total_subscriptions?: number | null
+          updated_at?: string | null
+          visible_to_all?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listings_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "listing_categories"
             referencedColumns: ["id"]
           },
         ]
@@ -1430,15 +1804,119 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_subscriptions: {
+        Row: {
+          amount_paid: number | null
+          auto_renew: boolean | null
+          cohort_id: string | null
+          created_at: string | null
+          credits_used: number | null
+          expires_at: string | null
+          id: string
+          listing_id: string
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          paystack_reference: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["subscription_status"] | null
+          transaction_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_paid?: number | null
+          auto_renew?: boolean | null
+          cohort_id?: string | null
+          created_at?: string | null
+          credits_used?: number | null
+          expires_at?: string | null
+          id?: string
+          listing_id: string
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          paystack_reference?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["subscription_status"] | null
+          transaction_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_paid?: number | null
+          auto_renew?: boolean | null
+          cohort_id?: string | null
+          created_at?: string | null
+          credits_used?: number | null
+          expires_at?: string | null
+          id?: string
+          listing_id?: string
+          payment_method?: Database["public"]["Enums"]["payment_method"]
+          paystack_reference?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["subscription_status"] | null
+          transaction_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_subscriptions_cohort_id_fkey"
+            columns: ["cohort_id"]
+            isOneToOne: false
+            referencedRelation: "cohorts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_subscriptions_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       access_level: "public" | "registered" | "cohort_only" | "premium"
+      app_role:
+        | "admin"
+        | "startup"
+        | "smme"
+        | "mentor"
+        | "advisor"
+        | "funder"
+        | "service_provider"
       application_status:
         | "draft"
         | "submitted"
@@ -1455,6 +1933,7 @@ export type Database = {
         | "series_b"
         | "growth"
         | "established"
+      delivery_mode: "hybrid" | "online" | "in_person"
       funding_status: "draft" | "active" | "closed" | "paused"
       funding_type:
         | "grant"
@@ -1474,7 +1953,22 @@ export type Database = {
         | "manufacturing"
         | "services"
         | "other"
+      listing_status:
+        | "draft"
+        | "pending_approval"
+        | "active"
+        | "paused"
+        | "rejected"
+      listing_type:
+        | "software"
+        | "ancillary"
+        | "mentorship"
+        | "funding"
+        | "training"
+        | "event"
+        | "other"
       mentor_status: "available" | "busy" | "unavailable"
+      payment_method: "paystack" | "credits" | "sponsored"
       persona_type:
         | "unassigned"
         | "smme_startup"
@@ -1511,6 +2005,7 @@ export type Database = {
       service_type: "subscription" | "one_time" | "session_based" | "custom"
       session_status: "pending" | "confirmed" | "completed" | "cancelled"
       session_type: "free" | "premium"
+      subscription_status: "active" | "expired" | "cancelled" | "pending"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1639,6 +2134,15 @@ export const Constants = {
   public: {
     Enums: {
       access_level: ["public", "registered", "cohort_only", "premium"],
+      app_role: [
+        "admin",
+        "startup",
+        "smme",
+        "mentor",
+        "advisor",
+        "funder",
+        "service_provider",
+      ],
       application_status: [
         "draft",
         "submitted",
@@ -1657,6 +2161,7 @@ export const Constants = {
         "growth",
         "established",
       ],
+      delivery_mode: ["hybrid", "online", "in_person"],
       funding_status: ["draft", "active", "closed", "paused"],
       funding_type: [
         "grant",
@@ -1678,7 +2183,24 @@ export const Constants = {
         "services",
         "other",
       ],
+      listing_status: [
+        "draft",
+        "pending_approval",
+        "active",
+        "paused",
+        "rejected",
+      ],
+      listing_type: [
+        "software",
+        "ancillary",
+        "mentorship",
+        "funding",
+        "training",
+        "event",
+        "other",
+      ],
       mentor_status: ["available", "busy", "unavailable"],
+      payment_method: ["paystack", "credits", "sponsored"],
       persona_type: [
         "unassigned",
         "smme_startup",
@@ -1719,6 +2241,7 @@ export const Constants = {
       service_type: ["subscription", "one_time", "session_based", "custom"],
       session_status: ["pending", "confirmed", "completed", "cancelled"],
       session_type: ["free", "premium"],
+      subscription_status: ["active", "expired", "cancelled", "pending"],
     },
   },
 } as const

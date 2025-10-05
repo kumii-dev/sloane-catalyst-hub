@@ -64,11 +64,12 @@ const CreateListing = () => {
     setIsSubmitting(true);
 
     try {
-      // Generate slug from title
-      const slug = data.title
+      // Generate unique slug from title with timestamp
+      const baseSlug = data.title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
+      const slug = `${baseSlug}-${Date.now()}`;
 
       // Upload thumbnail if provided
       let thumbnail_url = null;

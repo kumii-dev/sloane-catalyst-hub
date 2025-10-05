@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Star, Users, Zap, Award } from "lucide-react";
+import { Search, Star, Users, Zap, Award, Plus, List, Coins, BarChart3 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -48,6 +49,7 @@ const Services = () => {
   const [featuredServices, setFeaturedServices] = useState<Service[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("all");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -94,6 +96,27 @@ const Services = () => {
     }
   };
 
+  // Group categories by tier
+  const businessEssentials = categories.filter(cat => 
+    ['business-operations', 'accounting-finance', 'hr-people', 'customer-sales', 'marketing-analytics'].includes(cat.slug)
+  );
+
+  const growthInnovation = categories.filter(cat => 
+    ['data-ai-analytics', 'integration-automation', 'industry-specific', 'developer-tools', 'startup-support'].includes(cat.slug)
+  );
+
+  const securityCompliance = categories.filter(cat => 
+    ['cybersecurity-compliance', 'legal-governance', 'cloud-infrastructure', 'project-management', 'ecommerce-retail'].includes(cat.slug)
+  );
+
+  const filteredCategories = (activeTab === "all" ? categories : 
+    activeTab === "business" ? businessEssentials :
+    activeTab === "growth" ? growthInnovation : securityCompliance
+  ).filter((category) =>
+    category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    category.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const formatPrice = (service: Service) => {
     if (service.pricing_type === 'free') return 'Free';
     if (service.pricing_type === 'contact_for_pricing') return 'Contact for pricing';
@@ -125,31 +148,63 @@ const Services = () => {
       <section className="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Services Marketplace
+            Software & Services Marketplace
           </h1>
           <p className="text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">
-            Discover essential services for your startup growth. From software solutions to professional services, 
-            find everything you need in one place.
+            Discover the best tools and services to grow your startup or SMME
           </p>
           
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto relative mb-8">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
             <Input
-              placeholder="Search services, providers, or categories..."
+              placeholder="Search categories, services, or providers..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-12 h-12 text-lg"
+              className="pl-10 h-12 text-lg"
             />
-            <Button size="sm" className="absolute right-2 top-1/2 transform -translate-y-1/2">
-              <Filter className="h-4 w-4" />
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-3 justify-center mb-8">
+            <Button 
+              variant="secondary" 
+              size="default"
+              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              <span className="font-semibold">Post New Listings</span>
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="default"
+              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
+            >
+              <List className="h-4 w-4 mr-2" />
+              <span className="font-semibold">My Listings</span>
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="default"
+              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
+            >
+              <Coins className="h-4 w-4 mr-2" />
+              <span className="font-semibold">Earn Credits</span>
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="default"
+              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
+            >
+              <BarChart3 className="h-4 w-4 mr-2" />
+              <span className="font-semibold">Subscription Insight</span>
             </Button>
           </div>
 
           <div className="flex flex-wrap gap-4 justify-center">
             <Badge variant="secondary" className="px-4 py-2">
               <Zap className="h-4 w-4 mr-2" />
-              500+ Services
+              {categories.length} Categories
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
               <Users className="h-4 w-4 mr-2" />
@@ -164,32 +219,59 @@ const Services = () => {
       </section>
 
       <div className="container mx-auto px-4 py-12">
+        {/* Category Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4">
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="business">🏢 Business</TabsTrigger>
+            <TabsTrigger value="growth">💡 Growth</TabsTrigger>
+            <TabsTrigger value="security">🛡️ Security</TabsTrigger>
+          </TabsList>
+        </Tabs>
+
         {/* Service Categories */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-8">Browse by Category</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {categories.filter((category) => category.slug !== 'software-services').map((category) => (
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold">
+              {activeTab === "all" ? "All Categories" :
+               activeTab === "business" ? "Business Essentials" :
+               activeTab === "growth" ? "Growth & Innovation" : "Security & Infrastructure"}
+            </h2>
+            <Badge variant="outline" className="text-lg px-4 py-2">
+              {filteredCategories.length} {filteredCategories.length === 1 ? 'Category' : 'Categories'}
+            </Badge>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCategories.map((category) => (
               <Link key={category.id} to={`/services/category/${category.slug}`}>
-                <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
+                <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group border-2 hover:border-primary/50">
                   <CardHeader className="text-center">
-                    <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                      <div className="text-primary font-semibold text-2xl">
-                        {category.icon === 'Code' && '💻'}
-                        {category.icon === 'Briefcase' && '💼'}
-                        {category.icon === 'TrendingUp' && '📈'}
-                      </div>
+                    <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:from-primary/20 group-hover:to-secondary/20 transition-all transform group-hover:scale-110">
+                      <span className="text-4xl">{category.icon}</span>
                     </div>
-                    <CardTitle className="group-hover:text-primary transition-colors">
+                    <CardTitle className="group-hover:text-primary transition-colors text-xl">
                       {category.name}
                     </CardTitle>
-                    <CardDescription className="text-sm">
+                    <CardDescription className="text-sm mt-2">
                       {category.description}
                     </CardDescription>
                   </CardHeader>
+                  <CardContent className="text-center">
+                    <Button variant="ghost" className="w-full group-hover:bg-primary/10 group-hover:text-primary font-semibold">
+                      Explore Services →
+                    </Button>
+                  </CardContent>
                 </Card>
               </Link>
             ))}
           </div>
+
+          {filteredCategories.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground">No categories found matching your search.</p>
+            </div>
+          )}
         </section>
 
         {/* Featured Services */}

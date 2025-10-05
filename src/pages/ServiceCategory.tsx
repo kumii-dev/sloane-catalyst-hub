@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, Star, Users, Zap, Award, ArrowLeft, Plus, List, Coins, BarChart3, Gift } from "lucide-react";
+import { Search, Filter, Star, Users, Zap, Award, ArrowLeft, Plus, List, Coins, BarChart3, Gift, Briefcase, ShoppingCart, Code, Shield, Brain, Cloud, FolderKanban, Scale, Building, Rocket } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -184,6 +184,48 @@ const ServiceCategory = () => {
     if (service.credits_price) return `${service.credits_price} credits`;
     if (service.base_price) return `$${service.base_price}`;
     return 'View pricing';
+  };
+
+  const getIconComponent = (slug: string) => {
+    const icons: Record<string, any> = {
+      'sw-business-operations-productivity': Briefcase,
+      'sw-customer-relationship-sales': Users,
+      'sw-accounting-finance': Coins,
+      'sw-marketing-branding-analytics': BarChart3,
+      'sw-ecommerce-retail': ShoppingCart,
+      'sw-cybersecurity-compliance': Shield,
+      'sw-data-ai-analytics': Brain,
+      'sw-cloud-hosting-infrastructure': Cloud,
+      'sw-project-management-collaboration': FolderKanban,
+      'sw-hr-people-development': Award,
+      'sw-legal-risk-governance': Scale,
+      'sw-industry-specific-solutions': Building,
+      'sw-developer-tech-tools': Code,
+      'sw-integration-automation': Zap,
+      'sw-startup-support-advisory': Rocket,
+    };
+    return icons[slug] || Briefcase;
+  };
+
+  const getCategoryColor = (slug: string) => {
+    const colors: Record<string, string> = {
+      'sw-business-operations-productivity': 'bg-gradient-to-br from-blue-500 to-blue-600',
+      'sw-customer-relationship-sales': 'bg-gradient-to-br from-green-500 to-green-600',
+      'sw-accounting-finance': 'bg-gradient-to-br from-purple-500 to-purple-600',
+      'sw-marketing-branding-analytics': 'bg-gradient-to-br from-orange-500 to-orange-600',
+      'sw-ecommerce-retail': 'bg-gradient-to-br from-pink-500 to-pink-600',
+      'sw-cybersecurity-compliance': 'bg-gradient-to-br from-red-500 to-red-600',
+      'sw-data-ai-analytics': 'bg-gradient-to-br from-indigo-500 to-indigo-600',
+      'sw-cloud-hosting-infrastructure': 'bg-gradient-to-br from-cyan-500 to-cyan-600',
+      'sw-project-management-collaboration': 'bg-gradient-to-br from-yellow-500 to-yellow-600',
+      'sw-hr-people-development': 'bg-gradient-to-br from-teal-500 to-teal-600',
+      'sw-legal-risk-governance': 'bg-gradient-to-br from-slate-500 to-slate-600',
+      'sw-industry-specific-solutions': 'bg-gradient-to-br from-amber-500 to-amber-600',
+      'sw-developer-tech-tools': 'bg-gradient-to-br from-violet-500 to-violet-600',
+      'sw-integration-automation': 'bg-gradient-to-br from-lime-500 to-lime-600',
+      'sw-startup-support-advisory': 'bg-gradient-to-br from-rose-500 to-rose-600',
+    };
+    return colors[slug] || 'bg-gradient-to-br from-gray-500 to-gray-600';
   };
 
   if (loading) {
@@ -364,59 +406,84 @@ const ServiceCategory = () => {
         {slug === 'software-services' && subCategories.length > 0 ? (
           <section className="mb-16">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Software Categories
-              </h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Discover enterprise-grade software organized by business function
+              <h2 className="text-3xl font-bold mb-4">Explore Categories</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Discover software organized by category to help you find exactly what you need for your business.
               </p>
             </div>
             
             {/* All Categories Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-              {subCategories.map((subCategory, index) => (
-                <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
-                  <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 border-transparent hover:border-primary bg-gradient-to-br from-background via-primary/5 to-background overflow-hidden animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
-                    <CardHeader className="text-center p-6">
-                      <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-3xl group-hover:scale-110 group-hover:rotate-3 transition-all shadow-md">
-                        💼
-                      </div>
-                      <CardTitle className="group-hover:text-primary transition-colors text-base font-bold leading-tight">
-                        {subCategory.name}
-                      </CardTitle>
-                      <CardDescription className="text-xs mt-3 line-clamp-3">
-                        {subCategory.description || 'Professional software solutions'}
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </Link>
-              ))}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {subCategories.map((subCategory) => {
+                const IconComponent = getIconComponent(subCategory.slug);
+                return (
+                  <Link
+                    key={subCategory.id}
+                    to={`/services/category/${subCategory.slug}`}
+                    className="group"
+                  >
+                    <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">
+                      <CardHeader className="text-center pb-4">
+                        <div className={`w-16 h-16 rounded-xl ${getCategoryColor(subCategory.slug)} flex items-center justify-center mx-auto mb-4`}>
+                          <IconComponent className="h-8 w-8 text-white" />
+                        </div>
+                        <CardTitle className="text-xl group-hover:text-primary transition-colors">
+                          {subCategory.name}
+                        </CardTitle>
+                        <CardDescription className="line-clamp-2">
+                          {subCategory.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <Button variant="outline" className="w-full group-hover:border-primary group-hover:text-primary">
+                          Explore Services
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         ) : subCategories.length > 0 ? (
           <section className="mb-16">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4">Browse Categories</h2>
-              <p className="text-muted-foreground text-lg">Explore specialized subcategories</p>
+              <h2 className="text-3xl font-bold mb-4">Explore Categories</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Discover services organized by category to help you find exactly what you need.
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {subCategories.map((subCategory, index) => (
-                <Link key={subCategory.id} to={`/services/category/${subCategory.slug}`}>
-                  <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 border-transparent hover:border-primary animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
-                    <CardHeader className="text-center p-6">
-                      <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                        📋
-                      </div>
-                      <CardTitle className="group-hover:text-primary transition-colors">
-                        {subCategory.name}
-                      </CardTitle>
-                      <CardDescription className="mt-2">
-                        {subCategory.description}
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </Link>
-              ))}
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {subCategories.map((subCategory) => {
+                const IconComponent = getIconComponent(subCategory.slug);
+                return (
+                  <Link
+                    key={subCategory.id}
+                    to={`/services/category/${subCategory.slug}`}
+                    className="group"
+                  >
+                    <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">
+                      <CardHeader className="text-center pb-4">
+                        <div className={`w-16 h-16 rounded-xl ${getCategoryColor(subCategory.slug)} flex items-center justify-center mx-auto mb-4`}>
+                          <IconComponent className="h-8 w-8 text-white" />
+                        </div>
+                        <CardTitle className="text-xl group-hover:text-primary transition-colors">
+                          {subCategory.name}
+                        </CardTitle>
+                        <CardDescription className="line-clamp-2">
+                          {subCategory.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <Button variant="outline" className="w-full group-hover:border-primary group-hover:text-primary">
+                          Explore Services
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         ) : null}

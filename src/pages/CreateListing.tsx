@@ -29,6 +29,7 @@ const listingSchema = z.object({
   capacity: z.string().optional(),
   visible_to_all: z.boolean().default(true),
   tags: z.string().optional(),
+  thumbnail: z.any().refine((file) => file !== null, "Thumbnail image is required"),
 });
 
 type ListingFormData = z.infer<typeof listingSchema>;
@@ -39,6 +40,7 @@ const CreateListing = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
   const form = useForm<ListingFormData>({
     resolver: zodResolver(listingSchema),
@@ -47,8 +49,25 @@ const CreateListing = () => {
       delivery_mode: "online",
       is_subscription: false,
       visible_to_all: true,
+      thumbnail: null,
     },
   });
+
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setThumbnailFile(file);
+    form.setValue("thumbnail", file);
+    
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setThumbnailPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setThumbnailPreview(null);
+    }
+  };
 
   const onSubmit = async (data: ListingFormData) => {
     if (!user) {
@@ -368,17 +387,41 @@ const CreateListing = () => {
                     )}
                   />
 
-                  <div>
-                    <FormLabel>Thumbnail Image</FormLabel>
-                    <div className="mt-2 flex items-center gap-4">
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setThumbnailFile(e.target.files?.[0] || null)}
-                      />
-                      <Upload className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name="thumbnail"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Thumbnail Image *</FormLabel>
+                        <FormControl>
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-4">
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleThumbnailChange}
+                                className="cursor-pointer"
+                              />
+                              <Upload className="w-5 h-5 text-muted-foreground" />
+                            </div>
+                            {thumbnailPreview && (
+                              <div className="relative w-full max-w-sm rounded-lg overflow-hidden border">
+                                <img
+                                  src={thumbnailPreview}
+                                  alt="Thumbnail preview"
+                                  className="w-full h-48 object-cover"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </FormControl>
+                        <FormDescription>
+                          Upload a clear image that represents your listing (max 5MB)
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
                   <FormField
                     control={form.control}

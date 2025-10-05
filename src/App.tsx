@@ -28,6 +28,7 @@ import CreditScoreResults from "./pages/CreditScoreResults";
 import Marketplace from "./pages/Marketplace";
 import CreateListing from "./pages/CreateListing";
 import ListingDetail from "./pages/ListingDetail";
+import MyListings from "./pages/MyListings";
 import MySubscriptions from "./pages/MySubscriptions";
 import AdminDashboard from "./pages/AdminDashboard";
 import CohortManager from "./pages/CohortManager";
@@ -60,6 +61,7 @@ const App = () => (
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/listings/create" element={<CreateListing />} />
             <Route path="/listings/:id" element={<ListingDetail />} />
+            <Route path="/my-listings" element={<MyListings />} />
             <Route path="/my-subscriptions" element={<MySubscriptions />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/cohorts" element={<CohortManager />} />

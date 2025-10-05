@@ -117,7 +117,7 @@ const CreateListing = () => {
         description: "Your listing is pending admin approval",
       });
 
-      navigate("/my-listings");
+      navigate("/marketplace");
     } catch (error: any) {
       toast({
         title: "Error creating listing",

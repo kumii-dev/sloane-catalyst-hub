@@ -302,46 +302,46 @@ const ServiceCategory = () => {
 
 
           {/* Action Badge Buttons */}
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center">
             <Button 
               variant="secondary" 
-              size="lg"
-              className="rounded-full px-8 py-6 bg-primary/80 hover:bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+              size="default"
+              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
             >
-              <Plus className="h-5 w-5 mr-3" />
-              <span className="font-semibold text-lg">Post New Listings</span>
+              <Plus className="h-4 w-4 mr-2" />
+              <span className="font-semibold">Post New Listings</span>
             </Button>
             <Button 
               variant="secondary" 
-              size="lg"
-              className="rounded-full px-8 py-6 bg-primary/80 hover:bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+              size="default"
+              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
             >
-              <List className="h-5 w-5 mr-3" />
-              <span className="font-semibold text-lg">My Listings</span>
+              <List className="h-4 w-4 mr-2" />
+              <span className="font-semibold">My Listings</span>
             </Button>
             <Button 
               variant="secondary" 
-              size="lg"
-              className="rounded-full px-8 py-6 bg-primary/80 hover:bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+              size="default"
+              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
             >
-              <Zap className="h-5 w-5 mr-3" />
-              <span className="font-semibold text-lg">Explore Software</span>
+              <Zap className="h-4 w-4 mr-2" />
+              <span className="font-semibold">Explore Software</span>
             </Button>
             <Button 
               variant="secondary" 
-              size="lg"
-              className="rounded-full px-8 py-6 bg-primary/80 hover:bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+              size="default"
+              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
             >
-              <Coins className="h-5 w-5 mr-3" />
-              <span className="font-semibold text-lg">Earn Credits</span>
+              <Coins className="h-4 w-4 mr-2" />
+              <span className="font-semibold">Earn Credits</span>
             </Button>
             <Button 
               variant="secondary" 
-              size="lg"
-              className="rounded-full px-8 py-6 bg-primary/80 hover:bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+              size="default"
+              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
             >
-              <BarChart3 className="h-5 w-5 mr-3" />
-              <span className="font-semibold text-lg">Subscription Insight</span>
+              <BarChart3 className="h-4 w-4 mr-2" />
+              <span className="font-semibold">Subscription Insight</span>
             </Button>
           </div>
         </div>

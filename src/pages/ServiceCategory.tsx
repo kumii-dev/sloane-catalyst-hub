@@ -335,14 +335,6 @@ const ServiceCategory = () => {
               <Coins className="h-4 w-4 mr-2" />
               <span className="font-semibold">Earn Credits</span>
             </Button>
-            <Button 
-              variant="secondary" 
-              size="default"
-              className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
-            >
-              <BarChart3 className="h-4 w-4 mr-2" />
-              <span className="font-semibold">Subscription Insight</span>
-            </Button>
           </div>
         </div>
       </section>

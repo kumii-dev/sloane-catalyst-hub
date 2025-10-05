@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Star, Users, Globe, Mail, Phone, Check, ExternalLink, ArrowLeft, CreditCard, Coins, UsersIcon } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
+import kumiiLogo from "@/assets/kumi-logo.png";
 
 interface ServiceDetail {
   id: string;
@@ -398,19 +399,13 @@ const ServiceDetail = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-3 mb-4">
-                  {service.service_providers.logo_url ? (
-                    <img 
-                      src={service.service_providers.logo_url} 
-                      alt={service.service_providers.company_name}
-                      className="w-12 h-12 rounded"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 bg-muted rounded flex items-center justify-center font-semibold">
-                      {service.service_providers.company_name[0]}
-                    </div>
-                  )}
+                  <img 
+                    src={kumiiLogo} 
+                    alt="Kumii"
+                    className="w-12 h-12 rounded object-contain"
+                  />
                   <div>
-                    <h3 className="font-semibold">{service.service_providers.company_name}</h3>
+                    <h3 className="font-semibold">Kumii</h3>
                     <div className="flex items-center space-x-2">
                       <div className="flex items-center text-sm text-muted-foreground">
                         <Star className="h-3 w-3 fill-yellow-400 text-yellow-400 mr-1" />

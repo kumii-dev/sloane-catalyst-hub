@@ -119,7 +119,7 @@ const Resources = () => {
   return (
     <Layout showSidebar={true}>
       {/* Hero Section */}
-      <section className="relative py-18 bg-gradient-to-br from-primary/10 via-background to-accent/10">
+      <section className="relative py-19 bg-gradient-to-br from-primary/10 via-background to-accent/10">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">

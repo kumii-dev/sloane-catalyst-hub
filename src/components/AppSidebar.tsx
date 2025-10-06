@@ -19,6 +19,7 @@ import {
   Settings,
   ChevronDown,
   ChevronUp,
+  House,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -176,6 +177,18 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
     <div className="flex h-full bg-background shadow-lg lg:shadow-none">
       {/* Primary Navigation Bar */}
       <div className="w-16 bg-primary flex flex-col items-center py-4 border-r border-border flex-shrink-0">
+        {/* Home Button */}
+        <Link to="/" className="mb-4" onClick={onNavigate}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-12 h-12 p-0 hover:bg-primary-light transition-colors"
+            title="Home"
+          >
+            <House className="h-5 w-5 text-primary-foreground" />
+          </Button>
+        </Link>
+        
         <div className="flex flex-col gap-2 flex-1">
           {primaryNavItems.map((item) => (
             <div key={item.id} className="relative">

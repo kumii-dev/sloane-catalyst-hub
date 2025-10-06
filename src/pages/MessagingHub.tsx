@@ -6,21 +6,56 @@ import { ContactPanel } from '@/components/messaging/ContactPanel';
 import { MessagingTabs } from '@/components/messaging/MessagingTabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, Plus, X } from 'lucide-react';
+import { Search, Plus, X, Menu, PanelLeftClose } from 'lucide-react';
 
 const MessagingHub = () => {
   const [selectedTab, setSelectedTab] = useState<'recent' | 'contacts' | 'teams' | 'pinned' | 'insights'>('recent');
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [showContactPanel, setShowContactPanel] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showSecondarySidebar, setShowSecondarySidebar] = useState(false);
 
   return (
     <Layout showSidebar={true} hideSecondarySidebar={true}>
-      <div className="flex h-[calc(100vh-4rem)] bg-background">
+      <div className="flex h-[calc(100vh-4rem)] bg-background relative">
+        {/* Toggle Button - Visible on Mobile/Tablet */}
+        {!showSecondarySidebar && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setShowSecondarySidebar(true)}
+            className="absolute top-4 left-4 z-10 md:hidden"
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+        )}
+
+        {/* Overlay for mobile */}
+        {showSecondarySidebar && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-30 md:hidden"
+            onClick={() => setShowSecondarySidebar(false)}
+          />
+        )}
+
         {/* Secondary Sidebar - Tabs & Folders */}
-        <div className="w-80 border-r border-border flex-col bg-card hidden md:flex">
+        <div className={`
+          w-80 border-r border-border flex-col bg-card
+          md:flex
+          ${showSecondarySidebar ? 'flex fixed inset-y-0 left-0 z-40' : 'hidden'}
+        `}>
           <div className="p-4 border-b border-border">
-            <h1 className="text-2xl font-bold text-foreground mb-4">Messaging Hub</h1>
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-2xl font-bold text-foreground">Messaging Hub</h1>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowSecondarySidebar(false)}
+                className="md:hidden"
+              >
+                <PanelLeftClose className="h-5 w-5" />
+              </Button>
+            </div>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input

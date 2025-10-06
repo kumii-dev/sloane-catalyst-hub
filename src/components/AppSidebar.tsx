@@ -242,14 +242,15 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                   <h3 className="font-medium text-sm text-muted-foreground mb-3">Growth Gateway</h3>
                   <div className="space-y-1">
                     {selectedContent.items.map((item) => (
-                      <button
+                      <Link
                         key={item.url}
+                        to={item.url}
                         onClick={() => {
                           setSelectedApp(item.title);
                           setShowAllSubcategories(false);
                         }}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                          selectedApp === item.title
+                        className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                          selectedApp === item.title || isActive(item.url)
                             ? 'bg-accent text-accent-foreground' 
                             : 'hover:bg-muted text-foreground'
                         }`}
@@ -258,7 +259,7 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                           <TrendingUp className="h-3 w-3 text-primary-foreground" />
                         </div>
                         {item.title}
-                      </button>
+                      </Link>
                     ))}
                   </div>
                 </div>

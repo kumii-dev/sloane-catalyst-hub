@@ -90,7 +90,7 @@ export function Layout({ children, showSidebar = false, hideSecondarySidebar = f
           <AppSidebar 
             selectedPrimary={selectedPrimary}
             onPrimarySelect={handlePrimarySelect}
-            showSecondary={hideSecondarySidebar ? false : showSecondary}
+            showSecondary={hideSecondarySidebar || isMobile || isTablet ? false : showSecondary}
             onNavigate={() => {
               if (isMobile || isTablet) {
                 setSidebarOpen(false);

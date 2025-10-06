@@ -74,6 +74,20 @@ const secondaryContent = {
   }
 };
 
+// Menu items for each app
+const appMenus: Record<string, Array<{ title: string; url: string }>> = {
+  "Access To Market": [
+    { title: "Credit Score Check", url: "/credit-score" },
+    { title: "Funder Directory", url: "/funding" },
+    { title: "Smart Matching", url: "/access-to-market" },
+    { title: "Funding Opportunities", url: "/funding" },
+  ],
+  "Access To Capital": [
+    { title: "Browse Funding", url: "/funding" },
+    { title: "My Applications", url: "/funding" },
+  ],
+};
+
 interface AppSidebarProps {
   selectedPrimary: string;
   onPrimarySelect: (id: string) => void;
@@ -82,10 +96,12 @@ interface AppSidebarProps {
 
 export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: AppSidebarProps) {
   const location = useLocation();
+  const [selectedApp, setSelectedApp] = useState<string | null>(null);
 
   const isActive = (path: string) => location.pathname === path;
   
   const selectedContent = secondaryContent[selectedPrimary as keyof typeof secondaryContent];
+  const activeAppMenu = selectedApp ? appMenus[selectedApp] : null;
 
   return (
     <div className="flex h-full">
@@ -161,11 +177,11 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                   <h3 className="font-medium text-sm text-muted-foreground mb-3">Growth Gateway</h3>
                   <div className="space-y-1">
                     {selectedContent.items.map((item) => (
-                      <Link
+                      <button
                         key={item.url}
-                        to={item.url}
-                        className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                          isActive(item.url) 
+                        onClick={() => setSelectedApp(item.title)}
+                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                          selectedApp === item.title
                             ? 'bg-accent text-accent-foreground' 
                             : 'hover:bg-muted text-foreground'
                         }`}
@@ -174,7 +190,7 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                           <TrendingUp className="h-3 w-3 text-primary-foreground" />
                         </div>
                         {item.title}
-                      </Link>
+                      </button>
                     ))}
                     <Link
                       to="/services/category/software-services"
@@ -192,27 +208,26 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                   </div>
                 </div>
 
-                <div>
-                  <h3 className="font-medium text-sm text-muted-foreground mb-3">Categories</h3>
-                  <div className="grid grid-cols-1 gap-1">
-                    {[
-                      "Financial Services & FinTech",
-                      "Health & HealthTech", 
-                      "Education & EdTech",
-                      "Agriculture & AgriTech",
-                      "ICT & Software Development",
-                      "Energy & GreenTech"
-                    ].map((category) => (
-                      <Button
-                        key={category}
-                        variant="ghost"
-                        className="justify-start h-auto p-2 text-xs text-left"
-                      >
-                        {category}
-                      </Button>
-                    ))}
+                {activeAppMenu && (
+                  <div>
+                    <h3 className="font-medium text-sm text-muted-foreground mb-3">{selectedApp}</h3>
+                    <div className="space-y-1">
+                      {activeAppMenu.map((menuItem) => (
+                        <Link
+                          key={menuItem.url}
+                          to={menuItem.url}
+                          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                            isActive(menuItem.url) 
+                              ? 'bg-accent text-accent-foreground' 
+                              : 'hover:bg-muted text-foreground'
+                          }`}
+                        >
+                          {menuItem.title}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             ) : (
               <div className="space-y-1">

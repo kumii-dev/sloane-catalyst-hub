@@ -3,11 +3,15 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/kumi-logo.png";
 
-const TopNavbar = () => {
+interface TopNavbarProps {
+  onMenuToggle?: () => void;
+}
+
+const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
   const { user, signOut } = useAuth();
   const location = useLocation();
 
@@ -42,14 +46,26 @@ const TopNavbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="h-16 bg-gradient-to-r from-white via-white via-30% via-primary-light via-60% to-primary border-b border-primary-dark/20 px-4 flex items-center w-full shadow-medium">
+    <header className="h-16 bg-gradient-to-r from-white via-white via-30% via-primary-light via-60% to-primary border-b border-primary-dark/20 px-4 flex items-center w-full shadow-medium sticky top-0 z-30">
+      {/* Hamburger Menu - Mobile/Tablet */}
+      {onMenuToggle && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onMenuToggle}
+          className="lg:hidden mr-2 text-primary-dark hover:bg-primary-light/20"
+        >
+          <Menu className="h-6 w-6" />
+        </Button>
+      )}
+      
       {/* Left - Brand */}
       <div className="flex items-center">
         <Link to="/" className="flex items-center">
           <img 
             src={logo} 
             alt="Kumii" 
-            className="h-12 w-auto"
+            className="h-10 sm:h-12 w-auto"
           />
         </Link>
       </div>
@@ -72,34 +88,34 @@ const TopNavbar = () => {
       </nav>
 
       {/* Right - User Actions */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         {user ? (
-          <div className="flex items-center gap-3">
-            <span className="text-base text-white font-medium">About</span>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-sm sm:text-base text-white font-medium hidden md:inline">About</span>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => signOut()}
-              className="text-base text-white hover:text-white hover:bg-white/20"
+              className="text-sm sm:text-base text-white hover:text-white hover:bg-white/20 hidden sm:flex"
             >
               Sign Out
             </Button>
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-              <span className="text-sm font-bold text-white">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center">
+              <span className="text-xs sm:text-sm font-bold text-white">
                 {user.email?.charAt(0).toUpperCase()}
               </span>
             </div>
           </div>
         ) : (
-          <div className="flex items-center gap-3">
-            <span className="text-base text-white font-medium">About</span>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-sm sm:text-base text-white font-medium hidden md:inline">About</span>
             <Link to="/auth">
-              <Button variant="ghost" size="sm" className="text-base text-white hover:text-white hover:bg-white/20">
+              <Button variant="ghost" size="sm" className="text-sm sm:text-base text-white hover:text-white hover:bg-white/20 hidden sm:flex">
                 Sign In
               </Button>
             </Link>
             <Link to="/auth">
-              <Button variant="secondary" size="sm" className="text-base font-semibold">
+              <Button variant="secondary" size="sm" className="text-sm sm:text-base font-semibold">
                 Get Started
               </Button>
             </Link>

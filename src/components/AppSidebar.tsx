@@ -152,9 +152,10 @@ interface AppSidebarProps {
   selectedPrimary: string;
   onPrimarySelect: (id: string) => void;
   showSecondary: boolean;
+  onNavigate?: () => void;
 }
 
-export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: AppSidebarProps) {
+export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, onNavigate }: AppSidebarProps) {
   const location = useLocation();
   const [showAllSubcategories, setShowAllSubcategories] = useState(false);
 
@@ -171,9 +172,9 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
   const hasMoreSubcategories = subcategories.length > 5;
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full bg-background shadow-lg lg:shadow-none">
       {/* Primary Navigation Bar */}
-      <div className="w-16 bg-primary flex flex-col items-center py-4 border-r border-border">
+      <div className="w-16 bg-primary flex flex-col items-center py-4 border-r border-border flex-shrink-0">
         <div className="flex flex-col gap-2 flex-1">
           {primaryNavItems.map((item) => (
             <div key={item.id} className="relative">
@@ -220,7 +221,7 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
 
       {/* Secondary Sidebar */}
       {showSecondary && selectedContent && (
-        <div className="w-[250px] bg-background border-r border-border flex flex-col">
+        <div className="w-[250px] sm:w-[280px] bg-background border-r border-border flex flex-col flex-shrink-0">
           {/* Header */}
           <div className="p-4 border-b border-border">
             {selectedPrimary === 'apps' ? (
@@ -247,7 +248,10 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                       <Link
                         key={item.url}
                         to={item.url}
-                        onClick={() => setShowAllSubcategories(false)}
+                        onClick={() => {
+                          setShowAllSubcategories(false);
+                          onNavigate?.();
+                        }}
                         className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                           isActive(item.url)
                             ? 'bg-accent text-accent-foreground' 
@@ -272,6 +276,7 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                         <Link
                           key={subcat.title}
                           to={subcat.url}
+                          onClick={onNavigate}
                           className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                             isActive(subcat.url) 
                               ? 'bg-accent text-accent-foreground' 
@@ -307,6 +312,7 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                   <Link
                     key={item.url}
                     to={item.url}
+                    onClick={onNavigate}
                     className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                       isActive(item.url) 
                         ? 'bg-accent text-accent-foreground' 

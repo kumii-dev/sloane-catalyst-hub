@@ -176,7 +176,7 @@ const ResourceCategory = () => {
       <Navbar />
       
       {/* Header */}
-      <section className="relative py-16 bg-gradient-to-br from-primary/10 via-background to-accent/10">
+      <section className="relative py-18 bg-gradient-to-br from-primary/10 via-background to-accent/10">
         <div className="container mx-auto px-6">
           <div className="flex items-center gap-4 mb-6">
             <Button variant="ghost" size="sm" asChild>

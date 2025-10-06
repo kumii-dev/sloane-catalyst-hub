@@ -28,7 +28,7 @@ import { Separator } from "@/components/ui/separator";
 // Primary sidebar items (narrow vertical bar)
 const primaryNavItems = [
   { icon: Activity, id: "activity", title: "Activity", badge: 3 },
-  { icon: MessageCircle, id: "chat", title: "Chat", badge: null },
+  { icon: MessageCircle, id: "messaging", title: "Messaging Hub", badge: null },
   { icon: Calendar, id: "calendar", title: "Calendar", badge: null },
   { icon: Phone, id: "calls", title: "Calls", badge: null },
   { icon: FolderOpen, id: "files", title: "Files", badge: null },
@@ -47,12 +47,13 @@ const secondaryContent = {
       { title: "Notifications", url: "/notifications" },
     ]
   },
-  chat: {
-    title: "Chat",
+  messaging: {
+    title: "Messaging Hub",
     items: [
-      { title: "Recent", url: "/chat" },
-      { title: "Contacts", url: "/contacts" },
-      { title: "Teams", url: "/teams" },
+      { title: "Recent Messages", url: "/messaging" },
+      { title: "All Contacts", url: "/messaging?tab=contacts" },
+      { title: "Teams & Groups", url: "/messaging?tab=teams" },
+      { title: "Pinned", url: "/messaging?tab=pinned" },
     ]
   },
   apps: {

@@ -15,8 +15,8 @@ const MessagingHub = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <Layout showSidebar={false}>
-      <div className="flex h-[calc(100vh-8rem)] bg-background">
+    <Layout showSidebar={true} hideSecondarySidebar={true}>
+      <div className="flex h-[calc(100vh-4rem)] bg-background">
         {/* Secondary Sidebar - Tabs & Folders */}
         <div className="w-80 border-r border-border flex flex-col bg-card">
           <div className="p-4 border-b border-border">

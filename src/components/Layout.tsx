@@ -10,9 +10,10 @@ import { useIsMobile } from "@/hooks/use-mobile";
 interface LayoutProps {
   children: React.ReactNode;
   showSidebar?: boolean;
+  hideSecondarySidebar?: boolean;
 }
 
-export function Layout({ children, showSidebar = false }: LayoutProps) {
+export function Layout({ children, showSidebar = false, hideSecondarySidebar = false }: LayoutProps) {
   const [selectedPrimary, setSelectedPrimary] = useState("apps");
   const [showSecondary, setShowSecondary] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -89,7 +90,7 @@ export function Layout({ children, showSidebar = false }: LayoutProps) {
           <AppSidebar 
             selectedPrimary={selectedPrimary}
             onPrimarySelect={handlePrimarySelect}
-            showSecondary={showSecondary}
+            showSecondary={hideSecondarySidebar ? false : showSecondary}
             onNavigate={() => {
               if (isMobile || isTablet) {
                 setSidebarOpen(false);

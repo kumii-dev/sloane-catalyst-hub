@@ -132,21 +132,21 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
     { title: "Support & Help Center", url: "/resources" },
   ],
   "Software Services": [
-    { title: "Business Operations & Productivity", url: "/services/category/software-services" },
-    { title: "Customer Relationship & Sales", url: "/services/category/software-services" },
-    { title: "Accounting & Finance", url: "/services/category/software-services" },
-    { title: "Marketing, Branding & Analytics", url: "/services/category/software-services" },
-    { title: "eCommerce & Retail", url: "/services/category/software-services" },
-    { title: "Cybersecurity & Compliance", url: "/services/category/software-services" },
-    { title: "Data, AI & Analytics", url: "/services/category/software-services" },
-    { title: "Cloud, Hosting & Infrastructure", url: "/services/category/software-services" },
-    { title: "Project Management & Collaboration", url: "/services/category/software-services" },
-    { title: "HR & People Development", url: "/services/category/software-services" },
-    { title: "Legal, Risk & Governance", url: "/services/category/software-services" },
-    { title: "Industry-Specific Solutions", url: "/services/category/software-services" },
+    { title: "Business Operations & Productivity", url: "/services/category/sw-business-operations-productivity" },
+    { title: "Customer Relationship & Sales", url: "/services/category/sw-customer-relationship-sales" },
+    { title: "Accounting & Finance", url: "/services/category/sw-accounting-finance" },
+    { title: "Marketing, Branding & Analytics", url: "/services/category/sw-marketing-branding-analytics" },
+    { title: "eCommerce & Retail", url: "/services/category/sw-ecommerce-retail" },
+    { title: "Cybersecurity & Compliance", url: "/services/category/sw-cybersecurity-compliance" },
+    { title: "Data, AI & Analytics", url: "/services/category/sw-data-ai-analytics" },
+    { title: "Cloud, Hosting & Infrastructure", url: "/services/category/sw-cloud-hosting-infrastructure" },
+    { title: "Project Management & Collaboration", url: "/services/category/sw-project-management-collaboration" },
+    { title: "HR & People Development", url: "/services/category/sw-hr-people-development" },
+    { title: "Legal, Risk & Governance", url: "/services/category/sw-legal-risk-governance" },
+    { title: "Industry-Specific Solutions", url: "/services/category/sw-industry-specific-solutions" },
     { title: "Developer & Tech Tools", url: "/services/category/sw-developer-tech-tools" },
     { title: "Integration & Automation", url: "/services/category/sw-integration-automation" },
-    { title: "Startup Support & Advisory", url: "/services/category/startup-support-advisory" },
+    { title: "Startup Support & Advisory", url: "/services/category/sw-startup-support-advisory" },
   ],
 };
 
@@ -165,8 +165,12 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
   
   const selectedContent = secondaryContent[selectedPrimary as keyof typeof secondaryContent];
   
-  // Auto-detect selected app based on current route
-  const selectedApp = selectedContent?.items.find(item => isActive(item.url))?.title || null;
+  // Auto-detect selected app based on current route (supports deep routes)
+  const currentPath = location.pathname;
+  let selectedApp = selectedContent?.items.find(item => isActive(item.url))?.title || null;
+  if (!selectedApp) {
+    if (currentPath.startsWith('/services/category/')) selectedApp = 'Software Services';
+  }
   
   // Get subcategories for the selected app
   const subcategories = selectedApp ? appSubcategories[selectedApp] || [] : [];

@@ -77,7 +77,7 @@ const FundingHub = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-18">
           <div className="text-center space-y-8">
             <div className="space-y-4">
               <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">

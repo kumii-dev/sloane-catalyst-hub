@@ -72,6 +72,31 @@ const ServiceCategory = () => {
     }
   }, [category, sortBy, pricingFilter, providerFilter, ratingFilter, useCaseFilter, cohortFilter, searchQuery]);
 
+  // Dynamic SEO: title, description, canonical
+  useEffect(() => {
+    const pageTitle = category ? `${category.name} | Software Services` : 'Software Services';
+    document.title = pageTitle;
+
+    const desc = category?.description || 'Discover software services by category to grow your business.';
+    const existingMeta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
+    if (existingMeta) existingMeta.setAttribute('content', desc);
+    else {
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = desc;
+      document.head.appendChild(meta);
+    }
+
+    const canonicalHref = `${window.location.origin}/services/category/${slug}`;
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', canonicalHref);
+  }, [category, slug]);
+
   const fetchCategoryData = async () => {
     try {
       // Fetch category
@@ -270,14 +295,14 @@ const ServiceCategory = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center mb-4">
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-              <div className="text-primary font-semibold text-3xl">💻</div>
+              {(() => { const Icon = getIconComponent(slug || category?.slug || 'software-services'); return <Icon className="h-10 w-10 text-primary" />; })()}
             </div>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Software Services
+            {category?.name || 'Software Services'}
           </h1>
           <p className="text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">
-            CRM, ERP, Accounting, HR, Marketing, Security, Analytics, and AI Tools
+            {category?.description || 'Discover software by category to grow your business.'}
           </p>
           
           {/* Search Bar with Enhanced Filters */}
@@ -491,7 +516,7 @@ const ServiceCategory = () => {
         {/* Services Section */}
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold">Available Software Services</h2>
+            <h2 className="text-3xl font-bold">Available in {category.name}</h2>
             <Button variant="ghost" onClick={() => { 
               setSearchQuery(""); 
               setPricingFilter("all"); 
@@ -587,21 +612,31 @@ const ServiceCategory = () => {
           </div>
         </section>
 
-        {services.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-lg text-muted-foreground mb-4">No services found matching your criteria.</p>
-            <Button onClick={() => { 
-              setSearchQuery(""); 
-              setPricingFilter("all"); 
-              setProviderFilter("all"); 
-              setRatingFilter("all");
-              setUseCaseFilter("all");
-              setCohortFilter("all");
-            }}>
-              Clear All Filters
-            </Button>
-          </div>
-        )}
+          {services.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground mb-4">No services found in {category.name} yet.</p>
+              {slug === 'sw-startup-support-advisory' ? (
+                <div className="flex items-center justify-center gap-4 mb-6">
+                  <Link to="/credit-score">
+                    <Button className="px-6">Try our Credit Scoring tool</Button>
+                  </Link>
+                  <Link to="/credit-score/assessment">
+                    <Button variant="outline" className="px-6">Start assessment</Button>
+                  </Link>
+                </div>
+              ) : null}
+              <Button onClick={() => { 
+                setSearchQuery(""); 
+                setPricingFilter("all"); 
+                setProviderFilter("all"); 
+                setRatingFilter("all");
+                setUseCaseFilter("all");
+                setCohortFilter("all");
+              }}>
+                Clear All Filters
+              </Button>
+            </div>
+          )}
 
         {/* Stats Section */}
         {services.length > 0 && (

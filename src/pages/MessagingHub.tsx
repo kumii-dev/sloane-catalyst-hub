@@ -18,8 +18,8 @@ const MessagingHub = () => {
     <Layout showSidebar={true} hideSecondarySidebar={true}>
       <div className="flex h-[calc(100vh-4rem)] bg-background">
         {/* Secondary Sidebar - Tabs & Folders */}
-        <div className="w-80 border-r border-border flex flex-col bg-card">
-          <div className="p-4 border-b border-border hidden md:block">
+        <div className="w-80 border-r border-border flex-col bg-card hidden md:flex">
+          <div className="p-4 border-b border-border">
             <h1 className="text-2xl font-bold text-foreground mb-4">Messaging Hub</h1>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />

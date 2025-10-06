@@ -153,7 +153,7 @@ const AccessToMarket = () => {
   return (
     <Layout showSidebar={true}>
       {/* Hero Section */}
-      <section className="py-12 bg-gradient-to-br from-primary/5 via-background to-accent/5">
+      <section className="py-10 bg-gradient-to-br from-primary/5 via-background to-accent/5">
         <div className="container mx-auto px-6 text-center">
           <div className="max-w-4xl mx-auto">
             <Badge variant="outline" className="mb-4">
@@ -184,7 +184,7 @@ const AccessToMarket = () => {
       </section>
 
       {/* Main Features */}
-      <section className="py-16">
+      <section className="py-14">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {marketFeatures.map((feature) => (

@@ -156,12 +156,14 @@ interface AppSidebarProps {
 
 export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: AppSidebarProps) {
   const location = useLocation();
-  const [selectedApp, setSelectedApp] = useState<string | null>(null);
   const [showAllSubcategories, setShowAllSubcategories] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
   
   const selectedContent = secondaryContent[selectedPrimary as keyof typeof secondaryContent];
+  
+  // Auto-detect selected app based on current route
+  const selectedApp = selectedContent?.items.find(item => isActive(item.url))?.title || null;
   
   // Get subcategories for the selected app
   const subcategories = selectedApp ? appSubcategories[selectedApp] || [] : [];
@@ -245,12 +247,9 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                       <Link
                         key={item.url}
                         to={item.url}
-                        onClick={() => {
-                          setSelectedApp(item.title);
-                          setShowAllSubcategories(false);
-                        }}
+                        onClick={() => setShowAllSubcategories(false)}
                         className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                          selectedApp === item.title || isActive(item.url)
+                          isActive(item.url)
                             ? 'bg-accent text-accent-foreground' 
                             : 'hover:bg-muted text-foreground'
                         }`}

@@ -17,6 +17,8 @@ import {
   Briefcase,
   BookOpen,
   Settings,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,6 +63,7 @@ const secondaryContent = {
       { title: "Credit Scoring", url: "/credit-score" },
       { title: "Mentorship", url: "/mentorship" },
       { title: "Professional Services", url: "/services" },
+      { title: "Software Services", url: "/services/category/software-services" },
       { title: "Resources", url: "/resources" },
     ]
   },
@@ -74,6 +77,77 @@ const secondaryContent = {
   }
 };
 
+// Dynamic subcategory mapping for each main app
+const appSubcategories: Record<string, Array<{ title: string; url: string }>> = {
+  "Access To Market": [
+    { title: "Credit Score Check", url: "/credit-score" },
+    { title: "Funder Directory", url: "/funding" },
+    { title: "Smart Matching", url: "/access-to-market" },
+    { title: "Funding Opportunities", url: "/funding" },
+  ],
+  "Access To Capital": [
+    { title: "Opportunities", url: "/funding" },
+    { title: "Funders", url: "/funding" },
+    { title: "Insights", url: "/funding" },
+  ],
+  "Credit Scoring": [
+    { title: "360° Credit Scoring", url: "/credit-score" },
+    { title: "Alternative Data Sources", url: "/credit-score" },
+    { title: "Funder-Grade Reports", url: "/credit-score" },
+    { title: "Trusted by Funders", url: "/credit-score" },
+  ],
+  "Mentorship": [
+    { title: "Technology", url: "/mentorship" },
+    { title: "Business", url: "/mentorship" },
+    { title: "Design", url: "/mentorship" },
+    { title: "Marketing", url: "/mentorship" },
+    { title: "Career", url: "/mentorship" },
+    { title: "Finance", url: "/mentorship" },
+    { title: "Other", url: "/mentorship" },
+  ],
+  "Professional Services": [
+    { title: "Business Operations & Productivity", url: "/services" },
+    { title: "Customer Relationship & Sales", url: "/services" },
+    { title: "Professional & Ancillary Services", url: "/services" },
+    { title: "Growth and Development Services", url: "/services" },
+    { title: "eCommerce & Retail", url: "/services" },
+    { title: "Cybersecurity & Compliance", url: "/services" },
+    { title: "Data, AI & Analytics", url: "/services" },
+    { title: "Cloud, Hosting & Infrastructure", url: "/services" },
+    { title: "Project Management & Collaboration", url: "/services" },
+    { title: "HR & People Development", url: "/services" },
+    { title: "Legal, Risk & Governance", url: "/services" },
+    { title: "Industry-Specific Solutions", url: "/services" },
+    { title: "Developer & Tech Tools", url: "/services" },
+    { title: "Integration & Automation", url: "/services" },
+    { title: "Startup Support & Advisory", url: "/services" },
+  ],
+  "Resources": [
+    { title: "Learning Hub", url: "/resources" },
+    { title: "Knowledge Library", url: "/resources" },
+    { title: "Tools & Downloads", url: "/resources" },
+    { title: "Community & Networking", url: "/resources" },
+    { title: "Support & Help Center", url: "/resources" },
+  ],
+  "Software Services": [
+    { title: "Business Operations & Productivity", url: "/services/category/software-services" },
+    { title: "Customer Relationship & Sales", url: "/services/category/software-services" },
+    { title: "Accounting & Finance", url: "/services/category/software-services" },
+    { title: "Marketing, Branding & Analytics", url: "/services/category/software-services" },
+    { title: "eCommerce & Retail", url: "/services/category/software-services" },
+    { title: "Cybersecurity & Compliance", url: "/services/category/software-services" },
+    { title: "Data, AI & Analytics", url: "/services/category/software-services" },
+    { title: "Cloud, Hosting & Infrastructure", url: "/services/category/software-services" },
+    { title: "Project Management & Collaboration", url: "/services/category/software-services" },
+    { title: "HR & People Development", url: "/services/category/software-services" },
+    { title: "Legal, Risk & Governance", url: "/services/category/software-services" },
+    { title: "Industry-Specific Solutions", url: "/services/category/software-services" },
+    { title: "Developer & Tech Tools", url: "/services/category/software-services" },
+    { title: "Integration & Automation", url: "/services/category/software-services" },
+    { title: "Startup Support & Advisory", url: "/services/category/software-services" },
+  ],
+};
+
 interface AppSidebarProps {
   selectedPrimary: string;
   onPrimarySelect: (id: string) => void;
@@ -82,10 +156,17 @@ interface AppSidebarProps {
 
 export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: AppSidebarProps) {
   const location = useLocation();
+  const [selectedApp, setSelectedApp] = useState<string | null>(null);
+  const [showAllSubcategories, setShowAllSubcategories] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
   
   const selectedContent = secondaryContent[selectedPrimary as keyof typeof secondaryContent];
+  
+  // Get subcategories for the selected app
+  const subcategories = selectedApp ? appSubcategories[selectedApp] || [] : [];
+  const visibleSubcategories = showAllSubcategories ? subcategories : subcategories.slice(0, 5);
+  const hasMoreSubcategories = subcategories.length > 5;
 
   return (
     <div className="flex h-full">
@@ -161,11 +242,14 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                   <h3 className="font-medium text-sm text-muted-foreground mb-3">Growth Gateway</h3>
                   <div className="space-y-1">
                     {selectedContent.items.map((item) => (
-                      <Link
+                      <button
                         key={item.url}
-                        to={item.url}
-                        className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                          isActive(item.url) 
+                        onClick={() => {
+                          setSelectedApp(item.title);
+                          setShowAllSubcategories(false);
+                        }}
+                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                          selectedApp === item.title
                             ? 'bg-accent text-accent-foreground' 
                             : 'hover:bg-muted text-foreground'
                         }`}
@@ -174,45 +258,48 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary }: 
                           <TrendingUp className="h-3 w-3 text-primary-foreground" />
                         </div>
                         {item.title}
-                      </Link>
+                      </button>
                     ))}
-                    <Link
-                      to="/services/category/software-services"
-                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                        isActive('/services/category/software-services') 
-                          ? 'bg-accent text-accent-foreground' 
-                          : 'hover:bg-muted text-foreground'
-                      }`}
-                    >
-                      <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-                        <TrendingUp className="h-3 w-3 text-primary-foreground" />
-                      </div>
-                      Software Services
-                    </Link>
                   </div>
                 </div>
 
-                <div>
-                  <h3 className="font-medium text-sm text-muted-foreground mb-3">Categories</h3>
-                  <div className="grid grid-cols-1 gap-1">
-                    {[
-                      "Financial Services & FinTech",
-                      "Health & HealthTech", 
-                      "Education & EdTech",
-                      "Agriculture & AgriTech",
-                      "ICT & Software Development",
-                      "Energy & GreenTech"
-                    ].map((category) => (
-                      <Button
-                        key={category}
-                        variant="ghost"
-                        className="justify-start h-auto p-2 text-xs text-left"
-                      >
-                        {category}
-                      </Button>
-                    ))}
+                {/* Dynamic Subcategories */}
+                {selectedApp && subcategories.length > 0 && (
+                  <div>
+                    <h3 className="font-medium text-sm text-muted-foreground mb-3">{selectedApp}</h3>
+                    <div className="space-y-1">
+                      {visibleSubcategories.map((subcat) => (
+                        <Link
+                          key={subcat.title}
+                          to={subcat.url}
+                          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                            isActive(subcat.url) 
+                              ? 'bg-accent text-accent-foreground' 
+                              : 'hover:bg-muted text-foreground'
+                          }`}
+                        >
+                          {subcat.title}
+                        </Link>
+                      ))}
+                      
+                      {hasMoreSubcategories && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setShowAllSubcategories(!showAllSubcategories)}
+                          className="w-full justify-between h-auto px-3 py-2 text-sm hover:bg-muted"
+                        >
+                          <span>{showAllSubcategories ? 'Show Less' : 'More'}</span>
+                          {showAllSubcategories ? (
+                            <ChevronUp className="h-4 w-4" />
+                          ) : (
+                            <ChevronDown className="h-4 w-4" />
+                          )}
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             ) : (
               <div className="space-y-1">

@@ -111,25 +111,6 @@ const FundingHub = () => {
         </div>
       </div>
 
-      {/* Stats Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
-            <Card key={index} className="text-center">
-              <CardContent className="pt-6">
-                <div className="space-y-2">
-                  <p className="text-3xl font-bold text-primary">{stat.value}</p>
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  <Badge variant="secondary" className="text-xs">
-                    {stat.change}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-
       {/* Search and Filter Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         <div className="flex flex-col sm:flex-row gap-4">
@@ -244,6 +225,25 @@ const FundingHub = () => {
             </div>
           </TabsContent>
         </Tabs>
+      </div>
+
+      {/* Stats Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {stats.map((stat, index) => (
+            <Card key={index} className="text-center">
+              <CardContent className="pt-6">
+                <div className="space-y-2">
+                  <p className="text-3xl font-bold text-primary">{stat.value}</p>
+                  <p className="text-sm text-muted-foreground">{stat.label}</p>
+                  <Badge variant="secondary" className="text-xs">
+                    {stat.change}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </Layout>
   );

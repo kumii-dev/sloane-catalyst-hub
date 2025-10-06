@@ -144,9 +144,9 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
     { title: "HR & People Development", url: "/services/category/software-services" },
     { title: "Legal, Risk & Governance", url: "/services/category/software-services" },
     { title: "Industry-Specific Solutions", url: "/services/category/software-services" },
-    { title: "Developer & Tech Tools", url: "/services/category/software-services" },
-    { title: "Integration & Automation", url: "/services/category/software-services" },
-    { title: "Startup Support & Advisory", url: "/services/category/software-services" },
+    { title: "Developer & Tech Tools", url: "/services/category/sw-developer-tech-tools" },
+    { title: "Integration & Automation", url: "/services/category/sw-integration-automation" },
+    { title: "Startup Support & Advisory", url: "/services/category/startup-support-advisory" },
   ],
 };
 

@@ -158,7 +158,7 @@ const ResourceCategory = () => {
     return (
       <div className="min-h-screen bg-background">
         <Navbar />
-        <div className="container mx-auto px-6 py-20">
+        <div className="container mx-auto px-6 py-15">
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">Category Not Found</h1>
             <p className="text-muted-foreground mb-8">The resource category you're looking for doesn't exist.</p>

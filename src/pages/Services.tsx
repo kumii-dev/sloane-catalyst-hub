@@ -158,7 +158,7 @@ const Services = () => {
   return (
     <Layout showSidebar={true}>
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
+      <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             Services Marketplace

@@ -266,7 +266,7 @@ const ServiceCategory = () => {
   return (
     <Layout showSidebar={true}>
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
+      <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center mb-4">
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mr-4">

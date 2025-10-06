@@ -73,7 +73,7 @@ const Mentorship = () => {
   return (
     <Layout showSidebar={true}>
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-background via-background/95 to-muted/20">
+      <section className="relative overflow-hidden py-15 px-4 bg-gradient-to-br from-background via-background/95 to-muted/20">
         <div className="absolute inset-0 hero-gradient opacity-20" />
         <div className="relative mx-auto max-w-6xl text-center z-10">
           <div className="mb-8 flex justify-center gap-4">
@@ -227,7 +227,7 @@ const Mentorship = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4">
+      <section className="py-15 px-4">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="mb-6 text-4xl font-bold">Ready to Accelerate Your Growth?</h2>
           <p className="mb-8 text-lg text-muted-foreground">

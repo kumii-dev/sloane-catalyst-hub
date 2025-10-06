@@ -98,7 +98,7 @@ const FindMentor = () => {
     <Layout showSidebar={true}>
       <div className="bg-background">
       {/* Header */}
-      <section className="relative bg-gradient-to-br from-background via-background/95 to-muted/20 py-16 px-4 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-background via-background/95 to-muted/20 py-12 px-4 overflow-hidden">
         <div className="absolute inset-0 hero-gradient opacity-20" />
         <div className="mx-auto max-w-6xl relative z-10">
           <h1 className="mb-4 text-4xl font-bold">Find Your Perfect Mentor</h1>

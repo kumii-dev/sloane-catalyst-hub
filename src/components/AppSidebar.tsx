@@ -178,7 +178,7 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
       {/* Primary Navigation Bar */}
       <div className="w-16 bg-primary flex flex-col items-center py-4 border-r border-border flex-shrink-0">
         {/* Home Button */}
-        <Link to="/" className="mb-4" onClick={onNavigate}>
+        <Link to="/access-to-market" className="mb-4" onClick={onNavigate}>
           <Button
             variant="ghost"
             size="sm"

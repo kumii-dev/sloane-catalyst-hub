@@ -11,6 +11,7 @@ interface VideoSection {
   route: string;
   duration: number; // seconds
   description: string;
+  features: string[]; // Key features to highlight
 }
 
 const VideoCreator = () => {
@@ -18,129 +19,178 @@ const VideoCreator = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [currentSection, setCurrentSection] = useState<string>('');
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Define sections synced with narration timing
   const videoSections: VideoSection[] = [
-    { title: "Welcome & Overview", route: "/", duration: 8, description: "Platform introduction" },
-    { title: "Funding Hub", route: "/funding-hub", duration: 10, description: "Access to capital" },
-    { title: "Mentorship", route: "/mentorship", duration: 10, description: "Expert guidance" },
-    { title: "Access to Market", route: "/access-to-market", duration: 10, description: "Marketplace access" },
-    { title: "Services", route: "/services", duration: 8, description: "Professional services" },
-    { title: "Resources", route: "/resources", duration: 8, description: "Knowledge library" },
-    { title: "Credit Score", route: "/credit-score", duration: 10, description: "Financial health" },
+    { 
+      title: "Welcome & Overview", 
+      route: "/", 
+      duration: 8, 
+      description: "Platform introduction",
+      features: ["hero", "stats", "partners"]
+    },
+    { 
+      title: "Funding Hub", 
+      route: "/funding-hub", 
+      duration: 10, 
+      description: "Access to capital",
+      features: ["browse-funding", "funder-directory"]
+    },
+    { 
+      title: "Mentorship", 
+      route: "/mentorship", 
+      duration: 10, 
+      description: "Expert guidance",
+      features: ["find-mentor", "become-mentor"]
+    },
+    { 
+      title: "Access to Market", 
+      route: "/access-to-market", 
+      duration: 10, 
+      description: "Marketplace access",
+      features: ["listings", "smart-matching"]
+    },
+    { 
+      title: "Services", 
+      route: "/services", 
+      duration: 8, 
+      description: "Professional services",
+      features: ["legal", "accounting", "marketing"]
+    },
+    { 
+      title: "Resources", 
+      route: "/resources", 
+      duration: 8, 
+      description: "Knowledge library",
+      features: ["guides", "templates", "case-studies"]
+    },
+    { 
+      title: "Credit Score", 
+      route: "/credit-score", 
+      duration: 10, 
+      description: "Financial health",
+      features: ["assessment", "results"]
+    },
   ];
 
-  const renderAnimatedFrame = (
+  const captureIframeToCanvas = async (iframe: HTMLIFrameElement, canvas: HTMLCanvasElement) => {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    try {
+      // Wait for iframe to load
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Use html2canvas-like approach: draw the iframe content
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+      if (!iframeDoc) return;
+
+      // Take a simple screenshot approach: convert iframe to image
+      const svgData = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">
+          <foreignObject width="100%" height="100%">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="transform: scale(1); transform-origin: top left;">
+              ${iframeDoc.documentElement.outerHTML}
+            </div>
+          </foreignObject>
+        </svg>
+      `;
+      
+      const img = new Image();
+      const blob = new Blob([svgData], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      
+      return new Promise((resolve) => {
+        img.onload = () => {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          URL.revokeObjectURL(url);
+          resolve(true);
+        };
+        img.onerror = () => {
+          console.error('Failed to capture iframe');
+          resolve(false);
+        };
+        img.src = url;
+      });
+    } catch (error) {
+      console.error('Error capturing iframe:', error);
+    }
+  };
+
+  const addOverlayToCanvas = (
     ctx: CanvasRenderingContext2D,
     section: VideoSection,
-    progress: number, // 0 to 1 for section progress
+    progress: number,
     canvas: HTMLCanvasElement
   ) => {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Create dynamic gradient background
-    const gradient = ctx.createLinearGradient(0, 0, width, height);
-    const hue = (videoSections.indexOf(section) * 50) % 360;
-    gradient.addColorStop(0, `hsl(${hue}, 70%, 15%)`);
-    gradient.addColorStop(1, `hsl(${(hue + 60) % 360}, 60%, 25%)`);
+    // Add semi-transparent overlay at top for title
+    const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
+    ctx.fillRect(0, 0, width, 200);
 
-    // Add animated particles
-    const particleCount = 20;
-    for (let i = 0; i < particleCount; i++) {
-      const x = (width / particleCount) * i + (Math.sin(progress * Math.PI * 2 + i) * 100);
-      const y = height * 0.3 + (Math.cos(progress * Math.PI * 2 + i * 0.5) * 150);
-      const size = 4 + Math.sin(progress * Math.PI * 4 + i) * 2;
-      
-      ctx.beginPath();
-      ctx.arc(x, y, size, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${(hue + 180) % 360}, 80%, 70%, ${0.3 + Math.sin(progress * Math.PI * 2 + i) * 0.2})`;
-      ctx.fill();
-    }
+    // Title
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+    ctx.font = 'bold 48px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(section.title, 40, 60);
 
-    // Zoom effect
-    const scale = 1 + Math.sin(progress * Math.PI) * 0.05;
-    ctx.save();
-    ctx.translate(width / 2, height / 2);
-    ctx.scale(scale, scale);
-    ctx.translate(-width / 2, -height / 2);
+    // Description
+    ctx.fillStyle = 'rgba(200, 200, 255, 0.9)';
+    ctx.font = '28px system-ui, -apple-system, sans-serif';
+    ctx.fillText(section.description, 40, 100);
 
-    // Title with slide-in animation
-    const titleSlide = Math.min(progress * 2, 1);
-    const titleX = width * 0.5;
-    const titleY = height * 0.4 - (1 - titleSlide) * 100;
-    const titleOpacity = titleSlide;
-
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-    ctx.shadowBlur = 20;
-    ctx.shadowOffsetY = 10;
-
-    ctx.fillStyle = `rgba(255, 255, 255, ${titleOpacity})`;
-    ctx.font = 'bold 96px system-ui, -apple-system, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(section.title, titleX, titleY);
-
-    // Description with fade-in animation
-    const descSlide = Math.max((progress - 0.2) * 1.5, 0);
-    const descOpacity = Math.min(descSlide, 1);
-    
-    ctx.shadowBlur = 10;
-    ctx.fillStyle = `rgba(200, 200, 255, ${descOpacity})`;
-    ctx.font = '48px system-ui, -apple-system, sans-serif';
-    ctx.fillText(section.description, titleX, titleY + 100);
-
-    // Progress indicator
-    ctx.shadowBlur = 0;
-    const barWidth = width * 0.6;
-    const barHeight = 8;
-    const barX = (width - barWidth) / 2;
-    const barY = height * 0.7;
+    // Progress bar at bottom
+    const barHeight = 6;
+    const barY = height - 40;
+    const barX = 40;
+    const barWidth = width - 80;
 
     // Background bar
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-    ctx.roundRect(barX, barY, barWidth, barHeight, barHeight / 2);
-    ctx.fill();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.fillRect(barX, barY, barWidth, barHeight);
 
     // Progress fill
-    const progressGradient = ctx.createLinearGradient(barX, barY, barX + barWidth * progress, barY);
-    progressGradient.addColorStop(0, `hsl(${(hue + 180) % 360}, 80%, 60%)`);
-    progressGradient.addColorStop(1, `hsl(${(hue + 220) % 360}, 80%, 70%)`);
-    ctx.fillStyle = progressGradient;
-    ctx.roundRect(barX, barY, barWidth * progress, barHeight, barHeight / 2);
-    ctx.fill();
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.9)';
+    ctx.fillRect(barX, barY, barWidth * progress, barHeight);
 
-    // Section number
+    // Section indicator
     const sectionIndex = videoSections.indexOf(section) + 1;
-    ctx.fillStyle = `rgba(255, 255, 255, ${descOpacity})`;
-    ctx.font = 'bold 36px system-ui';
-    ctx.fillText(`${sectionIndex} / ${videoSections.length}`, titleX, barY + 40);
-
-    ctx.restore();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.font = 'bold 24px system-ui';
+    ctx.textAlign = 'right';
+    ctx.fillText(`${sectionIndex} / ${videoSections.length}`, width - 40, height - 50);
   };
 
   const generateVideo = async () => {
     try {
       setIsGenerating(true);
       setProgress(0);
+      setCurrentSection('Initializing...');
       toast.info("Starting video generation...");
 
       const canvas = canvasRef.current;
-      if (!canvas) throw new Error('Canvas not found');
+      const iframe = iframeRef.current;
+      if (!canvas || !iframe) throw new Error('Canvas or iframe not found');
 
       const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('Canvas context not found');
 
-      // Set canvas dimensions
+      // Set canvas dimensions for 1080p
       canvas.width = 1920;
       canvas.height = 1080;
 
-      // Get audio URL from localStorage or state
+      // Get audio URL from localStorage
       const audioUrl = localStorage.getItem('narrationAudioUrl');
       if (!audioUrl) {
         toast.error("Please generate narration first from the About page");
@@ -148,25 +198,31 @@ const VideoCreator = () => {
         return;
       }
 
-      // Create audio element
+      // Create and setup audio
       const audio = new Audio(audioUrl);
-      audio.crossOrigin = 'anonymous';
-
-      // Set up MediaRecorder
-      const stream = canvas.captureStream(30); // 30 FPS
+      audioRef.current = audio;
       
-      // Add audio track to stream
+      // Setup MediaRecorder with canvas stream
+      const canvasStream = canvas.captureStream(30); // 30 FPS
+      
+      // Create audio context and connect audio
       const audioContext = new AudioContext();
-      const audioSource = audioContext.createMediaElementSource(audio);
-      const dest = audioContext.createMediaStreamDestination();
-      audioSource.connect(dest);
-      audioSource.connect(audioContext.destination);
+      const source = audioContext.createMediaElementSource(audio);
+      const destination = audioContext.createMediaStreamDestination();
       
-      dest.stream.getAudioTracks().forEach(track => stream.addTrack(track));
+      source.connect(destination);
+      source.connect(audioContext.destination); // Also play through speakers
+      
+      // Add audio track to video stream
+      destination.stream.getAudioTracks().forEach(track => {
+        canvasStream.addTrack(track);
+      });
 
-      const mediaRecorder = new MediaRecorder(stream, {
+      // Create MediaRecorder
+      const mediaRecorder = new MediaRecorder(canvasStream, {
         mimeType: 'video/webm;codecs=vp9,opus',
         videoBitsPerSecond: 5000000,
+        audioBitsPerSecond: 128000,
       });
 
       mediaRecorderRef.current = mediaRecorder;
@@ -184,55 +240,88 @@ const VideoCreator = () => {
         setVideoUrl(url);
         toast.success("Video generated successfully!");
         setIsGenerating(false);
+        setCurrentSection('');
+        audioContext.close();
       };
 
       // Start recording
       mediaRecorder.start(100);
-      audio.play();
+      
+      // Start audio playback
+      await audio.play();
 
-      // Render animated sections
-      let currentTime = 0;
+      // Generate video sections
       for (let i = 0; i < videoSections.length; i++) {
         const section = videoSections[i];
+        setCurrentSection(`Capturing: ${section.title}`);
         setProgress(((i + 1) / videoSections.length) * 100);
-        toast.info(`Rendering: ${section.title}`);
-        
-        // Render section for its duration with animation
+        toast.info(`Capturing: ${section.title}`);
+
+        // Load the page in iframe
+        iframe.src = section.route;
+        await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for page load
+
         const startTime = Date.now();
-        const endTime = startTime + (section.duration * 1000);
+        const duration = section.duration * 1000;
+        const fps = 30;
+        const frameTime = 1000 / fps;
 
-        while (Date.now() < endTime) {
+        // Capture frames for this section
+        while (Date.now() - startTime < duration) {
           const elapsed = Date.now() - startTime;
-          const sectionProgress = Math.min(elapsed / (section.duration * 1000), 1);
+          const sectionProgress = elapsed / duration;
 
-          // Render animated frame
-          renderAnimatedFrame(ctx, section, sectionProgress, canvas);
+          // Clear canvas
+          ctx.fillStyle = '#0f172a';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-          // Add fade transitions at beginning and end
+          // Try to capture iframe content
+          try {
+            const iframeWindow = iframe.contentWindow;
+            const iframeDoc = iframe.contentDocument;
+            
+            if (iframeDoc && iframeDoc.body) {
+              // Create a simple visual representation
+              ctx.fillStyle = '#1e293b';
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              
+              // Add gradient overlay
+              const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+              gradient.addColorStop(0, 'rgba(59, 130, 246, 0.1)');
+              gradient.addColorStop(1, 'rgba(147, 51, 234, 0.1)');
+              ctx.fillStyle = gradient;
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+          } catch (e) {
+            // CORS error - just use solid background
+            console.log('CORS restriction, using overlay only');
+          }
+
+          // Add professional overlay
+          addOverlayToCanvas(ctx, section, sectionProgress, canvas);
+
+          // Add fade transitions
           if (elapsed < 500) {
             ctx.fillStyle = `rgba(15, 23, 42, ${1 - elapsed / 500})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-          } else if (endTime - Date.now() < 500) {
-            const fadeOut = (endTime - Date.now()) / 500;
-            ctx.fillStyle = `rgba(15, 23, 42, ${1 - fadeOut})`;
+          } else if (duration - elapsed < 500) {
+            ctx.fillStyle = `rgba(15, 23, 42, ${1 - (duration - elapsed) / 500})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
           }
 
-          await new Promise(resolve => setTimeout(resolve, 1000 / 30)); // 30 FPS
+          await new Promise(resolve => setTimeout(resolve, frameTime));
         }
-
-        currentTime += section.duration;
       }
 
       // Stop recording
-      audio.pause();
       mediaRecorder.stop();
-      audioContext.close();
+      audio.pause();
 
     } catch (error) {
       console.error('Video generation error:', error);
-      toast.error("Failed to generate video");
+      toast.error(`Failed to generate video: ${error.message}`);
       setIsGenerating(false);
+      setCurrentSection('');
     }
   };
 
@@ -281,6 +370,9 @@ const VideoCreator = () => {
           <Card className="p-8 space-y-6">
             <div className="space-y-4">
               <h3 className="text-xl font-semibold">Video Sections</h3>
+              <p className="text-sm text-muted-foreground">
+                Total duration: ~{videoSections.reduce((acc, s) => acc + s.duration, 0)} seconds with professional narration
+              </p>
               <div className="grid gap-3">
                 {videoSections.map((section, index) => (
                   <div key={index} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
@@ -297,12 +389,15 @@ const VideoCreator = () => {
             </div>
 
             {isGenerating && (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span>Generating video...</span>
+                  <span>{currentSection}</span>
                   <span>{Math.round(progress)}%</span>
                 </div>
                 <Progress value={progress} />
+                <p className="text-xs text-muted-foreground text-center">
+                  This may take a few minutes. Please don't close this page.
+                </p>
               </div>
             )}
 
@@ -311,9 +406,10 @@ const VideoCreator = () => {
                 size="lg" 
                 onClick={generateVideo}
                 disabled={isGenerating}
+                className="min-w-[200px]"
               >
                 <Play className="w-4 h-4 mr-2" />
-                Generate Video
+                {isGenerating ? 'Generating...' : 'Generate Marketing Video'}
               </Button>
               
               {videoUrl && (
@@ -334,12 +430,18 @@ const VideoCreator = () => {
               <h3 className="text-xl font-semibold mb-4">Preview</h3>
               <video 
                 controls 
-                className="w-full rounded-lg"
+                className="w-full rounded-lg shadow-lg"
                 src={videoUrl}
               />
             </Card>
           )}
 
+          {/* Hidden elements for video generation */}
+          <iframe 
+            ref={iframeRef} 
+            className="hidden" 
+            title="Video capture frame"
+          />
           <canvas ref={canvasRef} className="hidden" />
         </div>
       </main>

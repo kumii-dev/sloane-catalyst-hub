@@ -23,8 +23,8 @@ serve(async (req) => {
       throw new Error('ElevenLabs API key not configured')
     }
 
-    // Using Sarah voice - warm, inspirational, and professional
-    const voiceId = 'EXAVITQu4vr4xnSDxMaL'
+    // Using South African accent voice - warm, inspirational, and professional
+    const voiceId = 'BcpjRWrYhDBHmOnetmBl'
     
     console.log('Generating narration with ElevenLabs...')
 

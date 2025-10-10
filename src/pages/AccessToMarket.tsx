@@ -15,7 +15,10 @@ import {
   Building2,
   Zap,
   Shield,
-  BarChart3
+  BarChart3,
+  FileText,
+  Calculator,
+  LineChart
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
@@ -140,6 +143,30 @@ const AccessToMarket = () => {
       href: "/funding/browse",
       color: "bg-orange-500/10 text-orange-600",
       action: "Apply Now"
+    },
+    {
+      icon: FileText,
+      title: "Document Generator",
+      description: "Create investor-ready business plans in minutes with AI",
+      href: "/access-to-market/document-generator",
+      color: "bg-indigo-500/10 text-indigo-600",
+      action: "Generate Documents"
+    },
+    {
+      icon: Calculator,
+      title: "Financial Model Builder",
+      description: "Build dynamic 3-statement financial models with IFRS and US GAAP support",
+      href: "/access-to-market/financial-model",
+      color: "bg-cyan-500/10 text-cyan-600",
+      action: "Build Model"
+    },
+    {
+      icon: LineChart,
+      title: "Universal Valuation Model",
+      description: "Professional multi-method business valuation engine",
+      href: "/access-to-market/valuation",
+      color: "bg-rose-500/10 text-rose-600",
+      action: "Value Business"
     }
   ];
 
@@ -186,7 +213,7 @@ const AccessToMarket = () => {
       {/* Main Features */}
       <section className="py-12">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
             {marketFeatures.map((feature) => (
               <Card key={feature.title} className="group hover:shadow-lg transition-all duration-300">
                 <CardHeader className="text-center">

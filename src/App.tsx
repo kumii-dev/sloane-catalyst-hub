@@ -25,6 +25,9 @@ import AccessToMarket from "./pages/AccessToMarket";
 import CreditScore from "./pages/CreditScore";
 import CreditScoreAssessment from "./pages/CreditScoreAssessment";
 import CreditScoreResults from "./pages/CreditScoreResults";
+import DocumentGenerator from "./pages/DocumentGenerator";
+import FinancialModelBuilder from "./pages/FinancialModelBuilder";
+import ValuationModel from "./pages/ValuationModel";
 import CreateListing from "./pages/CreateListing";
 import ListingDetail from "./pages/ListingDetail";
 import MyListings from "./pages/MyListings";
@@ -55,6 +58,9 @@ const App = () => (
             <Route path="/funding/startup-dashboard" element={<StartupDashboard />} />
             <Route path="/funding/funder-dashboard" element={<FunderDashboard />} />
             <Route path="/access-to-market" element={<AccessToMarket />} />
+            <Route path="/access-to-market/document-generator" element={<DocumentGenerator />} />
+            <Route path="/access-to-market/financial-model" element={<FinancialModelBuilder />} />
+            <Route path="/access-to-market/valuation" element={<ValuationModel />} />
           <Route path="/credit-score" element={<CreditScore />} />
           <Route path="/credit-score/assessment" element={<CreditScoreAssessment />} />
           <Route path="/credit-score/results/:assessmentId" element={<CreditScoreResults />} />

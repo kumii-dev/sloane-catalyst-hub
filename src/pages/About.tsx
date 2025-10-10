@@ -448,6 +448,12 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               <SelectItem value="BcpjRWrYhDBHmOnetmBl">South African Accent - Professional & Warm</SelectItem>
               <SelectItem value="fPVZbr0RJBH9KL47pnxU">Alternative Voice - Clear & Engaging</SelectItem>
               <SelectItem value="3yJq5VpFXdeyF5oOBl2e">Natural Voice - Conversational & Friendly</SelectItem>
+              <SelectItem value="9Dbo4hEvXQ5l7MXGZFQA">Voice 4 - Dynamic & Energetic</SelectItem>
+              <SelectItem value="qVpGLzi5EhjW3WGVhOa9">Voice 5 - Smooth & Professional</SelectItem>
+              <SelectItem value="nJvj5shg2xu1GKGxqfkE">Voice 6 - Confident & Authoritative</SelectItem>
+              <SelectItem value="RAVWJW17BPoSIf05iXxf">Voice 7 - Friendly & Approachable</SelectItem>
+              <SelectItem value="atf1ppeJGCYFBlCLZ26e">Voice 8 - Clear & Articulate</SelectItem>
+              <SelectItem value="TTY70JqFvDxeExufZ1za">Voice 9 - Warm & Inviting</SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground">

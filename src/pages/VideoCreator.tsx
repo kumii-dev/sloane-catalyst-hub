@@ -33,53 +33,95 @@ const VideoCreator = () => {
     { title: "Credit Score", route: "/credit-score", duration: 10, description: "Financial health" },
   ];
 
-  const captureSection = async (section: VideoSection): Promise<ImageBitmap> => {
-    // Create iframe to load the route
-    const iframe = document.createElement('iframe');
-    iframe.style.width = '1920px';
-    iframe.style.height = '1080px';
-    iframe.style.position = 'absolute';
-    iframe.style.left = '-9999px';
-    iframe.src = section.route;
-    document.body.appendChild(iframe);
+  const renderAnimatedFrame = (
+    ctx: CanvasRenderingContext2D,
+    section: VideoSection,
+    progress: number, // 0 to 1 for section progress
+    canvas: HTMLCanvasElement
+  ) => {
+    const width = canvas.width;
+    const height = canvas.height;
 
-    // Wait for iframe to load
-    await new Promise((resolve) => {
-      iframe.onload = () => setTimeout(resolve, 2000); // Give time to render
-    });
+    // Create dynamic gradient background
+    const gradient = ctx.createLinearGradient(0, 0, width, height);
+    const hue = (videoSections.indexOf(section) * 50) % 360;
+    gradient.addColorStop(0, `hsl(${hue}, 70%, 15%)`);
+    gradient.addColorStop(1, `hsl(${(hue + 60) % 360}, 60%, 25%)`);
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
 
-    // Capture screenshot using html2canvas approach
-    const canvas = document.createElement('canvas');
-    canvas.width = 1920;
-    canvas.height = 1080;
-    const ctx = canvas.getContext('2d');
-
-    if (ctx && iframe.contentWindow) {
-      // Create image from iframe
-      const blob = await new Promise<Blob>((resolve) => {
-        iframe.contentWindow!.postMessage('capture', '*');
-        // Simplified: draw a gradient as placeholder for now
-        const gradient = ctx.createLinearGradient(0, 0, 1920, 1080);
-        gradient.addColorStop(0, '#0F172A');
-        gradient.addColorStop(1, '#6366F1');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, 1920, 1080);
-        
-        // Add section title
-        ctx.fillStyle = 'white';
-        ctx.font = 'bold 64px system-ui';
-        ctx.textAlign = 'center';
-        ctx.fillText(section.title, 960, 540);
-        
-        canvas.toBlob((blob) => resolve(blob!), 'image/png');
-      });
+    // Add animated particles
+    const particleCount = 20;
+    for (let i = 0; i < particleCount; i++) {
+      const x = (width / particleCount) * i + (Math.sin(progress * Math.PI * 2 + i) * 100);
+      const y = height * 0.3 + (Math.cos(progress * Math.PI * 2 + i * 0.5) * 150);
+      const size = 4 + Math.sin(progress * Math.PI * 4 + i) * 2;
       
-      document.body.removeChild(iframe);
-      return await createImageBitmap(blob);
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${(hue + 180) % 360}, 80%, 70%, ${0.3 + Math.sin(progress * Math.PI * 2 + i) * 0.2})`;
+      ctx.fill();
     }
 
-    document.body.removeChild(iframe);
-    throw new Error('Failed to capture section');
+    // Zoom effect
+    const scale = 1 + Math.sin(progress * Math.PI) * 0.05;
+    ctx.save();
+    ctx.translate(width / 2, height / 2);
+    ctx.scale(scale, scale);
+    ctx.translate(-width / 2, -height / 2);
+
+    // Title with slide-in animation
+    const titleSlide = Math.min(progress * 2, 1);
+    const titleX = width * 0.5;
+    const titleY = height * 0.4 - (1 - titleSlide) * 100;
+    const titleOpacity = titleSlide;
+
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetY = 10;
+
+    ctx.fillStyle = `rgba(255, 255, 255, ${titleOpacity})`;
+    ctx.font = 'bold 96px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(section.title, titleX, titleY);
+
+    // Description with fade-in animation
+    const descSlide = Math.max((progress - 0.2) * 1.5, 0);
+    const descOpacity = Math.min(descSlide, 1);
+    
+    ctx.shadowBlur = 10;
+    ctx.fillStyle = `rgba(200, 200, 255, ${descOpacity})`;
+    ctx.font = '48px system-ui, -apple-system, sans-serif';
+    ctx.fillText(section.description, titleX, titleY + 100);
+
+    // Progress indicator
+    ctx.shadowBlur = 0;
+    const barWidth = width * 0.6;
+    const barHeight = 8;
+    const barX = (width - barWidth) / 2;
+    const barY = height * 0.7;
+
+    // Background bar
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.roundRect(barX, barY, barWidth, barHeight, barHeight / 2);
+    ctx.fill();
+
+    // Progress fill
+    const progressGradient = ctx.createLinearGradient(barX, barY, barX + barWidth * progress, barY);
+    progressGradient.addColorStop(0, `hsl(${(hue + 180) % 360}, 80%, 60%)`);
+    progressGradient.addColorStop(1, `hsl(${(hue + 220) % 360}, 80%, 70%)`);
+    ctx.fillStyle = progressGradient;
+    ctx.roundRect(barX, barY, barWidth * progress, barHeight, barHeight / 2);
+    ctx.fill();
+
+    // Section number
+    const sectionIndex = videoSections.indexOf(section) + 1;
+    ctx.fillStyle = `rgba(255, 255, 255, ${descOpacity})`;
+    ctx.font = 'bold 36px system-ui';
+    ctx.fillText(`${sectionIndex} / ${videoSections.length}`, titleX, barY + 40);
+
+    ctx.restore();
   };
 
   const generateVideo = async () => {
@@ -148,34 +190,31 @@ const VideoCreator = () => {
       mediaRecorder.start(100);
       audio.play();
 
-      // Capture and render sections
+      // Render animated sections
       let currentTime = 0;
       for (let i = 0; i < videoSections.length; i++) {
         const section = videoSections[i];
         setProgress(((i + 1) / videoSections.length) * 100);
-        toast.info(`Capturing: ${section.title}`);
-
-        const image = await captureSection(section);
+        toast.info(`Rendering: ${section.title}`);
         
-        // Render section for its duration
+        // Render section for its duration with animation
         const startTime = Date.now();
         const endTime = startTime + (section.duration * 1000);
 
         while (Date.now() < endTime) {
-          // Clear canvas
-          ctx.fillStyle = '#0F172A';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-          // Draw section image
-          ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-          // Add fade transition
           const elapsed = Date.now() - startTime;
+          const sectionProgress = Math.min(elapsed / (section.duration * 1000), 1);
+
+          // Render animated frame
+          renderAnimatedFrame(ctx, section, sectionProgress, canvas);
+
+          // Add fade transitions at beginning and end
           if (elapsed < 500) {
             ctx.fillStyle = `rgba(15, 23, 42, ${1 - elapsed / 500})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
           } else if (endTime - Date.now() < 500) {
-            ctx.fillStyle = `rgba(15, 23, 42, ${1 - (endTime - Date.now()) / 500})`;
+            const fadeOut = (endTime - Date.now()) / 500;
+            ctx.fillStyle = `rgba(15, 23, 42, ${1 - fadeOut})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
           }
 

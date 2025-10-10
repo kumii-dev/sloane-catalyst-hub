@@ -80,19 +80,19 @@ const VideoCreator = () => {
     },
   ];
 
-  const captureIframeToCanvas = async (iframe: HTMLIFrameElement, canvas: HTMLCanvasElement) => {
+  const captureIframeToCanvas = async (iframe: HTMLIFrameElement, canvas: HTMLCanvasElement): Promise<HTMLCanvasElement | null> => {
     const ctx = canvas.getContext('2d');
-    if (!ctx) return false;
+    if (!ctx) return null;
 
     try {
       const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-      if (!iframeDoc || !iframeDoc.body) return false;
+      if (!iframeDoc || !iframeDoc.body) return null;
 
       // Use html2canvas to capture the iframe content
       const capturedCanvas = await html2canvas(iframeDoc.body, {
         width: canvas.width,
         height: canvas.height,
-        scale: 2,
+        scale: Math.max(2, window.devicePixelRatio || 1),
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#0f172a',
@@ -101,12 +101,13 @@ const VideoCreator = () => {
         windowHeight: canvas.height,
       });
 
-      // Draw the captured content to our canvas
+      // Draw the captured content to our canvas for immediate preview and return snapshot
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(capturedCanvas, 0, 0, canvas.width, canvas.height);
-      return true;
+      return capturedCanvas;
     } catch (error) {
       console.error('Error capturing iframe:', error);
-      return false;
+      return null;
     }
   };
 
@@ -119,23 +120,23 @@ const VideoCreator = () => {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Add semi-transparent overlay at top for title
-    const gradient = ctx.createLinearGradient(0, 0, 0, 150);
-    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.4)');
+    // Add subtle overlay at top for title (reduced height and opacity)
+    const gradient = ctx.createLinearGradient(0, 0, 0, 80);
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.25)');
     gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, 150);
+    ctx.fillRect(0, 0, width, 80);
 
     // Title
     ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
     ctx.font = 'bold 48px system-ui, -apple-system, sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText(section.title, 40, 60);
+    ctx.fillText(section.title, 40, 56);
 
     // Description
-    ctx.fillStyle = 'rgba(200, 200, 255, 0.9)';
+    ctx.fillStyle = 'rgba(220, 220, 255, 0.9)';
     ctx.font = '28px system-ui, -apple-system, sans-serif';
-    ctx.fillText(section.description, 40, 100);
+    ctx.fillText(section.description, 40, 96);
 
     // Progress bar at bottom
     const barHeight = 6;
@@ -277,19 +278,18 @@ const VideoCreator = () => {
         const fps = 30;
         const frameTime = 1000 / fps;
         
-        // Capture initial screenshot
-        let lastCaptureTime = 0;
-        const captureInterval = 500; // Capture every 500ms to reduce load
+        // Capture a single snapshot for this section to prevent shaking
+        const snapshot = await captureIframeToCanvas(iframe, canvas);
 
         // Capture frames for this section
         while (Date.now() - startTime < duration) {
           const elapsed = Date.now() - startTime;
           const sectionProgress = elapsed / duration;
 
-          // Capture iframe content periodically
-          if (elapsed - lastCaptureTime >= captureInterval) {
-            await captureIframeToCanvas(iframe, canvas);
-            lastCaptureTime = elapsed;
+          // Always redraw base snapshot first to avoid overlay accumulation
+          if (snapshot) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(snapshot, 0, 0, canvas.width, canvas.height);
           }
 
           // Add professional overlay on top of captured content

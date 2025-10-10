@@ -35,6 +35,7 @@ import MySubscriptions from "./pages/MySubscriptions";
 import AdminDashboard from "./pages/AdminDashboard";
 import CohortManager from "./pages/CohortManager";
 import MessagingHub from "./pages/MessagingHub";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -77,6 +78,7 @@ const App = () => (
             <Route path="/resources/category/:slug" element={<ResourceCategory />} />
             <Route path="/resources/:slug" element={<ResourceDetail />} />
             <Route path="/messaging" element={<MessagingHub />} />
+            <Route path="/about" element={<About />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -445,8 +445,9 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                     <SelectValue placeholder="Choose a voice" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="BcpjRWrYhDBHmOnetmBl">South African Accent - Professional & Warm</SelectItem>
-                    <SelectItem value="fPVZbr0RJBH9KL47pnxU">Alternative Voice - Clear & Engaging</SelectItem>
+              <SelectItem value="BcpjRWrYhDBHmOnetmBl">South African Accent - Professional & Warm</SelectItem>
+              <SelectItem value="fPVZbr0RJBH9KL47pnxU">Alternative Voice - Clear & Engaging</SelectItem>
+              <SelectItem value="3yJq5VpFXdeyF5oOBl2e">Natural Voice - Conversational & Friendly</SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground">

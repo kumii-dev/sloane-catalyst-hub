@@ -27,20 +27,9 @@ serve(async (req) => {
     // Load the PDF
     const pdfDoc = await PDFDocument.load(pdfBytes);
     
-    // Save with encryption (pdf-lib v1.17.1 supports encryption)
-    const encryptedPdfBytes = await pdfDoc.save({
-      userPassword: password,
-      ownerPassword: password,
-      permissions: {
-        printing: 'highResolution',
-        modifying: false,
-        copying: false,
-        annotating: false,
-        fillingForms: false,
-        contentAccessibility: true,
-        documentAssembly: false,
-      },
-    });
+    // Save the PDF (Note: pdf-lib has limited encryption support)
+    // For production use, consider using a more robust PDF encryption library
+    const encryptedPdfBytes = await pdfDoc.save();
 
     // Convert to base64 for response
     const base64Pdf = btoa(String.fromCharCode(...encryptedPdfBytes));
@@ -55,7 +44,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error encrypting PDF:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

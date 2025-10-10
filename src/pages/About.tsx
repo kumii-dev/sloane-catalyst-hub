@@ -3,117 +3,134 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Video, Download, Play, Pause, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const About = () => {
   const [isNarrating, setIsNarrating] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Extract all narration text from the script
-  const scriptText = `
-    Every day, thousands of brilliant entrepreneurs across Africa have game-changing ideas. But 70% of startups fail—not because they lack potential, but because they lack access. Access to funding. Access to markets. Access to the right guidance at the right time.
-    
-    Introducing the all-in-one ecosystem designed specifically for African SMMEs and startups. We've built a platform that doesn't just connect you to opportunities—it prepares you for them, matches you with the right partners, and gives you the tools to succeed.
-    
-    Let's start with Access to Market—your gateway to growth.
-    
-    First, our Credit Score Check gives you a standardized assessment of your business readiness. No more guessing where you stand. Get technical, financial, and market readiness scores that funders actually trust.
-    
-    Need investor-ready documents? Our AI-powered Document Generator creates professional business plans, pitch decks, and financial reports in minutes—not weeks.
-    
-    The Financial Model Builder lets you create dynamic 3-statement financial models with both IFRS and US GAAP support. Impress investors with professional-grade projections.
-    
-    And with our Universal Valuation Model, you can value your business using multiple proven methodologies—DCF, comparables, and more. Know your worth before you negotiate.
-    
-    But here's where it gets revolutionary. Our Smart Matching engine uses AI to connect you with the right suppliers, buyers, and funders based on your profile, industry, stage, and needs.
-    
-    Browse hundreds of Funding Opportunities—from grants and loans to equity investments and corporate programs. Filter by industry, amount, stage, and apply directly through the platform.
-    
-    Our Funder Directory features verified banks, impact investors, venture funds, and sponsor programs—all actively looking for businesses like yours.
-    
-    Success isn't just about tools—it's about people. Connect with experienced mentors who've walked your path. Get guidance on strategy, fundraising, operations, and growth.
-    
-    Access our comprehensive Resource Library with guides, templates, case studies, and training materials. Learn at your own pace, whenever you need it.
-    
-    And when you need expert help, our Services Marketplace connects you with vetted legal, accounting, marketing, and technical service providers who understand startups.
-    
-    The platform works for everyone in the ecosystem. If you're a startup, get the tools and connections you need to grow. Funders, discover and evaluate high-potential businesses efficiently. Mentors, share your expertise and build your legacy. Service providers, reach clients actively building the future.
-    
-    We're trusted by leading organizations across Africa. Microsoft for Startups, Nedbank, 22 On Sloane, and many others partner with us because they believe in democratizing access to opportunity.
-    
-    Join thousands of entrepreneurs who are already building their future on our platform. Together, we've facilitated millions in funding connections and countless success stories.
-    
-    Your journey to growth starts today. Create your free account, complete your profile, and unlock access to tools that used to cost tens of thousands. Get your credit score, build your financial model, and start connecting with funders who want to support businesses like yours.
-    
-    No hidden fees. No gatekeepers. Just the resources, connections, and support you need to turn your vision into reality.
-    
-    Because when African entrepreneurs succeed, we all win. Welcome to the future of startup support. Welcome home.
-  `;
+  const scriptText = `Every day, thousands of brilliant entrepreneurs across Africa have game-changing ideas. But 70% of startups fail—not because they lack potential, but because they lack access. Access to funding. Access to markets. Access to the right guidance at the right time.
 
-  const startNarration = () => {
-    if ('speechSynthesis' in window) {
-      // Cancel any ongoing speech
-      window.speechSynthesis.cancel();
+Introducing the all-in-one ecosystem designed specifically for African SMMEs and startups. We've built a platform that doesn't just connect you to opportunities—it prepares you for them, matches you with the right partners, and gives you the tools to succeed.
+
+Let's start with Access to Market—your gateway to growth.
+
+First, our Credit Score Check gives you a standardized assessment of your business readiness. No more guessing where you stand. Get technical, financial, and market readiness scores that funders actually trust.
+
+Need investor-ready documents? Our AI-powered Document Generator creates professional business plans, pitch decks, and financial reports in minutes—not weeks.
+
+The Financial Model Builder lets you create dynamic 3-statement financial models with both IFRS and US GAAP support. Impress investors with professional-grade projections.
+
+And with our Universal Valuation Model, you can value your business using multiple proven methodologies—DCF, comparables, and more. Know your worth before you negotiate.
+
+But here's where it gets revolutionary. Our Smart Matching engine uses AI to connect you with the right suppliers, buyers, and funders based on your profile, industry, stage, and needs.
+
+Browse hundreds of Funding Opportunities—from grants and loans to equity investments and corporate programs. Filter by industry, amount, stage, and apply directly through the platform.
+
+Our Funder Directory features verified banks, impact investors, venture funds, and sponsor programs—all actively looking for businesses like yours.
+
+Success isn't just about tools—it's about people. Connect with experienced mentors who've walked your path. Get guidance on strategy, fundraising, operations, and growth.
+
+Access our comprehensive Resource Library with guides, templates, case studies, and training materials. Learn at your own pace, whenever you need it.
+
+And when you need expert help, our Services Marketplace connects you with vetted legal, accounting, marketing, and technical service providers who understand startups.
+
+The platform works for everyone in the ecosystem. If you're a startup, get the tools and connections you need to grow. Funders, discover and evaluate high-potential businesses efficiently. Mentors, share your expertise and build your legacy. Service providers, reach clients actively building the future.
+
+We're trusted by leading organizations across Africa. Microsoft for Startups, Nedbank, 22 On Sloane, and many others partner with us because they believe in democratizing access to opportunity.
+
+Join thousands of entrepreneurs who are already building their future on our platform. Together, we've facilitated millions in funding connections and countless success stories.
+
+Your journey to growth starts today. Create your free account, complete your profile, and unlock access to tools that used to cost tens of thousands. Get your credit score, build your financial model, and start connecting with funders who want to support businesses like yours.
+
+No hidden fees. No gatekeepers. Just the resources, connections, and support you need to turn your vision into reality.
+
+Because when African entrepreneurs succeed, we all win. Welcome to the future of startup support. Welcome home.`;
+
+  const startNarration = async () => {
+    try {
+      setIsLoading(true);
+      toast.loading("Generating professional narration...");
+
+      const { data, error } = await supabase.functions.invoke('generate-narration', {
+        body: { text: scriptText }
+      });
+
+      if (error) throw error;
+
+      // Create audio element from response
+      const audioBlob = new Blob([data], { type: 'audio/mpeg' });
+      const audioUrl = URL.createObjectURL(audioBlob);
       
-      const speech = new SpeechSynthesisUtterance(scriptText);
-      speech.rate = 0.9;
-      speech.pitch = 1;
-      speech.volume = 1;
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
       
-      speech.onstart = () => {
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+      
+      audio.onplay = () => {
         setIsNarrating(true);
-        setIsPaused(false);
+        setIsLoading(false);
+        toast.dismiss();
         toast.success("Narration started");
       };
       
-      speech.onend = () => {
+      audio.onended = () => {
         setIsNarrating(false);
-        setIsPaused(false);
+        URL.revokeObjectURL(audioUrl);
         toast.info("Narration completed");
       };
       
-      speech.onerror = () => {
+      audio.onerror = () => {
         setIsNarrating(false);
-        setIsPaused(false);
-        toast.error("Narration error occurred");
+        setIsLoading(false);
+        toast.dismiss();
+        toast.error("Audio playback error");
       };
       
-      setUtterance(speech);
-      window.speechSynthesis.speak(speech);
-    } else {
-      toast.error("Text-to-speech not supported in your browser");
+      await audio.play();
+    } catch (error: any) {
+      console.error('Narration error:', error);
+      setIsLoading(false);
+      toast.dismiss();
+      toast.error(error.message || "Failed to generate narration");
     }
   };
 
   const pauseNarration = () => {
-    if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-      window.speechSynthesis.pause();
-      setIsPaused(true);
+    if (audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
       toast.info("Narration paused");
     }
   };
 
   const resumeNarration = () => {
-    if (window.speechSynthesis.paused) {
-      window.speechSynthesis.resume();
-      setIsPaused(false);
+    if (audioRef.current && audioRef.current.paused) {
+      audioRef.current.play();
       toast.success("Narration resumed");
     }
   };
 
   const stopNarration = () => {
-    window.speechSynthesis.cancel();
-    setIsNarrating(false);
-    setIsPaused(false);
-    toast.info("Narration stopped");
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsNarrating(false);
+      toast.info("Narration stopped");
+    }
   };
 
   useEffect(() => {
     return () => {
       // Cleanup: stop narration when component unmounts
-      window.speechSynthesis.cancel();
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
     };
   }, []);
 
@@ -371,13 +388,13 @@ const About = () => {
           {/* Action Buttons */}
           <div className="flex justify-center gap-4 flex-wrap">
             {!isNarrating ? (
-              <Button size="lg" onClick={startNarration}>
+              <Button size="lg" onClick={startNarration} disabled={isLoading}>
                 <Play className="w-4 h-4 mr-2" />
-                Start Narration
+                {isLoading ? "Generating..." : "Start Professional Narration"}
               </Button>
             ) : (
               <>
-                {isPaused ? (
+                {audioRef.current?.paused ? (
                   <Button size="lg" onClick={resumeNarration}>
                     <Play className="w-4 h-4 mr-2" />
                     Resume

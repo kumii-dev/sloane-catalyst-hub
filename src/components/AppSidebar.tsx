@@ -83,9 +83,12 @@ const secondaryContent = {
 const appSubcategories: Record<string, Array<{ title: string; url: string }>> = {
   "Access To Market": [
     { title: "Credit Score Check", url: "/credit-score" },
-    { title: "Funder Directory", url: "/funding" },
+    { title: "Document Generator", url: "/access-to-market/document-generator" },
+    { title: "Financial Model Builder", url: "/access-to-market/financial-model" },
+    { title: "Universal Valuation Model", url: "/access-to-market/valuation" },
     { title: "Smart Matching", url: "/access-to-market" },
     { title: "Funding Opportunities", url: "/funding" },
+    { title: "Funder Directory", url: "/funding" },
   ],
   "Access To Capital": [
     { title: "Opportunities", url: "/funding" },

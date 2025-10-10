@@ -253,7 +253,22 @@ const VideoCreator = () => {
 
         // Load the page in iframe
         iframe.src = section.route;
-        await new Promise(resolve => setTimeout(resolve, 4000)); // Wait for page load and rendering
+        // Wait for iframe to load (with timeout fallback)
+        await new Promise<void>((resolve) => {
+          const onLoad = () => {
+            // small delay to ensure React finished rendering
+            setTimeout(() => {
+              iframe.removeEventListener('load', onLoad);
+              resolve();
+            }, 800);
+          };
+          iframe.addEventListener('load', onLoad, { once: true });
+          // Fallback in case load doesn't fire
+          setTimeout(() => {
+            iframe.removeEventListener('load', onLoad);
+            resolve();
+          }, 6000);
+        });
 
         const startTime = Date.now();
         const duration = section.duration * 1000;
@@ -418,7 +433,7 @@ const VideoCreator = () => {
           {/* Hidden elements for video generation */}
           <iframe 
             ref={iframeRef} 
-            className="hidden" 
+            className="fixed -left-[10000px] top-0 w-[1920px] h-[1080px] opacity-0 pointer-events-none" 
             title="Video capture frame"
           />
           <canvas ref={canvasRef} className="hidden" />

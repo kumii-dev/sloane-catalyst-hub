@@ -121,30 +121,6 @@ const AccessToMarket = () => {
       action: "Check Score"
     },
     {
-      icon: Building2,
-      title: "Funder Directory",
-      description: "Browse verified funders, banks, and sponsor programs",
-      href: "/funding/browse",
-      color: "bg-green-500/10 text-green-600",
-      action: "Browse Funders"
-    },
-    {
-      icon: Target,
-      title: "Smart Matching",
-      description: "AI-powered supplier/buyer and funder matching engine",
-      href: "/funding",
-      color: "bg-purple-500/10 text-purple-600",
-      action: "Find Matches"
-    },
-    {
-      icon: DollarSign,
-      title: "Funding Opportunities",
-      description: "Discover grants, loans, and investment opportunities",
-      href: "/funding/browse",
-      color: "bg-orange-500/10 text-orange-600",
-      action: "Apply Now"
-    },
-    {
       icon: FileText,
       title: "Document Generator",
       description: "Create investor-ready business plans in minutes with AI",
@@ -167,6 +143,30 @@ const AccessToMarket = () => {
       href: "/access-to-market/valuation",
       color: "bg-rose-500/10 text-rose-600",
       action: "Value Business"
+    },
+    {
+      icon: Target,
+      title: "Smart Matching",
+      description: "AI-powered supplier/buyer and funder matching engine",
+      href: "/funding",
+      color: "bg-purple-500/10 text-purple-600",
+      action: "Find Matches"
+    },
+    {
+      icon: DollarSign,
+      title: "Funding Opportunities",
+      description: "Discover grants, loans, and investment opportunities",
+      href: "/funding/browse",
+      color: "bg-orange-500/10 text-orange-600",
+      action: "Apply Now"
+    },
+    {
+      icon: Building2,
+      title: "Funder Directory",
+      description: "Browse verified funders, banks, and sponsor programs",
+      href: "/funding/browse",
+      color: "bg-green-500/10 text-green-600",
+      action: "Browse Funders"
     }
   ];
 

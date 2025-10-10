@@ -79,11 +79,17 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
 
       // Get audio blob from response
       const audioBlob = await response.blob();
+      
+      // Convert blob to base64 data URL for persistent storage
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Audio = reader.result as string;
+        localStorage.setItem('narrationAudioUrl', base64Audio);
+      };
+      reader.readAsDataURL(audioBlob);
+      
       const newAudioUrl = URL.createObjectURL(audioBlob);
       setAudioUrl(newAudioUrl);
-      
-      // Store audio URL for video creator
-      localStorage.setItem('narrationAudioUrl', newAudioUrl);
       
       if (audioRef.current) {
         audioRef.current.pause();

@@ -191,16 +191,22 @@ const VideoCreator = () => {
       canvas.height = 1080;
 
       // Get audio URL from localStorage
-      const audioUrl = localStorage.getItem('narrationAudioUrl');
-      if (!audioUrl) {
+      const audioDataUrl = localStorage.getItem('narrationAudioUrl');
+      if (!audioDataUrl) {
         toast.error("Please generate narration first from the About page");
         setIsGenerating(false);
         return;
       }
 
       // Create and setup audio
-      const audio = new Audio(audioUrl);
+      const audio = new Audio(audioDataUrl);
       audioRef.current = audio;
+      
+      // Wait for audio to be ready
+      await new Promise((resolve, reject) => {
+        audio.addEventListener('canplaythrough', resolve, { once: true });
+        audio.addEventListener('error', reject, { once: true });
+      });
       
       // Setup MediaRecorder with canvas stream
       const canvasStream = canvas.captureStream(30); // 30 FPS

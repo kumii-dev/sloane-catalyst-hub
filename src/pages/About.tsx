@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 const About = () => {
   const [isNarrating, setIsNarrating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Extract all narration text from the script
@@ -76,13 +77,14 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
 
       // Get audio blob from response
       const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
+      const newAudioUrl = URL.createObjectURL(audioBlob);
+      setAudioUrl(newAudioUrl);
       
       if (audioRef.current) {
         audioRef.current.pause();
       }
       
-      const audio = new Audio(audioUrl);
+      const audio = new Audio(newAudioUrl);
       audioRef.current = audio;
       
       audio.onplay = () => {
@@ -94,7 +96,6 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
       
       audio.onended = () => {
         setIsNarrating(false);
-        URL.revokeObjectURL(audioUrl);
         toast.info("Narration completed");
       };
       
@@ -137,14 +138,29 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadNarration = () => {
+    if (audioUrl) {
+      const link = document.createElement('a');
+      link.href = audioUrl;
+      link.download = 'platform-narration.mp3';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("Downloading narration");
+    }
+  };
+
   useEffect(() => {
     return () => {
-      // Cleanup: stop narration when component unmounts
+      // Cleanup: stop narration and revoke URL when component unmounts
       if (audioRef.current) {
         audioRef.current.pause();
       }
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl);
+      }
     };
-  }, []);
+  }, [audioUrl]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">
@@ -422,6 +438,12 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   Stop
                 </Button>
               </>
+            )}
+            {audioUrl && (
+              <Button size="lg" variant="outline" onClick={downloadNarration}>
+                <Download className="w-4 h-4 mr-2" />
+                Download Narration
+              </Button>
             )}
             <Button size="lg" variant="outline" onClick={() => window.print()}>
               <Download className="w-4 h-4 mr-2" />

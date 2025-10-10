@@ -7,12 +7,14 @@ import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const About = () => {
   const navigate = useNavigate();
   const [isNarrating, setIsNarrating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [selectedVoice, setSelectedVoice] = useState<string>("BcpjRWrYhDBHmOnetmBl");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Extract all narration text from the script
@@ -68,7 +70,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           },
-          body: JSON.stringify({ text: scriptText }),
+          body: JSON.stringify({ text: scriptText, voiceId: selectedVoice }),
         }
       );
 
@@ -421,6 +423,27 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 </div>
               </section>
 
+            </CardContent>
+          </Card>
+
+          {/* Voice Selection */}
+          <Card className="border-2">
+            <CardContent className="p-6">
+              <div className="space-y-3">
+                <label className="text-sm font-medium">Select Narration Voice</label>
+                <Select value={selectedVoice} onValueChange={setSelectedVoice}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Choose a voice" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="BcpjRWrYhDBHmOnetmBl">South African Accent - Professional & Warm</SelectItem>
+                    <SelectItem value="fPVZbr0RJBH9KL47pnxU">Alternative Voice - Clear & Engaging</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Choose the voice that best represents your brand
+                </p>
+              </div>
             </CardContent>
           </Card>
 

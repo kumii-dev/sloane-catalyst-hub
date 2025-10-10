@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { text } = await req.json()
+    const { text, voiceId } = await req.json()
 
     if (!text) {
       throw new Error('Text is required')
@@ -23,13 +23,13 @@ serve(async (req) => {
       throw new Error('ElevenLabs API key not configured')
     }
 
-    // Using South African accent voice - warm, inspirational, and professional
-    const voiceId = 'BcpjRWrYhDBHmOnetmBl'
+    // Use the provided voiceId or fallback to default South African accent voice
+    const selectedVoiceId = voiceId || 'BcpjRWrYhDBHmOnetmBl'
     
-    console.log('Generating narration with ElevenLabs...')
+    console.log(`Generating narration with ElevenLabs using voice: ${selectedVoiceId}...`)
 
     const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${selectedVoiceId}`,
       {
         method: 'POST',
         headers: {

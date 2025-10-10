@@ -190,7 +190,10 @@ const VideoCreator = () => {
       // Wait for audio to be ready
       await new Promise((resolve, reject) => {
         audio.addEventListener('canplaythrough', resolve, { once: true });
-        audio.addEventListener('error', reject, { once: true });
+        audio.addEventListener('error', (e) => {
+          console.error('Audio loading error:', e);
+          reject(new Error('Failed to load audio. Please regenerate narration on About page.'));
+        }, { once: true });
       });
       
       // Setup MediaRecorder with canvas stream
@@ -294,7 +297,8 @@ const VideoCreator = () => {
 
     } catch (error) {
       console.error('Video generation error:', error);
-      toast.error(`Failed to generate video: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      toast.error(`Failed to generate video: ${errorMessage}`);
       setIsGenerating(false);
       setCurrentSection('');
     }

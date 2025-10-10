@@ -28,6 +28,7 @@ import CreditScoreResults from "./pages/CreditScoreResults";
 import DocumentGenerator from "./pages/DocumentGenerator";
 import FinancialModelBuilder from "./pages/FinancialModelBuilder";
 import ValuationModel from "./pages/ValuationModel";
+import VideoCreator from "./pages/VideoCreator";
 import CreateListing from "./pages/CreateListing";
 import ListingDetail from "./pages/ListingDetail";
 import MyListings from "./pages/MyListings";
@@ -79,6 +80,7 @@ const App = () => (
             <Route path="/resources/:slug" element={<ResourceDetail />} />
             <Route path="/messaging" element={<MessagingHub />} />
             <Route path="/about" element={<About />} />
+            <Route path="/video-creator" element={<VideoCreator />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

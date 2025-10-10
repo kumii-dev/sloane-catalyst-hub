@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 const About = () => {
+  const navigate = useNavigate();
   const [isNarrating, setIsNarrating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -79,6 +81,9 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
       const audioBlob = await response.blob();
       const newAudioUrl = URL.createObjectURL(audioBlob);
       setAudioUrl(newAudioUrl);
+      
+      // Store audio URL for video creator
+      localStorage.setItem('narrationAudioUrl', newAudioUrl);
       
       if (audioRef.current) {
         audioRef.current.pause();
@@ -440,10 +445,16 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               </>
             )}
             {audioUrl && (
-              <Button size="lg" variant="outline" onClick={downloadNarration}>
-                <Download className="w-4 h-4 mr-2" />
-                Download Narration
-              </Button>
+              <>
+                <Button size="lg" variant="outline" onClick={downloadNarration}>
+                  <Download className="w-4 h-4 mr-2" />
+                  Download Narration
+                </Button>
+                <Button size="lg" onClick={() => navigate('/video-creator')}>
+                  <Video className="w-4 h-4 mr-2" />
+                  Create Video
+                </Button>
+              </>
             )}
             <Button size="lg" variant="outline" onClick={() => window.print()}>
               <Download className="w-4 h-4 mr-2" />

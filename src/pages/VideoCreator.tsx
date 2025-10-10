@@ -5,6 +5,7 @@ import { Progress } from '@/components/ui/progress';
 import { Play, Download, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import html2canvas from 'html2canvas';
 
 interface VideoSection {
   title: string;
@@ -81,45 +82,29 @@ const VideoCreator = () => {
 
   const captureIframeToCanvas = async (iframe: HTMLIFrameElement, canvas: HTMLCanvasElement) => {
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx) return false;
 
     try {
-      // Wait for iframe to load
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Use html2canvas-like approach: draw the iframe content
       const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-      if (!iframeDoc) return;
+      if (!iframeDoc || !iframeDoc.body) return false;
 
-      // Take a simple screenshot approach: convert iframe to image
-      const svgData = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">
-          <foreignObject width="100%" height="100%">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="transform: scale(1); transform-origin: top left;">
-              ${iframeDoc.documentElement.outerHTML}
-            </div>
-          </foreignObject>
-        </svg>
-      `;
-      
-      const img = new Image();
-      const blob = new Blob([svgData], { type: 'image/svg+xml' });
-      const url = URL.createObjectURL(blob);
-      
-      return new Promise((resolve) => {
-        img.onload = () => {
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          URL.revokeObjectURL(url);
-          resolve(true);
-        };
-        img.onerror = () => {
-          console.error('Failed to capture iframe');
-          resolve(false);
-        };
-        img.src = url;
+      // Use html2canvas to capture the iframe content
+      const capturedCanvas = await html2canvas(iframeDoc.body, {
+        width: canvas.width,
+        height: canvas.height,
+        scale: 1,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#0f172a',
+        logging: false,
       });
+
+      // Draw the captured content to our canvas
+      ctx.drawImage(capturedCanvas, 0, 0, canvas.width, canvas.height);
+      return true;
     } catch (error) {
       console.error('Error capturing iframe:', error);
+      return false;
     }
   };
 
@@ -265,45 +250,29 @@ const VideoCreator = () => {
 
         // Load the page in iframe
         iframe.src = section.route;
-        await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for page load
+        await new Promise(resolve => setTimeout(resolve, 4000)); // Wait for page load and rendering
 
         const startTime = Date.now();
         const duration = section.duration * 1000;
         const fps = 30;
         const frameTime = 1000 / fps;
+        
+        // Capture initial screenshot
+        let lastCaptureTime = 0;
+        const captureInterval = 500; // Capture every 500ms to reduce load
 
         // Capture frames for this section
         while (Date.now() - startTime < duration) {
           const elapsed = Date.now() - startTime;
           const sectionProgress = elapsed / duration;
 
-          // Clear canvas
-          ctx.fillStyle = '#0f172a';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-          // Try to capture iframe content
-          try {
-            const iframeWindow = iframe.contentWindow;
-            const iframeDoc = iframe.contentDocument;
-            
-            if (iframeDoc && iframeDoc.body) {
-              // Create a simple visual representation
-              ctx.fillStyle = '#1e293b';
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-              
-              // Add gradient overlay
-              const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-              gradient.addColorStop(0, 'rgba(59, 130, 246, 0.1)');
-              gradient.addColorStop(1, 'rgba(147, 51, 234, 0.1)');
-              ctx.fillStyle = gradient;
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
-          } catch (e) {
-            // CORS error - just use solid background
-            console.log('CORS restriction, using overlay only');
+          // Capture iframe content periodically
+          if (elapsed - lastCaptureTime >= captureInterval) {
+            await captureIframeToCanvas(iframe, canvas);
+            lastCaptureTime = elapsed;
           }
 
-          // Add professional overlay
+          // Add professional overlay on top of captured content
           addOverlayToCanvas(ctx, section, sectionProgress, canvas);
 
           // Add fade transitions

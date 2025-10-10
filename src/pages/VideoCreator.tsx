@@ -92,11 +92,13 @@ const VideoCreator = () => {
       const capturedCanvas = await html2canvas(iframeDoc.body, {
         width: canvas.width,
         height: canvas.height,
-        scale: 1,
+        scale: 2,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#0f172a',
         logging: false,
+        windowWidth: canvas.width,
+        windowHeight: canvas.height,
       });
 
       // Draw the captured content to our canvas
@@ -118,11 +120,11 @@ const VideoCreator = () => {
     const height = canvas.height;
 
     // Add semi-transparent overlay at top for title
-    const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 150);
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.4)');
     gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, 200);
+    ctx.fillRect(0, 0, width, 150);
 
     // Title
     ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';

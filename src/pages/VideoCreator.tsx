@@ -244,12 +244,19 @@ const VideoCreator = () => {
       // Start recording
       mediaRecorder.start(100);
       
+      // Calculate total duration and section timings based on audio
+      const totalAudioDuration = audio.duration;
+      const totalSectionDuration = videoSections.reduce((acc, s) => acc + s.duration, 0);
+      const timeScale = totalAudioDuration / totalSectionDuration;
+      
       // Start audio playback
       await audio.play();
 
-      // Generate video sections
+      // Generate video sections synchronized with audio
       for (let i = 0; i < videoSections.length; i++) {
         const section = videoSections[i];
+        const scaledDuration = section.duration * timeScale;
+        
         setCurrentSection(`Capturing: ${section.title}`);
         setProgress(((i + 1) / videoSections.length) * 100);
         toast.info(`Capturing: ${section.title}`);
@@ -274,7 +281,7 @@ const VideoCreator = () => {
         });
 
         const startTime = Date.now();
-        const duration = section.duration * 1000;
+        const duration = scaledDuration * 1000;
         const fps = 30;
         const frameTime = 1000 / fps;
         

@@ -24,7 +24,7 @@ Introducing the all-in-one ecosystem designed specifically for African SMMEs and
 
 Let's start with Access to Market—your gateway to growth.
 
-First, our Credit Score Check gives you a standardized assessment of your business readiness. No more guessing where you stand. Get technical, financial, and market readiness scores that funders actually trust.
+First, our Credit Score Check gives you a standardized assessment of your business readiness powered by African Bank. No more guessing where you stand. Get technical, financial, and market readiness scores that funders actually trust. And if your readiness score is low, don't worry—Kumii is your one-stop platform with comprehensive intervention programs, mentorship, resources, and tools designed to help boost your score and prepare you for funding success.
 
 Need investor-ready documents? Our AI-powered Document Generator creates professional business plans, pitch decks, and financial reports in minutes—not weeks.
 
@@ -38,6 +38,8 @@ Browse hundreds of Funding Opportunities—from grants and loans to equity inves
 
 Our Funder Directory features verified banks, impact investors, venture funds, and sponsor programs—all actively looking for businesses like yours.
 
+This is what makes Kumii truly powerful—we're your one-stop platform for SMMEs and Startups. Everything you need to build, grow, and fund your business is right here. No more juggling multiple platforms or services.
+
 Success isn't just about tools—it's about people. Connect with experienced mentors who've walked your path. Get guidance on strategy, fundraising, operations, and growth.
 
 Access our comprehensive Resource Library with guides, templates, case studies, and training materials. Learn at your own pace, whenever you need it.
@@ -46,15 +48,15 @@ And when you need expert help, our Services Marketplace connects you with vetted
 
 The platform works for everyone in the ecosystem. If you're a startup, get the tools and connections you need to grow. Funders, discover and evaluate high-potential businesses efficiently. Mentors, share your expertise and build your legacy. Service providers, reach clients actively building the future.
 
-We're trusted by leading organizations across Africa. Microsoft for Startups, Nedbank, 22 On Sloane, and many others partner with us because they believe in democratizing access to opportunity.
+We're trusted by leading organizations across Africa. Microsoft for Startups, African Bank, 22 On Sloane, and many others partner with us because they believe in democratizing access to opportunity.
 
 Join thousands of entrepreneurs who are already building their future on our platform. Together, we've facilitated millions in funding connections and countless success stories.
 
 Your journey to growth starts today. Create your free account, complete your profile, and unlock access to tools that used to cost tens of thousands. Get your credit score, build your financial model, and start connecting with funders who want to support businesses like yours.
 
-No hidden fees. No gatekeepers. Just the resources, connections, and support you need to turn your vision into reality.
+No hidden fees. No gatekeepers. Just the resources, connections, and support you need to turn your vision into reality—all in one place.
 
-Because when African entrepreneurs succeed, we all win. Welcome to the future of startup support. Welcome home.`;
+Because when African entrepreneurs succeed, we all win. Welcome to the future of startup support. Kumii... Building Your Business. Welcome home.`;
 
   const startNarration = async () => {
     try {
@@ -252,8 +254,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   </p>
                   <p className="italic text-muted-foreground">[Visual: Credit Score interface]</p>
                   <p>
-                    "First, our <strong>Credit Score Check</strong> gives you a standardized assessment of your business readiness. 
-                    No more guessing where you stand. Get technical, financial, and market readiness scores that funders actually trust."
+                    "First, our <strong>Credit Score Check</strong> gives you a standardized assessment of your business readiness powered by 
+                    African Bank. No more guessing where you stand. Get technical, financial, and market readiness scores that funders actually trust. 
+                    And if your readiness score is low, don't worry—Kumii is your one-stop platform with comprehensive intervention programs, 
+                    mentorship, resources, and tools designed to help boost your score and prepare you for funding success."
                   </p>
                   <p className="italic text-muted-foreground">[Visual: Document Generator creating a business plan]</p>
                   <p>
@@ -296,6 +300,11 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <p>
                     "Our <strong>Funder Directory</strong> features verified banks, impact investors, venture funds, and sponsor programs—all 
                     actively looking for businesses like yours."
+                  </p>
+                  <p className="italic text-muted-foreground">[Visual: Platform features coming together]</p>
+                  <p>
+                    "This is what makes Kumii truly powerful—we're your one-stop platform for SMMEs and Startups. Everything you need to build, 
+                    grow, and fund your business is right here. No more juggling multiple platforms or services."
                   </p>
                 </div>
               </section>
@@ -354,9 +363,9 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <span className="text-sm text-muted-foreground">[3:45 - 4:10]</span>
                 </div>
                 <div className="pl-6 space-y-2 text-foreground/90 leading-relaxed">
-                  <p className="italic text-muted-foreground">[Visual: Logos of Microsoft, Nedbank, 22 On Sloane, Kumi, etc.]</p>
+                  <p className="italic text-muted-foreground">[Visual: Logos of Microsoft, African Bank, 22 On Sloane, Kumii, etc.]</p>
                   <p>
-                    <strong>Narrator:</strong> "We're trusted by leading organizations across Africa. Microsoft for Startups, Nedbank, 
+                    <strong>Narrator:</strong> "We're trusted by leading organizations across Africa. Microsoft for Startups, African Bank, 
                     22 On Sloane, and many others partner with us because they believe in democratizing access to opportunity."
                   </p>
                   <p className="italic text-muted-foreground">[Visual: Statistics and success metrics]</p>
@@ -384,7 +393,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   </p>
                   <p className="italic text-muted-foreground">[Visual: Happy entrepreneurs using the platform]</p>
                   <p>
-                    "No hidden fees. No gatekeepers. Just the resources, connections, and support you need to turn your vision into reality."
+                    "No hidden fees. No gatekeepers. Just the resources, connections, and support you need to turn your vision into reality—all in one place."
                   </p>
                 </div>
               </section>
@@ -401,7 +410,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <p className="italic text-muted-foreground">[Visual: Logo with tagline and website URL]</p>
                   <p>
                     <strong>Narrator:</strong> "Because when African entrepreneurs succeed, we all win. Welcome to the future of startup 
-                    support. Welcome home."
+                    support. Kumii... Building Your Business. Welcome home."
                   </p>
                   <p className="italic text-muted-foreground">[Text on screen: "Get Started Today" + website URL]</p>
                   <p className="italic text-muted-foreground">[Uplifting music swells]</p>

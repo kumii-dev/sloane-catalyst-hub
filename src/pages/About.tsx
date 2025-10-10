@@ -56,14 +56,26 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
       setIsLoading(true);
       toast.loading("Generating professional narration...");
 
-      const { data, error } = await supabase.functions.invoke('generate-narration', {
-        body: { text: scriptText }
-      });
+      // Use fetch directly for binary audio data
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-narration`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ text: scriptText }),
+        }
+      );
 
-      if (error) throw error;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate narration');
+      }
 
-      // Create audio element from response
-      const audioBlob = new Blob([data], { type: 'audio/mpeg' });
+      // Get audio blob from response
+      const audioBlob = await response.blob();
       const audioUrl = URL.createObjectURL(audioBlob);
       
       if (audioRef.current) {

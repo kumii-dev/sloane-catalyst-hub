@@ -175,8 +175,6 @@ const Mentorship = () => {
             <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
               Faster.
             </span>
-            <br />
-            Expert Mentors Await.
           </h1>
           
           <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CalendarStep } from "./CalendarStep";
 import { TimeSlotStep } from "./TimeSlotStep";

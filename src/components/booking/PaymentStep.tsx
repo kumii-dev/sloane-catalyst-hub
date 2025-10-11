@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -50,11 +50,11 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
         .insert({
           mentor_id: mentor.id,
           mentee_id: user.id,
-          scheduled_at: bookingData.date,
+          scheduled_at: bookingData.date?.toISOString(),
           duration_minutes: 60,
           title: "Leadership Coaching",
-          description: bookingData.message,
-          session_type: bookingData.sessionType,
+          description: bookingData.message || "",
+          session_type: 'premium',
           session_status: 'pending',
           price: sessionFee
         })

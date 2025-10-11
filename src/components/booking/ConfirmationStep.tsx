@@ -1,10 +1,11 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { BookingData } from "./BookSessionDialog";
 
 interface ConfirmationStepProps {
   mentor: any;
   bookingData: BookingData;
-  onNext: () => void;
+  onNext: (data: Partial<BookingData>) => void;
   onBack: () => void;
 }
 
@@ -12,6 +13,10 @@ export const ConfirmationStep = ({ mentor, bookingData, onNext, onBack }: Confir
   const sessionFee = mentor.session_fee || 100;
   const platformFee = sessionFee * ((mentor.platform_fee_percentage || 25) / 100);
   const mentorReceives = sessionFee - platformFee;
+
+  const handleProceed = () => {
+    onNext({});
+  };
 
   return (
     <div className="max-w-md mx-auto space-y-6 py-8">
@@ -47,7 +52,7 @@ export const ConfirmationStep = ({ mentor, bookingData, onNext, onBack }: Confir
 
       <div className="flex gap-3">
         <Button
-          onClick={onNext}
+          onClick={handleProceed}
           className="flex-1 bg-green-600 hover:bg-green-700"
           size="lg"
         >

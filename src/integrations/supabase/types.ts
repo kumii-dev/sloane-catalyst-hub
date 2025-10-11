@@ -1035,6 +1035,45 @@ export type Database = {
         }
         Relationships: []
       }
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           bio: string | null

@@ -11,6 +11,7 @@ import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { ApplyDialog } from "@/components/funding/ApplyDialog";
 import { 
   Search, 
   Filter, 
@@ -41,6 +42,8 @@ interface FundingOpportunity {
   stage_requirements: string[];
   requirements: string;
   sloane_credits_allocation: number;
+  min_credit_score: number | null;
+  geographic_restrictions: string[];
   funder: {
     organization_name: string;
     logo_url?: string;
@@ -62,6 +65,8 @@ const BrowseFunding = () => {
     deadline: ""
   });
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<FundingOpportunity | null>(null);
+  const [showApplyDialog, setShowApplyDialog] = useState(false);
 
   const fundingTypeIcons: Record<string, any> = {
     grant: Award,
@@ -395,7 +400,17 @@ const BrowseFunding = () => {
                       <Separator />
                       
                       <div className="flex gap-2">
-                        <Button className="flex-1 group-hover:bg-primary group-hover:text-primary-foreground">
+                        <Button 
+                          className="flex-1 group-hover:bg-primary group-hover:text-primary-foreground"
+                          onClick={() => {
+                            if (!user) {
+                              window.location.href = '/auth';
+                              return;
+                            }
+                            setSelectedOpportunity(opportunity);
+                            setShowApplyDialog(true);
+                          }}
+                        >
                           Apply Now
                           <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
@@ -432,6 +447,15 @@ const BrowseFunding = () => {
           )}
         </div>
       </div>
+
+      {/* Apply Dialog */}
+      {selectedOpportunity && (
+        <ApplyDialog
+          open={showApplyDialog}
+          onOpenChange={setShowApplyDialog}
+          opportunity={selectedOpportunity}
+        />
+      )}
 
       <Footer />
     </div>

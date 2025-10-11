@@ -263,10 +263,12 @@ const MentorProfile = () => {
 
                       <div className="space-y-6">
                         <div>
-                          <h3 className="text-xl font-semibold mb-3">Hello!</h3>
-                          <p className="text-muted-foreground leading-relaxed">
-                            {mentor.profiles?.bio || "I think being a mentor is an honour and a mission because it gives a chance to build a valuable relationship between the mentor and the mentee but also to build a positive and deep impact on this latter's private and professional life."}
-                          </p>
+                          <div 
+                            className="text-muted-foreground leading-relaxed prose prose-sm max-w-none"
+                            dangerouslySetInnerHTML={{ 
+                              __html: mentor.profiles?.bio || "I think being a mentor is an honour and a mission because it gives a chance to build a valuable relationship between the mentor and the mentee but also to build a positive and deep impact on this latter's private and professional life." 
+                            }}
+                          />
                         </div>
 
                         {mentor.expertise_areas && mentor.expertise_areas.length > 0 && (

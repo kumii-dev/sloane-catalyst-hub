@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowLeft, Upload, Loader2 } from "lucide-react";
@@ -277,7 +277,7 @@ const EditMentorProfile = () => {
               {/* Profile Picture */}
               <div className="flex flex-col items-center gap-4">
                 <Avatar className="h-32 w-32">
-                  <AvatarImage src={formData.profile_picture_url} alt="Profile" />
+                  <AvatarImage src={formData.profile_picture_url} alt="Profile" className="object-cover" />
                   <AvatarFallback className="text-4xl">
                     {formData.first_name?.[0]}{formData.last_name?.[0]}
                   </AvatarFallback>
@@ -341,17 +341,12 @@ const EditMentorProfile = () => {
               {/* Bio */}
               <div>
                 <Label htmlFor="bio">Bio</Label>
-                <Textarea
-                  id="bio"
+                <RichTextEditor
                   value={formData.bio}
-                  onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
+                  onChange={(value) => setFormData(prev => ({ ...prev, bio: value }))}
                   placeholder="Tell us about yourself..."
-                  rows={4}
                   maxLength={1000}
                 />
-                <p className="text-sm text-muted-foreground mt-1">
-                  {formData.bio.length}/1000 characters
-                </p>
               </div>
 
               {/* Mentor Information */}

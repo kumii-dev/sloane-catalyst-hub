@@ -122,6 +122,8 @@ const BecomeMentor = () => {
           hourly_rate: formData.hourlyRate ? parseFloat(formData.hourlyRate) : null,
           is_premium: formData.isPremium,
           status: 'available'
+        }, {
+          onConflict: 'user_id'
         });
 
       if (mentorError) throw mentorError;

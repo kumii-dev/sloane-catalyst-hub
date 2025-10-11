@@ -106,7 +106,7 @@ const BecomeMentor = () => {
         .upsert({
           user_id: user.id,
           bio: formData.bio
-        });
+        }, { onConflict: 'user_id' });
 
       if (profileError) throw profileError;
 

@@ -37,6 +37,12 @@ interface FunderProfile {
   organization_type: string;
   description: string;
   website?: string;
+  logo_url?: string;
+  focus_areas?: string[];
+  min_funding_amount?: number;
+  max_funding_amount?: number;
+  preferred_stages?: string[];
+  preferred_industries?: string[];
   total_funded_amount: number;
   total_funded_companies: number;
   sloane_credits_balance: number;
@@ -92,7 +98,13 @@ const FunderDashboard = () => {
     organization_name: "",
     organization_type: "",
     description: "",
-    website: ""
+    website: "",
+    logo_url: "",
+    focus_areas: [] as string[],
+    min_funding_amount: "",
+    max_funding_amount: "",
+    preferred_stages: [] as string[],
+    preferred_industries: [] as string[]
   });
   const [opportunityForm, setOpportunityForm] = useState({
     title: "",
@@ -129,7 +141,13 @@ const FunderDashboard = () => {
           organization_name: profileData.organization_name || "",
           organization_type: profileData.organization_type || "",
           description: profileData.description || "",
-          website: profileData.website || ""
+          website: profileData.website || "",
+          logo_url: profileData.logo_url || "",
+          focus_areas: profileData.focus_areas || [],
+          min_funding_amount: profileData.min_funding_amount?.toString() || "",
+          max_funding_amount: profileData.max_funding_amount?.toString() || "",
+          preferred_stages: profileData.preferred_stages || [],
+          preferred_industries: profileData.preferred_industries || []
         });
 
         // Fetch opportunities
@@ -242,7 +260,13 @@ const FunderDashboard = () => {
           organization_name: profileEditForm.organization_name,
           organization_type: profileEditForm.organization_type,
           description: profileEditForm.description,
-          website: profileEditForm.website
+          website: profileEditForm.website,
+          logo_url: profileEditForm.logo_url,
+          focus_areas: profileEditForm.focus_areas,
+          min_funding_amount: profileEditForm.min_funding_amount ? parseFloat(profileEditForm.min_funding_amount) : null,
+          max_funding_amount: profileEditForm.max_funding_amount ? parseFloat(profileEditForm.max_funding_amount) : null,
+          preferred_stages: profileEditForm.preferred_stages as any,
+          preferred_industries: profileEditForm.preferred_industries as any
         })
         .eq('id', funderProfile.id);
 
@@ -694,6 +718,12 @@ const FunderDashboard = () => {
                  <CardContent className="space-y-4">
                    {!editingProfile ? (
                      <>
+                       {funderProfile.logo_url && (
+                         <div className="flex justify-center mb-4">
+                           <img src={funderProfile.logo_url} alt="Organization logo" className="h-24 w-24 object-contain rounded-lg border" />
+                         </div>
+                       )}
+                       
                        <div className="grid grid-cols-2 gap-4">
                          <div>
                            <label className="text-sm font-medium">Organization Name</label>
@@ -708,7 +738,11 @@ const FunderDashboard = () => {
                        {funderProfile.website && (
                          <div>
                            <label className="text-sm font-medium">Website</label>
-                           <p className="text-sm text-muted-foreground">{funderProfile.website}</p>
+                           <p className="text-sm text-muted-foreground">
+                             <a href={funderProfile.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                               {funderProfile.website}
+                             </a>
+                           </p>
                          </div>
                        )}
                        
@@ -716,6 +750,54 @@ const FunderDashboard = () => {
                          <label className="text-sm font-medium">Description</label>
                          <p className="text-sm text-muted-foreground">{funderProfile.description || 'No description provided'}</p>
                        </div>
+
+                       <div className="grid grid-cols-2 gap-4">
+                         <div>
+                           <label className="text-sm font-medium">Min Funding Amount</label>
+                           <p className="text-sm text-muted-foreground">
+                             {funderProfile.min_funding_amount ? formatAmount(funderProfile.min_funding_amount) : 'Not specified'}
+                           </p>
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium">Max Funding Amount</label>
+                           <p className="text-sm text-muted-foreground">
+                             {funderProfile.max_funding_amount ? formatAmount(funderProfile.max_funding_amount) : 'Not specified'}
+                           </p>
+                         </div>
+                       </div>
+
+                       {funderProfile.focus_areas && funderProfile.focus_areas.length > 0 && (
+                         <div>
+                           <label className="text-sm font-medium">Focus Areas</label>
+                           <div className="flex flex-wrap gap-2 mt-2">
+                             {funderProfile.focus_areas.map((area, idx) => (
+                               <Badge key={idx} variant="secondary">{area}</Badge>
+                             ))}
+                           </div>
+                         </div>
+                       )}
+
+                       {funderProfile.preferred_industries && funderProfile.preferred_industries.length > 0 && (
+                         <div>
+                           <label className="text-sm font-medium">Preferred Industries</label>
+                           <div className="flex flex-wrap gap-2 mt-2">
+                             {funderProfile.preferred_industries.map((industry, idx) => (
+                               <Badge key={idx} variant="outline">{industry}</Badge>
+                             ))}
+                           </div>
+                         </div>
+                       )}
+
+                       {funderProfile.preferred_stages && funderProfile.preferred_stages.length > 0 && (
+                         <div>
+                           <label className="text-sm font-medium">Preferred Stages</label>
+                           <div className="flex flex-wrap gap-2 mt-2">
+                             {funderProfile.preferred_stages.map((stage, idx) => (
+                               <Badge key={idx} variant="outline">{stage}</Badge>
+                             ))}
+                           </div>
+                         </div>
+                       )}
                        
                        <div className="flex justify-end">
                          <Button onClick={() => setEditingProfile(true)}>
@@ -726,6 +808,18 @@ const FunderDashboard = () => {
                      </>
                    ) : (
                      <form onSubmit={handleUpdateProfile} className="space-y-4">
+                       <div className="space-y-2">
+                         <Label htmlFor="edit_logo_url">Logo URL</Label>
+                         <Input
+                           id="edit_logo_url"
+                           type="url"
+                           value={profileEditForm.logo_url}
+                           onChange={(e) => setProfileEditForm({ ...profileEditForm, logo_url: e.target.value })}
+                           placeholder="https://example.com/logo.png"
+                         />
+                         <p className="text-xs text-muted-foreground">Provide a URL to your organization's logo</p>
+                       </div>
+
                        <div className="space-y-2">
                          <Label htmlFor="edit_organization_name">Organization Name *</Label>
                          <Input
@@ -777,6 +871,68 @@ const FunderDashboard = () => {
                            value={profileEditForm.description}
                            onChange={(e) => setProfileEditForm({ ...profileEditForm, description: e.target.value })}
                            rows={4}
+                         />
+                       </div>
+
+                       <div className="grid grid-cols-2 gap-4">
+                         <div className="space-y-2">
+                           <Label htmlFor="edit_min_funding">Min Funding Amount (R)</Label>
+                           <Input
+                             id="edit_min_funding"
+                             type="number"
+                             value={profileEditForm.min_funding_amount}
+                             onChange={(e) => setProfileEditForm({ ...profileEditForm, min_funding_amount: e.target.value })}
+                             placeholder="50000"
+                           />
+                         </div>
+                         <div className="space-y-2">
+                           <Label htmlFor="edit_max_funding">Max Funding Amount (R)</Label>
+                           <Input
+                             id="edit_max_funding"
+                             type="number"
+                             value={profileEditForm.max_funding_amount}
+                             onChange={(e) => setProfileEditForm({ ...profileEditForm, max_funding_amount: e.target.value })}
+                             placeholder="5000000"
+                           />
+                         </div>
+                       </div>
+
+                       <div className="space-y-2">
+                         <Label htmlFor="edit_focus_areas">Focus Areas (comma separated)</Label>
+                         <Input
+                           id="edit_focus_areas"
+                           value={profileEditForm.focus_areas.join(', ')}
+                           onChange={(e) => setProfileEditForm({ 
+                             ...profileEditForm, 
+                             focus_areas: e.target.value.split(',').map(s => s.trim()).filter(s => s) 
+                           })}
+                           placeholder="e.g., Technology, Healthcare, Fintech"
+                         />
+                       </div>
+
+                       <div className="space-y-2">
+                         <Label htmlFor="edit_industries">Preferred Industries (comma separated)</Label>
+                         <Input
+                           id="edit_industries"
+                           value={profileEditForm.preferred_industries.join(', ')}
+                           onChange={(e) => setProfileEditForm({ 
+                             ...profileEditForm, 
+                             preferred_industries: e.target.value.split(',').map(s => s.trim()).filter(s => s) 
+                           })}
+                           placeholder="e.g., SaaS, E-commerce, AI/ML"
+                         />
+                       </div>
+
+                       <div className="space-y-2">
+                         <Label htmlFor="edit_stages">Preferred Stages (comma separated)</Label>
+                         <Input
+                           id="edit_stages"
+                           value={profileEditForm.preferred_stages.join(', ')}
+                           onChange={(e) => setProfileEditForm({ 
+                             ...profileEditForm, 
+                             preferred_stages: e.target.value.split(',').map(s => s.trim()).filter(s => s) 
+                           })}
+                           placeholder="e.g., Seed, Series A, Growth"
                          />
                        </div>
 

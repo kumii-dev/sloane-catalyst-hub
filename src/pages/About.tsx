@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { generateTestScriptsPDF } from "@/utils/testScriptsPdfGenerator";
 
 const About = () => {
   const navigate = useNavigate();
@@ -214,6 +215,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadTestScriptsPDF = () => {
+    try {
+      toast.loading("Generating test scripts PDF...");
+      generateTestScriptsPDF();
+      toast.dismiss();
+      toast.success("Test scripts PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate PDF");
+    }
+  };
+
   useEffect(() => {
     return () => {
       // Cleanup: stop narration and revoke URL when component unmounts
@@ -268,7 +282,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
           </div>
 
           <Tabs defaultValue="script" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 max-w-2xl mx-auto">
+            <TabsList className="grid w-full grid-cols-4 max-w-3xl mx-auto">
               <TabsTrigger value="script" className="gap-2">
                 <Video className="w-4 h-4" />
                 Video Script
@@ -280,6 +294,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               <TabsTrigger value="journeys" className="gap-2">
                 <Map className="w-4 h-4" />
                 Journey Maps
+              </TabsTrigger>
+              <TabsTrigger value="testing" className="gap-2">
+                <FileCode className="w-4 h-4" />
+                Load Testing
               </TabsTrigger>
             </TabsList>
 
@@ -1019,13 +1037,236 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     H --> E
     G --> K
     G --> L
-    K --> D
-    L --> D
-    I --> C`}
+     K --> D
+     L --> D
+     I --> C`}
                     </div>
                   </CardContent>
                 </Card>
               </div>
+            </TabsContent>
+
+            {/* Load Testing Tab */}
+            <TabsContent value="testing" className="space-y-8 mt-8">
+              <Card className="border-2">
+                <CardContent className="p-8 space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-3xl font-bold mb-2">Load Testing Suite</h2>
+                      <p className="text-muted-foreground">
+                        Comprehensive k6 test scripts for performance, scalability, and reliability testing
+                      </p>
+                    </div>
+                    <Button 
+                      onClick={downloadTestScriptsPDF}
+                      size="lg"
+                      className="gap-2"
+                    >
+                      <FileDown className="w-5 h-5" />
+                      Download Test Scripts PDF
+                    </Button>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6 mt-8">
+                    {/* Overview Card */}
+                    <Card className="border">
+                      <CardContent className="p-6">
+                        <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                          <FileCode className="w-5 h-5 text-primary" />
+                          What's Included
+                        </h3>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary font-bold">•</span>
+                            <span><strong>Configuration File:</strong> Test users, scenarios, and thresholds</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary font-bold">•</span>
+                            <span><strong>Authentication Flow:</strong> Sign-in and session management tests</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary font-bold">•</span>
+                            <span><strong>Mentorship Booking:</strong> End-to-end booking workflow validation</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary font-bold">•</span>
+                            <span><strong>Credit Assessment:</strong> AI-powered assessment generation tests</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary font-bold">•</span>
+                            <span><strong>Marketplace Flow:</strong> Browse, search, and filter testing</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary font-bold">•</span>
+                            <span><strong>Funding Applications:</strong> Application submission flow tests</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary font-bold">•</span>
+                            <span><strong>Main Load Test:</strong> Mixed realistic user journey simulation</span>
+                          </li>
+                        </ul>
+                      </CardContent>
+                    </Card>
+
+                    {/* Performance Targets */}
+                    <Card className="border">
+                      <CardContent className="p-6">
+                        <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                          <Database className="w-5 h-5 text-primary" />
+                          Performance Targets
+                        </h3>
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center pb-2 border-b">
+                            <span className="text-sm font-medium">Success Rate</span>
+                            <span className="text-sm font-bold text-green-600">&gt; 99%</span>
+                          </div>
+                          <div className="flex justify-between items-center pb-2 border-b">
+                            <span className="text-sm font-medium">Avg Response Time</span>
+                            <span className="text-sm font-bold text-green-600">&lt; 500ms</span>
+                          </div>
+                          <div className="flex justify-between items-center pb-2 border-b">
+                            <span className="text-sm font-medium">P95 Response Time</span>
+                            <span className="text-sm font-bold text-green-600">&lt; 2s</span>
+                          </div>
+                          <div className="flex justify-between items-center pb-2 border-b">
+                            <span className="text-sm font-medium">Booking Flow</span>
+                            <span className="text-sm font-bold text-green-600">&lt; 3s</span>
+                          </div>
+                          <div className="flex justify-between items-center pb-2 border-b">
+                            <span className="text-sm font-medium">Assessment (with AI)</span>
+                            <span className="text-sm font-bold text-green-600">&lt; 5s</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm font-medium">Database Queries</span>
+                            <span className="text-sm font-bold text-green-600">&lt; 500ms</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Test Scenarios */}
+                  <div className="mt-8">
+                    <h3 className="text-2xl font-bold mb-4">Load Test Scenarios</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <Card className="border">
+                        <CardContent className="p-5">
+                          <h4 className="font-bold mb-2 text-blue-600">🔵 Baseline Test</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Normal daily traffic simulation</p>
+                          <ul className="text-xs space-y-1 text-muted-foreground">
+                            <li>• 10-20 concurrent users</li>
+                            <li>• 5 minutes sustained load</li>
+                            <li>• Validates typical operations</li>
+                          </ul>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border">
+                        <CardContent className="p-5">
+                          <h4 className="font-bold mb-2 text-orange-600">🟠 Stress Test</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Peak traffic and breaking points</p>
+                          <ul className="text-xs space-y-1 text-muted-foreground">
+                            <li>• Ramps up to 100 users</li>
+                            <li>• Sustained peak load</li>
+                            <li>• Identifies system limits</li>
+                          </ul>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border">
+                        <CardContent className="p-5">
+                          <h4 className="font-bold mb-2 text-red-600">🔴 Spike Test</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Sudden traffic surge</p>
+                          <ul className="text-xs space-y-1 text-muted-foreground">
+                            <li>• 10 → 200 users in 10 seconds</li>
+                            <li>• Tests auto-scaling</li>
+                            <li>• Simulates viral campaigns</li>
+                          </ul>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border">
+                        <CardContent className="p-5">
+                          <h4 className="font-bold mb-2 text-green-600">🟢 Soak Test</h4>
+                          <p className="text-sm text-muted-foreground mb-2">Long-running stability</p>
+                          <ul className="text-xs space-y-1 text-muted-foreground">
+                            <li>• 20 users for 30 minutes</li>
+                            <li>• Detects memory leaks</li>
+                            <li>• Validates long-term reliability</li>
+                          </ul>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+
+                  {/* Quick Start */}
+                  <Card className="border-2 border-primary/20 bg-primary/5 mt-8">
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-bold mb-3">🚀 Quick Start</h3>
+                      <div className="space-y-3 text-sm">
+                        <div>
+                          <p className="font-semibold mb-1">1. Install k6:</p>
+                          <code className="block bg-background p-2 rounded text-xs">
+                            brew install k6  # macOS
+                          </code>
+                        </div>
+                        <div>
+                          <p className="font-semibold mb-1">2. Create test users in Supabase Auth</p>
+                          <p className="text-xs text-muted-foreground">
+                            loadtest1@example.com through loadtest5@example.com (password: TestPass123!)
+                          </p>
+                        </div>
+                        <div>
+                          <p className="font-semibold mb-1">3. Run tests:</p>
+                          <code className="block bg-background p-2 rounded text-xs">
+                            k6 run auth-flow.js  # Individual test<br />
+                            k6 run main-load-test.js  # Full suite
+                          </code>
+                        </div>
+                        <div className="pt-2 border-t">
+                          <p className="text-xs text-muted-foreground">
+                            📖 For detailed setup instructions, deployment guide, and troubleshooting, 
+                            download the complete PDF documentation above.
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Features */}
+                  <div className="mt-8 grid md:grid-cols-3 gap-4">
+                    <Card className="border">
+                      <CardContent className="p-5 text-center">
+                        <div className="text-3xl mb-2">📊</div>
+                        <h4 className="font-bold mb-1">Real-time Metrics</h4>
+                        <p className="text-xs text-muted-foreground">
+                          Monitor response times, throughput, and error rates live
+                        </p>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="border">
+                      <CardContent className="p-5 text-center">
+                        <div className="text-3xl mb-2">🎯</div>
+                        <h4 className="font-bold mb-1">Custom Thresholds</h4>
+                        <p className="text-xs text-muted-foreground">
+                          Pass/fail criteria for automated quality gates
+                        </p>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="border">
+                      <CardContent className="p-5 text-center">
+                        <div className="text-3xl mb-2">🔄</div>
+                        <h4 className="font-bold mb-1">CI/CD Ready</h4>
+                        <p className="text-xs text-muted-foreground">
+                          Integrate with GitHub Actions, GitLab CI, or Jenkins
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>

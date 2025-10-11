@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import Mentorship from "./pages/Mentorship";
 import FindMentor from "./pages/FindMentor";
+import MentorProfile from "./pages/MentorProfile";
 import BecomeMentor from "./pages/BecomeMentor";
 import FundingHub from "./pages/FundingHub";
 import BrowseFunding from "./pages/BrowseFunding";
@@ -54,6 +55,7 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/mentorship" element={<Mentorship />} />
             <Route path="/find-mentor" element={<FindMentor />} />
+            <Route path="/mentor/:id" element={<MentorProfile />} />
             <Route path="/become-mentor" element={<BecomeMentor />} />
             <Route path="/funding" element={<FundingHub />} />
             <Route path="/funding/browse" element={<BrowseFunding />} />

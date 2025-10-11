@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -16,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const FindMentor = () => {
+  const navigate = useNavigate();
   const [mentors, setMentors] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -229,7 +231,11 @@ const FindMentor = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {premiumMentors.map((mentor: any) => (
-                  <Card key={mentor.id} className="relative hover:shadow-xl transition-all duration-300 border-2 border-primary/20 overflow-hidden">
+                  <Card 
+                    key={mentor.id} 
+                    className="relative hover:shadow-xl transition-all duration-300 border-2 border-primary/20 overflow-hidden cursor-pointer"
+                    onClick={() => navigate(`/mentor/${mentor.id}`)}
+                  >
                     <div className="absolute top-0 right-0 bg-gradient-to-br from-yellow-400 to-yellow-600 text-white px-3 py-1 rounded-bl-lg text-xs font-bold flex items-center gap-1">
                       <Crown className="w-3 h-3" />
                       PREMIUM
@@ -280,7 +286,14 @@ const FindMentor = () => {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button className="w-full" variant="default">
+                      <Button 
+                        className="w-full" 
+                        variant="default"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/mentor/${mentor.id}`);
+                        }}
+                      >
                         Book Session
                       </Button>
                     </CardFooter>
@@ -310,7 +323,11 @@ const FindMentor = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {regularMentors.map((mentor: any) => (
-                  <Card key={mentor.id} className="hover:shadow-lg transition-all duration-300">
+                  <Card 
+                    key={mentor.id} 
+                    className="hover:shadow-lg transition-all duration-300 cursor-pointer"
+                    onClick={() => navigate(`/mentor/${mentor.id}`)}
+                  >
                     <CardHeader className="pb-4">
                       <div className="flex flex-col items-center text-center space-y-3">
                         <Avatar className="h-20 w-20">
@@ -357,7 +374,14 @@ const FindMentor = () => {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button className="w-full" variant="outline">
+                      <Button 
+                        className="w-full" 
+                        variant="outline"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/mentor/${mentor.id}`);
+                        }}
+                      >
                         View Profile
                       </Button>
                     </CardFooter>

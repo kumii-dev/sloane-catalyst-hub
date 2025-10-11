@@ -2023,6 +2023,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_credits: {
+        Args: {
+          p_amount: number
+          p_description: string
+          p_reference_id?: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
+      deduct_credits: {
+        Args: {
+          p_amount: number
+          p_description: string
+          p_reference_id?: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
       has_funder_assessment_access: {
         Args: { _assessment_id: string; _user_id: string }
         Returns: boolean

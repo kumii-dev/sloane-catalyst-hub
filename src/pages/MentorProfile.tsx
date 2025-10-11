@@ -16,7 +16,8 @@ import {
   BookOpen,
   Users,
   Lightbulb,
-  ArrowLeft
+  ArrowLeft,
+  Edit
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -27,6 +28,7 @@ const MentorProfile = () => {
   const [mentor, setMentor] = useState<any>(null);
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -37,6 +39,9 @@ const MentorProfile = () => {
 
   const fetchMentorProfile = async () => {
     try {
+      // Check if this is the user's own profile
+      const { data: { user } } = await supabase.auth.getUser();
+      
       const { data: mentorData, error: mentorError } = await supabase
         .from('mentors')
         .select('*')
@@ -44,6 +49,10 @@ const MentorProfile = () => {
         .single();
 
       if (mentorError) throw mentorError;
+      
+      if (user && mentorData.user_id === user.id) {
+        setIsOwnProfile(true);
+      }
 
       if (mentorData) {
         const { data: profileData, error: profileError } = await supabase
@@ -182,6 +191,15 @@ const MentorProfile = () => {
                   </div>
 
                   <div className="flex gap-2">
+                    {isOwnProfile && (
+                      <Button
+                        variant="outline"
+                        onClick={() => navigate('/edit-mentor-profile')}
+                      >
+                        <Edit className="w-4 h-4 mr-2" />
+                        Edit Profile
+                      </Button>
+                    )}
                     <Button variant="outline" size="icon">
                       <Calendar className="w-4 h-4" />
                     </Button>

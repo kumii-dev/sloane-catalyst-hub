@@ -860,8 +860,8 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <CardContent className="p-8">
                     <h3 className="text-2xl font-bold mb-4 text-primary">1. Mentee Booking Journey</h3>
                     <p className="text-muted-foreground mb-6">Complete flow from discovering mentors to confirmed booking</p>
-                    <pre className="mermaid bg-background p-4 rounded-lg overflow-auto">
-{`graph TD
+                    <div className="mermaid bg-background p-4 rounded-lg overflow-auto">
+                      {`graph TD
     A[Browse Mentors] --> B[View Mentor Profile]
     B --> C[Click Book Session]
     C --> D[Select Date from Calendar]
@@ -888,7 +888,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     S --> T[Show Success]
     T --> U[Navigate to Dashboard]
     U --> V[View Booked Sessions]`}
-                    </pre>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -897,8 +897,8 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <CardContent className="p-8">
                     <h3 className="text-2xl font-bold mb-4 text-primary">2. Mentor Session Management Journey</h3>
                     <p className="text-muted-foreground mb-6">How mentors manage incoming session requests</p>
-                    <pre className="mermaid bg-background p-4 rounded-lg overflow-auto">
-{`graph TD
+                    <div className="mermaid bg-background p-4 rounded-lg overflow-auto">
+                      {`graph TD
     A[Mentor Dashboard] --> B[View Pending Sessions]
     B --> C{Session Action}
     C -->|Confirm| D[Update Status to Confirmed]
@@ -913,7 +913,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     K --> L{Need to Update?}
     L -->|Yes| M[Manage Availability]
     L -->|No| B`}
-                    </pre>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -922,8 +922,8 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <CardContent className="p-8">
                     <h3 className="text-2xl font-bold mb-4 text-primary">3. Mentor Availability Management Journey</h3>
                     <p className="text-muted-foreground mb-6">Setting up weekly schedules and date-specific overrides</p>
-                    <pre className="mermaid bg-background p-4 rounded-lg overflow-auto">
-{`graph TD
+                    <div className="mermaid bg-background p-4 rounded-lg overflow-auto">
+                      {`graph TD
     A[Mentor Availability Page] --> B{Choose Tab}
     B -->|Weekly Schedule| C[View Days of Week]
     B -->|Date Overrides| D[View Calendar]
@@ -941,7 +941,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     N --> O
     O --> P[Update/Insert Override]
     P --> J`}
-                    </pre>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -950,8 +950,8 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <CardContent className="p-8">
                     <h3 className="text-2xl font-bold mb-4 text-primary">4. Real-time Notification System Flow</h3>
                     <p className="text-muted-foreground mb-6">How notifications are delivered in real-time via Supabase</p>
-                    <pre className="mermaid bg-background p-4 rounded-lg overflow-auto">
-{`sequenceDiagram
+                    <div className="mermaid bg-background p-4 rounded-lg overflow-auto">
+                      {`sequenceDiagram
     participant M as Mentor
     participant DB as Database
     participant RT as Realtime Channel
@@ -969,7 +969,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     ME->>N: Click notification
     N->>DB: Mark as read
     N->>ME: Navigate to dashboard`}
-                    </pre>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -978,8 +978,8 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <CardContent className="p-8">
                     <h3 className="text-2xl font-bold mb-4 text-primary">5. Complete System Architecture</h3>
                     <p className="text-muted-foreground mb-6">How all mentorship components connect together</p>
-                    <pre className="mermaid bg-background p-4 rounded-lg overflow-auto">
-{`graph TB
+                    <div className="mermaid bg-background p-4 rounded-lg overflow-auto">
+                      {`graph TB
     subgraph Frontend
         A[Mentorship Page]
         B[Find Mentor]
@@ -1022,7 +1022,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     K --> D
     L --> D
     I --> C`}
-                    </pre>
+                    </div>
                   </CardContent>
                 </Card>
               </div>

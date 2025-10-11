@@ -5,8 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Building, 
   Plus, 
@@ -65,10 +70,18 @@ interface Application {
 
 const FunderDashboard = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [funderProfile, setFunderProfile] = useState<FunderProfile | null>(null);
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
+  const [creatingProfile, setCreatingProfile] = useState(false);
+  const [formData, setFormData] = useState({
+    organization_name: "",
+    organization_type: "",
+    description: "",
+    website: ""
+  });
 
   useEffect(() => {
     if (user) {
@@ -152,21 +165,123 @@ const FunderDashboard = () => {
     );
   }
 
+  const handleCreateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+
+    setCreatingProfile(true);
+    try {
+      const { error } = await supabase
+        .from('funders')
+        .insert({
+          user_id: user.id,
+          organization_name: formData.organization_name,
+          organization_type: formData.organization_type,
+          description: formData.description,
+          website: formData.website
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Profile created!",
+        description: "Your funder profile has been created successfully."
+      });
+
+      // Refresh dashboard data
+      fetchDashboardData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setCreatingProfile(false);
+    }
+  };
+
   if (!funderProfile && !loading) {
     return (
       <Layout showSidebar={false}>
-        <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <Building className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-          <h1 className="text-2xl font-bold mb-4">Complete Your Funder Profile</h1>
-          <p className="text-muted-foreground mb-6">
-            Create your organization profile to start listing funding opportunities.
-          </p>
-          <Link to="/funding/funder-dashboard">
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Create Profile
-            </Button>
-          </Link>
+        <div className="max-w-2xl mx-auto px-4 py-16">
+          <div className="text-center mb-8">
+            <Building className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+            <h1 className="text-2xl font-bold mb-2">Complete Your Funder Profile</h1>
+            <p className="text-muted-foreground">
+              Create your organization profile to start listing funding opportunities.
+            </p>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Organization Information</CardTitle>
+              <CardDescription>Tell us about your organization</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleCreateProfile} className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="organization_name">Organization Name *</Label>
+                  <Input
+                    id="organization_name"
+                    required
+                    value={formData.organization_name}
+                    onChange={(e) => setFormData({ ...formData, organization_name: e.target.value })}
+                    placeholder="e.g., Acme Ventures"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="organization_type">Organization Type *</Label>
+                  <Select
+                    value={formData.organization_type}
+                    onValueChange={(value) => setFormData({ ...formData, organization_type: value })}
+                    required
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="venture_capital">Venture Capital</SelectItem>
+                      <SelectItem value="angel_investor">Angel Investor</SelectItem>
+                      <SelectItem value="government">Government</SelectItem>
+                      <SelectItem value="corporate">Corporate</SelectItem>
+                      <SelectItem value="non_profit">Non-Profit</SelectItem>
+                      <SelectItem value="accelerator">Accelerator/Incubator</SelectItem>
+                      <SelectItem value="private_equity">Private Equity</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="website">Website</Label>
+                  <Input
+                    id="website"
+                    type="url"
+                    value={formData.website}
+                    onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                    placeholder="https://example.com"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description *</Label>
+                  <Textarea
+                    id="description"
+                    required
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    placeholder="Tell us about your organization and investment focus..."
+                    rows={4}
+                  />
+                </div>
+
+                <Button type="submit" className="w-full" disabled={creatingProfile}>
+                  {creatingProfile ? "Creating..." : "Create Funder Profile"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </Layout>
     );

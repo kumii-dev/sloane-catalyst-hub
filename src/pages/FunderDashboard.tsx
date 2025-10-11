@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -76,11 +77,22 @@ const FunderDashboard = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [creatingProfile, setCreatingProfile] = useState(false);
+  const [showOpportunityDialog, setShowOpportunityDialog] = useState(false);
+  const [creatingOpportunity, setCreatingOpportunity] = useState(false);
   const [formData, setFormData] = useState({
     organization_name: "",
     organization_type: "",
     description: "",
     website: ""
+  });
+  const [opportunityForm, setOpportunityForm] = useState({
+    title: "",
+    description: "",
+    funding_type: "grant",
+    amount_min: "",
+    amount_max: "",
+    requirements: "",
+    application_deadline: ""
   });
 
   useEffect(() => {
@@ -201,6 +213,58 @@ const FunderDashboard = () => {
     }
   };
 
+  const handleCreateOpportunity = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user || !funderProfile) return;
+
+    setCreatingOpportunity(true);
+    try {
+      const { error } = await supabase
+        .from('funding_opportunities')
+        .insert([{
+          funder_id: funderProfile.id,
+          title: opportunityForm.title,
+          description: opportunityForm.description,
+          funding_type: opportunityForm.funding_type as any,
+          amount_min: parseFloat(opportunityForm.amount_min) || 0,
+          amount_max: parseFloat(opportunityForm.amount_max) || 0,
+          requirements: opportunityForm.requirements,
+          application_deadline: opportunityForm.application_deadline || null,
+          status: 'active' as any
+        }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Opportunity created!",
+        description: "Your funding opportunity has been created successfully."
+      });
+
+      // Reset form and close dialog
+      setOpportunityForm({
+        title: "",
+        description: "",
+        funding_type: "grant",
+        amount_min: "",
+        amount_max: "",
+        requirements: "",
+        application_deadline: ""
+      });
+      setShowOpportunityDialog(false);
+
+      // Refresh dashboard data
+      fetchDashboardData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setCreatingOpportunity(false);
+    }
+  };
+
   if (!funderProfile && !loading) {
     return (
       <Layout showSidebar={false}>
@@ -307,7 +371,7 @@ const FunderDashboard = () => {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button>
+            <Button onClick={() => setShowOpportunityDialog(true)}>
               <Plus className="w-4 h-4 mr-2" />
               New Opportunity
             </Button>
@@ -404,7 +468,7 @@ const FunderDashboard = () => {
           <TabsContent value="opportunities" className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">Your Funding Opportunities</h2>
-              <Button>
+              <Button onClick={() => setShowOpportunityDialog(true)}>
                 <Plus className="w-4 h-4 mr-2" />
                 Create New
               </Button>
@@ -472,7 +536,7 @@ const FunderDashboard = () => {
                 <p className="text-muted-foreground mb-6">
                   Create your first funding opportunity to start receiving applications
                 </p>
-                <Button>
+                <Button onClick={() => setShowOpportunityDialog(true)}>
                   <Plus className="w-4 h-4 mr-2" />
                   Create Opportunity
                 </Button>
@@ -548,7 +612,7 @@ const FunderDashboard = () => {
                 <p className="text-muted-foreground mb-6">
                   Once you create active funding opportunities, applications will appear here
                 </p>
-                <Button>Create Opportunity</Button>
+                <Button onClick={() => setShowOpportunityDialog(true)}>Create Opportunity</Button>
               </div>
             )}
           </TabsContent>
@@ -599,11 +663,124 @@ const FunderDashboard = () => {
                  </CardContent>
                </Card>
              )}
-           </TabsContent>
-         </Tabs>
-       </div>
-     </Layout>
-  );
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Create Opportunity Dialog */}
+        <Dialog open={showOpportunityDialog} onOpenChange={setShowOpportunityDialog}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Create Funding Opportunity</DialogTitle>
+              <DialogDescription>
+                Create a new funding opportunity for startups to apply to
+              </DialogDescription>
+            </DialogHeader>
+            
+            <form onSubmit={handleCreateOpportunity} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="title">Title *</Label>
+                <Input
+                  id="title"
+                  required
+                  value={opportunityForm.title}
+                  onChange={(e) => setOpportunityForm({ ...opportunityForm, title: e.target.value })}
+                  placeholder="e.g., Seed Funding for Tech Startups"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="funding_type">Funding Type *</Label>
+                <Select
+                  value={opportunityForm.funding_type}
+                  onValueChange={(value) => setOpportunityForm({ ...opportunityForm, funding_type: value })}
+                  required
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="grant">Grant</SelectItem>
+                    <SelectItem value="equity">Equity</SelectItem>
+                    <SelectItem value="debt">Debt</SelectItem>
+                    <SelectItem value="convertible_note">Convertible Note</SelectItem>
+                    <SelectItem value="revenue_share">Revenue Share</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="amount_min">Minimum Amount (R) *</Label>
+                  <Input
+                    id="amount_min"
+                    type="number"
+                    required
+                    value={opportunityForm.amount_min}
+                    onChange={(e) => setOpportunityForm({ ...opportunityForm, amount_min: e.target.value })}
+                    placeholder="50000"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="amount_max">Maximum Amount (R) *</Label>
+                  <Input
+                    id="amount_max"
+                    type="number"
+                    required
+                    value={opportunityForm.amount_max}
+                    onChange={(e) => setOpportunityForm({ ...opportunityForm, amount_max: e.target.value })}
+                    placeholder="500000"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description">Description *</Label>
+                <Textarea
+                  id="description"
+                  required
+                  value={opportunityForm.description}
+                  onChange={(e) => setOpportunityForm({ ...opportunityForm, description: e.target.value })}
+                  placeholder="Describe your funding opportunity..."
+                  rows={4}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="requirements">Requirements *</Label>
+                <Textarea
+                  id="requirements"
+                  required
+                  value={opportunityForm.requirements}
+                  onChange={(e) => setOpportunityForm({ ...opportunityForm, requirements: e.target.value })}
+                  placeholder="List the requirements for applicants..."
+                  rows={3}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="application_deadline">Application Deadline (Optional)</Label>
+                <Input
+                  id="application_deadline"
+                  type="date"
+                  value={opportunityForm.application_deadline}
+                  onChange={(e) => setOpportunityForm({ ...opportunityForm, application_deadline: e.target.value })}
+                />
+              </div>
+
+              <DialogFooter>
+                <Button type="button" variant="outline" onClick={() => setShowOpportunityDialog(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={creatingOpportunity}>
+                  {creatingOpportunity ? "Creating..." : "Create Opportunity"}
+                </Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </Layout>
+   );
 };
 
 export default FunderDashboard;

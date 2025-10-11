@@ -307,18 +307,10 @@ const FunderDashboard = () => {
             </p>
           </div>
           <div className="flex gap-2">
-            <Link to="/funding/funder-profile">
-              <Button variant="outline">
-                <Settings className="w-4 h-4 mr-2" />
-                Settings
-              </Button>
-            </Link>
-            <Link to="/funding/create-opportunity">
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                New Opportunity
-              </Button>
-            </Link>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              New Opportunity
+            </Button>
           </div>
         </div>
 
@@ -412,12 +404,10 @@ const FunderDashboard = () => {
           <TabsContent value="opportunities" className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">Your Funding Opportunities</h2>
-              <Link to="/funding/create-opportunity">
-                <Button>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create New
-                </Button>
-              </Link>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Create New
+              </Button>
             </div>
 
             {opportunities.length > 0 ? (
@@ -482,12 +472,10 @@ const FunderDashboard = () => {
                 <p className="text-muted-foreground mb-6">
                   Create your first funding opportunity to start receiving applications
                 </p>
-                <Link to="/funding/create-opportunity">
-                  <Button>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create Opportunity
-                  </Button>
-                </Link>
+                <Button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Opportunity
+                </Button>
               </div>
             )}
           </TabsContent>
@@ -560,9 +548,7 @@ const FunderDashboard = () => {
                 <p className="text-muted-foreground mb-6">
                   Once you create active funding opportunities, applications will appear here
                 </p>
-                <Link to="/funding/create-opportunity">
-                  <Button>Create Opportunity</Button>
-                </Link>
+                <Button>Create Opportunity</Button>
               </div>
             )}
           </TabsContent>
@@ -604,14 +590,12 @@ const FunderDashboard = () => {
                      <p className="text-sm text-muted-foreground">{funderProfile.description || 'No description provided'}</p>
                    </div>
                    
-                   <div className="flex justify-end">
-                     <Link to="/funding/funder-profile">
-                       <Button>
-                         <Settings className="w-4 h-4 mr-2" />
-                         Edit Profile
-                       </Button>
-                     </Link>
-                   </div>
+                    <div className="flex justify-end">
+                      <Button disabled variant="outline">
+                        <Settings className="w-4 h-4 mr-2" />
+                        Edit Profile (Coming Soon)
+                      </Button>
+                    </div>
                  </CardContent>
                </Card>
              )}

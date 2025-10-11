@@ -102,7 +102,8 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
     { title: "Trusted by Funders", url: "/credit-score" },
   ],
   "Mentorship": [
-    { title: "My Sessions", url: "/mentee-dashboard" },
+    { title: "My Sessions (Mentee)", url: "/mentee-dashboard" },
+    { title: "Mentor Dashboard", url: "/mentor-dashboard" },
     { title: "Find a Mentor", url: "/find-mentor" },
     { title: "Become a Mentor", url: "/become-mentor" },
     { title: "Browse Categories", url: "/mentorship" },

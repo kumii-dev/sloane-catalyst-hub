@@ -162,6 +162,11 @@ const Mentorship = () => {
                 My Sessions
               </Button>
             </Link>
+            <Link to="/mentor-dashboard">
+              <Button variant="outline" size="lg" className="rounded-full border-primary/30 hover:bg-primary/10 text-foreground">
+                Mentor Dashboard
+              </Button>
+            </Link>
             <Link to="/find-mentor">
               <Button variant="hero" size="lg" className="rounded-full">
                 Find a Mentor

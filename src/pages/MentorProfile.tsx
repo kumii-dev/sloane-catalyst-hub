@@ -194,13 +194,22 @@ const MentorProfile = () => {
 
                   <div className="flex gap-2">
                     {isOwnProfile && (
-                      <Button
-                        variant="outline"
-                        onClick={() => navigate('/edit-mentor-profile')}
-                      >
-                        <Edit className="w-4 h-4 mr-2" />
-                        Edit Profile
-                      </Button>
+                      <>
+                        <Button
+                          variant="default"
+                          onClick={() => navigate('/mentor-dashboard')}
+                        >
+                          <Calendar className="w-4 h-4 mr-2" />
+                          My Dashboard
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => navigate('/edit-mentor-profile')}
+                        >
+                          <Edit className="w-4 h-4 mr-2" />
+                          Edit Profile
+                        </Button>
+                      </>
                     )}
                     <Button variant="outline" size="icon">
                       <Calendar className="w-4 h-4" />

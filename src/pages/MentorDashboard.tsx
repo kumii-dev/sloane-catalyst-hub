@@ -239,6 +239,10 @@ const MentorDashboard = () => {
                 <p className="text-muted-foreground">Manage your mentoring sessions and availability</p>
               </div>
               <div className="flex gap-3">
+                <Button variant="outline" onClick={() => navigate('/mentor-availability')}>
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Manage Availability
+                </Button>
                 <Button variant="outline" onClick={() => navigate('/edit-mentor-profile')}>
                   <Settings className="w-4 h-4 mr-2" />
                   Edit Profile

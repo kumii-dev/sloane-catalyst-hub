@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +23,8 @@ import {
 
 const FundingHub = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [funders, setFunders] = useState<any[]>([]);
+  const [loadingFunders, setLoadingFunders] = useState(false);
 
   const fundingTypes = [
     { type: "Grants", count: 42, icon: Award, color: "bg-emerald-500" },
@@ -71,6 +74,27 @@ const FundingHub = () => {
     { label: "Successful Matches", value: "1,247", change: "+23%" },
     { label: "Average Success Rate", value: "68%", change: "+5%" }
   ];
+
+  const fetchFunders = async () => {
+    setLoadingFunders(true);
+    try {
+      const { data, error } = await supabase
+        .from('funders')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setFunders(data || []);
+    } catch (error) {
+      console.error('Error fetching funders:', error);
+    } finally {
+      setLoadingFunders(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFunders();
+  }, []);
 
   return (
     <Layout showSidebar={true}>
@@ -208,12 +232,73 @@ const FundingHub = () => {
           </TabsContent>
 
           <TabsContent value="funders" className="space-y-8">
-            <div className="text-center py-12">
-              <Building className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Funder Directory</h3>
-              <p className="text-muted-foreground mb-6">Discover verified funders, their focus areas, and track record</p>
-              <Button>Coming Soon</Button>
-            </div>
+            {loadingFunders ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading funders...</p>
+              </div>
+            ) : funders.length === 0 ? (
+              <div className="text-center py-12">
+                <Building className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                <h3 className="text-xl font-semibold mb-2">No Funders Yet</h3>
+                <p className="text-muted-foreground mb-6">Be the first to join our funder community</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {funders.map((funder) => (
+                  <Card key={funder.id} className="hover:shadow-lg transition-all">
+                    <CardHeader className="space-y-3">
+                      <div className="flex items-start justify-between">
+                        {funder.logo_url && (
+                          <img src={funder.logo_url} alt={funder.organization_name} className="w-12 h-12 object-contain rounded" />
+                        )}
+                        {funder.is_verified && (
+                          <Badge variant="secondary" className="ml-auto">
+                            <Award className="w-3 h-3 mr-1" />
+                            Verified
+                          </Badge>
+                        )}
+                      </div>
+                      <CardTitle className="text-lg">{funder.organization_name}</CardTitle>
+                      <CardDescription className="text-sm">
+                        {funder.organization_type}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {funder.description && (
+                        <p className="text-sm text-muted-foreground line-clamp-3">
+                          {funder.description}
+                        </p>
+                      )}
+                      {funder.focus_areas && funder.focus_areas.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {funder.focus_areas.slice(0, 3).map((area: string, idx: number) => (
+                            <Badge key={idx} variant="outline" className="text-xs">
+                              {area}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between text-sm pt-2">
+                        <div>
+                          <span className="text-muted-foreground">Funded:</span>
+                          <span className="font-medium ml-1">{funder.total_funded_companies || 0}</span>
+                        </div>
+                        {funder.website && (
+                          <a 
+                            href={funder.website} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-primary hover:underline"
+                          >
+                            Website
+                          </a>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="insights" className="space-y-8">

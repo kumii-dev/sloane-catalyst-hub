@@ -25,6 +25,7 @@ const MentorProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [mentor, setMentor] = useState<any>(null);
+  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -52,6 +53,22 @@ const MentorProfile = () => {
           .single();
 
         if (profileError) throw profileError;
+
+        // Fetch mentor categories
+        const { data: categoriesData, error: categoriesError } = await supabase
+          .from('mentor_categories')
+          .select(`
+            mentoring_categories (
+              id,
+              name,
+              icon
+            )
+          `)
+          .eq('mentor_id', id);
+
+        if (!categoriesError && categoriesData) {
+          setCategories(categoriesData.map((mc: any) => mc.mentoring_categories));
+        }
 
         setMentor({
           ...mentorData,
@@ -356,14 +373,14 @@ const MentorProfile = () => {
               </Card>
 
               {/* Categories */}
-              {mentor.expertise_areas && mentor.expertise_areas.length > 0 && (
+              {categories.length > 0 && (
                 <Card>
                   <CardContent className="pt-6">
                     <h3 className="font-semibold mb-4">Categories</h3>
                     <div className="flex flex-wrap gap-2">
-                      {mentor.expertise_areas.map((area: string, idx: number) => (
-                        <Badge key={idx} variant="secondary">
-                          {area}
+                      {categories.map((category: any) => (
+                        <Badge key={category.id} variant="secondary">
+                          {category.name}
                         </Badge>
                       ))}
                     </div>

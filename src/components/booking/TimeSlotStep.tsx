@@ -164,7 +164,7 @@ export const TimeSlotStep = ({ mentor, selectedDate, onNext, onBack }: TimeSlotS
         <div className="text-right">
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 bg-primary rounded-full"></div>
-            <span className="text-2xl font-bold">${sessionFee}</span>
+            <span className="text-2xl font-bold">R{sessionFee}</span>
           </div>
           <p className="text-xs text-muted-foreground mt-1">per session</p>
         </div>

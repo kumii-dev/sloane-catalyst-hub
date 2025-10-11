@@ -434,7 +434,7 @@ const MentorDashboard = () => {
                               )}
                               {session.price && (
                                 <Badge variant="secondary" className="bg-green-100 text-green-800">
-                                  ${session.price}
+                                  R{session.price}
                                 </Badge>
                               )}
                             </div>
@@ -533,7 +533,7 @@ const MentorDashboard = () => {
                               </div>
                               {session.price && (
                                 <Badge variant="secondary" className="bg-green-100 text-green-800">
-                                  ${session.price}
+                                  R{session.price}
                                 </Badge>
                               )}
                             </div>
@@ -611,7 +611,7 @@ const MentorDashboard = () => {
                                 <span>{session.duration_minutes} minutes</span>
                               </div>
                               {session.price && (
-                                <Badge variant="secondary">Earned: ${session.price}</Badge>
+                                <Badge variant="secondary">Earned: R{session.price}</Badge>
                               )}
                             </div>
 
@@ -678,7 +678,7 @@ const MentorDashboard = () => {
                               <Badge variant="outline">{session.session_type}</Badge>
                             )}
                             {session.price && (
-                              <Badge variant="secondary">${session.price}</Badge>
+                              <Badge variant="secondary">R{session.price}</Badge>
                             )}
                           </div>
                         </div>

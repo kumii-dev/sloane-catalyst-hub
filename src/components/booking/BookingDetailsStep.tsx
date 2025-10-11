@@ -133,7 +133,7 @@ export const BookingDetailsStep = ({ mentor, bookingData, onNext, onBack }: Book
                 <Star className="w-5 h-5 text-primary" />
                 <span>Premium Mentoring Session</span>
               </div>
-              <span className="text-xl font-bold">${sessionFee}</span>
+              <span className="text-xl font-bold">R{sessionFee}</span>
             </div>
             <div className="text-sm text-muted-foreground text-right">Total Investment</div>
 
@@ -162,8 +162,8 @@ export const BookingDetailsStep = ({ mentor, bookingData, onNext, onBack }: Book
               <div className="font-medium">Compare the Value</div>
               <ul className="space-y-1 text-muted-foreground">
                 <li>• Professional coaching: $150-300/hour</li>
-                <li>• Career consultant: $200-500/session</li>
-                <li>• <span className="text-primary font-medium">Expert mentoring here: ${sessionFee}/session</span> ⚡</li>
+                <li>• Career consultant: R200-500/session</li>
+                <li>• <span className="text-primary font-medium">Expert mentoring here: R{sessionFee}/session</span> ⚡</li>
               </ul>
             </div>
           </div>

@@ -98,7 +98,7 @@ const Services = () => {
     if (service.pricing_type === 'free') return 'Free';
     if (service.pricing_type === 'contact_for_pricing') return 'Contact for pricing';
     if (service.credits_price) return `${service.credits_price} credits`;
-    if (service.base_price) return `$${service.base_price}`;
+    if (service.base_price) return `R${service.base_price}`;
     return 'View pricing';
   };
 

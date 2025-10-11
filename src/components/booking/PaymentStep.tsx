@@ -24,7 +24,7 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
   const { toast } = useToast();
 
   const sessionFee = mentor.session_fee || 100;
-  const creditsRequired = Math.ceil(sessionFee / 10); // 1 credit = $10 equivalent
+  const creditsRequired = Math.ceil(sessionFee / 10); // 1 credit = R10 equivalent
   const currency = "USD";
   const localAmount = sessionFee;
 

@@ -314,7 +314,7 @@ const MenteeDashboard = () => {
                                 <Badge variant="outline">{session.session_type}</Badge>
                               )}
                               {session.price && (
-                                <Badge variant="secondary">${session.price}</Badge>
+                                <Badge variant="secondary">R{session.price}</Badge>
                               )}
                             </div>
 

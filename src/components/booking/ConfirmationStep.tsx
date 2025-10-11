@@ -28,17 +28,17 @@ export const ConfirmationStep = ({ mentor, bookingData, onNext, onBack }: Confir
         </p>
         
         <div className="text-2xl font-bold">
-          Session fee: ${sessionFee}
+          Session fee: R{sessionFee}
         </div>
         
         <div className="space-y-2 text-sm">
           <div className="flex justify-center gap-2">
             <span className="text-muted-foreground">•</span>
-            <span>Mentor receives: ${mentorReceives.toFixed(0)} (75%)</span>
+            <span>Mentor receives: R{mentorReceives.toFixed(0)} (75%)</span>
           </div>
           <div className="flex justify-center gap-2">
             <span className="text-muted-foreground">•</span>
-            <span>Platform fee: ${platformFee.toFixed(0)} (25%)</span>
+            <span>Platform fee: R{platformFee.toFixed(0)} (25%)</span>
           </div>
         </div>
       </div>

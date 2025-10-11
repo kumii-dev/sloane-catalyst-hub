@@ -91,7 +91,7 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
       <div className="flex items-center gap-2 sm:gap-4">
         {user ? (
           <div className="flex items-center gap-2 sm:gap-3">
-            <span className="text-sm sm:text-base text-white font-medium hidden md:inline">About</span>
+            <Link to="/about" className="text-sm sm:text-base text-white font-medium hidden md:inline hover:text-white/80 transition-colors">About</Link>
             <Button
               variant="ghost"
               size="sm"
@@ -108,7 +108,7 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
           </div>
         ) : (
           <div className="flex items-center gap-2 sm:gap-3">
-            <span className="text-sm sm:text-base text-white font-medium hidden md:inline">About</span>
+            <Link to="/about" className="text-sm sm:text-base text-white font-medium hidden md:inline hover:text-white/80 transition-colors">About</Link>
             <Link to="/auth">
               <Button variant="ghost" size="sm" className="text-sm sm:text-base text-white hover:text-white hover:bg-white/20 hidden sm:flex">
                 Sign In

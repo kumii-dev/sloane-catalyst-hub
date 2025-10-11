@@ -36,6 +36,7 @@ interface FunderProfile {
   organization_name: string;
   organization_type: string;
   description: string;
+  website?: string;
   total_funded_amount: number;
   total_funded_companies: number;
   sloane_credits_balance: number;
@@ -79,7 +80,15 @@ const FunderDashboard = () => {
   const [creatingProfile, setCreatingProfile] = useState(false);
   const [showOpportunityDialog, setShowOpportunityDialog] = useState(false);
   const [creatingOpportunity, setCreatingOpportunity] = useState(false);
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [updatingProfile, setUpdatingProfile] = useState(false);
   const [formData, setFormData] = useState({
+    organization_name: "",
+    organization_type: "",
+    description: "",
+    website: ""
+  });
+  const [profileEditForm, setProfileEditForm] = useState({
     organization_name: "",
     organization_type: "",
     description: "",
@@ -115,6 +124,14 @@ const FunderDashboard = () => {
       setFunderProfile(profileData);
 
       if (profileData) {
+        // Set profile edit form with current data
+        setProfileEditForm({
+          organization_name: profileData.organization_name || "",
+          organization_type: profileData.organization_type || "",
+          description: profileData.description || "",
+          website: profileData.website || ""
+        });
+
         // Fetch opportunities
         const { data: opportunitiesData } = await supabase
           .from('funding_opportunities')
@@ -210,6 +227,43 @@ const FunderDashboard = () => {
       });
     } finally {
       setCreatingProfile(false);
+    }
+  };
+
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user || !funderProfile) return;
+
+    setUpdatingProfile(true);
+    try {
+      const { error } = await supabase
+        .from('funders')
+        .update({
+          organization_name: profileEditForm.organization_name,
+          organization_type: profileEditForm.organization_type,
+          description: profileEditForm.description,
+          website: profileEditForm.website
+        })
+        .eq('id', funderProfile.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Profile updated!",
+        description: "Your funder profile has been updated successfully."
+      });
+
+      setEditingProfile(false);
+      // Refresh dashboard data
+      fetchDashboardData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setUpdatingProfile(false);
     }
   };
 
@@ -637,29 +691,105 @@ const FunderDashboard = () => {
                     Manage your organization details and preferences
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                   <div className="grid grid-cols-2 gap-4">
-                     <div>
-                       <label className="text-sm font-medium">Organization Name</label>
-                       <p className="text-sm text-muted-foreground">{funderProfile.organization_name}</p>
-                     </div>
-                     <div>
-                       <label className="text-sm font-medium">Organization Type</label>
-                       <p className="text-sm text-muted-foreground">{funderProfile.organization_type || 'Not specified'}</p>
-                      </div>
-                    </div>
-                   
-                   <div>
-                     <label className="text-sm font-medium">Description</label>
-                     <p className="text-sm text-muted-foreground">{funderProfile.description || 'No description provided'}</p>
-                   </div>
-                   
-                    <div className="flex justify-end">
-                      <Button disabled variant="outline">
-                        <Settings className="w-4 h-4 mr-2" />
-                        Edit Profile (Coming Soon)
-                      </Button>
-                    </div>
+                 <CardContent className="space-y-4">
+                   {!editingProfile ? (
+                     <>
+                       <div className="grid grid-cols-2 gap-4">
+                         <div>
+                           <label className="text-sm font-medium">Organization Name</label>
+                           <p className="text-sm text-muted-foreground">{funderProfile.organization_name}</p>
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium">Organization Type</label>
+                           <p className="text-sm text-muted-foreground capitalize">{funderProfile.organization_type?.replace('_', ' ') || 'Not specified'}</p>
+                         </div>
+                       </div>
+                       
+                       {funderProfile.website && (
+                         <div>
+                           <label className="text-sm font-medium">Website</label>
+                           <p className="text-sm text-muted-foreground">{funderProfile.website}</p>
+                         </div>
+                       )}
+                       
+                       <div>
+                         <label className="text-sm font-medium">Description</label>
+                         <p className="text-sm text-muted-foreground">{funderProfile.description || 'No description provided'}</p>
+                       </div>
+                       
+                       <div className="flex justify-end">
+                         <Button onClick={() => setEditingProfile(true)}>
+                           <Settings className="w-4 h-4 mr-2" />
+                           Edit Profile
+                         </Button>
+                       </div>
+                     </>
+                   ) : (
+                     <form onSubmit={handleUpdateProfile} className="space-y-4">
+                       <div className="space-y-2">
+                         <Label htmlFor="edit_organization_name">Organization Name *</Label>
+                         <Input
+                           id="edit_organization_name"
+                           required
+                           value={profileEditForm.organization_name}
+                           onChange={(e) => setProfileEditForm({ ...profileEditForm, organization_name: e.target.value })}
+                         />
+                       </div>
+
+                       <div className="space-y-2">
+                         <Label htmlFor="edit_organization_type">Organization Type *</Label>
+                         <Select
+                           value={profileEditForm.organization_type}
+                           onValueChange={(value) => setProfileEditForm({ ...profileEditForm, organization_type: value })}
+                           required
+                         >
+                           <SelectTrigger>
+                             <SelectValue placeholder="Select type" />
+                           </SelectTrigger>
+                           <SelectContent>
+                             <SelectItem value="venture_capital">Venture Capital</SelectItem>
+                             <SelectItem value="angel_investor">Angel Investor</SelectItem>
+                             <SelectItem value="government">Government</SelectItem>
+                             <SelectItem value="corporate">Corporate</SelectItem>
+                             <SelectItem value="non_profit">Non-Profit</SelectItem>
+                             <SelectItem value="accelerator">Accelerator/Incubator</SelectItem>
+                             <SelectItem value="private_equity">Private Equity</SelectItem>
+                           </SelectContent>
+                         </Select>
+                       </div>
+
+                       <div className="space-y-2">
+                         <Label htmlFor="edit_website">Website</Label>
+                         <Input
+                           id="edit_website"
+                           type="url"
+                           value={profileEditForm.website}
+                           onChange={(e) => setProfileEditForm({ ...profileEditForm, website: e.target.value })}
+                           placeholder="https://example.com"
+                         />
+                       </div>
+
+                       <div className="space-y-2">
+                         <Label htmlFor="edit_description">Description *</Label>
+                         <Textarea
+                           id="edit_description"
+                           required
+                           value={profileEditForm.description}
+                           onChange={(e) => setProfileEditForm({ ...profileEditForm, description: e.target.value })}
+                           rows={4}
+                         />
+                       </div>
+
+                       <div className="flex justify-end gap-2">
+                         <Button type="button" variant="outline" onClick={() => setEditingProfile(false)}>
+                           Cancel
+                         </Button>
+                         <Button type="submit" disabled={updatingProfile}>
+                           {updatingProfile ? "Saving..." : "Save Changes"}
+                         </Button>
+                       </div>
+                     </form>
+                   )}
                  </CardContent>
                </Card>
              )}

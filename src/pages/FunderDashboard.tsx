@@ -161,7 +161,7 @@ const FunderDashboard = () => {
           <p className="text-muted-foreground mb-6">
             Create your organization profile to start listing funding opportunities.
           </p>
-          <Link to="/funding/funder-onboard">
+          <Link to="/funding/funder-dashboard">
             <Button>
               <Plus className="w-4 h-4 mr-2" />
               Create Profile

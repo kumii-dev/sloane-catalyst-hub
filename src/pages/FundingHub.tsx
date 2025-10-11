@@ -100,7 +100,7 @@ const FundingHub = () => {
                   Browse Opportunities
                 </Button>
               </Link>
-              <Link to="/funding/funder-onboard">
+              <Link to="/funding/funder-dashboard">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   <Building className="w-5 h-5 mr-2" />
                   Become a Funder

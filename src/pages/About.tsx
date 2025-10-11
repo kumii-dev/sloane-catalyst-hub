@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square, Database, Table } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const About = () => {
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ const About = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [selectedVoice, setSelectedVoice] = useState<string>("TTY70JqFvDxeExufZ1za");
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const journeyMapsRef = useRef<HTMLDivElement | null>(null);
 
   // Extract all narration text from the script
   const scriptText = `Every day, thousands of brilliant entrepreneurs across Africa have game-changing ideas. But 70% of startups fail—not because they lack potential, but because they lack access. Access to funding. Access to markets. Access to the right guidance at the right time.
@@ -166,6 +169,51 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const exportJourneyMapsToPDF = async () => {
+    if (!journeyMapsRef.current) return;
+    
+    try {
+      toast.loading("Generating PDF...");
+      
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const diagrams = journeyMapsRef.current.querySelectorAll('.journey-diagram');
+      
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i] as HTMLElement;
+        
+        // Capture the diagram as canvas
+        const canvas = await html2canvas(diagram, {
+          scale: 2,
+          logging: false,
+          useCORS: true,
+          backgroundColor: '#ffffff'
+        });
+        
+        // Calculate dimensions to fit A4
+        const imgWidth = 190; // A4 width minus margins
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        // Add new page if not first diagram
+        if (i > 0) {
+          pdf.addPage();
+        }
+        
+        // Add image to PDF
+        const imgData = canvas.toDataURL('image/png');
+        pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+      }
+      
+      // Save PDF
+      pdf.save('mentorship-journey-maps.pdf');
+      toast.dismiss();
+      toast.success("PDF exported successfully!");
+    } catch (error) {
+      console.error('PDF export error:', error);
+      toast.dismiss();
+      toast.error("Failed to export PDF");
+    }
+  };
+
   useEffect(() => {
     return () => {
       // Cleanup: stop narration and revoke URL when component unmounts
@@ -177,6 +225,31 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
       }
     };
   }, [audioUrl]);
+
+  useEffect(() => {
+    // Load mermaid library dynamically
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
+    script.async = true;
+    script.onload = () => {
+      // @ts-ignore
+      if (window.mermaid) {
+        // @ts-ignore
+        window.mermaid.initialize({ 
+          startOnLoad: true,
+          theme: 'default',
+          securityLevel: 'loose'
+        });
+        // @ts-ignore
+        window.mermaid.contentLoaded();
+      }
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">
@@ -195,7 +268,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
           </div>
 
           <Tabs defaultValue="script" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+            <TabsList className="grid w-full grid-cols-3 max-w-2xl mx-auto">
               <TabsTrigger value="script" className="gap-2">
                 <Video className="w-4 h-4" />
                 Video Script
@@ -203,6 +276,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               <TabsTrigger value="database" className="gap-2">
                 <Database className="w-4 h-4" />
                 Database
+              </TabsTrigger>
+              <TabsTrigger value="journeys" className="gap-2">
+                <Map className="w-4 h-4" />
+                Journey Maps
               </TabsTrigger>
             </TabsList>
 
@@ -767,6 +844,188 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   </div>
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            <TabsContent value="journeys" className="space-y-8 mt-8">
+              <div className="flex justify-end mb-4">
+                <Button onClick={exportJourneyMapsToPDF} size="lg" className="gap-2">
+                  <FileDown className="w-4 h-4" />
+                  Export All to PDF
+                </Button>
+              </div>
+
+              <div ref={journeyMapsRef} className="space-y-8">
+                {/* Journey 1 */}
+                <Card className="border-2 journey-diagram">
+                  <CardContent className="p-8">
+                    <h3 className="text-2xl font-bold mb-4 text-primary">1. Mentee Booking Journey</h3>
+                    <p className="text-muted-foreground mb-6">Complete flow from discovering mentors to confirmed booking</p>
+                    <pre className="mermaid bg-background p-4 rounded-lg overflow-auto">
+{`graph TD
+    A[Browse Mentors] --> B[View Mentor Profile]
+    B --> C[Click Book Session]
+    C --> D[Select Date from Calendar]
+    D --> E{Date Available?}
+    E -->|Yes| F[Select Time Slot]
+    E -->|No| D
+    F --> G{Slot Available?}
+    G -->|Yes| H[Enter Session Details]
+    G -->|No| F
+    H --> I[Choose Payment Method]
+    I --> J{Payment Type?}
+    J -->|Card| K[Enter Card Details]
+    J -->|Credits| L[Check Credit Balance]
+    J -->|Sponsored| M[Verify Cohort Membership]
+    K --> N[Confirm Booking]
+    L --> O{Sufficient Credits?}
+    O -->|Yes| N
+    O -->|No| P[Show Error]
+    M --> Q{Is Member?}
+    Q -->|Yes| N
+    Q -->|No| P
+    N --> R[Create Session Record]
+    R --> S[Deduct Credits if applicable]
+    S --> T[Show Success]
+    T --> U[Navigate to Dashboard]
+    U --> V[View Booked Sessions]`}
+                    </pre>
+                  </CardContent>
+                </Card>
+
+                {/* Journey 2 */}
+                <Card className="border-2 journey-diagram">
+                  <CardContent className="p-8">
+                    <h3 className="text-2xl font-bold mb-4 text-primary">2. Mentor Session Management Journey</h3>
+                    <p className="text-muted-foreground mb-6">How mentors manage incoming session requests</p>
+                    <pre className="mermaid bg-background p-4 rounded-lg overflow-auto">
+{`graph TD
+    A[Mentor Dashboard] --> B[View Pending Sessions]
+    B --> C{Session Action}
+    C -->|Confirm| D[Update Status to Confirmed]
+    C -->|Decline| E[Update Status to Declined]
+    C -->|View Details| F[See Session Info]
+    D --> G[Create Notification for Mentee]
+    E --> H[Create Notification for Mentee]
+    G --> I[Real-time Notification Sent]
+    H --> I
+    I --> J[Mentee Receives Bell Notification]
+    F --> K[View Mentee Profile]
+    K --> L{Need to Update?}
+    L -->|Yes| M[Manage Availability]
+    L -->|No| B`}
+                    </pre>
+                  </CardContent>
+                </Card>
+
+                {/* Journey 3 */}
+                <Card className="border-2 journey-diagram">
+                  <CardContent className="p-8">
+                    <h3 className="text-2xl font-bold mb-4 text-primary">3. Mentor Availability Management Journey</h3>
+                    <p className="text-muted-foreground mb-6">Setting up weekly schedules and date-specific overrides</p>
+                    <pre className="mermaid bg-background p-4 rounded-lg overflow-auto">
+{`graph TD
+    A[Mentor Availability Page] --> B{Choose Tab}
+    B -->|Weekly Schedule| C[View Days of Week]
+    B -->|Date Overrides| D[View Calendar]
+    C --> E[Toggle Day Active/Inactive]
+    E --> F[Set Start/End Time]
+    F --> G[Save Weekly Schedule]
+    G --> H[Delete Old Availability]
+    H --> I[Insert New Schedule]
+    I --> J[Show Success Toast]
+    D --> K[Select Specific Date]
+    K --> L{Override Type}
+    L -->|Available| M[Set Custom Times]
+    L -->|Unavailable| N[Mark as Blocked]
+    M --> O[Save Date Override]
+    N --> O
+    O --> P[Update/Insert Override]
+    P --> J`}
+                    </pre>
+                  </CardContent>
+                </Card>
+
+                {/* Journey 4 */}
+                <Card className="border-2 journey-diagram">
+                  <CardContent className="p-8">
+                    <h3 className="text-2xl font-bold mb-4 text-primary">4. Real-time Notification System Flow</h3>
+                    <p className="text-muted-foreground mb-6">How notifications are delivered in real-time via Supabase</p>
+                    <pre className="mermaid bg-background p-4 rounded-lg overflow-auto">
+{`sequenceDiagram
+    participant M as Mentor
+    participant DB as Database
+    participant RT as Realtime Channel
+    participant N as NotificationBell
+    participant ME as Mentee
+    
+    M->>DB: Confirm/Decline Session
+    DB->>DB: Insert into messages table
+    DB->>RT: Broadcast postgres_changes
+    RT->>N: Real-time update event
+    N->>N: Update unread count
+    N->>ME: Show toast notification
+    ME->>N: Click bell icon
+    N->>N: Show notification dropdown
+    ME->>N: Click notification
+    N->>DB: Mark as read
+    N->>ME: Navigate to dashboard`}
+                    </pre>
+                  </CardContent>
+                </Card>
+
+                {/* Journey 5 */}
+                <Card className="border-2 journey-diagram">
+                  <CardContent className="p-8">
+                    <h3 className="text-2xl font-bold mb-4 text-primary">5. Complete System Architecture</h3>
+                    <p className="text-muted-foreground mb-6">How all mentorship components connect together</p>
+                    <pre className="mermaid bg-background p-4 rounded-lg overflow-auto">
+{`graph TB
+    subgraph Frontend
+        A[Mentorship Page]
+        B[Find Mentor]
+        C[Mentor Profile]
+        D[Booking Dialog]
+        E[Mentee Dashboard]
+        F[Mentor Dashboard]
+        G[Availability Manager]
+        H[Notification Bell]
+    end
+    
+    subgraph Database
+        I[(mentors)]
+        J[(mentoring_sessions)]
+        K[(mentor_availability)]
+        L[(mentor_date_overrides)]
+        M[(messages)]
+        N[(credits_wallet)]
+    end
+    
+    subgraph Functions
+        O[deduct_credits]
+        P[Realtime Subscriptions]
+    end
+    
+    A --> B
+    B --> C
+    C --> D
+    D --> J
+    D --> O
+    O --> N
+    J --> E
+    J --> F
+    F --> M
+    M --> P
+    P --> H
+    H --> E
+    G --> K
+    G --> L
+    K --> D
+    L --> D
+    I --> C`}
+                    </pre>
+                  </CardContent>
+                </Card>
+              </div>
             </TabsContent>
           </Tabs>
         </div>

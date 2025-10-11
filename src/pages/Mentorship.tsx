@@ -23,6 +23,7 @@ import {
 const Mentorship = () => {
   const [featuredMentors, setFeaturedMentors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const stats = [
     { icon: CheckCircle, label: "Free Sessions Available", color: "text-green-600" },
@@ -42,7 +43,7 @@ const Mentorship = () => {
   useEffect(() => {
     const fetchMentors = async () => {
       try {
-        const { data: mentors, error } = await supabase
+        let query = supabase
           .from('mentors')
           .select(`
             id,
@@ -56,8 +57,26 @@ const Mentorship = () => {
             user_id
           `)
           .eq('status', 'available')
-          .order('is_premium', { ascending: false })
-          .limit(6);
+          .order('is_premium', { ascending: false });
+
+        // If a category is selected, filter by it
+        if (selectedCategory) {
+          const { data: mentorIds } = await supabase
+            .from('mentor_categories')
+            .select('mentor_id')
+            .eq('category_id', selectedCategory);
+          
+          if (mentorIds && mentorIds.length > 0) {
+            const ids = mentorIds.map(m => m.mentor_id);
+            query = query.in('id', ids);
+          } else {
+            setFeaturedMentors([]);
+            setLoading(false);
+            return;
+          }
+        }
+
+        const { data: mentors, error } = await query.limit(selectedCategory ? 100 : 6);
 
         if (error) {
           console.error('Mentor query error:', error);
@@ -110,7 +129,7 @@ const Mentorship = () => {
     };
 
     fetchMentors();
-  }, []);
+  }, [selectedCategory]);
 
   return (
     <Layout showSidebar={true}>
@@ -172,12 +191,21 @@ const Mentorship = () => {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {categories.map((category, index) => {
               const Icon = category.icon;
+              const isSelected = selectedCategory === category.name;
               return (
-                <Card key={index} className="group cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1">
+                <Card 
+                  key={index} 
+                  className={`group cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
+                    isSelected ? 'ring-2 ring-accent shadow-lg' : ''
+                  }`}
+                  onClick={() => setSelectedCategory(isSelected ? null : category.name)}
+                >
                   <CardContent className="p-6">
                     <div className="mb-4 flex items-center gap-3">
-                      <div className="rounded-lg bg-accent/10 p-3 transition-colors group-hover:bg-accent/20">
-                        <Icon className="h-6 w-6 text-accent" />
+                      <div className={`rounded-lg p-3 transition-colors ${
+                        isSelected ? 'bg-accent text-accent-foreground' : 'bg-accent/10 group-hover:bg-accent/20'
+                      }`}>
+                        <Icon className={`h-6 w-6 ${isSelected ? 'text-accent-foreground' : 'text-accent'}`} />
                       </div>
                       <div>
                         <h3 className="font-semibold">{category.name}</h3>
@@ -196,11 +224,25 @@ const Mentorship = () => {
       <section className="py-16 px-4 bg-muted/30">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold">Professional Mentoring Sessions</h2>
+            <h2 className="mb-4 text-3xl font-bold">
+              {selectedCategory ? `${selectedCategory} Mentors` : 'Professional Mentoring Sessions'}
+            </h2>
             <p className="text-muted-foreground">
-              Being serious with your career progression? Some of our mentors offer professional 
-              coaching and mentoring services. Have a look and grow!
+              {selectedCategory 
+                ? `Showing mentors specializing in ${selectedCategory}`
+                : 'Being serious with your career progression? Some of our mentors offer professional coaching and mentoring services. Have a look and grow!'
+              }
             </p>
+            {selectedCategory && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setSelectedCategory(null)}
+                className="mt-4"
+              >
+                Clear Filter
+              </Button>
+            )}
           </div>
           
           {loading ? (

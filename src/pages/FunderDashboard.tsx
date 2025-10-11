@@ -106,6 +106,9 @@ const FunderDashboard = () => {
     preferred_stages: [] as string[],
     preferred_industries: [] as string[]
   });
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [selectedLogoFile, setSelectedLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [opportunityForm, setOpportunityForm] = useState({
     title: "",
     description: "",
@@ -248,12 +251,82 @@ const FunderDashboard = () => {
     }
   };
 
+  const handleLogoFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "Error",
+          description: "Logo file size must be less than 5MB",
+          variant: "destructive"
+        });
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Error",
+          description: "Please select an image file",
+          variant: "destructive"
+        });
+        return;
+      }
+      setSelectedLogoFile(file);
+      setLogoPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleLogoUpload = async () => {
+    if (!selectedLogoFile || !funderProfile?.id) return;
+
+    setUploadingLogo(true);
+    try {
+      const fileExt = selectedLogoFile.name.split('.').pop();
+      const fileName = `${funderProfile.id}-${Date.now()}.${fileExt}`;
+      const filePath = `funder-logos/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('listing-images')
+        .upload(filePath, selectedLogoFile, {
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('listing-images')
+        .getPublicUrl(filePath);
+
+      setProfileEditForm(prev => ({ ...prev, logo_url: publicUrl }));
+      setLogoPreview(publicUrl);
+      setSelectedLogoFile(null);
+      
+      toast({
+        title: "Success!",
+        description: "Logo uploaded successfully"
+      });
+    } catch (error: any) {
+      console.error('Error uploading logo:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to upload logo",
+        variant: "destructive"
+      });
+    } finally {
+      setUploadingLogo(false);
+    }
+  };
+
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !funderProfile) return;
 
     setUpdatingProfile(true);
     try {
+      // Upload logo first if there's a new file selected
+      if (selectedLogoFile) {
+        await handleLogoUpload();
+      }
+
       const { error } = await supabase
         .from('funders')
         .update({
@@ -261,7 +334,7 @@ const FunderDashboard = () => {
           organization_type: profileEditForm.organization_type,
           description: profileEditForm.description,
           website: profileEditForm.website,
-          logo_url: profileEditForm.logo_url,
+          logo_url: logoPreview || profileEditForm.logo_url,
           focus_areas: profileEditForm.focus_areas,
           min_funding_amount: profileEditForm.min_funding_amount ? parseFloat(profileEditForm.min_funding_amount) : null,
           max_funding_amount: profileEditForm.max_funding_amount ? parseFloat(profileEditForm.max_funding_amount) : null,
@@ -278,6 +351,8 @@ const FunderDashboard = () => {
       });
 
       setEditingProfile(false);
+      setSelectedLogoFile(null);
+      setLogoPreview(null);
       // Refresh dashboard data
       fetchDashboardData();
     } catch (error: any) {
@@ -807,18 +882,50 @@ const FunderDashboard = () => {
                        </div>
                      </>
                    ) : (
-                     <form onSubmit={handleUpdateProfile} className="space-y-4">
-                       <div className="space-y-2">
-                         <Label htmlFor="edit_logo_url">Logo URL</Label>
-                         <Input
-                           id="edit_logo_url"
-                           type="url"
-                           value={profileEditForm.logo_url}
-                           onChange={(e) => setProfileEditForm({ ...profileEditForm, logo_url: e.target.value })}
-                           placeholder="https://example.com/logo.png"
-                         />
-                         <p className="text-xs text-muted-foreground">Provide a URL to your organization's logo</p>
-                       </div>
+                      <form onSubmit={handleUpdateProfile} className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="logo-upload">Organization Logo</Label>
+                          <div className="flex items-start gap-4">
+                            {(logoPreview || profileEditForm.logo_url) && (
+                              <div className="w-24 h-24 rounded-lg border-2 border-dashed flex items-center justify-center bg-muted p-2">
+                                <img 
+                                  src={logoPreview || profileEditForm.logo_url} 
+                                  alt="Logo preview" 
+                                  className="max-w-full max-h-full object-contain"
+                                />
+                              </div>
+                            )}
+                            <div className="flex-1 space-y-2">
+                              <Input
+                                id="logo-upload"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleLogoFileSelect}
+                                disabled={uploadingLogo}
+                                className="cursor-pointer"
+                              />
+                              <p className="text-xs text-muted-foreground">
+                                Max size: 5MB. Formats: JPG, PNG, WebP, GIF
+                              </p>
+                              {selectedLogoFile && (
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-muted-foreground">
+                                    Selected: {selectedLogoFile.name}
+                                  </span>
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    onClick={handleLogoUpload}
+                                    disabled={uploadingLogo}
+                                    variant="secondary"
+                                  >
+                                    {uploadingLogo ? 'Uploading...' : 'Upload Now'}
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
 
                        <div className="space-y-2">
                          <Label htmlFor="edit_organization_name">Organization Name *</Label>

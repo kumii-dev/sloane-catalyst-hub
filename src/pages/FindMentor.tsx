@@ -33,22 +33,42 @@ const FindMentor = () => {
 
   const fetchMentors = async () => {
     try {
-      const { data, error } = await supabase
+      // Fetch mentors first (no embedded relations to avoid FK dependency)
+      const { data: mentorsData, error: mentorsError } = await supabase
         .from('mentors')
-        .select(`
-          *,
-          profiles (
-            first_name,
-            last_name,
-            profile_picture_url
-          )
-        `)
+        .select('*')
         .eq('status', 'available')
         .order('rating', { ascending: false });
 
-      if (error) throw error;
-      setMentors(data || []);
+      if (mentorsError) throw mentorsError;
+
+      const mentorList = mentorsData || [];
+      if (mentorList.length === 0) {
+        setMentors([]);
+        return;
+      }
+
+      // Fetch related profiles in a separate query using user_id list
+      const userIds = mentorList.map((m: any) => m.user_id).filter(Boolean);
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('user_id, first_name, last_name, profile_picture_url')
+        .in('user_id', userIds);
+
+      if (profilesError) throw profilesError;
+
+      const profileByUserId = Object.fromEntries(
+        (profilesData || []).map((p: any) => [p.user_id, p])
+      );
+
+      const merged = mentorList.map((m: any) => ({
+        ...m,
+        profiles: profileByUserId[m.user_id] || null,
+      }));
+
+      setMentors(merged);
     } catch (error) {
+      console.error('Failed to load mentors:', error);
       toast({
         title: "Error",
         description: "Failed to load mentors",

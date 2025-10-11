@@ -24,6 +24,7 @@ const Mentorship = () => {
   const [featuredMentors, setFeaturedMentors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [categories, setCategories] = useState<any[]>([]);
 
   const stats = [
     { icon: CheckCircle, label: "Free Sessions Available", color: "text-green-600" },
@@ -31,14 +32,32 @@ const Mentorship = () => {
     { icon: UsersRound, label: "8K+ Active Mentors", color: "text-blue-600" }
   ];
 
-  const categories = [
-    { icon: Code, name: "Technology", description: "Software development, AI, data science" },
-    { icon: Briefcase, name: "Business", description: "Strategy, entrepreneurship, leadership" },
-    { icon: Palette, name: "Design", description: "UI/UX, graphic design, product design" },
-    { icon: TrendingUp, name: "Marketing", description: "Digital marketing, growth, branding" },
-    { icon: User, name: "Career", description: "Career transitions, interviews, networking" },
-    { icon: DollarSign, name: "Finance", description: "Investment, financial planning, fintech" }
-  ];
+  const iconMap: Record<string, any> = {
+    Code,
+    Briefcase,
+    Palette,
+    TrendingUp,
+    User,
+    DollarSign
+  };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const { data, error } = await supabase
+        .from('mentoring_categories')
+        .select('*')
+        .order('name', { ascending: true });
+      
+      if (error) {
+        console.error('Error fetching categories:', error);
+        return;
+      }
+
+      setCategories(data || []);
+    };
+
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const fetchMentors = async () => {
@@ -189,16 +208,16 @@ const Mentorship = () => {
           </div>
           
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category, index) => {
-              const Icon = category.icon;
-              const isSelected = selectedCategory === category.name;
+            {categories.map((category) => {
+              const Icon = iconMap[category.icon] || Briefcase;
+              const isSelected = selectedCategory === category.id;
               return (
                 <Card 
-                  key={index} 
+                  key={category.id} 
                   className={`group cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
                     isSelected ? 'ring-2 ring-accent shadow-lg' : ''
                   }`}
-                  onClick={() => setSelectedCategory(isSelected ? null : category.name)}
+                  onClick={() => setSelectedCategory(isSelected ? null : category.id)}
                 >
                   <CardContent className="p-6">
                     <div className="mb-4 flex items-center gap-3">
@@ -225,11 +244,11 @@ const Mentorship = () => {
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
             <h2 className="mb-4 text-3xl font-bold">
-              {selectedCategory ? `${selectedCategory} Mentors` : 'Professional Mentoring Sessions'}
+              {selectedCategory ? `${categories.find(c => c.id === selectedCategory)?.name} Mentors` : 'Professional Mentoring Sessions'}
             </h2>
             <p className="text-muted-foreground">
               {selectedCategory 
-                ? `Showing mentors specializing in ${selectedCategory}`
+                ? `Showing mentors specializing in ${categories.find(c => c.id === selectedCategory)?.name}`
                 : 'Being serious with your career progression? Some of our mentors offer professional coaching and mentoring services. Have a look and grow!'
               }
             </p>

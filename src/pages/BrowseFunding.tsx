@@ -12,21 +12,11 @@ import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { ApplyDialog } from "@/components/funding/ApplyDialog";
+import { FundingOpportunityCard } from "@/components/funding/FundingOpportunityCard";
 import { 
   Search, 
   Filter, 
   SlidersHorizontal,
-  MapPin,
-  Calendar,
-  DollarSign,
-  Building,
-  Star,
-  TrendingUp,
-  Award,
-  Target,
-  Users,
-  ArrowRight,
-  Heart,
   BookOpen
 } from "lucide-react";
 
@@ -68,24 +58,13 @@ const BrowseFunding = () => {
   const [selectedOpportunity, setSelectedOpportunity] = useState<FundingOpportunity | null>(null);
   const [showApplyDialog, setShowApplyDialog] = useState(false);
 
-  const fundingTypeIcons: Record<string, any> = {
-    grant: Award,
-    loan: Building,
-    vc: TrendingUp,
-    angel: Users,
-    bank_product: Building,
-    accelerator: Target,
-    competition: Star
-  };
-
-  const fundingTypeColors: Record<string, string> = {
-    grant: "bg-emerald-500",
-    loan: "bg-blue-500", 
-    vc: "bg-purple-500",
-    angel: "bg-pink-500",
-    bank_product: "bg-orange-500",
-    accelerator: "bg-green-500",
-    competition: "bg-yellow-500"
+  const formatAmount = (amount: number) => {
+    if (amount >= 1000000) {
+      return `R${(amount / 1000000).toFixed(1)}M`;
+    } else if (amount >= 1000) {
+      return `R${(amount / 1000).toFixed(0)}K`;
+    }
+    return `R${amount}`;
   };
 
   useEffect(() => {
@@ -130,28 +109,6 @@ const BrowseFunding = () => {
     }
   };
 
-  const formatAmount = (amount: number) => {
-    if (amount >= 1000000) {
-      return `R${(amount / 1000000).toFixed(1)}M`;
-    } else if (amount >= 1000) {
-      return `R${(amount / 1000).toFixed(0)}K`;
-    }
-    return `R${amount}`;
-  };
-
-  const formatDeadline = (deadline: string) => {
-    const date = new Date(deadline);
-    const now = new Date();
-    const diffTime = date.getTime() - now.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 0) return "Expired";
-    if (diffDays === 0) return "Today";
-    if (diffDays === 1) return "Tomorrow";
-    if (diffDays <= 7) return `${diffDays} days left`;
-    if (diffDays <= 30) return `${Math.ceil(diffDays / 7)} weeks left`;
-    return date.toLocaleDateString();
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -319,109 +276,29 @@ const BrowseFunding = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {opportunities.map((opportunity) => {
-                const IconComponent = fundingTypeIcons[opportunity.funding_type] || Award;
-                const colorClass = fundingTypeColors[opportunity.funding_type] || "bg-gray-500";
-                
-                return (
-                  <Card key={opportunity.id} className="hover:shadow-lg transition-all group">
-                    <CardHeader className="space-y-3">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center space-x-2">
-                          <div className={`w-8 h-8 rounded-lg ${colorClass} flex items-center justify-center`}>
-                            <IconComponent className="w-4 h-4 text-white" />
-                          </div>
-                          <Badge variant="secondary" className="capitalize">
-                            {opportunity.funding_type.replace('_', ' ')}
-                          </Badge>
-                        </div>
-                        <Button variant="ghost" size="sm" className="p-1 h-auto">
-                          <Heart className="w-4 h-4" />
-                        </Button>
-                      </div>
-                      
-                      <div>
-                        <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
-                          {opportunity.title}
-                        </CardTitle>
-                        <div className="flex items-center space-x-2 mt-2">
-                          <span className="text-sm text-muted-foreground">by</span>
-                          <span className="text-sm font-medium">{opportunity.funder.organization_name}</span>
-                          {opportunity.funder.is_verified && (
-                            <Badge variant="outline" className="text-xs">
-                              <Star className="w-3 h-3 mr-1" />
-                              Verified
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <CardDescription className="line-clamp-2">
-                        {opportunity.description}
-                      </CardDescription>
-                    </CardHeader>
-                    
-                    <CardContent className="space-y-4">
-                      <Separator />
-                      
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground flex items-center">
-                            <DollarSign className="w-4 h-4 mr-1" />
-                            Amount
-                          </span>
-                          <span className="font-medium text-green-600">
-                            {formatAmount(opportunity.amount_min)} - {formatAmount(opportunity.amount_max)}
-                          </span>
-                        </div>
-                        
-                        {opportunity.application_deadline && (
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground flex items-center">
-                              <Calendar className="w-4 h-4 mr-1" />
-                              Deadline
-                            </span>
-                            <span className="font-medium">
-                              {formatDeadline(opportunity.application_deadline)}
-                            </span>
-                          </div>
-                        )}
-                        
-                        {opportunity.sloane_credits_allocation > 0 && (
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Kumii Credits</span>
-                            <Badge variant="outline" className="text-accent">
-                              +{opportunity.sloane_credits_allocation} Kumii Credits
-                            </Badge>
-                          </div>
-                        )}
-                      </div>
-                      
-                      <Separator />
-                      
-                      <div className="flex gap-2">
-                        <Button 
-                          className="flex-1 group-hover:bg-primary group-hover:text-primary-foreground"
-                          onClick={() => {
-                            if (!user) {
-                              window.location.href = '/auth';
-                              return;
-                            }
-                            setSelectedOpportunity(opportunity);
-                            setShowApplyDialog(true);
-                          }}
-                        >
-                          Apply Now
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
-                        <Button variant="outline" size="default" className="px-3">
-                          <BookOpen className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+              {opportunities.map((opportunity) => (
+                <FundingOpportunityCard
+                  key={opportunity.id}
+                  id={opportunity.id}
+                  title={opportunity.title}
+                  description={opportunity.description}
+                  fundingType={opportunity.funding_type}
+                  funderName={opportunity.funder.organization_name}
+                  isVerified={opportunity.funder.is_verified}
+                  amountMin={opportunity.amount_min}
+                  amountMax={opportunity.amount_max}
+                  deadline={opportunity.application_deadline}
+                  sloaneCredits={opportunity.sloane_credits_allocation}
+                  onApply={() => {
+                    if (!user) {
+                      window.location.href = '/auth';
+                      return;
+                    }
+                    setSelectedOpportunity(opportunity);
+                    setShowApplyDialog(true);
+                  }}
+                />
+              ))}
             </div>
           )}
 

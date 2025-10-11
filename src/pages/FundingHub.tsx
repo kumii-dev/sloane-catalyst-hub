@@ -7,13 +7,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FundingOpportunityCard } from "@/components/funding/FundingOpportunityCard";
 import { 
   Search, 
   TrendingUp, 
   Users, 
-  DollarSign, 
   Building, 
-  Lightbulb,
   Target,
   Award,
   ArrowRight,
@@ -195,37 +194,22 @@ const FundingHub = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {featuredOpportunities.map((opportunity) => (
-                  <Card key={opportunity.id} className="hover:shadow-lg transition-all">
-                    <CardHeader className="space-y-3">
-                      <div className="flex items-start justify-between">
-                        <Badge variant="secondary">{opportunity.type}</Badge>
-                        <div className="text-right">
-                          <div className="text-sm font-medium text-primary">{opportunity.matches}% match</div>
-                          <div className="text-xs text-muted-foreground">compatibility</div>
-                        </div>
-                      </div>
-                      <CardTitle className="text-lg leading-tight">{opportunity.title}</CardTitle>
-                      <CardDescription>{opportunity.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Funder:</span>
-                        <span className="font-medium">{opportunity.funder}</span>
-                      </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Amount:</span>
-                        <span className="font-medium text-green-600">{opportunity.amount}</span>
-                      </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Deadline:</span>
-                        <span className="font-medium">{opportunity.deadline}</span>
-                      </div>
-                      <Button className="w-full mt-4">
-                        <Lightbulb className="w-4 h-4 mr-2" />
-                        Apply Now
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <FundingOpportunityCard
+                    key={opportunity.id}
+                    id={opportunity.id.toString()}
+                    title={opportunity.title}
+                    description={opportunity.description}
+                    fundingType={opportunity.type.toLowerCase()}
+                    funderName={opportunity.funder}
+                    amountMin={parseFloat(opportunity.amount.split(' - ')[0].replace(/[^0-9.]/g, '')) * (opportunity.amount.includes('M') ? 1000000 : opportunity.amount.includes('K') ? 1000 : 1)}
+                    amountMax={parseFloat(opportunity.amount.split(' - ')[1]?.replace(/[^0-9.]/g, '') || opportunity.amount.replace(/[^0-9.]/g, '')) * (opportunity.amount.includes('M') ? 1000000 : opportunity.amount.includes('K') ? 1000 : 1)}
+                    deadline={opportunity.deadline}
+                    matchScore={opportunity.matches}
+                    sloaneCredits={opportunity.amount.includes('Credits') ? 1000 : 0}
+                    onApply={() => {
+                      window.location.href = '/funding/browse';
+                    }}
+                  />
                 ))}
               </div>
             </div>

@@ -8,15 +8,11 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { FundingOpportunityCard } from "@/components/funding/FundingOpportunityCard";
 import { 
-  TrendingUp, 
   FileText, 
-  Bell, 
-  Star,
   Target,
   DollarSign,
-  Calendar,
-  Award,
   AlertCircle,
   CheckCircle,
   Clock,
@@ -24,8 +20,7 @@ import {
   ArrowRight,
   Plus,
   Settings,
-  Building,
-  Users
+  Building
 } from "lucide-react";
 
 interface Application {
@@ -297,64 +292,22 @@ const StartupDashboard = () => {
                 </div>
                 
                 {matches.map((match) => (
-                  <Card key={match.id} className={`hover:shadow-md transition-all ${!match.is_viewed ? 'ring-2 ring-primary/20' : ''}`}>
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-1">
-                          <CardTitle className="text-lg">{match.opportunity.title}</CardTitle>
-                          <div className="flex items-center space-x-2">
-                            <span className="text-sm text-muted-foreground">by</span>
-                            <span className="text-sm font-medium">{match.opportunity.funder.organization_name}</span>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="flex items-center space-x-2">
-                            <Star className="w-4 h-4 text-yellow-500" />
-                            <span className="text-lg font-bold text-primary">{match.match_score}%</span>
-                          </div>
-                          <span className="text-xs text-muted-foreground">match</span>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <span className="text-muted-foreground">Amount:</span>
-                          <span className="ml-2 font-medium text-green-600">
-                            {formatAmount(match.opportunity.amount_min)} - {formatAmount(match.opportunity.amount_max)}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Type:</span>
-                          <Badge variant="secondary" className="ml-2 capitalize">
-                            {match.opportunity.funding_type.replace('_', ' ')}
-                          </Badge>
-                        </div>
-                      </div>
-                      
-                      {match.match_reasons.length > 0 && (
-                        <div>
-                          <h4 className="text-sm font-medium mb-2">Why this matches:</h4>
-                          <div className="flex flex-wrap gap-1">
-                            {match.match_reasons.map((reason, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
-                                {reason}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      
-                      <div className="flex gap-2">
-                        <Button className="flex-1">
-                          Apply Now
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
-                        <Button variant="outline">Learn More</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div key={match.id} className={!match.is_viewed ? 'ring-2 ring-primary/20 rounded-lg' : ''}>
+                    <FundingOpportunityCard
+                      id={match.id}
+                      title={match.opportunity.title}
+                      description={match.match_reasons.join(' • ')}
+                      fundingType={match.opportunity.funding_type}
+                      funderName={match.opportunity.funder.organization_name}
+                      amountMin={match.opportunity.amount_min}
+                      amountMax={match.opportunity.amount_max}
+                      deadline={match.opportunity.application_deadline}
+                      matchScore={match.match_score}
+                      onApply={() => {
+                        window.location.href = '/funding/browse';
+                      }}
+                    />
+                  </div>
                 ))}
               </div>
             ) : (

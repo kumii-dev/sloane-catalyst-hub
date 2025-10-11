@@ -18,8 +18,7 @@ interface PaymentStepProps {
 
 export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: PaymentStepProps) => {
   const [isProcessing, setIsProcessing] = useState(false);
-  const [email, setEmail] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<"card" | "credits" | "sponsored">("card");
+  const [paymentMethod, setPaymentMethod] = useState<"credits" | "sponsored">("credits");
   const [creditBalance, setCreditBalance] = useState(0);
   const [isSponsoredMember, setIsSponsoredMember] = useState(false);
   const { toast } = useToast();
@@ -61,15 +60,6 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
   }, []);
 
   const handlePayment = async () => {
-    if (paymentMethod === "card" && !email) {
-      toast({
-        title: "Email required",
-        description: "Please enter your email address",
-        variant: "destructive"
-      });
-      return;
-    }
-
     if (paymentMethod === "credits" && creditBalance < creditsRequired) {
       toast({
         title: "Insufficient credits",
@@ -118,11 +108,8 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
         });
 
         if (walletError) throw walletError;
-      } else if (paymentMethod === "card") {
-        // Simulate Stripe payment
-        await new Promise(resolve => setTimeout(resolve, 2000));
       }
-      // Sponsored members get free access
+      // Sponsored members get free access (no payment needed)
 
       toast({
         title: "Booking Confirmed! 🎉",
@@ -201,74 +188,21 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
                   )}
                 </Label>
               </div>
-
-              {/* Credit Card Option */}
-              <div className={`flex items-start space-x-3 p-4 rounded-lg border-2 transition-colors ${
-                paymentMethod === "card" ? "border-primary bg-primary/5" : "border-border"
-              }`}>
-                <RadioGroupItem value="card" id="card" />
-                <Label htmlFor="card" className="flex-1 cursor-pointer">
-                  <div className="flex items-center gap-2 mb-1">
-                    <CreditCard className="w-5 h-5 text-blue-600" />
-                    <span className="font-semibold">Credit Card</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Pay ${sessionFee} with card
-                  </p>
-                </Label>
-              </div>
             </div>
           </RadioGroup>
+
+          {/* Phase 2 Notice */}
+          <div className="mt-4 p-4 bg-muted rounded-lg border">
+            <p className="text-sm font-medium mb-1">💳 Card Payments - Coming Soon!</p>
+            <p className="text-xs text-muted-foreground">
+              We're launching with Kumii Credits and Sponsored Programs first. 
+              Payment gateway integration (PayFast/Stripe) will be available in Phase 2.
+            </p>
+          </div>
         </CardContent>
       </Card>
 
       {/* Payment Details Based on Method */}
-      {paymentMethod === "card" && (
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card>
-            <CardContent className="pt-6 space-y-4">
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your.email@example.com"
-                />
-              </div>
-
-              <div className="border-t pt-4 space-y-2">
-                <div className="flex justify-between font-semibold">
-                  <span>Session Fee</span>
-                  <span>${sessionFee}</span>
-                </div>
-                <div className="flex justify-between text-xl font-bold border-t pt-2">
-                  <span>Total</span>
-                  <span>${sessionFee}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6 space-y-4">
-              <div>
-                <Label>Pay with</Label>
-                <div className="flex items-center gap-2 mt-2 p-3 border rounded-md">
-                  <CreditCard className="w-5 h-5" />
-                  <span className="font-medium">Credit Card</span>
-                </div>
-              </div>
-
-              <p className="text-xs text-muted-foreground">
-                Secure payment powered by Stripe
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
       {paymentMethod === "credits" && (
         <Card>
           <CardContent className="pt-6">

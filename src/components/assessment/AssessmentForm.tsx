@@ -452,7 +452,7 @@ export const AssessmentForm = () => {
     
     // Map weak domains to platform resources
     const domainScores = {
-      financial_health: { score: assessment.financial_health_score || 0, category: 'Funding Hub', issue: 'Financial Health', solution: 'Access funding opportunities and financial advisory services', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/funding-hub' },
+      financial_health: { score: assessment.financial_health_score || 0, category: 'Funding Hub', issue: 'Financial Health', solution: 'Access funding opportunities and financial advisory services', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/funding' },
       governance_compliance: { score: assessment.governance_score || 0, category: 'Services', issue: 'Governance & Compliance', solution: 'Find legal, compliance, and governance consulting services', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/services' },
       technology_innovation: { score: assessment.technology_innovation_score || 0, category: 'Services', issue: 'Technology & Innovation', solution: 'Access technology development and innovation support services', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/services' },
       market_position: { score: assessment.market_access_score || 0, category: 'Access to Market', issue: 'Market Position & Demand', solution: 'Connect with enterprise buyers and expand your market reach', link: 'https://lovable.app/projects/6f9dd79e-5e4b-4f04-87ea-c03c7a94cb5d/access-to-market' },

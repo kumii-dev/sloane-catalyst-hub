@@ -38,7 +38,7 @@ const VideoCreator = () => {
     },
     { 
       title: "Funding Hub", 
-      route: "/funding-hub", 
+      route: "/funding", 
       duration: 10, 
       description: "Access to capital",
       features: ["browse-funding", "funder-directory"]

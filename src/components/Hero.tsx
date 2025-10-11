@@ -51,7 +51,7 @@ const Hero = () => {
                 <span className="text-white font-semibold text-lg">Market Access</span>
               </div>
             </Link>
-            <Link to="/funding-hub" className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+            <Link to="/funding" className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-4">
                 <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
                   <DollarSign className="h-6 w-6 text-white" />

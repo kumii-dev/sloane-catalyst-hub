@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -31,6 +32,8 @@ const EditMentorProfile = () => {
   const [uploading, setUploading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [mentorId, setMentorId] = useState<string | null>(null);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   
   const [formData, setFormData] = useState({
     first_name: "",
@@ -46,7 +49,22 @@ const EditMentorProfile = () => {
 
   useEffect(() => {
     fetchProfile();
+    fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('mentoring_categories')
+        .select('*')
+        .order('name');
+
+      if (error) throw error;
+      setCategories(data || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
   const fetchProfile = async () => {
     try {
@@ -83,6 +101,16 @@ const EditMentorProfile = () => {
 
       if (mentorData) {
         setMentorId(mentorData.id);
+
+        // Fetch mentor categories
+        const { data: mentorCategories } = await supabase
+          .from('mentor_categories')
+          .select('category_id')
+          .eq('mentor_id', mentorData.id);
+
+        if (mentorCategories) {
+          setSelectedCategories(mentorCategories.map(mc => mc.category_id));
+        }
       }
 
       setFormData({
@@ -165,6 +193,14 @@ const EditMentorProfile = () => {
     }
   };
 
+  const handleCategoryToggle = (categoryId: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -180,6 +216,15 @@ const EditMentorProfile = () => {
         });
         return;
       }
+    }
+
+    if (selectedCategories.length === 0) {
+      toast({
+        title: "Category Required",
+        description: "Please select at least one mentoring category.",
+        variant: "destructive"
+      });
+      return;
     }
 
     setSaving(true);
@@ -209,6 +254,8 @@ const EditMentorProfile = () => {
         status: formData.status,
       };
 
+      let currentMentorId = mentorId;
+
       if (mentorId) {
         const { error: mentorError } = await supabase
           .from('mentors')
@@ -224,7 +271,29 @@ const EditMentorProfile = () => {
           .single();
 
         if (mentorError) throw mentorError;
+        currentMentorId = newMentor.id;
         setMentorId(newMentor.id);
+      }
+
+      // Update mentor categories
+      if (currentMentorId) {
+        // Delete existing category associations
+        await supabase
+          .from('mentor_categories')
+          .delete()
+          .eq('mentor_id', currentMentorId);
+
+        // Insert new category associations
+        const categoryInserts = selectedCategories.map(categoryId => ({
+          mentor_id: currentMentorId,
+          category_id: categoryId
+        }));
+
+        const { error: categoriesError } = await supabase
+          .from('mentor_categories')
+          .insert(categoryInserts);
+
+        if (categoriesError) throw categoriesError;
       }
 
       toast({
@@ -232,7 +301,7 @@ const EditMentorProfile = () => {
         description: "Profile updated successfully"
       });
 
-      navigate(`/mentor/${mentorId}`);
+      navigate(`/mentor/${currentMentorId}`);
     } catch (error) {
       console.error('Save error:', error);
       toast({
@@ -417,6 +486,37 @@ const EditMentorProfile = () => {
                       <SelectItem value="unavailable">Unavailable</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div className="space-y-3">
+                  <Label>Mentoring Focus Areas * (Select at least one)</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {categories.map((category) => (
+                      <div
+                        key={category.id}
+                        className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors"
+                      >
+                        <Checkbox
+                          id={`edit-${category.id}`}
+                          checked={selectedCategories.includes(category.id)}
+                          onCheckedChange={() => handleCategoryToggle(category.id)}
+                        />
+                        <div className="flex-1">
+                          <Label
+                            htmlFor={`edit-${category.id}`}
+                            className="font-medium cursor-pointer"
+                          >
+                            {category.name}
+                          </Label>
+                          {category.description && (
+                            <p className="text-sm text-muted-foreground mt-1">
+                              {category.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 

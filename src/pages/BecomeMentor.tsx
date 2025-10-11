@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,17 +7,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { 
   Users, 
   Star, 
   DollarSign, 
   Clock, 
   Award, 
-  Heart,
   CheckCircle,
-  Plus,
-  X
+  Loader2
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -29,7 +27,9 @@ const BecomeMentor = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [skillInput, setSkillInput] = useState("");
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   
   const [formData, setFormData] = useState({
     title: "",
@@ -37,9 +37,33 @@ const BecomeMentor = () => {
     experienceYears: "",
     hourlyRate: "",
     isPremium: false,
-    expertiseAreas: [],
     bio: ""
   });
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('mentoring_categories')
+        .select('*')
+        .order('name');
+
+      if (error) throw error;
+      setCategories(data || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load mentoring categories",
+        variant: "destructive"
+      });
+    } finally {
+      setLoadingCategories(false);
+    }
+  };
 
   const benefits = [
     {
@@ -64,24 +88,12 @@ const BecomeMentor = () => {
     }
   ];
 
-  const handleSkillAdd = (e) => {
-    if (e.key === 'Enter' && skillInput.trim()) {
-      e.preventDefault();
-      if (!formData.expertiseAreas.includes(skillInput.trim())) {
-        setFormData(prev => ({
-          ...prev,
-          expertiseAreas: [...prev.expertiseAreas, skillInput.trim()]
-        }));
-      }
-      setSkillInput("");
-    }
-  };
-
-  const handleSkillRemove = (skillToRemove) => {
-    setFormData(prev => ({
-      ...prev,
-      expertiseAreas: prev.expertiseAreas.filter(skill => skill !== skillToRemove)
-    }));
+  const handleCategoryToggle = (categoryId: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -94,6 +106,15 @@ const BecomeMentor = () => {
         variant: "destructive"
       });
       navigate("/auth");
+      return;
+    }
+
+    if (selectedCategories.length === 0) {
+      toast({
+        title: "Category Required",
+        description: "Please select at least one mentoring category.",
+        variant: "destructive"
+      });
       return;
     }
 
@@ -111,22 +132,41 @@ const BecomeMentor = () => {
       if (profileError) throw profileError;
 
       // Create mentor profile
-      const { error: mentorError } = await supabase
+      const { data: mentorData, error: mentorError } = await supabase
         .from('mentors')
         .upsert({
           user_id: user.id,
           title: formData.title,
           company: formData.company,
           experience_years: parseInt(formData.experienceYears),
-          expertise_areas: formData.expertiseAreas,
           hourly_rate: formData.hourlyRate ? parseFloat(formData.hourlyRate) : null,
           is_premium: formData.isPremium,
           status: 'available'
         }, {
           onConflict: 'user_id'
-        });
+        })
+        .select()
+        .single();
 
       if (mentorError) throw mentorError;
+
+      // Delete existing category associations
+      await supabase
+        .from('mentor_categories')
+        .delete()
+        .eq('mentor_id', mentorData.id);
+
+      // Insert new category associations
+      const categoryInserts = selectedCategories.map(categoryId => ({
+        mentor_id: mentorData.id,
+        category_id: categoryId
+      }));
+
+      const { error: categoriesError } = await supabase
+        .from('mentor_categories')
+        .insert(categoryInserts);
+
+      if (categoriesError) throw categoriesError;
 
       toast({
         title: "Success!",
@@ -236,26 +276,41 @@ const BecomeMentor = () => {
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="skills">Expertise Areas *</Label>
-                  <Input
-                    id="skills"
-                    placeholder="Add a skill and press Enter"
-                    value={skillInput}
-                    onChange={(e) => setSkillInput(e.target.value)}
-                    onKeyDown={handleSkillAdd}
-                  />
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {formData.expertiseAreas.map((skill, index) => (
-                      <Badge key={index} variant="secondary" className="flex items-center gap-1">
-                        {skill}
-                        <X 
-                          className="h-3 w-3 cursor-pointer" 
-                          onClick={() => handleSkillRemove(skill)}
-                        />
-                      </Badge>
-                    ))}
-                  </div>
+                <div className="space-y-3">
+                  <Label>Mentoring Focus Areas * (Select at least one)</Label>
+                  {loadingCategories ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {categories.map((category) => (
+                        <div
+                          key={category.id}
+                          className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors"
+                        >
+                          <Checkbox
+                            id={category.id}
+                            checked={selectedCategories.includes(category.id)}
+                            onCheckedChange={() => handleCategoryToggle(category.id)}
+                          />
+                          <div className="flex-1">
+                            <Label
+                              htmlFor={category.id}
+                              className="font-medium cursor-pointer"
+                            >
+                              {category.name}
+                            </Label>
+                            {category.description && (
+                              <p className="text-sm text-muted-foreground mt-1">
+                                {category.description}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">

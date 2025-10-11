@@ -153,7 +153,7 @@ const Mentorship = () => {
   return (
     <Layout showSidebar={true}>
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-15 px-4 bg-gradient-to-br from-background via-background/95 to-muted/20">
+      <section className="relative overflow-hidden py-8 px-4 bg-gradient-to-br from-background via-background/95 to-muted/20">
         <div className="absolute inset-0 hero-gradient opacity-20" />
         <div className="relative mx-auto max-w-6xl text-center z-10">
           <div className="mb-8 flex justify-center gap-4">
@@ -169,7 +169,7 @@ const Mentorship = () => {
             </Link>
           </div>
           
-          <h1 className="mb-6 text-5xl font-bold leading-tight md:text-6xl">
+          <h1 className="mb-4 text-5xl font-bold leading-tight md:text-6xl">
             Unlock Your Potential,
             <br />
             <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
@@ -177,13 +177,13 @@ const Mentorship = () => {
             </span>
           </h1>
           
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
+          <p className="mx-auto mb-6 max-w-2xl text-lg text-muted-foreground">
             Connect 1:1 with industry leaders for personalized guidance and career acceleration. 
             Choose from <strong>free community mentorship</strong> or <strong>premium professional sessions</strong>.
           </p>
 
           {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-6 mb-12">
+          <div className="flex flex-wrap justify-center gap-6 mb-6">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (

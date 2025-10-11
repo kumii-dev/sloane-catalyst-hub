@@ -874,6 +874,47 @@ export type Database = {
           },
         ]
       }
+      mentor_availability: {
+        Row: {
+          created_at: string
+          day_of_week: number
+          end_time: string
+          id: string
+          is_active: boolean | null
+          mentor_id: string
+          start_time: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week: number
+          end_time: string
+          id?: string
+          is_active?: boolean | null
+          mentor_id: string
+          start_time: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          is_active?: boolean | null
+          mentor_id?: string
+          start_time?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_availability_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mentor_categories: {
         Row: {
           category_id: string
@@ -897,6 +938,44 @@ export type Database = {
           },
           {
             foreignKeyName: "mentor_categories_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentor_date_overrides: {
+        Row: {
+          created_at: string
+          date: string
+          end_time: string | null
+          id: string
+          is_available: boolean | null
+          mentor_id: string
+          start_time: string | null
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          end_time?: string | null
+          id?: string
+          is_available?: boolean | null
+          mentor_id: string
+          start_time?: string | null
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          end_time?: string | null
+          id?: string
+          is_available?: boolean | null
+          mentor_id?: string
+          start_time?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_date_overrides_mentor_id_fkey"
             columns: ["mentor_id"]
             isOneToOne: false
             referencedRelation: "mentors"
@@ -996,7 +1075,9 @@ export type Database = {
           hourly_rate: number | null
           id: string
           is_premium: boolean
+          platform_fee_percentage: number | null
           rating: number | null
+          session_fee: number | null
           status: Database["public"]["Enums"]["mentor_status"]
           title: string
           total_sessions: number | null
@@ -1011,7 +1092,9 @@ export type Database = {
           hourly_rate?: number | null
           id?: string
           is_premium?: boolean
+          platform_fee_percentage?: number | null
           rating?: number | null
+          session_fee?: number | null
           status?: Database["public"]["Enums"]["mentor_status"]
           title: string
           total_sessions?: number | null
@@ -1026,7 +1109,9 @@ export type Database = {
           hourly_rate?: number | null
           id?: string
           is_premium?: boolean
+          platform_fee_percentage?: number | null
           rating?: number | null
+          session_fee?: number | null
           status?: Database["public"]["Enums"]["mentor_status"]
           title?: string
           total_sessions?: number | null

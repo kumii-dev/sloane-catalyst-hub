@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { BookSessionDialog } from "@/components/booking/BookSessionDialog";
 
 const MentorProfile = () => {
   const { id } = useParams();
@@ -29,6 +30,7 @@ const MentorProfile = () => {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
+  const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -385,7 +387,11 @@ const MentorProfile = () => {
                       </div>
                     )}
                     
-                    <Button className="w-full" size="lg">
+                    <Button 
+                      className="w-full" 
+                      size="lg"
+                      onClick={() => setBookingDialogOpen(true)}
+                    >
                       Book Session
                     </Button>
                   </div>
@@ -411,6 +417,12 @@ const MentorProfile = () => {
           </div>
         </div>
       </div>
+
+      <BookSessionDialog 
+        open={bookingDialogOpen}
+        onOpenChange={setBookingDialogOpen}
+        mentor={mentor}
+      />
     </Layout>
   );
 };

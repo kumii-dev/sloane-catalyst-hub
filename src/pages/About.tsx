@@ -532,11 +532,11 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-primary/5 rounded-lg">
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-primary">35</div>
+                      <div className="text-3xl font-bold text-primary">38</div>
                       <div className="text-sm text-muted-foreground">Total Tables</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-primary">6</div>
+                      <div className="text-3xl font-bold text-primary">8</div>
                       <div className="text-sm text-muted-foreground">Custom Functions</div>
                     </div>
                     <div className="text-center">
@@ -569,10 +569,13 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                           { name: "listing_categories", desc: "Categories for marketplace listings" },
                           { name: "listing_reviews", desc: "User reviews for listings" },
                           { name: "listings", desc: "Marketplace listings (services/products)" },
+                          { name: "mentor_availability", desc: "Mentor weekly availability schedule" },
                           { name: "mentor_categories", desc: "Links mentors to expertise areas" },
+                          { name: "mentor_date_overrides", desc: "Specific date availability overrides" },
                           { name: "mentoring_categories", desc: "Mentorship expertise categories" },
                           { name: "mentoring_sessions", desc: "Scheduled mentorship sessions" },
                           { name: "mentors", desc: "Mentor profiles and availability" },
+                          { name: "messages", desc: "User notifications and messages" },
                           { name: "profiles", desc: "User profile information" },
                           { name: "progressive_profile_data", desc: "Progressive profiling data" },
                           { name: "resource_bookmarks", desc: "User bookmarked resources" },
@@ -628,7 +631,9 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                             <li>mentors → mentor profiles</li>
                             <li>mentoring_categories → expertise areas</li>
                             <li>mentor_categories → links mentors to categories</li>
-                            <li>mentoring_sessions → scheduled sessions</li>
+                            <li>mentor_availability → weekly schedule (day/time)</li>
+                            <li>mentor_date_overrides → specific date exceptions</li>
+                            <li>mentoring_sessions → scheduled sessions with booking flow</li>
                           </ul>
                         </div>
 
@@ -687,6 +692,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                             <li>event_registrations → user registrations</li>
                           </ul>
                         </div>
+
+                        <div className="p-3 bg-card border rounded-lg">
+                          <strong className="text-primary">Messaging & Notifications:</strong>
+                          <ul className="list-disc list-inside mt-2 space-y-1 text-muted-foreground ml-2">
+                            <li>messages → user notifications system</li>
+                            <li>Real-time updates via Supabase subscriptions</li>
+                            <li>Session confirmations, updates, and reminders</li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
 
@@ -707,6 +721,13 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                           </div>
                           <div className="text-xs text-muted-foreground mt-1">Marketplace listing images and media</div>
                         </div>
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div className="font-mono text-sm font-semibold text-primary">profile-pictures</div>
+                            <span className="text-xs px-2 py-1 bg-green-500/10 text-green-600 rounded">Public</span>
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">User profile pictures and avatars</div>
+                        </div>
                       </div>
                     </div>
 
@@ -720,6 +741,22 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                         <div className="p-3 bg-card border rounded-lg">
                           <div className="font-mono text-sm font-semibold text-primary">has_role(user_id, role)</div>
                           <div className="text-xs text-muted-foreground mt-1">Checks if user has a specific role (admin, moderator, user)</div>
+                        </div>
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="font-mono text-sm font-semibold text-primary">is_assessment_owner(assessment_id, user_id)</div>
+                          <div className="text-xs text-muted-foreground mt-1">Validates assessment ownership for RLS policies</div>
+                        </div>
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="font-mono text-sm font-semibold text-primary">has_funder_assessment_access(assessment_id, user_id)</div>
+                          <div className="text-xs text-muted-foreground mt-1">Checks if funder has access to shared credit scores</div>
+                        </div>
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="font-mono text-sm font-semibold text-primary">deduct_credits(user_id, amount, description, reference_id)</div>
+                          <div className="text-xs text-muted-foreground mt-1">Safely deducts credits from user wallet with transaction logging</div>
+                        </div>
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="font-mono text-sm font-semibold text-primary">add_credits(user_id, amount, description, reference_id)</div>
+                          <div className="text-xs text-muted-foreground mt-1">Adds credits to user wallet with transaction logging</div>
                         </div>
                         <div className="p-3 bg-card border rounded-lg">
                           <div className="font-mono text-sm font-semibold text-primary">update_updated_at_column()</div>

@@ -1,0 +1,10 @@
+# k6 test results
+k6-results/
+*.json
+*.html
+
+# Test data
+test-data/
+
+# Logs
+*.log

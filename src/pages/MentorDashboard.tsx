@@ -148,6 +148,9 @@ const MentorDashboard = () => {
 
   const handleSessionAction = async (sessionId: string, action: 'confirm' | 'decline') => {
     try {
+      const session = sessions.find(s => s.id === sessionId);
+      if (!session) return;
+
       const newStatus = action === 'confirm' ? 'confirmed' : 'cancelled';
       
       const { error } = await supabase
@@ -156,6 +159,27 @@ const MentorDashboard = () => {
         .eq('id', sessionId);
 
       if (error) throw error;
+
+      // Create notification for mentee
+      const notificationSubject = action === 'confirm' 
+        ? '✅ Session Confirmed!' 
+        : '❌ Session Declined';
+      
+      const notificationBody = action === 'confirm'
+        ? `Your mentoring session "${session.title}" on ${format(new Date(session.scheduled_at), 'MMM d, yyyy')} at ${format(new Date(session.scheduled_at), 'h:mm a')} has been confirmed!`
+        : `Your mentoring session request "${session.title}" has been declined. Please book another time slot or reach out to the mentor.`;
+
+      await supabase
+        .from('messages')
+        .insert({
+          user_id: session.mentee_id,
+          message_type: 'notification',
+          subject: notificationSubject,
+          body: notificationBody,
+          related_entity_type: 'mentoring_session',
+          related_entity_id: sessionId,
+          is_read: false
+        });
 
       toast({
         title: action === 'confirm' ? "Session Confirmed" : "Session Declined",

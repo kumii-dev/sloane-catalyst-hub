@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search, Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { NotificationBell } from "@/components/NotificationBell";
 import logo from "@/assets/kumi-logo.png";
 
 interface TopNavbarProps {
@@ -92,6 +93,9 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
         {user ? (
           <div className="flex items-center gap-2 sm:gap-3">
             <Link to="/about" className="text-sm sm:text-base text-white font-medium hidden md:inline hover:text-white/80 transition-colors">About</Link>
+            <div className="text-white">
+              <NotificationBell />
+            </div>
             <Button
               variant="ghost"
               size="sm"

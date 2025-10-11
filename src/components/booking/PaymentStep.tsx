@@ -181,22 +181,26 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
               </div>
 
               {/* Sponsored Programme Option */}
-              {isSponsoredMember && (
-                <div className={`flex items-start space-x-3 p-4 rounded-lg border-2 transition-colors ${
-                  paymentMethod === "sponsored" ? "border-primary bg-primary/5" : "border-border"
-                }`}>
-                  <RadioGroupItem value="sponsored" id="sponsored" />
-                  <Label htmlFor="sponsored" className="flex-1 cursor-pointer">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Gift className="w-5 h-5 text-green-600" />
-                      <span className="font-semibold">Sponsored Programme</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Free access as a sponsored member
-                    </p>
-                  </Label>
-                </div>
-              )}
+              <div className={`flex items-start space-x-3 p-4 rounded-lg border-2 transition-colors ${
+                paymentMethod === "sponsored" ? "border-primary bg-primary/5" : "border-border"
+              }`}>
+                <RadioGroupItem value="sponsored" id="sponsored" disabled={!isSponsoredMember} />
+                <Label htmlFor="sponsored" className="flex-1 cursor-pointer">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Gift className="w-5 h-5 text-green-600" />
+                    <span className="font-semibold">Sponsored Programme</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {isSponsoredMember 
+                      ? "Free access as a sponsored member"
+                      : "Join a sponsored cohort for free access"
+                    }
+                  </p>
+                  {isSponsoredMember && (
+                    <p className="text-sm font-medium text-green-600 mt-1">✓ Active member</p>
+                  )}
+                </Label>
+              </div>
 
               {/* Credit Card Option */}
               <div className={`flex items-start space-x-3 p-4 rounded-lg border-2 transition-colors ${
@@ -318,7 +322,7 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
         </Button>
         <Button 
           onClick={handlePayment} 
-          disabled={isProcessing || (paymentMethod === "credits" && creditBalance < creditsRequired)}
+          disabled={isProcessing || (paymentMethod === "credits" && creditBalance < creditsRequired) || (paymentMethod === "sponsored" && !isSponsoredMember)}
           className="flex-1 bg-green-600 hover:bg-green-700" 
           size="lg"
         >

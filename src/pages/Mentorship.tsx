@@ -199,46 +199,6 @@ const Mentorship = () => {
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="py-16 px-4">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold">Explore Mentoring Categories</h2>
-            <p className="text-muted-foreground">Find mentors in your field of interest</p>
-          </div>
-          
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => {
-              const Icon = iconMap[category.icon] || Briefcase;
-              const isSelected = selectedCategory === category.id;
-              return (
-                <Card 
-                  key={category.id} 
-                  className={`group cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
-                    isSelected ? 'ring-2 ring-accent shadow-lg' : ''
-                  }`}
-                  onClick={() => setSelectedCategory(isSelected ? null : category.id)}
-                >
-                  <CardContent className="p-6">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className={`rounded-lg p-3 transition-colors ${
-                        isSelected ? 'bg-accent text-accent-foreground' : 'bg-accent/10 group-hover:bg-accent/20'
-                      }`}>
-                        <Icon className={`h-6 w-6 ${isSelected ? 'text-accent-foreground' : 'text-accent'}`} />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold">{category.name}</h3>
-                        <p className="text-sm text-muted-foreground">{category.description}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Featured Mentors Section */}
       <section className="py-16 px-4 bg-muted/30">
         <div className="mx-auto max-w-6xl">
@@ -340,6 +300,68 @@ const Mentorship = () => {
                 View All Mentors
               </Button>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="py-16 px-4">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold">Explore Mentoring Categories</h2>
+            <p className="text-muted-foreground">Find mentors in your field of interest</p>
+          </div>
+          
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category, idx) => {
+              const Icon = iconMap[category.icon] || Briefcase;
+              const isSelected = selectedCategory === category.id;
+              
+              const colorVariants = [
+                'bg-gradient-to-br from-blue-500/10 to-blue-600/5 hover:from-blue-500/20 hover:to-blue-600/10 border-blue-500/20',
+                'bg-gradient-to-br from-purple-500/10 to-purple-600/5 hover:from-purple-500/20 hover:to-purple-600/10 border-purple-500/20',
+                'bg-gradient-to-br from-pink-500/10 to-pink-600/5 hover:from-pink-500/20 hover:to-pink-600/10 border-pink-500/20',
+                'bg-gradient-to-br from-orange-500/10 to-orange-600/5 hover:from-orange-500/20 hover:to-orange-600/10 border-orange-500/20',
+                'bg-gradient-to-br from-green-500/10 to-green-600/5 hover:from-green-500/20 hover:to-green-600/10 border-green-500/20',
+                'bg-gradient-to-br from-teal-500/10 to-teal-600/5 hover:from-teal-500/20 hover:to-teal-600/10 border-teal-500/20',
+              ];
+              
+              const iconColorVariants = [
+                'text-blue-600',
+                'text-purple-600',
+                'text-pink-600',
+                'text-orange-600',
+                'text-green-600',
+                'text-teal-600',
+              ];
+              
+              const colorClass = colorVariants[idx % colorVariants.length];
+              const iconColor = iconColorVariants[idx % iconColorVariants.length];
+              
+              return (
+                <Card 
+                  key={category.id} 
+                  className={`group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border ${
+                    isSelected ? 'ring-2 ring-accent shadow-xl' : colorClass
+                  }`}
+                  onClick={() => setSelectedCategory(isSelected ? null : category.id)}
+                >
+                  <CardContent className="p-6">
+                    <div className="mb-4 flex items-center gap-3">
+                      <div className={`rounded-lg p-3 transition-colors ${
+                        isSelected ? 'bg-accent' : 'bg-white/50'
+                      }`}>
+                        <Icon className={`h-6 w-6 ${isSelected ? 'text-accent-foreground' : iconColor}`} />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold">{category.name}</h3>
+                        <p className="text-sm text-muted-foreground">{category.description}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>

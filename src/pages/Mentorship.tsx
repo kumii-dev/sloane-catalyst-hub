@@ -157,6 +157,11 @@ const Mentorship = () => {
         <div className="absolute inset-0 hero-gradient opacity-20" />
         <div className="relative mx-auto max-w-6xl text-center z-10">
           <div className="mb-4 flex justify-center gap-4">
+            <Link to="/mentee-dashboard">
+              <Button variant="default" size="lg" className="rounded-full">
+                My Sessions
+              </Button>
+            </Link>
             <Link to="/find-mentor">
               <Button variant="hero" size="lg" className="rounded-full">
                 Find a Mentor

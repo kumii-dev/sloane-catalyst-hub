@@ -102,13 +102,10 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
     { title: "Trusted by Funders", url: "/credit-score" },
   ],
   "Mentorship": [
-    { title: "Technology", url: "/mentorship" },
-    { title: "Business", url: "/mentorship" },
-    { title: "Design", url: "/mentorship" },
-    { title: "Marketing", url: "/mentorship" },
-    { title: "Career", url: "/mentorship" },
-    { title: "Finance", url: "/mentorship" },
-    { title: "Other", url: "/mentorship" },
+    { title: "My Sessions", url: "/mentee-dashboard" },
+    { title: "Find a Mentor", url: "/find-mentor" },
+    { title: "Become a Mentor", url: "/become-mentor" },
+    { title: "Browse Categories", url: "/mentorship" },
   ],
   "Professional Services": [
     { title: "Business Operations & Productivity", url: "/services" },

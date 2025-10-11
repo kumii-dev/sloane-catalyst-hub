@@ -1,13 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const About = () => {
   const navigate = useNavigate();
@@ -182,20 +183,30 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
       <Navbar />
       
       <main className="flex-1 container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-6xl mx-auto space-y-8">
           {/* Header */}
           <div className="text-center space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-4">
-              <Video className="w-5 h-5 text-primary" />
-              <span className="text-sm font-medium">Marketing Video Script</span>
-            </div>
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-              5-Minute Platform Overview
+              About Platform
             </h1>
             <p className="text-lg text-muted-foreground">
-              A comprehensive script showcasing the platform's features and benefits
+              Platform overview, database structure, and more
             </p>
           </div>
+
+          <Tabs defaultValue="script" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+              <TabsTrigger value="script" className="gap-2">
+                <Video className="w-4 h-4" />
+                Video Script
+              </TabsTrigger>
+              <TabsTrigger value="database" className="gap-2">
+                <Database className="w-4 h-4" />
+                Database
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="script" className="space-y-8 mt-8">
 
           {/* Script Content */}
           <Card className="border-2">
@@ -506,6 +517,221 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               Download Script
             </Button>
           </div>
+            </TabsContent>
+
+            <TabsContent value="database" className="space-y-8 mt-8">
+              <Card className="border-2">
+                <CardContent className="p-8 space-y-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Database className="w-8 h-8 text-primary" />
+                    <div>
+                      <h2 className="text-2xl font-bold">Database Structure</h2>
+                      <p className="text-muted-foreground">Complete overview of all tables and relationships</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-primary/5 rounded-lg">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-primary">35</div>
+                      <div className="text-sm text-muted-foreground">Total Tables</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-primary">6</div>
+                      <div className="text-sm text-muted-foreground">Custom Functions</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-primary">3</div>
+                      <div className="text-sm text-muted-foreground">Storage Buckets</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <Table className="w-5 h-5 text-primary" />
+                        Database Tables
+                      </h3>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {[
+                          { name: "cohort_funded_listings", desc: "Links cohorts to funded listings" },
+                          { name: "cohort_memberships", desc: "Tracks user memberships in cohorts" },
+                          { name: "cohorts", desc: "Sponsored cohort programs" },
+                          { name: "credit_assessments", desc: "Business credit score assessments" },
+                          { name: "credits_transactions", desc: "Platform credits transaction history" },
+                          { name: "credits_wallet", desc: "User credit balance management" },
+                          { name: "event_registrations", desc: "User event registrations" },
+                          { name: "events", desc: "Platform events and webinars" },
+                          { name: "funders", desc: "Funder organization profiles" },
+                          { name: "funding_applications", desc: "Funding opportunity applications" },
+                          { name: "funding_matches", desc: "AI-matched funding opportunities" },
+                          { name: "funding_opportunities", desc: "Available funding opportunities" },
+                          { name: "listing_categories", desc: "Categories for marketplace listings" },
+                          { name: "listing_reviews", desc: "User reviews for listings" },
+                          { name: "listings", desc: "Marketplace listings (services/products)" },
+                          { name: "mentor_categories", desc: "Links mentors to expertise areas" },
+                          { name: "mentoring_categories", desc: "Mentorship expertise categories" },
+                          { name: "mentoring_sessions", desc: "Scheduled mentorship sessions" },
+                          { name: "mentors", desc: "Mentor profiles and availability" },
+                          { name: "profiles", desc: "User profile information" },
+                          { name: "progressive_profile_data", desc: "Progressive profiling data" },
+                          { name: "resource_bookmarks", desc: "User bookmarked resources" },
+                          { name: "resource_categories", desc: "Categories for learning resources" },
+                          { name: "resource_progress", desc: "User progress on resources" },
+                          { name: "resource_ratings", desc: "User ratings for resources" },
+                          { name: "resources", desc: "Learning resources and materials" },
+                          { name: "score_sharing", desc: "Credit score sharing with funders" },
+                          { name: "scoring_criteria", desc: "Assessment scoring criteria" },
+                          { name: "service_categories", desc: "Service provider categories" },
+                          { name: "service_providers", desc: "Service provider profiles" },
+                          { name: "service_reviews", desc: "Reviews for services" },
+                          { name: "service_subscriptions", desc: "User service subscriptions" },
+                          { name: "services", desc: "Professional services offered" },
+                          { name: "startup_profiles", desc: "Startup business profiles" },
+                          { name: "user_roles", desc: "User role assignments (admin, etc.)" },
+                        ].map((table) => (
+                          <div key={table.name} className="p-3 bg-card border rounded-lg hover:border-primary/50 transition-colors">
+                            <div className="font-mono text-sm font-semibold text-primary">{table.name}</div>
+                            <div className="text-xs text-muted-foreground mt-1">{table.desc}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-semibold mb-4">Key Table Relationships</h3>
+                      <div className="space-y-3 text-sm">
+                        <div className="p-3 bg-card border rounded-lg">
+                          <strong className="text-primary">User & Authentication:</strong>
+                          <ul className="list-disc list-inside mt-2 space-y-1 text-muted-foreground ml-2">
+                            <li>profiles → stores user information</li>
+                            <li>user_roles → manages admin/moderator/user roles</li>
+                            <li>progressive_profile_data → tracks onboarding progress</li>
+                          </ul>
+                        </div>
+
+                        <div className="p-3 bg-card border rounded-lg">
+                          <strong className="text-primary">Funding Ecosystem:</strong>
+                          <ul className="list-disc list-inside mt-2 space-y-1 text-muted-foreground ml-2">
+                            <li>funders → funding organizations</li>
+                            <li>funding_opportunities → available funding</li>
+                            <li>funding_applications → application submissions</li>
+                            <li>funding_matches → AI-generated matches</li>
+                            <li>credit_assessments → business readiness scores</li>
+                            <li>score_sharing → share scores with funders</li>
+                          </ul>
+                        </div>
+
+                        <div className="p-3 bg-card border rounded-lg">
+                          <strong className="text-primary">Mentorship:</strong>
+                          <ul className="list-disc list-inside mt-2 space-y-1 text-muted-foreground ml-2">
+                            <li>mentors → mentor profiles</li>
+                            <li>mentoring_categories → expertise areas</li>
+                            <li>mentor_categories → links mentors to categories</li>
+                            <li>mentoring_sessions → scheduled sessions</li>
+                          </ul>
+                        </div>
+
+                        <div className="p-3 bg-card border rounded-lg">
+                          <strong className="text-primary">Marketplace:</strong>
+                          <ul className="list-disc list-inside mt-2 space-y-1 text-muted-foreground ml-2">
+                            <li>listings → services/products for sale</li>
+                            <li>listing_categories → marketplace categories</li>
+                            <li>listing_reviews → customer reviews</li>
+                            <li>service_subscriptions → active subscriptions</li>
+                          </ul>
+                        </div>
+
+                        <div className="p-3 bg-card border rounded-lg">
+                          <strong className="text-primary">Services:</strong>
+                          <ul className="list-disc list-inside mt-2 space-y-1 text-muted-foreground ml-2">
+                            <li>service_providers → professional service providers</li>
+                            <li>services → services offered</li>
+                            <li>service_categories → service types</li>
+                            <li>service_reviews → service ratings</li>
+                          </ul>
+                        </div>
+
+                        <div className="p-3 bg-card border rounded-lg">
+                          <strong className="text-primary">Resources & Learning:</strong>
+                          <ul className="list-disc list-inside mt-2 space-y-1 text-muted-foreground ml-2">
+                            <li>resources → learning materials</li>
+                            <li>resource_categories → resource organization</li>
+                            <li>resource_progress → user learning progress</li>
+                            <li>resource_bookmarks → saved resources</li>
+                            <li>resource_ratings → resource reviews</li>
+                          </ul>
+                        </div>
+
+                        <div className="p-3 bg-card border rounded-lg">
+                          <strong className="text-primary">Cohorts & Programs:</strong>
+                          <ul className="list-disc list-inside mt-2 space-y-1 text-muted-foreground ml-2">
+                            <li>cohorts → sponsored programs</li>
+                            <li>cohort_memberships → member enrollment</li>
+                            <li>cohort_funded_listings → cohort-exclusive listings</li>
+                          </ul>
+                        </div>
+
+                        <div className="p-3 bg-card border rounded-lg">
+                          <strong className="text-primary">Credits System:</strong>
+                          <ul className="list-disc list-inside mt-2 space-y-1 text-muted-foreground ml-2">
+                            <li>credits_wallet → user credit balances</li>
+                            <li>credits_transactions → credit transaction log</li>
+                          </ul>
+                        </div>
+
+                        <div className="p-3 bg-card border rounded-lg">
+                          <strong className="text-primary">Events:</strong>
+                          <ul className="list-disc list-inside mt-2 space-y-1 text-muted-foreground ml-2">
+                            <li>events → platform events</li>
+                            <li>event_registrations → user registrations</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-semibold mb-4">Storage Buckets</h3>
+                      <div className="space-y-2">
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div className="font-mono text-sm font-semibold text-primary">assessment-documents</div>
+                            <span className="text-xs px-2 py-1 bg-destructive/10 text-destructive rounded">Private</span>
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">Stores credit assessment documents</div>
+                        </div>
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div className="font-mono text-sm font-semibold text-primary">listing-images</div>
+                            <span className="text-xs px-2 py-1 bg-green-500/10 text-green-600 rounded">Public</span>
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">Marketplace listing images and media</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-semibold mb-4">Database Functions</h3>
+                      <div className="space-y-2 text-sm">
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="font-mono text-sm font-semibold text-primary">handle_new_user()</div>
+                          <div className="text-xs text-muted-foreground mt-1">Automatically creates profile when new user signs up</div>
+                        </div>
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="font-mono text-sm font-semibold text-primary">has_role(user_id, role)</div>
+                          <div className="text-xs text-muted-foreground mt-1">Checks if user has a specific role (admin, moderator, user)</div>
+                        </div>
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="font-mono text-sm font-semibold text-primary">update_updated_at_column()</div>
+                          <div className="text-xs text-muted-foreground mt-1">Automatically updates updated_at timestamp on row changes</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
 

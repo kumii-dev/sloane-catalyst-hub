@@ -35,12 +35,7 @@ const MentorshipPreview = () => {
             company,
             rating,
             status,
-            user_id,
-            profiles:user_id (
-              first_name,
-              last_name,
-              profile_picture_url
-            )
+            user_id
           `)
           .eq('status', 'available')
           .order('is_premium', { ascending: false })
@@ -48,14 +43,30 @@ const MentorshipPreview = () => {
 
         if (error) throw error;
 
-        const formattedMentors = mentors?.map((mentor: any) => ({
-          id: mentor.id,
-          name: `${mentor.profiles?.first_name || ''} ${mentor.profiles?.last_name || ''}`.trim(),
-          title: mentor.title,
-          company: mentor.company,
-          rating: mentor.rating || 0,
-          image: mentor.profiles?.profile_picture_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.user_id}`
-        })) || [];
+        if (!mentors || mentors.length === 0) {
+          setFeaturedMentors([]);
+          setLoading(false);
+          return;
+        }
+
+        // Fetch profiles separately
+        const userIds = mentors.map(m => m.user_id);
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('user_id, first_name, last_name, profile_picture_url')
+          .in('user_id', userIds);
+
+        const formattedMentors = mentors.map((mentor: any) => {
+          const profile = profiles?.find(p => p.user_id === mentor.user_id);
+          return {
+            id: mentor.id,
+            name: profile ? `${profile.first_name || ''} ${profile.last_name || ''}`.trim() : 'Anonymous',
+            title: mentor.title,
+            company: mentor.company,
+            rating: mentor.rating || 0,
+            image: profile?.profile_picture_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.user_id}`
+          };
+        });
 
         setFeaturedMentors(formattedMentors);
       } catch (error) {

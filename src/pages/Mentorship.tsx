@@ -53,31 +53,54 @@ const Mentorship = () => {
             expertise_areas,
             is_premium,
             status,
-            user_id,
-            profiles:user_id (
-              first_name,
-              last_name,
-              profile_picture_url
-            )
+            user_id
           `)
           .eq('status', 'available')
           .order('is_premium', { ascending: false })
           .limit(6);
 
-        if (error) throw error;
+        if (error) {
+          console.error('Mentor query error:', error);
+          throw error;
+        }
 
-        const formattedMentors = mentors?.map((mentor: any) => ({
-          id: mentor.id,
-          name: `${mentor.profiles?.first_name || ''} ${mentor.profiles?.last_name || ''}`.trim(),
-          title: mentor.title,
-          company: mentor.company,
-          rating: mentor.rating || 0,
-          sessions: mentor.total_sessions || 0,
-          expertise: mentor.expertise_areas || [],
-          isPremium: mentor.is_premium,
-          image: mentor.profiles?.profile_picture_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.user_id}`
-        })) || [];
+        console.log('Fetched mentors:', mentors);
 
+        if (!mentors || mentors.length === 0) {
+          setFeaturedMentors([]);
+          setLoading(false);
+          return;
+        }
+
+        // Fetch profiles separately
+        const userIds = mentors.map(m => m.user_id);
+        const { data: profiles, error: profileError } = await supabase
+          .from('profiles')
+          .select('user_id, first_name, last_name, profile_picture_url')
+          .in('user_id', userIds);
+
+        if (profileError) {
+          console.error('Profile query error:', profileError);
+        }
+
+        console.log('Fetched profiles:', profiles);
+
+        const formattedMentors = mentors.map((mentor: any) => {
+          const profile = profiles?.find(p => p.user_id === mentor.user_id);
+          return {
+            id: mentor.id,
+            name: profile ? `${profile.first_name || ''} ${profile.last_name || ''}`.trim() : 'Anonymous',
+            title: mentor.title,
+            company: mentor.company,
+            rating: mentor.rating || 0,
+            sessions: mentor.total_sessions || 0,
+            expertise: mentor.expertise_areas || [],
+            isPremium: mentor.is_premium,
+            image: profile?.profile_picture_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.user_id}`
+          };
+        });
+
+        console.log('Formatted mentors:', formattedMentors);
         setFeaturedMentors(formattedMentors);
       } catch (error) {
         console.error('Error fetching mentors:', error);

@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { Layout } from "@/components/Layout";
 import { 
   Users, 
@@ -19,6 +21,9 @@ import {
 } from "lucide-react";
 
 const Mentorship = () => {
+  const [featuredMentors, setFeaturedMentors] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const stats = [
     { icon: CheckCircle, label: "Free Sessions Available", color: "text-green-600" },
     { icon: Crown, label: "Premium Expert Sessions", color: "text-purple-600" },
@@ -34,41 +39,55 @@ const Mentorship = () => {
     { icon: DollarSign, name: "Finance", description: "Investment, financial planning, fintech" }
   ];
 
-  const featuredMentors = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      title: "Senior Product Manager",
-      company: "Google",
-      rating: 4.9,
-      sessions: 120,
-      expertise: ["Product Strategy", "Leadership"],
-      isPremium: true,
-      image: "https://images.unsplash.com/photo-1494790108755-2616b2a53c8c?w=150&h=150&fit=crop&crop=face"
-    },
-    {
-      id: 2,
-      name: "David Chen",
-      title: "Full Stack Developer",
-      company: "Microsoft",
-      rating: 4.8,
-      sessions: 85,
-      expertise: ["React", "Node.js", "System Design"],
-      isPremium: false,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
-    },
-    {
-      id: 3,
-      name: "Emily Rodriguez",
-      title: "UX Design Lead",
-      company: "Airbnb",
-      rating: 5.0,
-      sessions: 200,
-      expertise: ["UX Research", "Design Systems"],
-      isPremium: true,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
-    }
-  ];
+  useEffect(() => {
+    const fetchMentors = async () => {
+      try {
+        const { data: mentors, error } = await supabase
+          .from('mentors')
+          .select(`
+            id,
+            title,
+            company,
+            rating,
+            total_sessions,
+            expertise_areas,
+            is_premium,
+            status,
+            user_id,
+            profiles:user_id (
+              first_name,
+              last_name,
+              profile_picture_url
+            )
+          `)
+          .eq('status', 'available')
+          .order('is_premium', { ascending: false })
+          .limit(6);
+
+        if (error) throw error;
+
+        const formattedMentors = mentors?.map((mentor: any) => ({
+          id: mentor.id,
+          name: `${mentor.profiles?.first_name || ''} ${mentor.profiles?.last_name || ''}`.trim(),
+          title: mentor.title,
+          company: mentor.company,
+          rating: mentor.rating || 0,
+          sessions: mentor.total_sessions || 0,
+          expertise: mentor.expertise_areas || [],
+          isPremium: mentor.is_premium,
+          image: mentor.profiles?.profile_picture_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.user_id}`
+        })) || [];
+
+        setFeaturedMentors(formattedMentors);
+      } catch (error) {
+        console.error('Error fetching mentors:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMentors();
+  }, []);
 
   return (
     <Layout showSidebar={true}>
@@ -161,8 +180,20 @@ const Mentorship = () => {
             </p>
           </div>
           
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {featuredMentors.map((mentor) => (
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Loading mentors...</p>
+            </div>
+          ) : featuredMentors.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No mentors available yet. Be the first to join!</p>
+              <Link to="/become-mentor" className="mt-4 inline-block">
+                <Button>Become a Mentor</Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {featuredMentors.map((mentor) => (
               <Card key={mentor.id} className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                 <CardContent className="p-6">
                   {mentor.isPremium && (
@@ -207,14 +238,17 @@ const Mentorship = () => {
                     <Badge variant="outline" className="text-green-600 border-green-600">
                       Available
                     </Badge>
+                  <Link to={`/mentor/${mentor.id}`}>
                     <Button size="sm">
                       View Profile
                     </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+              ))}
+            </div>
+          )}
           
           <div className="mt-8 text-center">
             <Link to="/find-mentor">

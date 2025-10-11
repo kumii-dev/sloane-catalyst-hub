@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { 
   Users, 
   Star, 
@@ -13,35 +15,58 @@ import {
 } from "lucide-react";
 
 const MentorshipPreview = () => {
+  const [featuredMentors, setFeaturedMentors] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const stats = [
     { icon: CheckCircle, label: "Free Sessions", count: "Available" },
     { icon: Crown, label: "Premium Sessions", count: "Expert Level" },
     { icon: UsersRound, label: "Active Mentors", count: "8K+" }
   ];
 
-  const featuredMentors = [
-    {
-      name: "Sarah J.",
-      title: "Product Manager",
-      company: "Google",
-      rating: 4.9,
-      image: "https://images.unsplash.com/photo-1494790108755-2616b2a53c8c?w=80&h=80&fit=crop&crop=face"
-    },
-    {
-      name: "David C.",
-      title: "Full Stack Dev",
-      company: "Microsoft", 
-      rating: 4.8,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face"
-    },
-    {
-      name: "Emily R.",
-      title: "UX Lead",
-      company: "Airbnb",
-      rating: 5.0,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face"
-    }
-  ];
+  useEffect(() => {
+    const fetchMentors = async () => {
+      try {
+        const { data: mentors, error } = await supabase
+          .from('mentors')
+          .select(`
+            id,
+            title,
+            company,
+            rating,
+            status,
+            user_id,
+            profiles:user_id (
+              first_name,
+              last_name,
+              profile_picture_url
+            )
+          `)
+          .eq('status', 'available')
+          .order('is_premium', { ascending: false })
+          .limit(3);
+
+        if (error) throw error;
+
+        const formattedMentors = mentors?.map((mentor: any) => ({
+          id: mentor.id,
+          name: `${mentor.profiles?.first_name || ''} ${mentor.profiles?.last_name || ''}`.trim(),
+          title: mentor.title,
+          company: mentor.company,
+          rating: mentor.rating || 0,
+          image: mentor.profiles?.profile_picture_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.user_id}`
+        })) || [];
+
+        setFeaturedMentors(formattedMentors);
+      } catch (error) {
+        console.error('Error fetching mentors:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMentors();
+  }, []);
 
   return (
     <section className="relative py-20 px-4 bg-gradient-to-br from-muted/30 via-background to-muted/50 overflow-hidden">
@@ -77,9 +102,19 @@ const MentorshipPreview = () => {
         </div>
 
         {/* Featured Mentors */}
-        <div className="grid gap-6 md:grid-cols-3 mb-12">
-          {featuredMentors.map((mentor, index) => (
-            <Card key={index} className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+        {loading ? (
+          <div className="text-center py-8 mb-12">
+            <p className="text-muted-foreground">Loading mentors...</p>
+          </div>
+        ) : featuredMentors.length === 0 ? (
+          <div className="text-center py-8 mb-12">
+            <p className="text-muted-foreground">No mentors available yet.</p>
+          </div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-3 mb-12">
+            {featuredMentors.map((mentor) => (
+              <Link to={`/mentor/${mentor.id}`} key={mentor.id}>
+                <Card className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
               <CardContent className="p-6 text-center">
                 <img
                   src={mentor.image}
@@ -93,13 +128,15 @@ const MentorshipPreview = () => {
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                   <span className="text-sm font-medium">{mentor.rating}</span>
                 </div>
-                <Badge variant="outline" className="text-green-600 border-green-600">
-                  Available
-                </Badge>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  <Badge variant="outline" className="text-green-600 border-green-600">
+                    Available
+                  </Badge>
+                </CardContent>
+              </Card>
+            </Link>
+            ))}
+          </div>
+        )}
 
         {/* CTA Buttons */}
         <div className="text-center">

@@ -264,7 +264,7 @@ const MentorProfile = () => {
                       <div className="space-y-6">
                         <div>
                           <div 
-                            className="text-muted-foreground leading-relaxed prose prose-sm max-w-none"
+                            className="text-muted-foreground leading-relaxed prose prose-sm max-w-none [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4"
                             dangerouslySetInnerHTML={{ 
                               __html: mentor.profiles?.bio || "I think being a mentor is an honour and a mission because it gives a chance to build a valuable relationship between the mentor and the mentee but also to build a positive and deep impact on this latter's private and professional life." 
                             }}

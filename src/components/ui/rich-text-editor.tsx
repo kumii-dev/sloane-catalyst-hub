@@ -41,7 +41,7 @@ export const RichTextEditor = ({ value, onChange, placeholder, maxLength }: Rich
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm max-w-none focus:outline-none min-h-[120px] p-3',
+        class: 'prose prose-sm max-w-none focus:outline-none min-h-[120px] p-3 [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4',
       },
     },
   });

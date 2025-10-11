@@ -1094,10 +1094,12 @@ const FunderDashboard = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="grant">Grant</SelectItem>
-                    <SelectItem value="equity">Equity</SelectItem>
-                    <SelectItem value="debt">Debt</SelectItem>
-                    <SelectItem value="convertible_note">Convertible Note</SelectItem>
-                    <SelectItem value="revenue_share">Revenue Share</SelectItem>
+                    <SelectItem value="loan">Loan</SelectItem>
+                    <SelectItem value="vc">VC Funding</SelectItem>
+                    <SelectItem value="angel">Angel Investment</SelectItem>
+                    <SelectItem value="bank_product">Bank Product</SelectItem>
+                    <SelectItem value="accelerator">Accelerator</SelectItem>
+                    <SelectItem value="competition">Competition</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -111,8 +111,8 @@ const FindMentor = () => {
             key={star}
             className={`w-4 h-4 ${
               star <= rating
-                ? "fill-yellow-400 text-yellow-400"
-                : "fill-gray-200 text-gray-200"
+                ? "fill-rating text-rating"
+                : "fill-rating-muted text-rating-muted"
             }`}
           />
         ))}
@@ -170,9 +170,9 @@ const FindMentor = () => {
           </div>
         </div>
 
-        {/* Search and Filters */}
+          {/* Search and Filters */}
         <div className="container mx-auto px-4 py-8">
-          <Card className="mb-8 shadow-lg">
+          <Card variant="glass" className="mb-8 shadow-lg">
             <CardContent className="pt-6">
               <div className="space-y-4">
                 {/* Main Search */}
@@ -226,17 +226,18 @@ const FindMentor = () => {
           {premiumMentors.length > 0 && (
             <div className="mb-12">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <Crown className="w-6 h-6 text-yellow-500" />
+                <Crown className="w-6 h-6 text-rating" />
                 Meet our premium mentors!
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {premiumMentors.map((mentor: any) => (
                   <Card 
-                    key={mentor.id} 
-                    className="relative hover:shadow-xl transition-all duration-300 border-2 border-primary/20 overflow-hidden cursor-pointer"
+                    key={mentor.id}
+                    variant="premium"
+                    className="relative hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer"
                     onClick={() => navigate(`/mentor/${mentor.id}`)}
                   >
-                    <div className="absolute top-0 right-0 bg-gradient-to-br from-yellow-400 to-yellow-600 text-white px-3 py-1 rounded-bl-lg text-xs font-bold flex items-center gap-1">
+                    <div className="absolute top-0 right-0 bg-gradient-to-br from-rating to-primary text-rating-foreground px-3 py-1 rounded-bl-lg text-xs font-bold flex items-center gap-1">
                       <Crown className="w-3 h-3" />
                       PREMIUM
                     </div>
@@ -324,7 +325,8 @@ const FindMentor = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {regularMentors.map((mentor: any) => (
                   <Card 
-                    key={mentor.id} 
+                    key={mentor.id}
+                    variant="glass"
                     className="hover:shadow-lg transition-all duration-300 cursor-pointer"
                     onClick={() => navigate(`/mentor/${mentor.id}`)}
                   >

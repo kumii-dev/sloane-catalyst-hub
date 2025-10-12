@@ -221,21 +221,21 @@ const Mentorship = () => {
               const isSelected = selectedCategory === category.id;
               
               const colorVariants = [
-                'bg-gradient-to-br from-blue-500/10 to-blue-600/5 hover:from-blue-500/20 hover:to-blue-600/10 border-blue-500/20',
-                'bg-gradient-to-br from-purple-500/10 to-purple-600/5 hover:from-purple-500/20 hover:to-purple-600/10 border-purple-500/20',
-                'bg-gradient-to-br from-pink-500/10 to-pink-600/5 hover:from-pink-500/20 hover:to-pink-600/10 border-pink-500/20',
-                'bg-gradient-to-br from-orange-500/10 to-orange-600/5 hover:from-orange-500/20 hover:to-orange-600/10 border-orange-500/20',
-                'bg-gradient-to-br from-green-500/10 to-green-600/5 hover:from-green-500/20 hover:to-green-600/10 border-green-500/20',
-                'bg-gradient-to-br from-teal-500/10 to-teal-600/5 hover:from-teal-500/20 hover:to-teal-600/10 border-teal-500/20',
+                'bg-gradient-to-br from-secondary/10 to-secondary/5 hover:from-secondary/20 hover:to-secondary/10 border-secondary/20 backdrop-blur-sm',
+                'bg-gradient-to-br from-accent/10 to-accent/5 hover:from-accent/20 hover:to-accent/10 border-accent/20 backdrop-blur-sm',
+                'bg-gradient-to-br from-primary/10 to-primary/5 hover:from-primary/20 hover:to-primary/10 border-primary/20 backdrop-blur-sm',
+                'bg-gradient-to-br from-accent-light/10 to-accent/5 hover:from-accent-light/20 hover:to-accent/10 border-accent-light/20 backdrop-blur-sm',
+                'bg-gradient-to-br from-success/10 to-success/5 hover:from-success/20 hover:to-success/10 border-success/20 backdrop-blur-sm',
+                'bg-gradient-to-br from-primary-light/10 to-primary/5 hover:from-primary-light/20 hover:to-primary/10 border-primary-light/20 backdrop-blur-sm',
               ];
               
               const iconColorVariants = [
-                'text-blue-600',
-                'text-purple-600',
-                'text-pink-600',
-                'text-orange-600',
-                'text-green-600',
-                'text-teal-600',
+                'text-secondary',
+                'text-accent',
+                'text-primary',
+                'text-accent-light',
+                'text-success',
+                'text-primary-light',
               ];
               
               const colorClass = colorVariants[idx % colorVariants.length];
@@ -245,14 +245,14 @@ const Mentorship = () => {
                 <Card 
                   key={category.id} 
                   className={`group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border ${
-                    isSelected ? 'ring-2 ring-accent shadow-xl' : colorClass
+                    isSelected ? 'ring-2 ring-accent shadow-xl bg-accent/5 backdrop-blur-sm' : colorClass
                   }`}
                   onClick={() => setSelectedCategory(isSelected ? null : category.id)}
                 >
                   <CardContent className="p-6">
                     <div className="mb-4 flex items-center gap-3">
                       <div className={`rounded-lg p-3 transition-colors ${
-                        isSelected ? 'bg-accent' : 'bg-white/50'
+                        isSelected ? 'bg-accent shadow-glow' : 'bg-card/80'
                       }`}>
                         <Icon className={`h-6 w-6 ${isSelected ? 'text-accent-foreground' : iconColor}`} />
                       </div>
@@ -308,10 +308,10 @@ const Mentorship = () => {
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {featuredMentors.map((mentor) => (
-              <Card key={mentor.id} className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+              <Card key={mentor.id} variant={mentor.isPremium ? "premium" : "glass"} className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                 <CardContent className="p-6">
                   {mentor.isPremium && (
-                    <Badge className="mb-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                    <Badge className="mb-3 bg-gradient-to-r from-rating to-primary text-rating-foreground">
                       PREMIUM
                     </Badge>
                   )}
@@ -331,7 +331,7 @@ const Mentorship = () => {
                   
                   <div className="mb-4 flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <Star className="h-4 w-4 fill-rating text-rating" />
                       <span>{mentor.rating}</span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -349,7 +349,7 @@ const Mentorship = () => {
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <Badge variant="outline" className="text-green-600 border-green-600">
+                    <Badge variant="outline" className="text-success border-success">
                       Available
                     </Badge>
                   <Link to={`/mentor/${mentor.id}`}>

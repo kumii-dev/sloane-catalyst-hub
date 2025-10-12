@@ -32,7 +32,13 @@
     /* Accent: Brand Purple for highlights and CTAs */
     --accent: 237 27% 51%;
     --accent-foreground: 0 0% 100%;
+    --accent-light: 237 27% 65%;
     --accent-magenta: 323 67% 39%;
+    
+    /* Rating/Achievement Colors */
+    --rating: 45 93% 58%;
+    --rating-foreground: 45 93% 20%;
+    --rating-muted: 45 20% 85%;
 
     /* Gen Grey: Brand neutral color */
     --gen-grey: 240 1% 25%;
@@ -93,8 +99,13 @@
 
     --accent: 237 27% 51%;
     --accent-foreground: 0 0% 100%;
+    --accent-light: 237 27% 65%;
 
     --gen-grey: 240 1% 25%;
+    
+    --rating: 45 93% 58%;
+    --rating-foreground: 45 93% 20%;
+    --rating-muted: 45 20% 85%;
 
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;

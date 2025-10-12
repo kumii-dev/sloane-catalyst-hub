@@ -46,6 +46,11 @@ export default {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
         },
+        rating: {
+          DEFAULT: "hsl(var(--rating))",
+          foreground: "hsl(var(--rating-foreground))",
+          muted: "hsl(var(--rating-muted))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",

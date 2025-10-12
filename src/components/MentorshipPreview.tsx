@@ -125,7 +125,7 @@ const MentorshipPreview = () => {
           <div className="grid gap-6 md:grid-cols-3 mb-12">
             {featuredMentors.map((mentor) => (
               <Link to={`/mentor/${mentor.id}`} key={mentor.id}>
-                <Card className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <Card variant="glass" className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
               <CardContent className="p-6 text-center">
                 <img
                   src={mentor.image}
@@ -136,10 +136,10 @@ const MentorshipPreview = () => {
                 <p className="text-sm text-muted-foreground mb-1">{mentor.title}</p>
                 <p className="text-xs text-muted-foreground mb-3">{mentor.company}</p>
                 <div className="flex items-center justify-center gap-1 mb-4">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  <Star className="h-4 w-4 fill-rating text-rating" />
                   <span className="text-sm font-medium">{mentor.rating}</span>
                 </div>
-                  <Badge variant="outline" className="text-green-600 border-green-600">
+                  <Badge variant="outline" className="text-success border-success">
                     Available
                   </Badge>
                 </CardContent>

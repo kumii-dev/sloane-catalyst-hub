@@ -106,8 +106,8 @@ const MentorProfile = () => {
             key={star}
             className={`w-5 h-5 ${
               star <= rating
-                ? "fill-yellow-400 text-yellow-400"
-                : "fill-gray-200 text-gray-200"
+                ? "fill-rating text-rating"
+                : "fill-rating-muted text-rating-muted"
             }`}
           />
         ))}
@@ -146,7 +146,7 @@ const MentorProfile = () => {
     <Layout showSidebar={true}>
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/10">
         {/* Header */}
-        <div className="border-b bg-card/50 backdrop-blur">
+        <div className="border-b bg-card/80 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-6">
             <Button
               variant="ghost"
@@ -177,7 +177,7 @@ const MentorProfile = () => {
                         {mentor.profiles?.first_name} {mentor.profiles?.last_name}
                       </h1>
                       {mentor.is_premium && (
-                        <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white">
+                        <Badge className="bg-gradient-to-r from-rating to-primary text-rating-foreground">
                           PREMIUM
                         </Badge>
                       )}
@@ -264,10 +264,10 @@ const MentorProfile = () => {
                 </TabsList>
 
                 <TabsContent value="profile" className="mt-6">
-                  <Card>
+                  <Card variant="glass">
                     <CardContent className="pt-6">
                       <div className="mb-6">
-                        <h2 className="text-4xl font-bold text-primary mb-4" style={{ fontFamily: 'cursive' }}>
+                        <h2 className="text-3xl font-bold text-primary mb-4">
                           Profile
                         </h2>
                       </div>
@@ -363,11 +363,11 @@ const MentorProfile = () => {
             {/* Right Column - Sidebar */}
             <div className="space-y-6">
               {/* Certified Mentor Badge */}
-              <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200">
+              <Card variant="gradient" className="border-success/30">
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-3">
-                    <div className="bg-green-500 rounded-full p-2">
-                      <CheckCircle2 className="w-5 h-5 text-white" />
+                    <div className="bg-success rounded-full p-2">
+                      <CheckCircle2 className="w-5 h-5 text-success-foreground" />
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Certified Mentor</h3>
@@ -380,7 +380,7 @@ const MentorProfile = () => {
               </Card>
 
               {/* Availability Status */}
-              <Card>
+              <Card variant="elevated">
                 <CardContent className="pt-6">
                   <div className="text-center space-y-4">
                     <Badge 
@@ -391,8 +391,8 @@ const MentorProfile = () => {
                     </Badge>
                     
                     {mentor.hourly_rate && (
-                      <div className="text-2xl font-bold">
-                        ${mentor.hourly_rate}/hour
+                      <div className="text-2xl font-bold text-primary">
+                        R{mentor.hourly_rate}/hour
                       </div>
                     )}
                     

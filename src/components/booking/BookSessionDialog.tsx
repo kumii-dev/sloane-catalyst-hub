@@ -66,7 +66,7 @@ export const BookSessionDialog = ({ open, onOpenChange, mentor }: BookSessionDia
         <BookingProgressStepper currentStep={currentStep} />
         
         <div className="px-6 pb-6">
-          <div className="flex items-center justify-between gap-2 mb-4">
+          <div className="flex items-center justify-end gap-1 mb-4 flex-wrap">
             <p className="text-sm text-muted-foreground font-bold">
               We time your booking session to prevent conflicts and double bookings
             </p>

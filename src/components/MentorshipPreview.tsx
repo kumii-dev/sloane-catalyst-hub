@@ -139,8 +139,8 @@ const MentorshipPreview = () => {
                   <Star className="h-4 w-4 fill-rating text-rating" />
                   <span className="text-sm font-medium">{mentor.rating}</span>
                 </div>
-                  <Badge variant="outline" className="text-success border-success">
-                    Available
+                  <Badge className="bg-success text-success-foreground">
+                    ✓ Available
                   </Badge>
                 </CardContent>
               </Card>

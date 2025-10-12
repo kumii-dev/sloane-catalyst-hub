@@ -349,8 +349,8 @@ const Mentorship = () => {
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <Badge variant="outline" className="text-success border-success">
-                      Available
+                    <Badge className="bg-success text-success-foreground">
+                      ✓ Available
                     </Badge>
                   <Link to={`/mentor/${mentor.id}`}>
                     <Button size="sm">

@@ -15,7 +15,6 @@ import {
   User,
   BookOpen,
   Users,
-  Lightbulb,
   ArrowLeft,
   Edit
 } from "lucide-react";
@@ -245,16 +244,12 @@ const MentorProfile = () => {
                   </TabsTrigger>
                   <TabsTrigger value="bookshelf" className="rounded-none border-b-2 data-[state=active]:border-primary">
                     <BookOpen className="w-4 h-4 mr-2" />
-                    Bookshelf
+                    Library
                     <Badge variant="secondary" className="ml-2">9</Badge>
                   </TabsTrigger>
                   <TabsTrigger value="similar" className="rounded-none border-b-2 data-[state=active]:border-primary">
                     <Users className="w-4 h-4 mr-2" />
                     Similar Mentors
-                  </TabsTrigger>
-                  <TabsTrigger value="nuggets" className="rounded-none border-b-2 data-[state=active]:border-primary">
-                    <Lightbulb className="w-4 h-4 mr-2" />
-                    Learning Nuggets
                   </TabsTrigger>
                   <TabsTrigger value="schedule" className="rounded-none border-b-2 data-[state=active]:border-primary">
                     <Calendar className="w-4 h-4 mr-2" />
@@ -338,16 +333,6 @@ const MentorProfile = () => {
                   </Card>
                 </TabsContent>
 
-                <TabsContent value="nuggets" className="mt-6">
-                  <Card>
-                    <CardContent className="pt-6">
-                      <p className="text-muted-foreground text-center py-8">
-                        No learning nuggets yet
-                      </p>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
                 <TabsContent value="schedule" className="mt-6">
                   <Card>
                     <CardContent className="pt-6">
@@ -384,8 +369,8 @@ const MentorProfile = () => {
                 <CardContent className="pt-6">
                   <div className="text-center space-y-4">
                     <Badge 
+                      className={`text-base px-4 py-2 ${mentor.status === 'available' ? 'bg-success text-success-foreground' : ''}`}
                       variant={mentor.status === 'available' ? 'default' : 'secondary'}
-                      className="text-base px-4 py-2"
                     >
                       {mentor.status === 'available' ? '✓ Available' : 'Not Available'}
                     </Badge>

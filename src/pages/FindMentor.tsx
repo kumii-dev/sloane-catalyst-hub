@@ -279,8 +279,8 @@ const FindMentor = () => {
 
                       <div className="flex justify-center">
                         <Badge 
+                          className={`text-xs ${mentor.status === 'available' ? 'bg-success text-success-foreground' : ''}`}
                           variant={mentor.status === 'available' ? 'default' : 'secondary'}
-                          className="text-xs"
                         >
                           {mentor.status === 'available' ? '✓ Available' : 'Not Available'}
                         </Badge>
@@ -368,10 +368,10 @@ const FindMentor = () => {
 
                       <div className="flex justify-center">
                         <Badge 
+                          className={`text-xs ${mentor.status === 'available' ? 'bg-success text-success-foreground' : ''}`}
                           variant={mentor.status === 'available' ? 'default' : 'secondary'}
-                          className="text-xs"
                         >
-                          {mentor.status === 'available' ? 'Available' : 'Not Available'}
+                          {mentor.status === 'available' ? '✓ Available' : 'Not Available'}
                         </Badge>
                       </div>
                     </CardContent>

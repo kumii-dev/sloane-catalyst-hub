@@ -5,6 +5,9 @@ import { TimeSlotStep } from "./TimeSlotStep";
 import { BookingDetailsStep } from "./BookingDetailsStep";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { PaymentStep } from "./PaymentStep";
+import { BookingProgressStepper } from "./BookingProgressStepper";
+import { BookingTimer } from "./BookingTimer";
+import { toast } from "sonner";
 
 type BookingStep = "calendar" | "timeslot" | "details" | "confirmation" | "payment";
 
@@ -52,10 +55,22 @@ export const BookSessionDialog = ({ open, onOpenChange, mentor }: BookSessionDia
     onOpenChange(false);
   };
 
+  const handleTimeout = () => {
+    toast.error("Booking session expired. Please start again.");
+    handleClose();
+  };
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        {currentStep === "calendar" && (
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto p-0">
+        <BookingProgressStepper currentStep={currentStep} />
+        
+        <div className="px-6 pb-6">
+          <div className="flex justify-end mb-4">
+            <BookingTimer onTimeout={handleTimeout} initialMinutes={10} />
+          </div>
+          
+          {currentStep === "calendar" && (
           <CalendarStep 
             mentor={mentor}
             onNext={handleNext}
@@ -95,9 +110,10 @@ export const BookSessionDialog = ({ open, onOpenChange, mentor }: BookSessionDia
             mentor={mentor}
             bookingData={bookingData}
             onBack={handleBack}
-            onComplete={handleClose}
-          />
+          onComplete={handleClose}
+        />
         )}
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
-import { CreditCard, Coins, Gift } from "lucide-react";
 import { BookingData } from "./BookSessionDialog";
-import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
+import { BookingSummaryBanner } from "./BookingSummaryBanner";
+import { Wallet, Gift, CreditCard, Ticket } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface PaymentStepProps {
   mentor: any;
@@ -17,20 +18,16 @@ interface PaymentStepProps {
 }
 
 export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: PaymentStepProps) => {
+  const { user } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"credits" | "sponsored">("credits");
+  const [paymentMethod, setPaymentMethod] = useState<"credits" | "sponsored" | "card" | "voucher">("credits");
   const [creditBalance, setCreditBalance] = useState(0);
   const [isSponsoredMember, setIsSponsoredMember] = useState(false);
-  const { toast } = useToast();
-
-  const sessionFee = mentor.session_fee || 100;
-  const creditsRequired = Math.ceil(sessionFee / 10); // 1 credit = R10 equivalent
-  const currency = "USD";
-  const localAmount = sessionFee;
+  const [voucherCode, setVoucherCode] = useState("");
+  const [appliedVoucher, setAppliedVoucher] = useState<{code: string, discount: number} | null>(null);
 
   useEffect(() => {
     const fetchPaymentOptions = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
       // Fetch credit balance
@@ -57,27 +54,51 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
     };
 
     fetchPaymentOptions();
-  }, []);
+  }, [user]);
+
+  const handleApplyVoucher = () => {
+    if (!voucherCode.trim()) {
+      toast.error("Please enter a voucher code");
+      return;
+    }
+    
+    // Demo voucher logic - in production this would validate against a database
+    const validVouchers: Record<string, number> = {
+      "FIRST10": 10,
+      "MENTOR20": 20,
+      "STARTUP50": 50
+    };
+    
+    const discount = validVouchers[voucherCode.toUpperCase()];
+    
+    if (discount) {
+      setAppliedVoucher({ code: voucherCode.toUpperCase(), discount });
+      toast.success(`Voucher applied! ${discount}% discount`);
+    } else {
+      toast.error("Invalid voucher code");
+    }
+  };
 
   const handlePayment = async () => {
-    if (paymentMethod === "credits" && creditBalance < creditsRequired) {
-      toast({
-        title: "Insufficient credits",
-        description: `You need ${creditsRequired} credits but only have ${creditBalance}.`,
-        variant: "destructive"
-      });
+    if (!user) {
+      toast.error("Please log in to complete booking");
+      return;
+    }
+
+    const sessionFee = mentor.session_fee || 100;
+    const creditsRequired = Math.ceil(sessionFee / 10);
+    const finalCredits = appliedVoucher 
+      ? Math.ceil(creditsRequired * (1 - appliedVoucher.discount / 100))
+      : creditsRequired;
+
+    if (paymentMethod === "credits" && creditBalance < finalCredits) {
+      toast.error("Insufficient Kumii Credits");
       return;
     }
 
     setIsProcessing(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        throw new Error("User not authenticated");
-      }
-
       // Create session booking
       const { data: session, error: sessionError } = await supabase
         .from('mentoring_sessions')
@@ -98,170 +119,205 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
       if (sessionError) throw sessionError;
 
       // Process payment based on method
-      if (paymentMethod === "credits") {
+      if (paymentMethod === "credits" || paymentMethod === "voucher") {
         // Deduct credits from wallet
         const { error: walletError } = await supabase.rpc('deduct_credits', {
           p_user_id: user.id,
-          p_amount: creditsRequired,
-          p_description: `Mentoring session with ${mentor.title}`,
+          p_amount: finalCredits,
+          p_description: `Mentoring session with ${mentor.title}${appliedVoucher ? ` (Voucher: ${appliedVoucher.code})` : ''}`,
           p_reference_id: session.id
         });
 
         if (walletError) throw walletError;
       }
-      // Sponsored members get free access (no payment needed)
 
-      toast({
-        title: "Booking Confirmed! 🎉",
-        description: paymentMethod === "credits" 
-          ? `Session booked using ${creditsRequired} Kumii Credits.`
-          : paymentMethod === "sponsored"
-          ? "Session booked through your sponsored programme."
-          : "Your mentoring session has been booked successfully."
-      });
+      toast.success(
+        paymentMethod === "credits" || paymentMethod === "voucher"
+          ? `Booking Confirmed! ${finalCredits} credits used.`
+          : "Booking Confirmed! Session booked through sponsored programme."
+      );
 
       onComplete();
     } catch (error) {
       console.error('Booking error:', error);
-      toast({
-        title: "Booking failed",
-        description: "There was an error processing your booking. Please try again.",
-        variant: "destructive"
-      });
+      toast.error("Booking failed. Please try again.");
     } finally {
       setIsProcessing(false);
     }
   };
 
+  const sessionFee = mentor.session_fee || 100;
+  const creditsRequired = Math.ceil(sessionFee / 10);
+  const discount = appliedVoucher ? Math.ceil(creditsRequired * appliedVoucher.discount / 100) : 0;
+  const finalCredits = creditsRequired - discount;
+
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold mb-2">Choose Payment Method</h2>
-        <p className="text-muted-foreground">Select how you'd like to pay for this session</p>
-      </div>
+    <div className="space-y-6">
+      <BookingSummaryBanner mentor={mentor} bookingData={bookingData} />
+      
+      <div className="max-w-3xl mx-auto space-y-6">
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-bold">Payment Options</h2>
+          <p className="text-lg font-semibold">Final Balance: {finalCredits} Credits (R{finalCredits * 10})</p>
+        </div>
 
-      {/* Payment Method Selection */}
-      <Card>
-        <CardContent className="pt-6">
-          <RadioGroup value={paymentMethod} onValueChange={(value: any) => setPaymentMethod(value)}>
-            <div className="space-y-4">
-              {/* Kumii Credits Option */}
-              <div className={`flex items-start space-x-3 p-4 rounded-lg border-2 transition-colors ${
-                paymentMethod === "credits" ? "border-primary bg-primary/5" : "border-border"
-              }`}>
-                <RadioGroupItem value="credits" id="credits" disabled={creditBalance < creditsRequired} />
-                <Label htmlFor="credits" className="flex-1 cursor-pointer">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Coins className="w-5 h-5 text-orange-600" />
-                    <span className="font-semibold">Kumii Credits</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Pay with {creditsRequired} credits
-                  </p>
-                  <p className="text-sm font-medium mt-1">
-                    Available: {creditBalance} credits
-                  </p>
-                  {creditBalance < creditsRequired && (
-                    <p className="text-sm text-destructive mt-1">Insufficient credits</p>
-                  )}
-                </Label>
-              </div>
+        {/* Payment Method Buttons */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button
+            onClick={() => {
+              if (appliedVoucher) setPaymentMethod("voucher");
+            }}
+            disabled={!appliedVoucher}
+            className={cn(
+              "flex flex-col items-center gap-3 p-6 border-2 rounded-lg transition-all hover:shadow-md",
+              paymentMethod === "voucher" && appliedVoucher ? "border-primary bg-primary/5" : "border-border",
+              !appliedVoucher && "opacity-50 cursor-not-allowed"
+            )}
+          >
+            <Ticket className="w-8 h-8 text-primary" />
+            <span className="font-semibold text-sm">Voucher</span>
+          </button>
 
-              {/* Sponsored Programme Option */}
-              <div className={`flex items-start space-x-3 p-4 rounded-lg border-2 transition-colors ${
-                paymentMethod === "sponsored" ? "border-primary bg-primary/5" : "border-border"
-              }`}>
-                <RadioGroupItem value="sponsored" id="sponsored" disabled={!isSponsoredMember} />
-                <Label htmlFor="sponsored" className="flex-1 cursor-pointer">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Gift className="w-5 h-5 text-green-600" />
-                    <span className="font-semibold">Sponsored Programme</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {isSponsoredMember 
-                      ? "Free access as a sponsored member"
-                      : "Join a sponsored cohort for free access"
-                    }
-                  </p>
-                  {isSponsoredMember && (
-                    <p className="text-sm font-medium text-green-600 mt-1">✓ Active member</p>
-                  )}
-                </Label>
-              </div>
-            </div>
-          </RadioGroup>
+          <button
+            onClick={() => setPaymentMethod("credits")}
+            disabled={creditBalance < finalCredits}
+            className={cn(
+              "flex flex-col items-center gap-3 p-6 border-2 rounded-lg transition-all hover:shadow-md",
+              paymentMethod === "credits" ? "border-primary bg-primary/5" : "border-border",
+              creditBalance < finalCredits && "opacity-50 cursor-not-allowed"
+            )}
+          >
+            <Wallet className="w-8 h-8 text-primary" />
+            <span className="font-semibold text-sm">Kumii Credits</span>
+            <span className="text-xs text-muted-foreground">{creditBalance} available</span>
+          </button>
 
-          {/* Phase 2 Notice */}
-          <div className="mt-4 p-4 bg-muted rounded-lg border">
-            <p className="text-sm font-medium mb-1">💳 Card Payments - Coming Soon!</p>
-            <p className="text-xs text-muted-foreground">
-              We're launching with Kumii Credits and Sponsored Programs first. 
-              Payment gateway integration (PayFast/Stripe) will be available in Phase 2.
-            </p>
+          <button
+            onClick={() => setPaymentMethod("sponsored")}
+            disabled={!isSponsoredMember}
+            className={cn(
+              "flex flex-col items-center gap-3 p-6 border-2 rounded-lg transition-all hover:shadow-md",
+              paymentMethod === "sponsored" ? "border-primary bg-primary/5" : "border-border",
+              !isSponsoredMember && "opacity-50 cursor-not-allowed"
+            )}
+          >
+            <Gift className="w-8 h-8 text-primary" />
+            <span className="font-semibold text-sm">Sponsored</span>
+          </button>
+
+          <button
+            onClick={() => setPaymentMethod("card")}
+            disabled
+            className="flex flex-col items-center gap-3 p-6 border-2 rounded-lg opacity-50 cursor-not-allowed"
+          >
+            <CreditCard className="w-8 h-8 text-primary" />
+            <span className="font-semibold text-sm">Card / EFT</span>
+            <span className="text-xs text-muted-foreground">Coming soon</span>
+          </button>
+        </div>
+
+        {/* Voucher Section */}
+        <div className="border rounded-lg p-6 space-y-4">
+          <Label>Have a voucher code?</Label>
+          <div className="flex gap-3">
+            <Input
+              placeholder="Enter Voucher Code"
+              value={voucherCode}
+              onChange={(e) => setVoucherCode(e.target.value)}
+              disabled={!!appliedVoucher}
+              className="flex-1"
+            />
+            <Button
+              onClick={handleApplyVoucher}
+              variant="default"
+              disabled={!!appliedVoucher || !voucherCode.trim()}
+            >
+              {appliedVoucher ? "Applied" : "Apply Voucher"}
+            </Button>
           </div>
-        </CardContent>
-      </Card>
+          {appliedVoucher && (
+            <p className="text-sm text-success-foreground">
+              ✓ Voucher "{appliedVoucher.code}" applied - {appliedVoucher.discount}% discount
+            </p>
+          )}
+          <p className="text-xs text-muted-foreground">
+            Try: FIRST10, MENTOR20, or STARTUP50
+          </p>
+        </div>
 
-      {/* Payment Details Based on Method */}
-      {paymentMethod === "credits" && (
-        <Card>
-          <CardContent className="pt-6">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-orange-50 dark:bg-orange-950/20 rounded-lg">
-                <div>
-                  <p className="font-semibold">Credits Required</p>
-                  <p className="text-sm text-muted-foreground">For this mentoring session</p>
+        {/* Payment Summary */}
+        <div className="border rounded-lg overflow-hidden">
+          <div className="bg-muted/50 px-6 py-3 border-b">
+            <h3 className="font-semibold text-lg">Payment Summary</h3>
+          </div>
+          
+          <div className="p-6 space-y-4">
+            <table className="w-full">
+              <thead className="border-b">
+                <tr className="text-sm font-medium">
+                  <th className="text-left pb-2">ITEM</th>
+                  <th className="text-right pb-2">FEE</th>
+                  <th className="text-right pb-2">CREDIT</th>
+                  <th className="text-right pb-2">VOUCHER</th>
+                  <th className="text-right pb-2">AMOUNT DUE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="py-4">Session</td>
+                  <td className="text-right font-semibold">{creditsRequired}</td>
+                  <td className="text-right">-</td>
+                  <td className="text-right text-success-foreground">{appliedVoucher ? `-${discount}` : '-'}</td>
+                  <td className="text-right font-semibold">{finalCredits}</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            {paymentMethod === "credits" && creditBalance >= finalCredits && (
+              <div className="pt-3 border-t space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Current Credit Balance</span>
+                  <span className="font-medium">{creditBalance}</span>
                 </div>
-                <div className="text-2xl font-bold">{creditsRequired}</div>
-              </div>
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <div>
-                  <p className="font-semibold">Your Balance</p>
-                  <p className="text-sm text-muted-foreground">Available credits</p>
+                <div className="flex justify-between text-primary">
+                  <span>Remaining Balance</span>
+                  <span className="font-semibold">{creditBalance - finalCredits}</span>
                 </div>
-                <div className="text-2xl font-bold">{creditBalance}</div>
               </div>
-              <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg">
-                <div>
-                  <p className="font-semibold">Remaining Balance</p>
-                  <p className="text-sm text-muted-foreground">After this session</p>
-                </div>
-                <div className="text-2xl font-bold">{creditBalance - creditsRequired}</div>
-              </div>
+            )}
+            
+            <div className="pt-4 border-t flex justify-between items-center">
+              <span className="font-semibold text-lg">Balance Due</span>
+              <span className="text-2xl font-bold">{finalCredits} Credits</span>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </div>
+        </div>
 
-      {paymentMethod === "sponsored" && (
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-center space-y-4">
-              <Gift className="w-16 h-16 mx-auto text-green-600" />
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Sponsored Access</h3>
-                <p className="text-muted-foreground">
-                  This session is covered by your sponsored programme membership. No payment required.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Action Buttons */}
-      <div className="flex gap-3">
-        <Button variant="outline" onClick={onBack} className="flex-1">
-          Back
-        </Button>
-        <Button 
-          onClick={handlePayment} 
-          disabled={isProcessing || (paymentMethod === "credits" && creditBalance < creditsRequired) || (paymentMethod === "sponsored" && !isSponsoredMember)}
-          className="flex-1 bg-green-600 hover:bg-green-700" 
-          size="lg"
-        >
-          {isProcessing ? "Processing..." : "Confirm Booking"}
-        </Button>
+        {/* Action Buttons */}
+        <div className="flex gap-3 pt-4">
+          <Button
+            onClick={onBack}
+            variant="outline"
+            size="lg"
+            className="flex-1"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={handlePayment}
+            disabled={
+              isProcessing || 
+              (paymentMethod === "credits" && creditBalance < finalCredits) ||
+              (paymentMethod === "sponsored" && !isSponsoredMember) ||
+              (paymentMethod === "card") ||
+              (paymentMethod === "voucher" && (!appliedVoucher || creditBalance < finalCredits))
+            }
+            size="lg"
+            className="flex-1 bg-success hover:bg-success/90"
+          >
+            {isProcessing ? "Processing..." : "Process Transaction"}
+          </Button>
+        </div>
       </div>
     </div>
   );

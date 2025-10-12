@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { BookingData } from "./BookSessionDialog";
+import { BookingSummaryBanner } from "./BookingSummaryBanner";
 
 interface ConfirmationStepProps {
   mentor: any;
@@ -19,8 +20,11 @@ export const ConfirmationStep = ({ mentor, bookingData, onNext, onBack }: Confir
   };
 
   return (
-    <div className="max-w-md mx-auto space-y-6 py-8">
-      <h2 className="text-3xl font-bold text-center">Confirm Your Choice</h2>
+    <div className="space-y-6 py-4">
+      <BookingSummaryBanner mentor={mentor} bookingData={bookingData} />
+      
+      <div className="max-w-md mx-auto space-y-6">
+        <h2 className="text-3xl font-bold text-center">Confirm Your Choice</h2>
       
       <div className="text-center space-y-4">
         <p className="text-muted-foreground">
@@ -66,6 +70,7 @@ export const ConfirmationStep = ({ mentor, bookingData, onNext, onBack }: Confir
         >
           ↻ Go Back
         </Button>
+      </div>
       </div>
     </div>
   );

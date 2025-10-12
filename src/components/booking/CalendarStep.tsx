@@ -183,7 +183,7 @@ export const CalendarStep = ({ mentor, onNext }: CalendarStepProps) => {
                 available: (date) => isDateAvailable(date)
               }}
               modifiersClassNames={{
-                available: "bg-success/25 text-success-foreground hover:bg-success/30"
+                available: "bg-success/25 hover:bg-success/30"
               }}
               className="border rounded-lg pointer-events-auto"
               numberOfMonths={2}

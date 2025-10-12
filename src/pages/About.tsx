@@ -19,6 +19,7 @@ const About = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [selectedVoice, setSelectedVoice] = useState<string>("TTY70JqFvDxeExufZ1za");
+  const [devMode, setDevMode] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const journeyMapsRef = useRef<HTMLDivElement | null>(null);
 
@@ -228,6 +229,34 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  // Check for dev mode on mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const devParam = urlParams.get('dev');
+    const storedDevMode = localStorage.getItem('devMode') === 'true';
+    
+    if (devParam === 'true' || storedDevMode) {
+      setDevMode(true);
+      localStorage.setItem('devMode', 'true');
+    }
+
+    // Keyboard shortcut: Ctrl+Shift+D to toggle dev mode
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+        e.preventDefault();
+        setDevMode(prev => {
+          const newValue = !prev;
+          localStorage.setItem('devMode', String(newValue));
+          toast.success(newValue ? 'Dev mode enabled' : 'Dev mode disabled');
+          return newValue;
+        });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
+
   useEffect(() => {
     return () => {
       // Cleanup: stop narration and revoke URL when component unmounts
@@ -282,23 +311,27 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
           </div>
 
           <Tabs defaultValue="script" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 max-w-3xl mx-auto">
+            <TabsList className={`grid w-full ${devMode ? 'grid-cols-4' : 'grid-cols-1'} max-w-3xl mx-auto`}>
               <TabsTrigger value="script" className="gap-2">
                 <Video className="w-4 h-4" />
                 Video Script
               </TabsTrigger>
-              <TabsTrigger value="database" className="gap-2">
-                <Database className="w-4 h-4" />
-                Database
-              </TabsTrigger>
-              <TabsTrigger value="journeys" className="gap-2">
-                <Map className="w-4 h-4" />
-                Journey Maps
-              </TabsTrigger>
-              <TabsTrigger value="testing" className="gap-2">
-                <FileCode className="w-4 h-4" />
-                Load Testing
-              </TabsTrigger>
+              {devMode && (
+                <>
+                  <TabsTrigger value="database" className="gap-2">
+                    <Database className="w-4 h-4" />
+                    Database
+                  </TabsTrigger>
+                  <TabsTrigger value="journeys" className="gap-2">
+                    <Map className="w-4 h-4" />
+                    Journey Maps
+                  </TabsTrigger>
+                  <TabsTrigger value="testing" className="gap-2">
+                    <FileCode className="w-4 h-4" />
+                    Load Testing
+                  </TabsTrigger>
+                </>
+              )}
             </TabsList>
 
             <TabsContent value="script" className="space-y-8 mt-8">
@@ -614,7 +647,8 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
           </div>
             </TabsContent>
 
-            <TabsContent value="database" className="space-y-8 mt-8">
+            {devMode && (
+              <TabsContent value="database" className="space-y-8 mt-8">
               <Card className="border-2">
                 <CardContent className="p-8 space-y-6">
                   <div className="flex items-center gap-3 mb-4">
@@ -863,8 +897,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 </CardContent>
               </Card>
             </TabsContent>
+            )}
 
-            <TabsContent value="journeys" className="space-y-8 mt-8">
+            {devMode && (
+              <TabsContent value="journeys" className="space-y-8 mt-8">
               <div className="flex justify-end mb-4">
                 <Button onClick={exportJourneyMapsToPDF} size="lg" className="gap-2">
                   <FileDown className="w-4 h-4" />
@@ -1045,9 +1081,11 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 </Card>
               </div>
             </TabsContent>
+            )}
 
             {/* Load Testing Tab */}
-            <TabsContent value="testing" className="space-y-8 mt-8">
+            {devMode && (
+              <TabsContent value="testing" className="space-y-8 mt-8">
               <Card className="border-2">
                 <CardContent className="p-8 space-y-6">
                   <div className="flex items-center justify-between">
@@ -1268,6 +1306,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 </CardContent>
               </Card>
             </TabsContent>
+            )}
           </Tabs>
         </div>
       </main>

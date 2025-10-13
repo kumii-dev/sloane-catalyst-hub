@@ -32,14 +32,30 @@ export const SmartContactSelector: React.FC<SmartContactSelectorProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestedContacts, setSuggestedContacts] = useState<SuggestedContact[]>([]);
+  const [searchResults, setSearchResults] = useState<SuggestedContact[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searching, setSearching] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     if (open) {
       loadSmartSuggestions();
+      setSearchQuery('');
+      setSearchResults([]);
     }
   }, [open]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery.trim()) {
+        searchAllUsers();
+      } else {
+        setSearchResults([]);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const loadSmartSuggestions = async () => {
     try {
@@ -166,11 +182,42 @@ export const SmartContactSelector: React.FC<SmartContactSelectorProps> = ({
     }
   };
 
-  const filteredContacts = suggestedContacts.filter(contact =>
-    contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    contact.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    contact.organization?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const searchAllUsers = async () => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    setSearching(true);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, user_id, first_name, last_name, email, organization, profile_picture_url, persona_type')
+        .or(`email.ilike.%${searchQuery}%,first_name.ilike.%${searchQuery}%,last_name.ilike.%${searchQuery}%,organization.ilike.%${searchQuery}%`)
+        .limit(20);
+
+      if (error) throw error;
+
+      const results: SuggestedContact[] = (data || []).map(profile => ({
+        id: profile.user_id,
+        name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Anonymous User',
+        email: profile.email || '',
+        profile_picture_url: profile.profile_picture_url || undefined,
+        persona_type: profile.persona_type || 'unassigned',
+        organization: profile.organization || undefined,
+        context: 'Search result',
+        recent_activity: undefined
+      }));
+
+      setSearchResults(results);
+    } catch (error) {
+      console.error('Error searching users:', error);
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  const displayContacts = searchQuery.trim() ? searchResults : suggestedContacts;
 
   const getPersonaIcon = (persona: string) => {
     switch (persona) {
@@ -211,18 +258,18 @@ export const SmartContactSelector: React.FC<SmartContactSelectorProps> = ({
         </div>
 
         <div className="flex-1 overflow-y-auto space-y-2">
-          {loading ? (
+          {(loading || searching) ? (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
             </div>
-          ) : filteredContacts.length === 0 ? (
+          ) : displayContacts.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
               <Users className="h-12 w-12 mx-auto mb-3 opacity-50" />
-              <p>No contacts found</p>
-              <p className="text-sm">Try adjusting your search</p>
+              <p className="font-medium">{searchQuery.trim() ? 'No users found' : 'No suggested contacts'}</p>
+              <p className="text-sm mt-1">{searchQuery.trim() ? 'Try a different search term' : 'Start typing to search for users'}</p>
             </div>
           ) : (
-            filteredContacts.map((contact) => (
+            displayContacts.map((contact) => (
               <button
                 key={contact.id}
                 onClick={() => {

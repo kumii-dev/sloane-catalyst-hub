@@ -501,7 +501,11 @@ const MentorDashboard = () => {
                                 <X className="w-4 h-4 mr-2" />
                                 Decline
                               </Button>
-                              <Button size="sm" variant="outline">
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                onClick={() => navigate(`/messaging-hub?userId=${session.mentee_id}`)}
+                              >
                                 <MessageSquare className="w-4 h-4 mr-2" />
                                 Message
                               </Button>
@@ -579,11 +583,25 @@ const MentorDashboard = () => {
                               <Button size="sm" variant="default">
                                 Start Session
                               </Button>
-                              <Button size="sm" variant="outline">
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                onClick={() => navigate(`/messaging-hub?userId=${session.mentee_id}`)}
+                              >
                                 <MessageSquare className="w-4 h-4 mr-2" />
                                 Message
                               </Button>
-                              <Button size="sm" variant="outline">
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                onClick={() => {
+                                  toast({
+                                    title: "Reschedule Session",
+                                    description: "Please contact the mentee to reschedule the session",
+                                  });
+                                  navigate(`/messaging-hub?userId=${session.mentee_id}`);
+                                }}
+                              >
                                 Reschedule
                               </Button>
                             </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { ConversationList } from '@/components/messaging/ConversationList';
 import { MessageThread } from '@/components/messaging/MessageThread';
@@ -7,6 +7,7 @@ import { MessagingTabs } from '@/components/messaging/MessagingTabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, Plus, X, Menu, PanelLeftClose } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const MessagingHub = () => {
   const [selectedTab, setSelectedTab] = useState<'recent' | 'contacts' | 'teams' | 'pinned' | 'insights'>('recent');
@@ -14,6 +15,21 @@ const MessagingHub = () => {
   const [showContactPanel, setShowContactPanel] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSecondarySidebar, setShowSecondarySidebar] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Handle userId parameter from URL to open conversation with specific user
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const userId = params.get('userId');
+    if (userId) {
+      // Simulate selecting a conversation with this user
+      setSelectedConversation(userId);
+      setShowSecondarySidebar(true);
+      // Clear the URL parameter
+      navigate('/messaging-hub', { replace: true });
+    }
+  }, [location.search, navigate]);
 
   return (
     <Layout showSidebar={true} hideSecondarySidebar={true}>

@@ -329,7 +329,11 @@ const MenteeDashboard = () => {
                                 <Video className="w-4 h-4 mr-2" />
                                 Join Session
                               </Button>
-                              <Button size="sm" variant="outline">
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                onClick={() => navigate(`/messaging-hub?userId=${session.mentors?.user_id}`)}
+                              >
                                 <MessageSquare className="w-4 h-4 mr-2" />
                                 Message Mentor
                               </Button>

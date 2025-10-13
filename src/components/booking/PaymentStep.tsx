@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { BookingSummaryBanner } from "./BookingSummaryBanner";
 import { Wallet, Gift, CreditCard, Ticket } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 
 interface PaymentStepProps {
@@ -22,9 +23,17 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"credits" | "sponsored" | "card" | "voucher">("credits");
   const [creditBalance, setCreditBalance] = useState(0);
-  const [isSponsoredMember, setIsSponsoredMember] = useState(false);
   const [voucherCode, setVoucherCode] = useState("");
   const [appliedVoucher, setAppliedVoucher] = useState<{code: string, discount: number} | null>(null);
+  const [selectedCohort, setSelectedCohort] = useState<string>("");
+
+  const availableCohorts = [
+    { id: "aws", name: "AWS Cohort" },
+    { id: "microsoft", name: "Microsoft Cohort" },
+    { id: "african-bank", name: "African Bank Cohort" },
+    { id: "wr-seta", name: "W&R SETA Cohort" },
+    { id: "asupol", name: "ASUPOL Cohort" }
+  ];
 
   useEffect(() => {
     const fetchPaymentOptions = async () => {
@@ -39,17 +48,6 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
       
       if (wallet) {
         setCreditBalance(wallet.balance);
-      }
-
-      // Check if user is part of a sponsored cohort
-      const { data: memberships } = await supabase
-        .from('cohort_memberships')
-        .select('cohort_id, cohorts(credits_allocated)')
-        .eq('user_id', user.id)
-        .eq('is_active', true);
-
-      if (memberships && memberships.length > 0) {
-        setIsSponsoredMember(true);
       }
     };
 
@@ -82,6 +80,11 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
   const handlePayment = async () => {
     if (!user) {
       toast.error("Please log in to complete booking");
+      return;
+    }
+
+    if (paymentMethod === "sponsored" && !selectedCohort) {
+      toast.error("Please select a sponsored programme");
       return;
     }
 
@@ -131,10 +134,12 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
         if (walletError) throw walletError;
       }
 
+      const cohortName = availableCohorts.find(c => c.id === selectedCohort)?.name || "sponsored programme";
+      
       toast.success(
         paymentMethod === "credits" || paymentMethod === "voucher"
           ? `Booking Confirmed! ${finalCredits} credits used.`
-          : "Booking Confirmed! Session booked through sponsored programme."
+          : `Booking Confirmed! Session booked through ${cohortName}.`
       );
 
       onComplete();
@@ -194,11 +199,9 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
 
           <button
             onClick={() => setPaymentMethod("sponsored")}
-            disabled={!isSponsoredMember}
             className={cn(
               "flex flex-col items-center gap-3 p-6 border-2 rounded-lg transition-all hover:shadow-md",
-              paymentMethod === "sponsored" ? "border-primary bg-primary/5" : "border-border",
-              !isSponsoredMember && "opacity-50 cursor-not-allowed"
+              paymentMethod === "sponsored" ? "border-primary bg-primary/5" : "border-border"
             )}
           >
             <Gift className="w-8 h-8 text-primary" />
@@ -215,6 +218,32 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
             <span className="text-xs text-muted-foreground">Coming soon</span>
           </button>
         </div>
+
+        {/* Sponsored Programme Selector */}
+        {paymentMethod === "sponsored" && (
+          <div className="border rounded-lg p-6 space-y-4 bg-primary/5">
+            <Label className="text-lg font-semibold">Select Your Sponsored Programme</Label>
+            <RadioGroup value={selectedCohort} onValueChange={setSelectedCohort}>
+              <div className="grid gap-3">
+                {availableCohorts.map((cohort) => (
+                  <div
+                    key={cohort.id}
+                    className={cn(
+                      "flex items-center space-x-3 p-4 border-2 rounded-lg cursor-pointer transition-all",
+                      selectedCohort === cohort.id ? "border-primary bg-background shadow-sm" : "border-border hover:border-primary/50"
+                    )}
+                    onClick={() => setSelectedCohort(cohort.id)}
+                  >
+                    <RadioGroupItem value={cohort.id} id={cohort.id} />
+                    <Label htmlFor={cohort.id} className="flex-1 cursor-pointer font-medium">
+                      {cohort.name}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </RadioGroup>
+          </div>
+        )}
 
         {/* Voucher Section */}
         <div className="border rounded-lg p-6 space-y-4">
@@ -308,7 +337,7 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
             disabled={
               isProcessing || 
               (paymentMethod === "credits" && creditBalance < finalCredits) ||
-              (paymentMethod === "sponsored" && !isSponsoredMember) ||
+              (paymentMethod === "sponsored" && !selectedCohort) ||
               (paymentMethod === "card") ||
               (paymentMethod === "voucher" && (!appliedVoucher || creditBalance < finalCredits))
             }

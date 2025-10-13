@@ -92,7 +92,7 @@ const MentorProfile = () => {
               title,
               scheduled_at
             ),
-            reviewer:reviewer_id(
+            reviewer:profiles!session_reviews_reviewer_id_fkey(
               first_name,
               last_name,
               profile_picture_url

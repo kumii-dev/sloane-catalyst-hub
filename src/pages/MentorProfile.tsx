@@ -31,6 +31,7 @@ const MentorProfile = () => {
   const [isOwnProfile, setIsOwnProfile] = useState(false);
   const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
   const [reviewCount, setReviewCount] = useState(0);
+  const [libraryCount, setLibraryCount] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -89,6 +90,10 @@ const MentorProfile = () => {
           .eq('session_status', 'completed');
         
         setReviewCount(reviewsCount || 0);
+
+        // Fetch library count for this mentor (you can adjust the query based on your library table)
+        // For now, setting to 0 as placeholder - update when library feature is implemented
+        setLibraryCount(0);
 
         setMentor({
           ...mentorData,
@@ -250,13 +255,12 @@ const MentorProfile = () => {
                   <TabsTrigger value="reviews" className="rounded-none border-b-2 data-[state=active]:border-primary">
                     <Star className="w-4 h-4 mr-2" />
                     Reviews
-                    {reviewCount > 0 && (
-                      <Badge variant="secondary" className="ml-2">{reviewCount}</Badge>
-                    )}
+                    <Badge variant="secondary" className="ml-2">{reviewCount}</Badge>
                   </TabsTrigger>
                   <TabsTrigger value="bookshelf" className="rounded-none border-b-2 data-[state=active]:border-primary">
                     <BookOpen className="w-4 h-4 mr-2" />
                     Library
+                    <Badge variant="secondary" className="ml-2">{libraryCount}</Badge>
                   </TabsTrigger>
                   <TabsTrigger value="similar" className="rounded-none border-b-2 data-[state=active]:border-primary">
                     <Users className="w-4 h-4 mr-2" />

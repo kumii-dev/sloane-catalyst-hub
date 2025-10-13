@@ -2218,6 +2218,10 @@ export type Database = {
         Args: { _assessment_id: string; _user_id: string }
         Returns: boolean
       }
+      is_conversation_participant: {
+        Args: { _conversation_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       access_level: "public" | "registered" | "cohort_only" | "premium"

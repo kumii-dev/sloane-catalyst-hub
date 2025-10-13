@@ -41,6 +41,9 @@ import MySubscriptions from "./pages/MySubscriptions";
 import AdminDashboard from "./pages/AdminDashboard";
 import CohortManager from "./pages/CohortManager";
 import MessagingHub from "./pages/MessagingHub";
+import Activity from "./pages/Activity";
+import MyActivity from "./pages/MyActivity";
+import Notifications from "./pages/Notifications";
 import About from "./pages/About";
 import SessionReview from "./pages/SessionReview";
 import NotFound from "./pages/NotFound";
@@ -91,6 +94,9 @@ const App = () => (
             <Route path="/resources/:slug" element={<ResourceDetail />} />
             <Route path="/messaging-hub" element={<MessagingHub />} />
             <Route path="/messaging" element={<MessagingHub />} />
+            <Route path="/activity" element={<Activity />} />
+            <Route path="/my-activity" element={<MyActivity />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/about" element={<About />} />
             <Route path="/review/:sessionId" element={<SessionReview />} />
             <Route path="/video-creator" element={<VideoCreator />} />

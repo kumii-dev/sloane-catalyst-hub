@@ -158,7 +158,10 @@ const MessagingHub = () => {
               selectedTab={selectedTab}
               searchQuery={searchQuery}
               selectedConversation={selectedConversation}
-              onSelectConversation={setSelectedConversation}
+              onSelectConversation={(id) => {
+                setSelectedConversation(id);
+                setShowSecondarySidebar(false);
+              }}
             />
           </div>
           

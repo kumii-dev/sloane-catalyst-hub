@@ -528,6 +528,92 @@ export type Database = {
         }
         Relationships: []
       }
+      file_shares: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          file_id: string
+          id: string
+          permission: string | null
+          shared_by: string
+          shared_with: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          file_id: string
+          id?: string
+          permission?: string | null
+          shared_by: string
+          shared_with: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          file_id?: string
+          id?: string
+          permission?: string | null
+          shared_by?: string
+          shared_with?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_shares_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: false
+            referencedRelation: "files"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      files: {
+        Row: {
+          category: Database["public"]["Enums"]["file_category"] | null
+          created_at: string
+          description: string | null
+          file_name: string
+          file_path: string
+          file_size: number
+          folder: string | null
+          id: string
+          is_shared: boolean | null
+          mime_type: string
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["file_category"] | null
+          created_at?: string
+          description?: string | null
+          file_name: string
+          file_path: string
+          file_size: number
+          folder?: string | null
+          id?: string
+          is_shared?: boolean | null
+          mime_type: string
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["file_category"] | null
+          created_at?: string
+          description?: string | null
+          file_name?: string
+          file_path?: string
+          file_size?: number
+          folder?: string | null
+          id?: string
+          is_shared?: boolean | null
+          mime_type?: string
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       funders: {
         Row: {
           created_at: string
@@ -2266,6 +2352,15 @@ export type Database = {
         | "growth"
         | "established"
       delivery_mode: "hybrid" | "online" | "in_person"
+      file_category:
+        | "pitch_deck"
+        | "financial_statement"
+        | "contract"
+        | "legal_document"
+        | "business_plan"
+        | "report"
+        | "presentation"
+        | "other"
       funding_status: "draft" | "active" | "closed" | "paused"
       funding_type:
         | "grant"
@@ -2494,6 +2589,16 @@ export const Constants = {
         "established",
       ],
       delivery_mode: ["hybrid", "online", "in_person"],
+      file_category: [
+        "pitch_deck",
+        "financial_statement",
+        "contract",
+        "legal_document",
+        "business_plan",
+        "report",
+        "presentation",
+        "other",
+      ],
       funding_status: ["draft", "active", "closed", "paused"],
       funding_type: [
         "grant",

@@ -45,6 +45,7 @@ import Activity from "./pages/Activity";
 import MyActivity from "./pages/MyActivity";
 import Notifications from "./pages/Notifications";
 import Calendar from "./pages/Calendar";
+import Files from "./pages/Files";
 import About from "./pages/About";
 import SessionReview from "./pages/SessionReview";
 import NotFound from "./pages/NotFound";
@@ -98,7 +99,8 @@ const App = () => (
             <Route path="/activity" element={<Activity />} />
             <Route path="/my-activity" element={<MyActivity />} />
             <Route path="/notifications" element={<Notifications />} />
-            <Route path="/calendar" element={<Calendar />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/files" element={<Files />} />
             <Route path="/about" element={<About />} />
             <Route path="/review/:sessionId" element={<SessionReview />} />
             <Route path="/video-creator" element={<VideoCreator />} />

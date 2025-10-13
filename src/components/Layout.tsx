@@ -34,7 +34,10 @@ export function Layout({ children, showSidebar = false, hideSecondarySidebar = f
       setShowSecondary(true);
     } else if (path === '/calendar') {
       setSelectedPrimary('calendar');
-      setShowSecondary(false);
+      setShowSecondary(true);
+    } else if (path === '/files' || path.startsWith('/files')) {
+      setSelectedPrimary('files');
+      setShowSecondary(true);
     } else if (
       path.startsWith('/access-to-market') ||
       path.startsWith('/funding') ||

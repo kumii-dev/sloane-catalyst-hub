@@ -65,6 +65,15 @@ const secondaryContent = {
       { title: "Past Events", url: "/calendar?view=past" },
     ]
   },
+  files: {
+    title: "Files",
+    items: [
+      { title: "All Files", url: "/files" },
+      { title: "Recent", url: "/files?tab=recent" },
+      { title: "Shared with Me", url: "/files?tab=shared" },
+      { title: "Folders", url: "/files?tab=folders" },
+    ]
+  },
   apps: {
     title: "Apps", 
     items: [

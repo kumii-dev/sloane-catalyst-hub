@@ -1,7 +1,12 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@4.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.58.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+
+const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -19,6 +24,7 @@ interface BookingEmailRequest {
   sessionTime: string;
   sessionType: string;
   message?: string;
+  sessionId: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -37,9 +43,27 @@ const handler = async (req: Request): Promise<Response> => {
       sessionTime,
       sessionType,
       message,
+      sessionId,
     }: BookingEmailRequest = await req.json();
 
     console.log("Sending booking email:", { type, mentorEmail, menteeEmail });
+
+    // Get user IDs from emails
+    const { data: mentorProfile } = await supabase
+      .from("profiles")
+      .select("user_id")
+      .eq("email", mentorEmail)
+      .single();
+
+    const { data: menteeProfile } = await supabase
+      .from("profiles")
+      .select("user_id")
+      .eq("email", menteeEmail)
+      .single();
+
+    if (!mentorProfile || !menteeProfile) {
+      console.error("Could not find user profiles for emails");
+    }
 
     if (type === "booking_created") {
       // Email to mentor about new booking request
@@ -78,6 +102,19 @@ const handler = async (req: Request): Promise<Response> => {
       });
 
       console.log("Mentor email sent:", mentorEmailResponse);
+
+      // Create notification for mentor
+      if (mentorProfile) {
+        await supabase.from("messages").insert({
+          user_id: mentorProfile.user_id,
+          subject: "New Mentoring Session Booking Request",
+          body: `You have a new mentoring session booking request from ${menteeName} on ${sessionDate} at ${sessionTime}. ${message ? `Message: ${message}` : ''}`,
+          message_type: "notification",
+          related_entity_type: "mentoring_session",
+          related_entity_id: sessionId,
+        });
+        console.log("Notification created for mentor");
+      }
 
       return new Response(
         JSON.stringify({ success: true, data: mentorEmailResponse }),
@@ -126,6 +163,19 @@ const handler = async (req: Request): Promise<Response> => {
       });
 
       console.log("Mentee email sent:", menteeEmailResponse);
+
+      // Create notification for mentee
+      if (menteeProfile) {
+        await supabase.from("messages").insert({
+          user_id: menteeProfile.user_id,
+          subject: "Your Mentoring Session Has Been Confirmed!",
+          body: `Great news! ${mentorName} has accepted your mentoring session request for ${sessionDate} at ${sessionTime}. You'll receive the meeting link closer to the session time.`,
+          message_type: "notification",
+          related_entity_type: "mentoring_session",
+          related_entity_id: sessionId,
+        });
+        console.log("Notification created for mentee");
+      }
 
       return new Response(
         JSON.stringify({ success: true, data: menteeEmailResponse }),

@@ -30,6 +30,7 @@ const MentorProfile = () => {
   const [loading, setLoading] = useState(true);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
   const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
+  const [reviewCount, setReviewCount] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -79,6 +80,15 @@ const MentorProfile = () => {
         if (!categoriesError && categoriesData) {
           setCategories(categoriesData.map((mc: any) => mc.mentoring_categories));
         }
+
+        // Fetch review count for this mentor
+        const { count: reviewsCount } = await supabase
+          .from('mentoring_sessions')
+          .select('*', { count: 'exact', head: true })
+          .eq('mentor_id', id)
+          .eq('session_status', 'completed');
+        
+        setReviewCount(reviewsCount || 0);
 
         setMentor({
           ...mentorData,
@@ -240,12 +250,13 @@ const MentorProfile = () => {
                   <TabsTrigger value="reviews" className="rounded-none border-b-2 data-[state=active]:border-primary">
                     <Star className="w-4 h-4 mr-2" />
                     Reviews
-                    <Badge variant="secondary" className="ml-2">8</Badge>
+                    {reviewCount > 0 && (
+                      <Badge variant="secondary" className="ml-2">{reviewCount}</Badge>
+                    )}
                   </TabsTrigger>
                   <TabsTrigger value="bookshelf" className="rounded-none border-b-2 data-[state=active]:border-primary">
                     <BookOpen className="w-4 h-4 mr-2" />
                     Library
-                    <Badge variant="secondary" className="ml-2">9</Badge>
                   </TabsTrigger>
                   <TabsTrigger value="similar" className="rounded-none border-b-2 data-[state=active]:border-primary">
                     <Users className="w-4 h-4 mr-2" />

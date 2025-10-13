@@ -1,60 +1,231 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
-  Send, Paperclip, Smile, MoreVertical, Phone, Video, 
-  Calendar, DollarSign, ThumbsUp, Heart, CheckCheck 
+  Phone, Video, MoreVertical, Send, Paperclip, Smile, 
+  X, Sparkles, Check, CheckCheck, Loader2 
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 interface MessageThreadProps {
   conversationId: string;
   onClose: () => void;
 }
 
-// Mock messages - replace with real data
-const mockMessages = [
-  {
-    id: '1',
-    sender: 'Sarah Johnson',
-    senderId: 'user1',
-    content: 'Hi! I reviewed your business plan and I think there are some great opportunities we can explore together.',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
-    isCurrentUser: false,
-    reactions: [{ emoji: '👍', count: 1 }],
-  },
-  {
-    id: '2',
-    sender: 'You',
-    senderId: 'current',
-    content: 'Thank you so much! I\'d love to hear your thoughts. When would be a good time to schedule a call?',
-    timestamp: new Date(Date.now() - 1000 * 60 * 90),
-    isCurrentUser: true,
-    reactions: [],
-  },
-  {
-    id: '3',
-    sender: 'Sarah Johnson',
-    senderId: 'user1',
-    content: 'That sounds great! Let\'s schedule a call next week. I\'ll send you some available time slots.',
-    timestamp: new Date(Date.now() - 1000 * 60 * 15),
-    isCurrentUser: false,
-    reactions: [],
-  },
-];
+interface Message {
+  id: string;
+  content: string;
+  sender_id: string;
+  sender_name: string;
+  sender_avatar?: string;
+  created_at: string;
+  is_read: boolean;
+  is_own: boolean;
+}
 
-export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId }) => {
-  const [message, setMessage] = useState('');
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, onClose }) => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [sending, setSending] = useState(false);
+  const [otherParticipant, setOtherParticipant] = useState<any>(null);
+  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
-  const handleSend = () => {
-    if (!message.trim()) return;
-    // Send message logic here
-    console.log('Sending message:', message);
-    setMessage('');
+  useEffect(() => {
+    loadConversation();
+    
+    // Real-time subscription for new messages
+    const channel = supabase
+      .channel(`conversation-${conversationId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'conversation_messages',
+          filter: `conversation_id=eq.${conversationId}`
+        },
+        () => {
+          loadConversation();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [conversationId]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      generateAISuggestions();
+    }
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const loadConversation = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      // Get other participant
+      const { data: otherParticipantData } = await supabase
+        .from('conversation_participants')
+        .select('user_id')
+        .eq('conversation_id', conversationId)
+        .neq('user_id', user.id)
+        .single();
+
+      if (otherParticipantData) {
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('first_name, last_name, profile_picture_url, persona_type, organization')
+          .eq('user_id', otherParticipantData.user_id)
+          .single();
+
+        if (profileData) {
+          setOtherParticipant({
+            id: otherParticipantData.user_id,
+            name: `${profileData.first_name} ${profileData.last_name}`,
+            profile_picture_url: profileData.profile_picture_url,
+            persona_type: profileData.persona_type,
+            organization: profileData.organization
+          });
+        }
+      }
+
+      // Get messages
+      const { data: messagesData, error } = await supabase
+        .from('conversation_messages')
+        .select('id, content, sender_id, created_at')
+        .eq('conversation_id', conversationId)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+
+      const formattedMessages: Message[] = await Promise.all(
+        (messagesData || []).map(async (msg: any) => {
+          const { data: senderProfile } = await supabase
+            .from('profiles')
+            .select('first_name, last_name, profile_picture_url')
+            .eq('user_id', msg.sender_id)
+            .single();
+
+          return {
+            id: msg.id,
+            content: msg.content,
+            sender_id: msg.sender_id,
+            sender_name: senderProfile 
+              ? `${senderProfile.first_name} ${senderProfile.last_name}`
+              : 'Unknown',
+            sender_avatar: senderProfile?.profile_picture_url,
+            created_at: msg.created_at,
+            is_read: true,
+            is_own: msg.sender_id === user.id
+          };
+        })
+      );
+
+      setMessages(formattedMessages);
+
+      // Mark messages as read
+      await supabase
+        .from('conversation_participants')
+        .update({ 
+          unread_count: 0,
+          last_read_at: new Date().toISOString()
+        })
+        .eq('conversation_id', conversationId)
+        .eq('user_id', user.id);
+
+    } catch (error) {
+      console.error('Error loading conversation:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load conversation',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const generateAISuggestions = () => {
+    const lastMessage = messages[messages.length - 1];
+    if (!lastMessage || lastMessage.is_own) return;
+
+    // Simple contextual suggestions
+    const suggestions = [
+      "Thanks for reaching out!",
+      "That sounds interesting. Can you tell me more?",
+      "Let's schedule a call to discuss this further."
+    ];
+    
+    setAiSuggestions(suggestions);
+  };
+
+  const handleSend = async () => {
+    if (!newMessage.trim() || sending) return;
+
+    try {
+      setSending(true);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { error } = await supabase
+        .from('conversation_messages')
+        .insert({
+          conversation_id: conversationId,
+          sender_id: user.id,
+          content: newMessage.trim(),
+          message_type: 'text'
+        });
+
+      if (error) throw error;
+
+      setNewMessage('');
+      setAiSuggestions([]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to send message',
+        variant: 'destructive'
+      });
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full">
@@ -82,114 +253,127 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId }) 
             <Video className="h-4 w-4" />
           </Button>
           <Button variant="ghost" size="sm">
-            <Calendar className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm">
-            <DollarSign className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm">
             <MoreVertical className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-background">
-        {mockMessages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex gap-3 ${msg.isCurrentUser ? 'flex-row-reverse' : ''}`}
-          >
-            {!msg.isCurrentUser && (
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="text-xs">SJ</AvatarFallback>
-              </Avatar>
-            )}
-            
-            <div className={`flex flex-col ${msg.isCurrentUser ? 'items-end' : 'items-start'} max-w-[70%]`}>
-              {!msg.isCurrentUser && (
-                <span className="text-xs font-semibold mb-1 text-foreground">{msg.sender}</span>
+      <ScrollArea className="flex-1 p-4">
+        <div className="space-y-4">
+        {messages.map((message, index) => {
+          const showAvatar = index === 0 || messages[index - 1].sender_id !== message.sender_id;
+          const showTimestamp = index === messages.length - 1 || 
+            messages[index + 1]?.sender_id !== message.sender_id;
+
+          return (
+            <div
+              key={message.id}
+              className={cn(
+                'flex gap-3 animate-fade-in',
+                message.is_own && 'flex-row-reverse'
               )}
-              
-              <div
-                className={`rounded-lg px-4 py-2 ${
-                  msg.isCurrentUser
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-card border border-border'
-                }`}
-              >
-                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-              </div>
-              
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-xs text-muted-foreground">
-                  {formatDistanceToNow(msg.timestamp, { addSuffix: true })}
-                </span>
-                {msg.isCurrentUser && (
-                  <CheckCheck className="h-3 w-3 text-primary" />
-                )}
-                {msg.reactions.length > 0 && (
-                  <div className="flex gap-1">
-                    {msg.reactions.map((reaction, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
-                        {reaction.emoji} {reaction.count}
-                      </Badge>
-                    ))}
+            >
+              {showAvatar ? (
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={message.sender_avatar} />
+                  <AvatarFallback className="text-xs">
+                    {message.sender_name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
+              ) : (
+                <div className="w-8" />
+              )}
+
+              <div className={cn('flex-1 max-w-[70%]', message.is_own && 'flex flex-col items-end')}>
+                <div
+                  className={cn(
+                    'rounded-2xl px-4 py-2 shadow-sm',
+                    message.is_own
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted'
+                  )}
+                >
+                  <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
+                </div>
+                
+                {showTimestamp && (
+                  <div className={cn(
+                    'flex items-center gap-1 mt-1 text-xs text-muted-foreground',
+                    message.is_own && 'flex-row-reverse'
+                  )}>
+                    <span>
+                      {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
+                    </span>
+                    {message.is_own && (
+                      <CheckCheck className="h-3 w-3 text-primary" />
+                    )}
                   </div>
                 )}
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          );
+        })}
+        <div ref={messagesEndRef} />
+        </div>
+      </ScrollArea>
 
       {/* AI Suggestions */}
-      <div className="px-4 py-2 border-t border-border bg-card/50">
-        <div className="flex gap-2 overflow-x-auto">
-          <Button variant="outline" size="sm" onClick={() => setMessage("Thanks, I'll review this.")}>
-            Thanks, I'll review this.
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => setMessage("Let's set up a meeting.")}>
-            Let's set up a meeting.
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => setMessage("Can you share more details?")}>
-            Can you share more details?
-          </Button>
+      {aiSuggestions.length > 0 && (
+        <div className="px-4 py-2 border-t border-border bg-accent/30">
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="text-xs font-medium text-muted-foreground">Quick Replies</span>
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {aiSuggestions.map((suggestion, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                size="sm"
+                onClick={() => setNewMessage(suggestion)}
+                className="text-xs hover:bg-primary hover:text-primary-foreground transition-all"
+              >
+                {suggestion}
+              </Button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Input Area */}
       <div className="p-4 border-t border-border bg-card">
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <Textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-              className="min-h-[80px] resize-none pr-20"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSend();
-                }
-              }}
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyDown={handleKeyPress}
+              placeholder="Type a message..."
+              className="resize-none min-h-[44px] max-h-[120px] pr-10"
+              rows={1}
             />
-            <div className="absolute bottom-2 right-2 flex gap-1">
-              <Button variant="ghost" size="sm" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
-                <Smile className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="sm">
-                <Paperclip className="h-4 w-4" />
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 bottom-2 h-7 w-7"
+            >
+              <Smile className="h-4 w-4" />
+            </Button>
           </div>
-          <Button onClick={handleSend} className="self-end">
-            <Send className="h-4 w-4" />
+
+          <Button
+            onClick={handleSend}
+            disabled={!newMessage.trim() || sending}
+            className="shrink-0 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25"
+            size="icon"
+          >
+            {sending ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <Send className="h-5 w-5" />
+            )}
           </Button>
-        </div>
-        
-        <div className="mt-2 text-xs text-muted-foreground">
-          Press Enter to send, Shift + Enter for new line
         </div>
       </div>
     </div>

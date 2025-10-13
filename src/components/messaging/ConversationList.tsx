@@ -109,43 +109,57 @@ export const ConversationList: React.FC<ConversationListProps> = ({
           // Get other participant for direct conversations
           let otherParticipant = null;
           if (conv.conversation_type === 'direct') {
-            const { data: otherUser } = await supabase
+            const { data: otherParticipantData } = await supabase
               .from('conversation_participants')
-              .select(`
-                user_id,
-                profiles!inner(
-                  first_name,
-                  last_name,
-                  profile_picture_url,
-                  persona_type
-                )
-              `)
+              .select('user_id')
               .eq('conversation_id', conv.id)
               .neq('user_id', user.id)
               .single();
 
-            if (otherUser) {
-              otherParticipant = {
-                id: otherUser.user_id,
-                name: `${otherUser.profiles.first_name} ${otherUser.profiles.last_name}`,
-                profile_picture_url: otherUser.profiles.profile_picture_url,
-                persona_type: otherUser.profiles.persona_type
-              };
+            if (otherParticipantData) {
+              const { data: profileData } = await supabase
+                .from('profiles')
+                .select('first_name, last_name, profile_picture_url, persona_type')
+                .eq('user_id', otherParticipantData.user_id)
+                .single();
+
+              if (profileData) {
+                otherParticipant = {
+                  id: otherParticipantData.user_id,
+                  name: `${profileData.first_name} ${profileData.last_name}`,
+                  profile_picture_url: profileData.profile_picture_url,
+                  persona_type: profileData.persona_type
+                };
+              }
             }
           }
 
           // Get last message
-          const { data: lastMessage } = await supabase
+          const { data: lastMessageData } = await supabase
             .from('conversation_messages')
-            .select(`
-              content,
-              sender_id,
-              profiles!inner(first_name, last_name)
-            `)
+            .select('content, sender_id')
             .eq('conversation_id', conv.id)
             .order('created_at', { ascending: false })
             .limit(1)
             .single();
+
+          let lastMessage = undefined;
+          if (lastMessageData) {
+            const { data: senderProfile } = await supabase
+              .from('profiles')
+              .select('first_name, last_name')
+              .eq('user_id', lastMessageData.sender_id)
+              .single();
+
+            if (senderProfile) {
+              lastMessage = {
+                content: lastMessageData.content,
+                sender_name: lastMessageData.sender_id === user.id 
+                  ? 'You' 
+                  : `${senderProfile.first_name} ${senderProfile.last_name}`
+              };
+            }
+          }
 
           return {
             id: conv.id,
@@ -155,12 +169,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
             unread_count: p.unread_count,
             is_pinned: p.is_pinned,
             other_participant: otherParticipant,
-            last_message: lastMessage ? {
-              content: lastMessage.content,
-              sender_name: lastMessage.sender_id === user.id 
-                ? 'You' 
-                : `${lastMessage.profiles.first_name} ${lastMessage.profiles.last_name}`
-            } : undefined
+            last_message: lastMessage
           };
         })
       );

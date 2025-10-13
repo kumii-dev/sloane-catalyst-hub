@@ -4,12 +4,13 @@ import { ConversationList } from '@/components/messaging/ConversationList';
 import { MessageThread } from '@/components/messaging/MessageThread';
 import { ContactPanel } from '@/components/messaging/ContactPanel';
 import { MessagingTabs } from '@/components/messaging/MessagingTabs';
+import { SmartContactSelector } from '@/components/messaging/SmartContactSelector';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Search, Plus, X, Menu, PanelLeftClose } from 'lucide-react';
+import { Search, Plus, X, Menu, PanelLeftClose, Sparkles } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const MessagingHub = () => {
   const [selectedTab, setSelectedTab] = useState<'recent' | 'contacts' | 'teams' | 'pinned' | 'insights'>('recent');
@@ -36,24 +37,72 @@ const MessagingHub = () => {
     }
   }, [location.search, navigate]);
 
-  const handleNewMessage = () => {
-    if (!newMessageEmail.trim()) {
+  const handleSelectContact = async (userId: string, userData: any) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      // Check if conversation already exists between these users
+      const { data: existingConversation } = await supabase
+        .from('conversation_participants')
+        .select('conversation_id')
+        .eq('user_id', user.id)
+        .limit(1)
+        .single();
+
+      if (existingConversation) {
+        // Check if the other user is also in this conversation
+        const { data: otherParticipant } = await supabase
+          .from('conversation_participants')
+          .select('*')
+          .eq('conversation_id', existingConversation.conversation_id)
+          .eq('user_id', userId)
+          .single();
+
+        if (otherParticipant) {
+          setSelectedConversation(existingConversation.conversation_id);
+          setShowSecondarySidebar(false);
+          return;
+        }
+      }
+
+      // Create new conversation
+      const { data: conversation, error: convError } = await supabase
+        .from('conversations')
+        .insert({
+          conversation_type: 'direct',
+          title: `Chat with ${userData.name}`
+        })
+        .select()
+        .single();
+
+      if (convError) throw convError;
+
+      // Add both participants
+      const { error: participantError } = await supabase
+        .from('conversation_participants')
+        .insert([
+          { conversation_id: conversation.id, user_id: user.id },
+          { conversation_id: conversation.id, user_id: userId }
+        ]);
+
+      if (participantError) throw participantError;
+
+      setSelectedConversation(conversation.id);
+      setShowSecondarySidebar(false);
+      
       toast({
-        title: "Error",
-        description: "Please enter an email address",
-        variant: "destructive"
+        title: 'Conversation started',
+        description: `You can now chat with ${userData.name}`
       });
-      return;
+    } catch (error) {
+      console.error('Error creating conversation:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to start conversation',
+        variant: 'destructive'
+      });
     }
-    
-    // Start a new conversation with the entered email
-    setSelectedConversation(newMessageEmail);
-    setIsNewMessageOpen(false);
-    setNewMessageEmail('');
-    toast({
-      title: "New conversation started",
-      description: `Starting conversation with ${newMessageEmail}`
-    });
   };
 
   return (
@@ -120,35 +169,22 @@ const MessagingHub = () => {
           </div>
           
           <div className="p-3 border-t border-border">
-            <Dialog open={isNewMessageOpen} onOpenChange={setIsNewMessageOpen}>
-              <DialogTrigger asChild>
-                <Button className="w-full" size="sm">
-                  <Plus className="h-4 w-4 mr-2" />
-                  New Message
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Start New Conversation</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Email Address</label>
-                    <Input
-                      placeholder="Enter email address..."
-                      value={newMessageEmail}
-                      onChange={(e) => setNewMessageEmail(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleNewMessage()}
-                    />
-                  </div>
-                  <Button onClick={handleNewMessage} className="w-full">
-                    Start Conversation
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <Button 
+              className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/25 animate-pulse hover:animate-none transition-all" 
+              size="sm"
+              onClick={() => setIsNewMessageOpen(true)}
+            >
+              <Sparkles className="h-4 w-4 mr-2" />
+              New Message
+            </Button>
           </div>
         </div>
+
+        <SmartContactSelector
+          open={isNewMessageOpen}
+          onOpenChange={setIsNewMessageOpen}
+          onSelectContact={handleSelectContact}
+        />
 
         {/* Main Messaging Panel */}
         <div className="flex-1 flex flex-col min-w-0">

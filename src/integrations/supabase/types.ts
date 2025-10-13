@@ -127,6 +127,127 @@ export type Database = {
         }
         Relationships: []
       }
+      conversation_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          is_edited: boolean | null
+          message_type: string
+          metadata: Json | null
+          sender_id: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          is_edited?: boolean | null
+          message_type?: string
+          metadata?: Json | null
+          sender_id: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          is_edited?: boolean | null
+          message_type?: string
+          metadata?: Json | null
+          sender_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversation_participants: {
+        Row: {
+          conversation_id: string
+          id: string
+          is_archived: boolean | null
+          is_muted: boolean | null
+          is_pinned: boolean | null
+          joined_at: string
+          last_read_at: string | null
+          unread_count: number | null
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          id?: string
+          is_archived?: boolean | null
+          is_muted?: boolean | null
+          is_pinned?: boolean | null
+          joined_at?: string
+          last_read_at?: string | null
+          unread_count?: number | null
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          id?: string
+          is_archived?: boolean | null
+          is_muted?: boolean | null
+          is_pinned?: boolean | null
+          joined_at?: string
+          last_read_at?: string | null
+          unread_count?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_participants_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          conversation_type: string
+          created_at: string
+          id: string
+          last_message_at: string | null
+          related_entity_id: string | null
+          related_entity_type: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          conversation_type?: string
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          conversation_type?: string
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       credit_assessments: {
         Row: {
           ai_analysis: Json | null

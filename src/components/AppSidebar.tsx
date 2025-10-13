@@ -77,7 +77,7 @@ const secondaryContent = {
     ]
   },
   copilot: {
-    title: "AI Copilot",
+    title: "Kumii AI Assistant",
     items: [
       { title: "Chat", url: "/copilot" },
       { title: "Business Strategy", url: "/copilot?focus=strategy" },

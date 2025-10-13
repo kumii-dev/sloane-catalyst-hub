@@ -167,7 +167,7 @@ export default function Copilot() {
                 </div>
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    Growth Gateway AI Copilot
+                    Kumii AI Assistant
                     <Badge variant="secondary" className="gap-1">
                       <Sparkles className="h-3 w-3" />
                       Powered by AI
@@ -223,7 +223,7 @@ export default function Copilot() {
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
                   <Bot className="h-12 w-12 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Welcome to AI Copilot</h3>
+                <h3 className="text-lg font-semibold mb-2">Welcome to Kumii AI Assistant</h3>
                 <p className="text-muted-foreground max-w-md">
                   I'm here to help with business strategy, funding advice, market analysis,
                   and more. Ask me anything or use one of the quick prompts above!

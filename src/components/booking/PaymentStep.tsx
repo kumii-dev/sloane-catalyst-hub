@@ -121,6 +121,41 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
 
       if (sessionError) throw sessionError;
 
+      // Send booking notification email to mentor
+      try {
+        const { data: mentorProfile } = await supabase
+          .from('profiles')
+          .select('email, first_name')
+          .eq('user_id', mentor.user_id)
+          .single();
+
+        const { data: menteeProfile } = await supabase
+          .from('profiles')
+          .select('email, first_name')
+          .eq('user_id', user.id)
+          .single();
+
+        if (mentorProfile?.email && menteeProfile?.email) {
+          await supabase.functions.invoke('send-booking-email', {
+            body: {
+              type: 'booking_created',
+              mentorEmail: mentorProfile.email,
+              mentorName: mentor.title || mentorProfile.first_name,
+              menteeEmail: menteeProfile.email,
+              menteeName: menteeProfile.first_name,
+              sessionDate: bookingData.date?.toLocaleDateString() || 'TBD',
+              sessionTime: bookingData.timeSlot || 'TBD',
+              sessionType: bookingData.sessionType || 'Premium',
+              message: bookingData.message
+            }
+          });
+          console.log('Booking notification email sent to mentor');
+        }
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError);
+        // Don't fail the booking if email fails
+      }
+
       // Process payment based on method
       if (paymentMethod === "credits" || paymentMethod === "voucher") {
         // Deduct credits from wallet

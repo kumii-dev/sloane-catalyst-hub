@@ -5,3 +5,6 @@ verify_jwt = true
 
 [functions.generate-narration]
 verify_jwt = false
+
+[functions.send-booking-email]
+verify_jwt = true

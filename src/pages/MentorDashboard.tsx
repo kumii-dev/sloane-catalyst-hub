@@ -160,6 +160,43 @@ const MentorDashboard = () => {
 
       if (error) throw error;
 
+      // Send confirmation email to mentee if session is accepted
+      if (action === 'confirm') {
+        try {
+          const { data: menteeProfile } = await supabase
+            .from('profiles')
+            .select('email, first_name')
+            .eq('user_id', session.mentee_id)
+            .single();
+
+          const { data: { user } } = await supabase.auth.getUser();
+          const { data: mentorProfileData } = await supabase
+            .from('profiles')
+            .select('email, first_name')
+            .eq('user_id', user?.id)
+            .single();
+
+          if (menteeProfile?.email && mentorProfileData) {
+            await supabase.functions.invoke('send-booking-email', {
+              body: {
+                type: 'booking_accepted',
+                mentorEmail: mentorProfileData.email,
+                mentorName: mentorProfile.title || mentorProfileData.first_name,
+                menteeEmail: menteeProfile.email,
+                menteeName: menteeProfile.first_name,
+                sessionDate: format(new Date(session.scheduled_at), 'MMM d, yyyy'),
+                sessionTime: format(new Date(session.scheduled_at), 'h:mm a'),
+                sessionType: session.session_type || 'Premium'
+              }
+            });
+            console.log('Confirmation email sent to mentee');
+          }
+        } catch (emailError) {
+          console.error('Email sending failed:', emailError);
+          // Don't fail the session confirmation if email fails
+        }
+      }
+
       // Create notification for mentee
       const notificationSubject = action === 'confirm' 
         ? '✅ Session Confirmed!' 

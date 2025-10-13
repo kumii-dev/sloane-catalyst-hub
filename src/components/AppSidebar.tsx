@@ -226,16 +226,20 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
         <Separator className="w-8 my-2 bg-primary-light" />
         
         {/* Profile section at bottom */}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-12 h-12 p-0 hover:bg-primary-light"
-          title="Profile"
-        >
-          <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
-            <span className="text-xs font-bold text-accent-foreground">MN</span>
-          </div>
-        </Button>
+        <Link to="/calendar" onClick={onNavigate}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className={`w-12 h-12 p-0 hover:bg-primary-light ${
+              selectedPrimary === 'calendar' ? 'bg-primary-light' : ''
+            }`}
+            title="Profile"
+          >
+            <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+              <span className="text-xs font-bold text-accent-foreground">MN</span>
+            </div>
+          </Button>
+        </Link>
       </div>
 
       {/* Secondary Sidebar */}

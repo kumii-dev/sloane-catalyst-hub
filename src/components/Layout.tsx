@@ -32,6 +32,9 @@ export function Layout({ children, showSidebar = false, hideSecondarySidebar = f
     } else if (path === '/messaging' || path === '/messaging-hub' || path.startsWith('/messaging')) {
       setSelectedPrimary('messaging');
       setShowSecondary(true);
+    } else if (path === '/calendar') {
+      setSelectedPrimary('calendar');
+      setShowSecondary(false);
     } else if (
       path.startsWith('/access-to-market') ||
       path.startsWith('/funding') ||

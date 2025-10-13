@@ -90,6 +90,7 @@ const App = () => (
             <Route path="/resources/category/:slug" element={<ResourceCategory />} />
             <Route path="/resources/:slug" element={<ResourceDetail />} />
             <Route path="/messaging-hub" element={<MessagingHub />} />
+            <Route path="/messaging" element={<MessagingHub />} />
             <Route path="/about" element={<About />} />
             <Route path="/review/:sessionId" element={<SessionReview />} />
             <Route path="/video-creator" element={<VideoCreator />} />

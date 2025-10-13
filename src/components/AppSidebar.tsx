@@ -30,7 +30,6 @@ import { Separator } from "@/components/ui/separator";
 const primaryNavItems = [
   { icon: Activity, id: "activity", title: "Activity", badge: 3 },
   { icon: MessageCircle, id: "messaging", title: "Messaging Hub", badge: null },
-  { icon: Calendar, id: "calendar", title: "Calendar", badge: null },
   { icon: Phone, id: "calls", title: "Calls", badge: null },
   { icon: FolderOpen, id: "files", title: "Files", badge: null },
   { icon: Bot, id: "copilot", title: "Copilot", badge: null },
@@ -225,14 +224,25 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
         
         <Separator className="w-8 my-2 bg-primary-light" />
         
-        {/* Profile section at bottom */}
+        {/* Calendar and Profile section at bottom */}
         <Link to="/calendar" onClick={onNavigate}>
           <Button
             variant="ghost"
             size="sm"
-            className={`w-12 h-12 p-0 hover:bg-primary-light ${
-              selectedPrimary === 'calendar' ? 'bg-primary-light' : ''
+            className={`w-12 h-12 p-0 hover:bg-primary-light transition-colors ${
+              location.pathname === '/calendar' ? 'bg-primary-light' : ''
             }`}
+            title="Calendar"
+          >
+            <Calendar className="h-5 w-5 text-primary-foreground" />
+          </Button>
+        </Link>
+        
+        <Link to="/calendar" onClick={onNavigate} className="mt-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-12 h-12 p-0 hover:bg-primary-light"
             title="Profile"
           >
             <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">

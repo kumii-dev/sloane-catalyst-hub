@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Layout } from "@/components/Layout";
+import { TriangleAvatar } from "@/components/ui/triangle-avatar";
 import { 
   Users, 
   Star, 
@@ -317,10 +318,12 @@ const Mentorship = () => {
                   )}
                   
                   <div className="mb-4 flex items-start gap-4">
-                    <img
+                    <TriangleAvatar
                       src={mentor.image}
                       alt={mentor.name}
-                      className="h-16 w-16 rounded-full object-cover ring-2 ring-background"
+                      fallback={mentor.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                      className="w-16 h-16"
+                      style={{ width: '64px', height: '64px' }}
                     />
                     <div className="flex-1">
                       <h3 className="font-semibold">{mentor.name}</h3>

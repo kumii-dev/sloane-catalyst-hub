@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { TriangleAvatar } from "@/components/ui/triangle-avatar";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
@@ -243,16 +243,13 @@ const FindMentor = () => {
                     </div>
                     <CardHeader className="pt-8 pb-4">
                       <div className="flex flex-col items-center text-center space-y-3">
-                        <Avatar className="h-24 w-24 ring-2 ring-primary/20">
-                          <AvatarImage 
-                            src={mentor.profiles?.profile_picture_url} 
-                            alt={`${mentor.profiles?.first_name || 'Mentor'}`}
-                          />
-                          <AvatarFallback className="text-2xl bg-gradient-to-br from-primary/20 to-accent/20">
-                            {mentor.profiles?.first_name?.[0]}
-                            {mentor.profiles?.last_name?.[0]}
-                          </AvatarFallback>
-                        </Avatar>
+                        <TriangleAvatar
+                          src={mentor.profiles?.profile_picture_url}
+                          alt={`${mentor.profiles?.first_name || 'Mentor'}`}
+                          fallback={`${mentor.profiles?.first_name?.[0] || ''}${mentor.profiles?.last_name?.[0] || ''}`}
+                          className="w-24 h-24"
+                          style={{ width: '96px', height: '96px' }}
+                        />
                         {renderStars(mentor.rating || 0)}
                       </div>
                     </CardHeader>
@@ -332,16 +329,13 @@ const FindMentor = () => {
                   >
                     <CardHeader className="pb-4">
                       <div className="flex flex-col items-center text-center space-y-3">
-                        <Avatar className="h-20 w-20">
-                          <AvatarImage 
-                            src={mentor.profiles?.profile_picture_url} 
-                            alt={`${mentor.profiles?.first_name || 'Mentor'}`}
-                          />
-                          <AvatarFallback className="text-xl">
-                            {mentor.profiles?.first_name?.[0]}
-                            {mentor.profiles?.last_name?.[0]}
-                          </AvatarFallback>
-                        </Avatar>
+                        <TriangleAvatar
+                          src={mentor.profiles?.profile_picture_url}
+                          alt={`${mentor.profiles?.first_name || 'Mentor'}`}
+                          fallback={`${mentor.profiles?.first_name?.[0] || ''}${mentor.profiles?.last_name?.[0] || ''}`}
+                          className="w-20 h-20"
+                          style={{ width: '80px', height: '80px' }}
+                        />
                         {renderStars(mentor.rating || 0)}
                       </div>
                     </CardHeader>

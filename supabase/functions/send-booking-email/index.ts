@@ -25,6 +25,8 @@ interface BookingEmailRequest {
   sessionType: string;
   message?: string;
   sessionId: string;
+  mentorUserId: string;
+  menteeUserId: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -44,26 +46,11 @@ const handler = async (req: Request): Promise<Response> => {
       sessionType,
       message,
       sessionId,
+      mentorUserId,
+      menteeUserId,
     }: BookingEmailRequest = await req.json();
 
-    console.log("Sending booking email:", { type, mentorEmail, menteeEmail });
-
-    // Get user IDs from emails
-    const { data: mentorProfile } = await supabase
-      .from("profiles")
-      .select("user_id")
-      .eq("email", mentorEmail)
-      .single();
-
-    const { data: menteeProfile } = await supabase
-      .from("profiles")
-      .select("user_id")
-      .eq("email", menteeEmail)
-      .single();
-
-    if (!mentorProfile || !menteeProfile) {
-      console.error("Could not find user profiles for emails");
-    }
+    console.log("Sending booking email:", { type, mentorEmail, menteeEmail, mentorUserId, menteeUserId });
 
     if (type === "booking_created") {
       // Email to mentor about new booking request
@@ -104,16 +91,23 @@ const handler = async (req: Request): Promise<Response> => {
       console.log("Mentor email sent:", mentorEmailResponse);
 
       // Create notification for mentor
-      if (mentorProfile) {
-        await supabase.from("messages").insert({
-          user_id: mentorProfile.user_id,
+      const { data: notification, error: notificationError } = await supabase
+        .from("messages")
+        .insert({
+          user_id: mentorUserId,
           subject: "New Mentoring Session Booking Request",
           body: `You have a new mentoring session booking request from ${menteeName} on ${sessionDate} at ${sessionTime}. ${message ? `Message: ${message}` : ''}`,
           message_type: "notification",
           related_entity_type: "mentoring_session",
           related_entity_id: sessionId,
-        });
-        console.log("Notification created for mentor");
+        })
+        .select()
+        .single();
+
+      if (notificationError) {
+        console.error("Failed to create notification for mentor:", notificationError);
+      } else {
+        console.log("Notification created for mentor:", notification);
       }
 
       return new Response(
@@ -165,16 +159,23 @@ const handler = async (req: Request): Promise<Response> => {
       console.log("Mentee email sent:", menteeEmailResponse);
 
       // Create notification for mentee
-      if (menteeProfile) {
-        await supabase.from("messages").insert({
-          user_id: menteeProfile.user_id,
+      const { data: notification, error: notificationError } = await supabase
+        .from("messages")
+        .insert({
+          user_id: menteeUserId,
           subject: "Your Mentoring Session Has Been Confirmed!",
           body: `Great news! ${mentorName} has accepted your mentoring session request for ${sessionDate} at ${sessionTime}. You'll receive the meeting link closer to the session time.`,
           message_type: "notification",
           related_entity_type: "mentoring_session",
           related_entity_id: sessionId,
-        });
-        console.log("Notification created for mentee");
+        })
+        .select()
+        .single();
+
+      if (notificationError) {
+        console.error("Failed to create notification for mentee:", notificationError);
+      } else {
+        console.log("Notification created for mentee:", notification);
       }
 
       return new Response(

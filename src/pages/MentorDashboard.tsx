@@ -187,7 +187,9 @@ const MentorDashboard = () => {
                 sessionDate: format(new Date(session.scheduled_at), 'MMM d, yyyy'),
                 sessionTime: format(new Date(session.scheduled_at), 'h:mm a'),
                 sessionType: session.session_type || 'Premium',
-                sessionId: sessionId
+                sessionId: sessionId,
+                mentorUserId: user?.id || '',
+                menteeUserId: session.mentee_id
               }
             });
             console.log('Confirmation email sent to mentee');

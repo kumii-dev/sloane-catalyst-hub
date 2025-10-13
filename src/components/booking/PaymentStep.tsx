@@ -147,7 +147,9 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
               sessionTime: bookingData.timeSlot || 'TBD',
               sessionType: bookingData.sessionType || 'Premium',
               message: bookingData.message,
-              sessionId: session.id
+              sessionId: session.id,
+              mentorUserId: mentor.user_id,
+              menteeUserId: user.id
             }
           });
           console.log('Booking notification email sent to mentor');

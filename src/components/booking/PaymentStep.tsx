@@ -21,7 +21,7 @@ interface PaymentStepProps {
 export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: PaymentStepProps) => {
   const { user } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"credits" | "sponsored" | "card" | "voucher">("credits");
+  const [paymentMethod, setPaymentMethod] = useState<"credits" | "sponsored" | "card" | "voucher">("sponsored");
   const [creditBalance, setCreditBalance] = useState(0);
   const [voucherCode, setVoucherCode] = useState("");
   const [appliedVoucher, setAppliedVoucher] = useState<{code: string, discount: number} | null>(null);

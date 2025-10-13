@@ -23,15 +23,13 @@ const TriangleAvatar = React.forwardRef<HTMLDivElement, TriangleAvatarProps>(
       <div
         ref={ref}
         className={cn(
-          "relative flex items-center justify-center shrink-0 overflow-hidden",
-          "transition-all duration-300",
+          "relative flex items-center justify-center shrink-0 overflow-hidden rounded-2xl ring-4 ring-primary/20",
+          "transition-all duration-300 shadow-lg",
           className
         )}
         style={{
           width: aspectRatio >= 1 ? "128px" : `${128 * aspectRatio}px`,
           height: aspectRatio <= 1 ? "128px" : `${128 / aspectRatio}px`,
-          clipPath: "polygon(50% 5%, 95% 85%, 5% 85%)",
-          filter: "drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15))",
         }}
         {...props}
       >
@@ -48,12 +46,6 @@ const TriangleAvatar = React.forwardRef<HTMLDivElement, TriangleAvatarProps>(
             {fallback}
           </div>
         )}
-        <div 
-          className="absolute inset-0 ring-4 ring-primary/20 rounded-sm"
-          style={{
-            clipPath: "polygon(50% 5%, 95% 85%, 5% 85%)",
-          }}
-        />
       </div>
     );
   }

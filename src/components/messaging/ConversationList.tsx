@@ -97,7 +97,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
           )
         `)
         .eq('user_id', user.id)
-        .order('conversations.last_message_at', { ascending: false });
+        .order('last_message_at', { ascending: false, foreignTable: 'conversations' });
 
       if (participantError) throw participantError;
 

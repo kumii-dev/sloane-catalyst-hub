@@ -42,6 +42,12 @@ const MessagingHub = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      // Prevent starting a conversation with yourself
+      if (userId === user.id) {
+        toast({ title: 'Oops', description: 'You cannot message yourself.', variant: 'destructive' });
+        return;
+      }
+
       // Check if conversation already exists between these users
       const { data: userConversations } = await supabase
         .from('conversation_participants')

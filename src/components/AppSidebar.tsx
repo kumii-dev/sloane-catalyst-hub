@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Activity,
   MessageCircle, 
@@ -186,7 +188,31 @@ interface AppSidebarProps {
 
 export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, onNavigate }: AppSidebarProps) {
   const location = useLocation();
+  const { user } = useAuth();
   const [showAllSubcategories, setShowAllSubcategories] = useState(false);
+  const [userInitials, setUserInitials] = useState<string>("");
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!user) return;
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('first_name, last_name')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (profile?.first_name && profile?.last_name) {
+        setUserInitials(`${profile.first_name.charAt(0)}${profile.last_name.charAt(0)}`.toUpperCase());
+      } else if (profile?.first_name) {
+        setUserInitials(profile.first_name.charAt(0).toUpperCase());
+      } else if (user.email) {
+        setUserInitials(user.email.charAt(0).toUpperCase());
+      }
+    };
+
+    fetchUserProfile();
+  }, [user]);
 
   const isActive = (path: string) => location.pathname === path;
   
@@ -259,7 +285,7 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
           title="Profile"
         >
           <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
-            <span className="text-xs font-bold text-accent-foreground">MN</span>
+            <span className="text-xs font-bold text-accent-foreground">{userInitials || "U"}</span>
           </div>
         </Button>
       </div>

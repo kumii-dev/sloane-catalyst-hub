@@ -6,8 +6,10 @@ import { ContactPanel } from '@/components/messaging/ContactPanel';
 import { MessagingTabs } from '@/components/messaging/MessagingTabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Search, Plus, X, Menu, PanelLeftClose } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 const MessagingHub = () => {
   const [selectedTab, setSelectedTab] = useState<'recent' | 'contacts' | 'teams' | 'pinned' | 'insights'>('recent');
@@ -15,8 +17,11 @@ const MessagingHub = () => {
   const [showContactPanel, setShowContactPanel] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSecondarySidebar, setShowSecondarySidebar] = useState(false);
+  const [isNewMessageOpen, setIsNewMessageOpen] = useState(false);
+  const [newMessageEmail, setNewMessageEmail] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
 
   // Handle userId parameter from URL to open conversation with specific user
   useEffect(() => {
@@ -30,6 +35,26 @@ const MessagingHub = () => {
       navigate('/messaging-hub', { replace: true });
     }
   }, [location.search, navigate]);
+
+  const handleNewMessage = () => {
+    if (!newMessageEmail.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter an email address",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Start a new conversation with the entered email
+    setSelectedConversation(newMessageEmail);
+    setIsNewMessageOpen(false);
+    setNewMessageEmail('');
+    toast({
+      title: "New conversation started",
+      description: `Starting conversation with ${newMessageEmail}`
+    });
+  };
 
   return (
     <Layout showSidebar={true} hideSecondarySidebar={true}>
@@ -95,10 +120,33 @@ const MessagingHub = () => {
           </div>
           
           <div className="p-3 border-t border-border">
-            <Button className="w-full" size="sm">
-              <Plus className="h-4 w-4 mr-2" />
-              New Message
-            </Button>
+            <Dialog open={isNewMessageOpen} onOpenChange={setIsNewMessageOpen}>
+              <DialogTrigger asChild>
+                <Button className="w-full" size="sm">
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Message
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Start New Conversation</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Email Address</label>
+                    <Input
+                      placeholder="Enter email address..."
+                      value={newMessageEmail}
+                      onChange={(e) => setNewMessageEmail(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleNewMessage()}
+                    />
+                  </div>
+                  <Button onClick={handleNewMessage} className="w-full">
+                    Start Conversation
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 

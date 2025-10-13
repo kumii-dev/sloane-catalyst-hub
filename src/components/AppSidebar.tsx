@@ -74,6 +74,15 @@ const secondaryContent = {
       { title: "Folders", url: "/files?tab=folders" },
     ]
   },
+  copilot: {
+    title: "AI Copilot",
+    items: [
+      { title: "Chat", url: "/copilot" },
+      { title: "Business Strategy", url: "/copilot?focus=strategy" },
+      { title: "Funding Advice", url: "/copilot?focus=funding" },
+      { title: "Market Analysis", url: "/copilot?focus=market" },
+    ]
+  },
   apps: {
     title: "Apps", 
     items: [

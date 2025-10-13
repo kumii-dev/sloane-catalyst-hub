@@ -38,6 +38,9 @@ export function Layout({ children, showSidebar = false, hideSecondarySidebar = f
     } else if (path === '/files' || path.startsWith('/files')) {
       setSelectedPrimary('files');
       setShowSecondary(true);
+    } else if (path === '/copilot' || path.startsWith('/copilot')) {
+      setSelectedPrimary('copilot');
+      setShowSecondary(true);
     } else if (
       path.startsWith('/access-to-market') ||
       path.startsWith('/funding') ||

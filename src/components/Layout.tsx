@@ -6,6 +6,7 @@ import { Search, Menu } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLocation } from "react-router-dom";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,11 +15,35 @@ interface LayoutProps {
 }
 
 export function Layout({ children, showSidebar = false, hideSecondarySidebar = false }: LayoutProps) {
+  const location = useLocation();
   const [selectedPrimary, setSelectedPrimary] = useState("apps");
   const [showSecondary, setShowSecondary] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isMobile = useIsMobile();
   const isTablet = typeof window !== 'undefined' && window.innerWidth <= 1024;
+
+  // Auto-select sidebar section based on current route
+  useEffect(() => {
+    const path = location.pathname;
+    
+    if (path === '/activity' || path === '/my-activity' || path === '/notifications') {
+      setSelectedPrimary('activity');
+      setShowSecondary(true);
+    } else if (path === '/messaging' || path === '/messaging-hub' || path.startsWith('/messaging')) {
+      setSelectedPrimary('messaging');
+      setShowSecondary(true);
+    } else if (
+      path.startsWith('/access-to-market') ||
+      path.startsWith('/funding') ||
+      path.startsWith('/credit-score') ||
+      path.startsWith('/mentorship') ||
+      path.startsWith('/services') ||
+      path.startsWith('/resources')
+    ) {
+      setSelectedPrimary('apps');
+      setShowSecondary(true);
+    }
+  }, [location.pathname]);
 
   // Auto-collapse sidebar on mobile/tablet
   useEffect(() => {

@@ -165,7 +165,7 @@ const Notifications = () => {
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
   return (
-    <Layout>
+    <Layout showSidebar={true}>
       <div className="container mx-auto py-8 px-4">
         <div className="mb-6 flex items-center justify-between">
           <div>

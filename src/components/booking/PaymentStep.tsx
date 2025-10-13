@@ -236,10 +236,10 @@ export const PaymentStep = ({ mentor, bookingData, onBack, onComplete }: Payment
             onClick={() => setPaymentMethod("sponsored")}
             className={cn(
               "flex flex-col items-center gap-3 p-6 border-2 rounded-lg transition-all hover:shadow-md",
-              paymentMethod === "sponsored" ? "border-primary bg-primary/5" : "border-border"
+              paymentMethod === "sponsored" ? "border-success bg-success/5" : "border-border"
             )}
           >
-            <Gift className="w-8 h-8 text-primary" />
+            <Gift className={cn("w-8 h-8", paymentMethod === "sponsored" ? "text-success" : "text-primary")} />
             <span className="font-semibold text-sm">Sponsored</span>
           </button>
 

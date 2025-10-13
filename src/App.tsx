@@ -42,6 +42,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import CohortManager from "./pages/CohortManager";
 import MessagingHub from "./pages/MessagingHub";
 import About from "./pages/About";
+import SessionReview from "./pages/SessionReview";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -90,6 +91,7 @@ const App = () => (
             <Route path="/resources/:slug" element={<ResourceDetail />} />
             <Route path="/messaging" element={<MessagingHub />} />
             <Route path="/about" element={<About />} />
+            <Route path="/review/:sessionId" element={<SessionReview />} />
             <Route path="/video-creator" element={<VideoCreator />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

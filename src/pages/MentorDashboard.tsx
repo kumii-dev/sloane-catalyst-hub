@@ -195,6 +195,17 @@ const MentorDashboard = () => {
           console.error('Email sending failed:', emailError);
           // Don't fail the session confirmation if email fails
         }
+        
+        // Send review request emails when session is confirmed
+        try {
+          await supabase.functions.invoke('send-review-request', {
+            body: { sessionId }
+          });
+          console.log('Review request emails sent');
+        } catch (reviewEmailError) {
+          console.error('Review request email sending failed:', reviewEmailError);
+          // Don't fail if review emails fail
+        }
       }
 
       // Create notification for mentee

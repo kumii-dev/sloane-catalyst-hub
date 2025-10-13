@@ -83,20 +83,23 @@ const MentorProfile = () => {
           setCategories(categoriesData.map((mc: any) => mc.mentoring_categories));
         }
 
-        // Fetch completed sessions with reviews
+        // Fetch actual reviews from session_reviews table
         const { data: reviewsData, count: reviewsCount } = await supabase
-          .from('mentoring_sessions')
+          .from('session_reviews')
           .select(`
             *,
-            profiles:mentee_id (
+            session:mentoring_sessions(
+              title,
+              scheduled_at
+            ),
+            reviewer:reviewer_id(
               first_name,
               last_name,
               profile_picture_url
             )
           `, { count: 'exact' })
-          .eq('mentor_id', id)
-          .eq('session_status', 'completed')
-          .order('scheduled_at', { ascending: false });
+          .eq('reviewee_id', mentorData.user_id)
+          .order('created_at', { ascending: false });
         
         setReviewCount(reviewsCount || 0);
         setReviews(reviewsData || []);
@@ -341,12 +344,12 @@ const MentorProfile = () => {
                             <div key={review.id} className="border-b pb-6 last:border-0">
                               <div className="flex items-start gap-4">
                                 <TriangleAvatar
-                                  src={review.profiles?.profile_picture_url}
-                                  alt={review.profiles?.first_name || 'User'}
+                                  src={review.reviewer?.profile_picture_url}
+                                  alt={review.reviewer?.first_name || 'User'}
                                   fallback={
                                     <>
-                                      {review.profiles?.first_name?.[0]}
-                                      {review.profiles?.last_name?.[0]}
+                                      {review.reviewer?.first_name?.[0]}
+                                      {review.reviewer?.last_name?.[0]}
                                     </>
                                   }
                                 />
@@ -354,24 +357,21 @@ const MentorProfile = () => {
                                   <div className="flex items-center justify-between mb-2">
                                     <div>
                                       <h4 className="font-semibold">
-                                        {review.profiles?.first_name} {review.profiles?.last_name}
+                                        {review.reviewer?.first_name} {review.reviewer?.last_name}
                                       </h4>
                                       <p className="text-sm text-muted-foreground">
-                                        {new Date(review.scheduled_at).toLocaleDateString('en-US', {
+                                        {new Date(review.created_at).toLocaleDateString('en-US', {
                                           year: 'numeric',
                                           month: 'long',
                                           day: 'numeric'
                                         })}
                                       </p>
                                     </div>
-                                    {renderStars(5)}
+                                    {renderStars(review.rating)}
                                   </div>
-                                  <h5 className="font-medium mb-2">{review.title}</h5>
-                                  {review.notes && (
-                                    <p className="text-muted-foreground">{review.notes}</p>
-                                  )}
-                                  {review.description && !review.notes && (
-                                    <p className="text-muted-foreground">{review.description}</p>
+                                  <h5 className="font-medium mb-2">{review.session?.title}</h5>
+                                  {review.review_text && (
+                                    <p className="text-muted-foreground">{review.review_text}</p>
                                   )}
                                 </div>
                               </div>

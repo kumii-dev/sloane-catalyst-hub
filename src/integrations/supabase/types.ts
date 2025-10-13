@@ -1868,6 +1868,47 @@ export type Database = {
           },
         ]
       }
+      session_reviews: {
+        Row: {
+          created_at: string
+          id: string
+          rating: number
+          review_text: string | null
+          reviewee_id: string
+          reviewer_id: string
+          session_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          rating: number
+          review_text?: string | null
+          reviewee_id: string
+          reviewer_id: string
+          session_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          rating?: number
+          review_text?: string | null
+          reviewee_id?: string
+          reviewer_id?: string
+          session_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_reviews_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "mentoring_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       startup_profiles: {
         Row: {
           annual_revenue: number | null

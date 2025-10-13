@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { TriangleAvatar } from "@/components/ui/triangle-avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Star, 
@@ -157,16 +157,16 @@ const MentorProfile = () => {
             </Button>
 
             <div className="flex flex-col md:flex-row gap-6 items-start">
-              <Avatar className="h-32 w-32 ring-4 ring-primary/20">
-                <AvatarImage 
-                  src={mentor.profiles?.profile_picture_url} 
-                  alt={`${mentor.profiles?.first_name || 'Mentor'}`}
-                />
-                <AvatarFallback className="text-4xl bg-gradient-to-br from-primary/20 to-accent/20">
-                  {mentor.profiles?.first_name?.[0]}
-                  {mentor.profiles?.last_name?.[0]}
-                </AvatarFallback>
-              </Avatar>
+              <TriangleAvatar
+                src={mentor.profiles?.profile_picture_url}
+                alt={`${mentor.profiles?.first_name || 'Mentor'}`}
+                fallback={
+                  <>
+                    {mentor.profiles?.first_name?.[0]}
+                    {mentor.profiles?.last_name?.[0]}
+                  </>
+                }
+              />
 
               <div className="flex-1">
                 <div className="flex items-start justify-between flex-wrap gap-4">

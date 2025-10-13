@@ -43,52 +43,40 @@ const MessagingHub = () => {
       if (!user) return;
 
       // Check if conversation already exists between these users
-      const { data: existingConversation } = await supabase
+      const { data: userConversations } = await supabase
         .from('conversation_participants')
         .select('conversation_id')
-        .eq('user_id', user.id)
-        .limit(1)
-        .single();
+        .eq('user_id', user.id);
 
-      if (existingConversation) {
-        // Check if the other user is also in this conversation
-        const { data: otherParticipant } = await supabase
-          .from('conversation_participants')
-          .select('*')
-          .eq('conversation_id', existingConversation.conversation_id)
-          .eq('user_id', userId)
-          .single();
+      if (userConversations && userConversations.length > 0) {
+        // Check if any of these conversations include the other user
+        for (const conv of userConversations) {
+          const { data: otherParticipant } = await supabase
+            .from('conversation_participants')
+            .select('*')
+            .eq('conversation_id', conv.conversation_id)
+            .eq('user_id', userId)
+            .maybeSingle();
 
-        if (otherParticipant) {
-          setSelectedConversation(existingConversation.conversation_id);
-          setShowSecondarySidebar(false);
-          return;
+          if (otherParticipant) {
+            setSelectedConversation(conv.conversation_id);
+            setShowSecondarySidebar(false);
+            return;
+          }
         }
       }
 
-      // Create new conversation
-      const { data: conversation, error: convError } = await supabase
-        .from('conversations')
-        .insert({
-          conversation_type: 'direct',
-          title: `Chat with ${userData.name}`
-        })
-        .select()
-        .single();
+      // Create new conversation using RPC function
+      const { data: conversationId, error: rpcError } = await supabase
+        .rpc('create_direct_conversation', {
+          p_user1: user.id,
+          p_user2: userId,
+          p_title: `Chat with ${userData.name}`
+        });
 
-      if (convError) throw convError;
+      if (rpcError) throw rpcError;
 
-      // Add both participants
-      const { error: participantError } = await supabase
-        .from('conversation_participants')
-        .insert([
-          { conversation_id: conversation.id, user_id: user.id },
-          { conversation_id: conversation.id, user_id: userId }
-        ]);
-
-      if (participantError) throw participantError;
-
-      setSelectedConversation(conversation.id);
+      setSelectedConversation(conversationId);
       setShowSecondarySidebar(false);
       
       toast({

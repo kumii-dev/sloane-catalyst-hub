@@ -2194,6 +2194,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      create_direct_conversation: {
+        Args: { p_title: string; p_user1: string; p_user2: string }
+        Returns: string
+      }
       deduct_credits: {
         Args: {
           p_amount: number

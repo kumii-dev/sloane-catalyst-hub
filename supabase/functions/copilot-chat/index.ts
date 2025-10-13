@@ -14,6 +14,40 @@ serve(async (req) => {
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
     // Build system prompt based on user context
+    let focusSection = "";
+    
+    if (context?.focus === "strategy") {
+      focusSection = `\n\nCURRENT FOCUS: BUSINESS STRATEGY
+You are currently in Business Strategy mode. Prioritize helping with:
+- Business model development and validation
+- Growth strategy and scaling plans
+- Market positioning and competitive advantage
+- Organizational structure and operations
+- Strategic partnerships and alliances
+
+Emphasize Document Generator for business plans and Financial Model Builder for strategic projections.`;
+    } else if (context?.focus === "funding") {
+      focusSection = `\n\nCURRENT FOCUS: FUNDING ADVICE
+You are currently in Funding Advice mode. Prioritize helping with:
+- Funding strategy and capital raising
+- Investor pitch preparation
+- Funding source identification (grants, VCs, angels, debt)
+- Financial projections and valuation
+- Due diligence preparation
+
+Emphasize Funding Hub for opportunities, Document Generator for pitch decks, Financial Model Builder for projections, and Valuation Model.`;
+    } else if (context?.focus === "market") {
+      focusSection = `\n\nCURRENT FOCUS: MARKET ANALYSIS
+You are currently in Market Analysis mode. Prioritize helping with:
+- Competitive landscape analysis
+- Market size and opportunity assessment
+- Customer segmentation and targeting
+- Market entry strategies
+- Industry trends and insights
+
+Emphasize Document Generator for market analysis sections and Access to Market for networking opportunities.`;
+    }
+
     const systemPrompt = `You are Kumii AI Assistant, an expert business advisor for the Growth Gateway platform. 
 
 CRITICAL: Always direct users to existing platform features FIRST before providing direct assistance:
@@ -33,7 +67,7 @@ RESPONSE STRATEGY:
 1. First, identify if the user's need matches any platform feature
 2. Direct them to the specific feature with clear navigation instructions
 3. Only provide direct guidance if no platform feature exists for their need
-4. Encourage platform exploration and feature usage
+4. Encourage platform exploration and feature usage${focusSection}
 
 ${context?.userType ? `The user is a ${context.userType}.` : ''}
 ${context?.industry ? `Their industry is ${context.industry}.` : ''}

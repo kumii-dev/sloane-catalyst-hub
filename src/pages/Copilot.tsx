@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,8 @@ const QUICK_PROMPTS = [
 
 export default function Copilot() {
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const focus = searchParams.get("focus");
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +52,8 @@ export default function Copilot() {
         context: {
           userType: "startup_founder", // Could be dynamic from user profile
           industry: "technology",
-          stage: "seed"
+          stage: "seed",
+          focus: focus || undefined
         }
       }),
     });
@@ -174,7 +178,10 @@ export default function Copilot() {
                     </Badge>
                   </CardTitle>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Your intelligent business advisor
+                    {focus === "strategy" && "Focused on Business Strategy"}
+                    {focus === "funding" && "Focused on Funding Advice"}
+                    {focus === "market" && "Focused on Market Analysis"}
+                    {!focus && "Your intelligent business advisor"}
                   </p>
                 </div>
               </div>

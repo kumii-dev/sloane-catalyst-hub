@@ -364,13 +364,12 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, on
           <Button
             onClick={handleSend}
             disabled={!newMessage.trim() || sending}
-            className="shrink-0 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25"
-            size="icon"
+            className="shrink-0 h-12 w-12 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25"
           >
             {sending ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
+              <Loader2 className="h-6 w-6 animate-spin" />
             ) : (
-              <Send className="h-5 w-5" />
+              <Send className="h-6 w-6" />
             )}
           </Button>
         </div>

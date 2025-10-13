@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { TriangleAvatar } from '@/components/ui/triangle-avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
@@ -222,12 +222,12 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, on
       {/* Thread Header */}
       <div className="p-4 border-b border-border bg-card flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Avatar>
-            <AvatarImage src={otherParticipant?.profile_picture_url} />
-            <AvatarFallback>
-              {otherParticipant?.name.split(' ').map((n: string) => n[0]).join('') || '?'}
-            </AvatarFallback>
-          </Avatar>
+          <TriangleAvatar 
+            src={otherParticipant?.profile_picture_url}
+            alt={otherParticipant?.name || 'User'}
+            fallback={otherParticipant?.name.split(' ').map((n: string) => n[0]).join('') || '?'}
+            className="h-10 w-10"
+          />
           <div>
             <h2 className="font-semibold text-foreground">
               {otherParticipant?.name || 'Loading...'}
@@ -274,12 +274,12 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, on
               )}
             >
               {showAvatar ? (
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={message.sender_avatar} />
-                  <AvatarFallback className="text-xs">
-                    {message.sender_name.split(' ').map(n => n[0]).join('')}
-                  </AvatarFallback>
-                </Avatar>
+                <TriangleAvatar 
+                  src={message.sender_avatar}
+                  alt={message.sender_name}
+                  fallback={message.sender_name.split(' ').map(n => n[0]).join('')}
+                  className="h-8 w-8"
+                />
               ) : (
                 <div className="w-8" />
               )}

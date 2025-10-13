@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { TriangleAvatar } from '@/components/ui/triangle-avatar';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
@@ -237,12 +237,12 @@ export const ConversationList: React.FC<ConversationListProps> = ({
               onClick={() => onSelectConversation(conv.id)}
             >
               <div className="flex items-center gap-3">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={conv.other_participant?.profile_picture_url} />
-                  <AvatarFallback>
-                    {conv.title.split(' ').map(n => n[0]).join('')}
-                  </AvatarFallback>
-                </Avatar>
+                <TriangleAvatar 
+                  src={conv.other_participant?.profile_picture_url}
+                  alt={conv.title}
+                  fallback={conv.title.split(' ').map(n => n[0]).join('')}
+                  className="h-10 w-10"
+                />
                 <div className="flex-1">
                   <p className="font-medium">{conv.title}</p>
                   <p className="text-xs text-muted-foreground">
@@ -291,12 +291,12 @@ export const ConversationList: React.FC<ConversationListProps> = ({
           >
             <div className="flex items-start gap-3">
               <div className="relative">
-                <Avatar className="h-12 w-12 ring-2 ring-transparent group-hover:ring-primary/30 transition-all">
-                  <AvatarImage src={conversation.other_participant?.profile_picture_url} />
-                  <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                    {conversation.title.split(' ').map(n => n[0]).join('')}
-                  </AvatarFallback>
-                </Avatar>
+                <TriangleAvatar 
+                  src={conversation.other_participant?.profile_picture_url}
+                  alt={conversation.title}
+                  fallback={conversation.title.split(' ').map(n => n[0]).join('')}
+                  className="h-12 w-12 ring-2 ring-transparent group-hover:ring-primary/30 transition-all"
+                />
                 {conversation.unread_count > 0 && (
                   <div className="absolute -top-1 -right-1 h-5 w-5 bg-primary text-white text-xs rounded-full flex items-center justify-center font-bold animate-pulse">
                     {conversation.unread_count}

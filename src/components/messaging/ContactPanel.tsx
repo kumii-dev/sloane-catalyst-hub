@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { TriangleAvatar } from '@/components/ui/triangle-avatar';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -97,12 +97,12 @@ export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) =>
     <div className="p-6 space-y-6">
       {/* Profile Header */}
       <div className="text-center">
-        <Avatar className="h-24 w-24 mx-auto mb-4">
-          <AvatarImage src={contact.profile_picture_url} />
-          <AvatarFallback className="text-2xl">
-            {contact.name.split(' ').map((n: string) => n[0]).join('')}
-          </AvatarFallback>
-        </Avatar>
+        <TriangleAvatar 
+          src={contact.profile_picture_url}
+          alt={contact.name}
+          fallback={contact.name.split(' ').map((n: string) => n[0]).join('')}
+          className="h-24 w-24 mx-auto mb-4"
+        />
         <h2 className="text-xl font-bold text-foreground">{contact.name}</h2>
         <p className="text-sm text-muted-foreground mb-2">{contact.role}</p>
         
@@ -223,12 +223,12 @@ export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) =>
           {mutualConnections.length > 0 ? (
             mutualConnections.map((connection, idx) => (
               <div key={idx} className="flex items-center gap-2">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={connection.profile_picture_url} />
-                  <AvatarFallback className="text-xs">
-                    {connection.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
-                  </AvatarFallback>
-                </Avatar>
+                <TriangleAvatar 
+                  src={connection.profile_picture_url}
+                  alt={connection.name}
+                  fallback={connection.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
+                  className="h-8 w-8"
+                />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate text-foreground">{connection.name}</p>
                   <p className="text-xs text-muted-foreground capitalize">{connection.role}</p>

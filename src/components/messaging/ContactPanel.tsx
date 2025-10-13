@@ -16,6 +16,7 @@ interface ContactPanelProps {
 export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) => {
   const [contact, setContact] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
+  const [mutualConnections, setMutualConnections] = React.useState<any[]>([]);
 
   React.useEffect(() => {
     loadContactInfo();
@@ -23,6 +24,8 @@ export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) =>
 
   const loadContactInfo = async () => {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
       const { data, error } = await supabase
         .rpc('get_other_participant_profiles', { p_conversation_id: conversationId })
         .single();
@@ -41,6 +44,24 @@ export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) =>
           phone: '',
           profile_picture_url: data.profile_picture_url
         });
+
+        // Fetch some real platform users as mutual connections
+        if (user) {
+          const { data: connections } = await supabase
+            .from('profiles')
+            .select('first_name, last_name, persona_type, profile_picture_url')
+            .neq('user_id', user.id)
+            .neq('user_id', data.user_id)
+            .limit(3);
+
+          if (connections) {
+            setMutualConnections(connections.map(conn => ({
+              name: `${conn.first_name || ''} ${conn.last_name || ''}`.trim() || 'Anonymous User',
+              role: conn.persona_type?.replace('_', ' ') || 'User',
+              profile_picture_url: conn.profile_picture_url
+            })));
+          }
+        }
       }
     } catch (error) {
       console.error('Error loading contact:', error);
@@ -55,11 +76,6 @@ export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) =>
     { name: 'Financial_Projections.xlsx', date: '2 weeks ago', size: '856 KB' },
   ];
 
-  const mutualConnections = [
-    { name: 'John Smith', role: 'Entrepreneur' },
-    { name: 'Maria Garcia', role: 'Investor' },
-    { name: 'David Chen', role: 'Mentor' },
-  ];
 
   if (loading) {
     return (
@@ -204,17 +220,24 @@ export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) =>
           </h3>
         </div>
         <div className="space-y-2">
-          {mutualConnections.map((connection, idx) => (
-            <div key={idx} className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="text-xs">{connection.name[0]}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate text-foreground">{connection.name}</p>
-                <p className="text-xs text-muted-foreground">{connection.role}</p>
+          {mutualConnections.length > 0 ? (
+            mutualConnections.map((connection, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={connection.profile_picture_url} />
+                  <AvatarFallback className="text-xs">
+                    {connection.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate text-foreground">{connection.name}</p>
+                  <p className="text-xs text-muted-foreground capitalize">{connection.role}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-sm text-muted-foreground">No mutual connections yet</p>
+          )}
         </div>
       </div>
     </div>

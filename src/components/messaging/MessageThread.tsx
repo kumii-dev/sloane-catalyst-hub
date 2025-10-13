@@ -83,30 +83,20 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, on
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Get other participant
-      const { data: otherParticipantData } = await supabase
-        .from('conversation_participants')
-        .select('user_id')
-        .eq('conversation_id', conversationId)
-        .neq('user_id', user.id)
+      // Get other participant using secure RPC
+      const { data: otherParticipantData, error: participantError } = await supabase
+        .rpc('get_other_participant_profiles', { p_conversation_id: conversationId })
         .single();
 
-      if (otherParticipantData) {
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select('first_name, last_name, profile_picture_url, persona_type, organization')
-          .eq('user_id', otherParticipantData.user_id)
-          .single();
-
-        if (profileData) {
-          setOtherParticipant({
-            id: otherParticipantData.user_id,
-            name: `${profileData.first_name} ${profileData.last_name}`,
-            profile_picture_url: profileData.profile_picture_url,
-            persona_type: profileData.persona_type,
-            organization: profileData.organization
-          });
-        }
+      if (!participantError && otherParticipantData) {
+        setOtherParticipant({
+          id: otherParticipantData.user_id,
+          name: `${otherParticipantData.first_name} ${otherParticipantData.last_name}`,
+          profile_picture_url: otherParticipantData.profile_picture_url,
+          persona_type: otherParticipantData.persona_type,
+          organization: otherParticipantData.organization,
+          bio: otherParticipantData.bio
+        });
       }
 
       // Get messages
@@ -233,14 +223,23 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, on
       <div className="p-4 border-b border-border bg-card flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Avatar>
-            <AvatarFallback>SJ</AvatarFallback>
+            <AvatarImage src={otherParticipant?.profile_picture_url} />
+            <AvatarFallback>
+              {otherParticipant?.name.split(' ').map((n: string) => n[0]).join('') || '?'}
+            </AvatarFallback>
           </Avatar>
           <div>
-            <h2 className="font-semibold text-foreground">Sarah Johnson</h2>
+            <h2 className="font-semibold text-foreground">
+              {otherParticipant?.name || 'Loading...'}
+            </h2>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>Mentor - Business Strategy</span>
-              <span>•</span>
-              <Badge variant="secondary" className="text-xs">Active</Badge>
+              <span>{otherParticipant?.persona_type?.replace('_', ' ') || 'User'}</span>
+              {otherParticipant?.organization && (
+                <>
+                  <span>•</span>
+                  <span>{otherParticipant.organization}</span>
+                </>
+              )}
             </div>
           </div>
         </div>

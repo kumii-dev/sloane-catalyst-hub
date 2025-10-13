@@ -7,24 +7,46 @@ import {
   MapPin, Briefcase, Star, Users, FileText, 
   Calendar, DollarSign, ExternalLink, Mail, Phone 
 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ContactPanelProps {
   conversationId: string;
 }
 
 export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) => {
-  // Mock data - replace with real data
-  const contact = {
-    name: 'Sarah Johnson',
-    role: 'Business Strategy Mentor',
-    company: 'StartupSuccess Consulting',
-    location: 'Johannesburg, South Africa',
-    rating: 4.9,
-    totalSessions: 156,
-    cohorts: ['Microsoft Startups 2025', 'African Bank Fintech Cohort'],
-    bio: 'Experienced business strategist with 15+ years helping startups scale. Specializing in go-to-market strategies and fundraising.',
-    email: 'sarah.johnson@example.com',
-    phone: '+27 123 456 789',
+  const [contact, setContact] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    loadContactInfo();
+  }, [conversationId]);
+
+  const loadContactInfo = async () => {
+    try {
+      const { data, error } = await supabase
+        .rpc('get_other_participant_profiles', { p_conversation_id: conversationId })
+        .single();
+
+      if (!error && data) {
+        setContact({
+          name: `${data.first_name} ${data.last_name}`,
+          role: data.persona_type?.replace('_', ' ') || 'User',
+          company: data.organization || 'Not specified',
+          location: 'Not specified',
+          rating: 0,
+          totalSessions: 0,
+          cohorts: [],
+          bio: data.bio || 'No bio available',
+          email: '',
+          phone: '',
+          profile_picture_url: data.profile_picture_url
+        });
+      }
+    } catch (error) {
+      console.error('Error loading contact:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const sharedFiles = [
@@ -39,12 +61,31 @@ export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) =>
     { name: 'David Chen', role: 'Mentor' },
   ];
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full p-6">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+  }
+
+  if (!contact) {
+    return (
+      <div className="flex items-center justify-center h-full p-6 text-center text-muted-foreground">
+        <p>No contact information available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 space-y-6">
       {/* Profile Header */}
       <div className="text-center">
         <Avatar className="h-24 w-24 mx-auto mb-4">
-          <AvatarFallback className="text-2xl">SJ</AvatarFallback>
+          <AvatarImage src={contact.profile_picture_url} />
+          <AvatarFallback className="text-2xl">
+            {contact.name.split(' ').map((n: string) => n[0]).join('')}
+          </AvatarFallback>
         </Avatar>
         <h2 className="text-xl font-bold text-foreground">{contact.name}</h2>
         <p className="text-sm text-muted-foreground mb-2">{contact.role}</p>

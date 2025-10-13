@@ -2207,6 +2207,18 @@ export type Database = {
         }
         Returns: undefined
       }
+      get_other_participant_profiles: {
+        Args: { p_conversation_id: string }
+        Returns: {
+          bio: string
+          first_name: string
+          last_name: string
+          organization: string
+          persona_type: Database["public"]["Enums"]["persona_type"]
+          profile_picture_url: string
+          user_id: string
+        }[]
+      }
       has_funder_assessment_access: {
         Args: { _assessment_id: string; _user_id: string }
         Returns: boolean

@@ -32,6 +32,7 @@ const MentorProfile = () => {
   const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
   const [reviewCount, setReviewCount] = useState(0);
   const [libraryCount, setLibraryCount] = useState(0);
+  const [reviews, setReviews] = useState<any[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -82,14 +83,23 @@ const MentorProfile = () => {
           setCategories(categoriesData.map((mc: any) => mc.mentoring_categories));
         }
 
-        // Fetch review count for this mentor
-        const { count: reviewsCount } = await supabase
+        // Fetch completed sessions with reviews
+        const { data: reviewsData, count: reviewsCount } = await supabase
           .from('mentoring_sessions')
-          .select('*', { count: 'exact', head: true })
+          .select(`
+            *,
+            profiles:mentee_id (
+              first_name,
+              last_name,
+              profile_picture_url
+            )
+          `, { count: 'exact' })
           .eq('mentor_id', id)
-          .eq('session_status', 'completed');
+          .eq('session_status', 'completed')
+          .order('scheduled_at', { ascending: false });
         
         setReviewCount(reviewsCount || 0);
+        setReviews(reviewsData || []);
 
         // Fetch library count for this mentor (you can adjust the query based on your library table)
         // For now, setting to 0 as placeholder - update when library feature is implemented
@@ -321,9 +331,54 @@ const MentorProfile = () => {
                 <TabsContent value="reviews" className="mt-6">
                   <Card>
                     <CardContent className="pt-6">
-                      <p className="text-muted-foreground text-center py-8">
-                        No reviews yet
-                      </p>
+                      {reviews.length === 0 ? (
+                        <p className="text-muted-foreground text-center py-8">
+                          No reviews yet
+                        </p>
+                      ) : (
+                        <div className="space-y-6">
+                          {reviews.map((review: any) => (
+                            <div key={review.id} className="border-b pb-6 last:border-0">
+                              <div className="flex items-start gap-4">
+                                <TriangleAvatar
+                                  src={review.profiles?.profile_picture_url}
+                                  alt={review.profiles?.first_name || 'User'}
+                                  fallback={
+                                    <>
+                                      {review.profiles?.first_name?.[0]}
+                                      {review.profiles?.last_name?.[0]}
+                                    </>
+                                  }
+                                />
+                                <div className="flex-1">
+                                  <div className="flex items-center justify-between mb-2">
+                                    <div>
+                                      <h4 className="font-semibold">
+                                        {review.profiles?.first_name} {review.profiles?.last_name}
+                                      </h4>
+                                      <p className="text-sm text-muted-foreground">
+                                        {new Date(review.scheduled_at).toLocaleDateString('en-US', {
+                                          year: 'numeric',
+                                          month: 'long',
+                                          day: 'numeric'
+                                        })}
+                                      </p>
+                                    </div>
+                                    {renderStars(5)}
+                                  </div>
+                                  <h5 className="font-medium mb-2">{review.title}</h5>
+                                  {review.notes && (
+                                    <p className="text-muted-foreground">{review.notes}</p>
+                                  )}
+                                  {review.description && !review.notes && (
+                                    <p className="text-muted-foreground">{review.description}</p>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>

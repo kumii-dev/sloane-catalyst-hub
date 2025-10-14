@@ -23,6 +23,7 @@ import { format, isFuture, isPast } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { VideoCallRoom } from "@/components/video/VideoCallRoom";
 import { getOrCreateVideoRoom, canJoinSession } from "@/utils/videoCallUtils";
+import { SessionCountdown } from "@/components/SessionCountdown";
 
 const MenteeDashboard = () => {
   const [sessions, setSessions] = useState<any[]>([]);
@@ -384,6 +385,7 @@ const MenteeDashboard = () => {
                               {session.price && (
                                 <Badge variant="secondary">R{session.price}</Badge>
                               )}
+                              <SessionCountdown scheduledAt={session.scheduled_at} />
                             </div>
 
                             {session.description && (

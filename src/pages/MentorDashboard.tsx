@@ -27,6 +27,7 @@ import { format, isFuture, isPast } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { VideoCallRoom } from "@/components/video/VideoCallRoom";
 import { getOrCreateVideoRoom, canJoinSession } from "@/utils/videoCallUtils";
+import { SessionCountdown } from "@/components/SessionCountdown";
 
 const MentorDashboard = () => {
   const [sessions, setSessions] = useState<any[]>([]);
@@ -96,12 +97,6 @@ const MentorDashboard = () => {
         .order('scheduled_at', { ascending: false });
 
       if (sessionsError) throw sessionsError;
-      
-      console.log('Fetched sessions:', sessionsData?.length, sessionsData?.map(s => ({ 
-        id: s.id, 
-        status: s.session_status, 
-        scheduled: s.scheduled_at 
-      })));
 
       // Fetch mentee profiles
       if (sessionsData && sessionsData.length > 0) {
@@ -350,14 +345,6 @@ const MentorDashboard = () => {
     // Only past if session was before today
     return sessionDay < today;
   });
-  
-  console.log('Session filters:', {
-    total: sessions.length,
-    pending: pendingSessions.length,
-    upcoming: upcomingSessions.length,
-    past: pastSessions.length,
-    statuses: sessions.map(s => s.session_status)
-  });
 
   // Handle active video call
   if (activeVideoSession) {
@@ -570,6 +557,7 @@ const MentorDashboard = () => {
                                   R{session.price}
                                 </Badge>
                               )}
+                              <SessionCountdown scheduledAt={session.scheduled_at} />
                             </div>
 
                             {session.description && (
@@ -673,6 +661,7 @@ const MentorDashboard = () => {
                                   R{session.price}
                                 </Badge>
                               )}
+                              <SessionCountdown scheduledAt={session.scheduled_at} />
                             </div>
 
                             <div className="flex gap-2 mt-4">

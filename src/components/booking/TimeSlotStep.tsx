@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { format, getDay, parse } from "date-fns";
+import { format, getDay, parse, isToday, isBefore } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, X, Loader2 } from "lucide-react";
@@ -96,7 +96,15 @@ export const TimeSlotStep = ({ mentor, selectedDate, onNext, onBack }: TimeSlotS
         ) || []
       );
 
-      const filteredSlots = availableSlots.filter(slot => !bookedTimes.has(slot));
+      let filteredSlots = availableSlots.filter(slot => !bookedTimes.has(slot));
+      
+      // If the selected date is today, filter out past time slots
+      if (isToday(selectedDate)) {
+        const now = new Date();
+        const currentTime = format(now, 'HH:mm');
+        
+        filteredSlots = filteredSlots.filter(slot => slot > currentTime);
+      }
       
       setTimeSlots(filteredSlots);
 

@@ -542,7 +542,7 @@ const MentorDashboard = () => {
                               <div className="flex items-center gap-2">
                                 <Calendar className="w-4 h-4 text-primary" />
                                 <span className="font-medium">
-                                  {format(new Date(session.scheduled_at), 'PPP')}
+                                  {format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}
                                 </span>
                               </div>
                               <div className="flex items-center gap-2">
@@ -649,7 +649,7 @@ const MentorDashboard = () => {
                               <div className="flex items-center gap-2">
                                 <Calendar className="w-4 h-4 text-primary" />
                                 <span className="font-medium">
-                                  {format(new Date(session.scheduled_at), 'PPP')}
+                                  {format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}
                                 </span>
                               </div>
                               <div className="flex items-center gap-2">
@@ -750,7 +750,7 @@ const MentorDashboard = () => {
                             <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
                               <div className="flex items-center gap-2">
                                 <Calendar className="w-4 h-4 text-muted-foreground" />
-                                <span>{format(new Date(session.scheduled_at), 'PPP')}</span>
+                                <span>{format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}</span>
                               </div>
                               <div className="flex items-center gap-2">
                                 <Clock className="w-4 h-4 text-muted-foreground" />
@@ -814,7 +814,7 @@ const MentorDashboard = () => {
                           <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
                             <div className="flex items-center gap-2">
                               <Calendar className="w-4 h-4 text-primary" />
-                              <span>{format(new Date(session.scheduled_at), 'PPP')}</span>
+                              <span>{format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <Clock className="w-4 h-4 text-primary" />

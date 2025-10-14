@@ -123,9 +123,16 @@ const MentorDashboard = () => {
         setSessions(enrichedSessions);
 
         // Calculate stats
-        const upcoming = enrichedSessions.filter(s => 
-          s.scheduled_at && isFuture(new Date(s.scheduled_at)) && s.session_status !== 'cancelled'
-        ).length;
+        const upcoming = enrichedSessions.filter(s => {
+          if (!s.scheduled_at || s.session_status === 'cancelled') return false;
+          const sessionDate = new Date(s.scheduled_at);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const sessionDay = new Date(sessionDate);
+          sessionDay.setHours(0, 0, 0, 0);
+          // Include today's sessions and future sessions
+          return sessionDay >= today;
+        }).length;
         const pending = enrichedSessions.filter(s => 
           s.session_status === 'pending'
         ).length;
@@ -323,15 +330,26 @@ const MentorDashboard = () => {
   };
 
   const pendingSessions = sessions.filter(s => s.session_status === 'pending');
-  const upcomingSessions = sessions.filter(s => 
-    s.scheduled_at && 
-    isFuture(new Date(s.scheduled_at)) && 
-    s.session_status === 'confirmed'
-  );
-  const pastSessions = sessions.filter(s => 
-    s.scheduled_at && 
-    isPast(new Date(s.scheduled_at))
-  );
+  const upcomingSessions = sessions.filter(s => {
+    if (!s.scheduled_at || s.session_status !== 'confirmed') return false;
+    const sessionDate = new Date(s.scheduled_at);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const sessionDay = new Date(sessionDate);
+    sessionDay.setHours(0, 0, 0, 0);
+    // Include today's sessions and future sessions
+    return sessionDay >= today;
+  });
+  const pastSessions = sessions.filter(s => {
+    if (!s.scheduled_at) return false;
+    const sessionDate = new Date(s.scheduled_at);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const sessionDay = new Date(sessionDate);
+    sessionDay.setHours(0, 0, 0, 0);
+    // Only past if session was before today
+    return sessionDay < today;
+  });
   
   console.log('Session filters:', {
     total: sessions.length,

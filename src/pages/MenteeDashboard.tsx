@@ -119,9 +119,16 @@ const MenteeDashboard = () => {
         setSessions(enrichedSessions);
 
         // Calculate stats
-        const upcoming = enrichedSessions.filter(s => 
-          s.scheduled_at && isFuture(new Date(s.scheduled_at))
-        ).length;
+        const upcoming = enrichedSessions.filter(s => {
+          if (!s.scheduled_at) return false;
+          const sessionDate = new Date(s.scheduled_at);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const sessionDay = new Date(sessionDate);
+          sessionDay.setHours(0, 0, 0, 0);
+          // Include today's sessions and future sessions
+          return sessionDay >= today;
+        }).length;
         const completed = enrichedSessions.filter(s => 
           s.session_status === 'completed'
         ).length;
@@ -173,13 +180,27 @@ const MenteeDashboard = () => {
     return variants[status] || { variant: "outline", className: "" };
   };
 
-  const upcomingSessions = sessions.filter(s => 
-    s.scheduled_at && isFuture(new Date(s.scheduled_at))
-  );
+  const upcomingSessions = sessions.filter(s => {
+    if (!s.scheduled_at) return false;
+    const sessionDate = new Date(s.scheduled_at);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const sessionDay = new Date(sessionDate);
+    sessionDay.setHours(0, 0, 0, 0);
+    // Include today's sessions and future sessions
+    return sessionDay >= today;
+  });
 
-  const pastSessions = sessions.filter(s => 
-    s.scheduled_at && isPast(new Date(s.scheduled_at))
-  );
+  const pastSessions = sessions.filter(s => {
+    if (!s.scheduled_at) return false;
+    const sessionDate = new Date(s.scheduled_at);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const sessionDay = new Date(sessionDate);
+    sessionDay.setHours(0, 0, 0, 0);
+    // Only past if session was before today
+    return sessionDay < today;
+  });
 
   // Handle active video call
   if (activeVideoSession) {

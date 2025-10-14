@@ -21,6 +21,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { format, isFuture, isPast } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { VideoCallRoom } from "@/components/video/VideoCallRoom";
+import { getOrCreateVideoRoom, canJoinSession } from "@/utils/videoCallUtils";
 
 const MenteeDashboard = () => {
   const [sessions, setSessions] = useState<any[]>([]);
@@ -31,12 +33,41 @@ const MenteeDashboard = () => {
     completed: 0,
     totalHours: 0
   });
+  const [activeVideoSession, setActiveVideoSession] = useState<{id: string, roomUrl: string} | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchSessions();
   }, []);
+
+  const handleJoinSession = async (session: any) => {
+    try {
+      if (!canJoinSession(session.scheduled_at)) {
+        toast({
+          title: "Cannot Join Yet",
+          description: "You can join 10 minutes before the scheduled time",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const roomUrl = await getOrCreateVideoRoom(session.id);
+      setActiveVideoSession({ id: session.id, roomUrl });
+    } catch (error) {
+      console.error("Failed to join session:", error);
+      toast({
+        title: "Error",
+        description: "Failed to join video call",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleLeaveSession = () => {
+    setActiveVideoSession(null);
+    fetchSessions();
+  };
 
   const fetchSessions = async () => {
     try {
@@ -145,6 +176,18 @@ const MenteeDashboard = () => {
   const pastSessions = sessions.filter(s => 
     s.scheduled_at && isPast(new Date(s.scheduled_at))
   );
+
+  // Handle active video call
+  if (activeVideoSession) {
+    return (
+      <VideoCallRoom
+        sessionId={activeVideoSession.id}
+        roomUrl={activeVideoSession.roomUrl}
+        onLeave={handleLeaveSession}
+        userRole="mentee"
+      />
+    );
+  }
 
   if (loading) {
     return (
@@ -325,7 +368,12 @@ const MenteeDashboard = () => {
                             )}
 
                             <div className="flex gap-2 mt-4">
-                              <Button size="sm" variant="default">
+                              <Button 
+                                size="sm" 
+                                variant="default"
+                                onClick={() => handleJoinSession(session)}
+                                disabled={!canJoinSession(session.scheduled_at)}
+                              >
                                 <Video className="w-4 h-4 mr-2" />
                                 Join Session
                               </Button>

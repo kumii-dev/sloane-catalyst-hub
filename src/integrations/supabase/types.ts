@@ -1226,10 +1226,14 @@ export type Database = {
           notes: string | null
           price: number | null
           scheduled_at: string | null
+          session_completed_at: string | null
+          session_started_at: string | null
           session_status: Database["public"]["Enums"]["session_status"]
           session_type: Database["public"]["Enums"]["session_type"]
           title: string
           updated_at: string
+          video_room_name: string | null
+          video_room_url: string | null
         }
         Insert: {
           created_at?: string
@@ -1242,10 +1246,14 @@ export type Database = {
           notes?: string | null
           price?: number | null
           scheduled_at?: string | null
+          session_completed_at?: string | null
+          session_started_at?: string | null
           session_status?: Database["public"]["Enums"]["session_status"]
           session_type: Database["public"]["Enums"]["session_type"]
           title: string
           updated_at?: string
+          video_room_name?: string | null
+          video_room_url?: string | null
         }
         Update: {
           created_at?: string
@@ -1258,10 +1266,14 @@ export type Database = {
           notes?: string | null
           price?: number | null
           scheduled_at?: string | null
+          session_completed_at?: string | null
+          session_started_at?: string | null
           session_status?: Database["public"]["Enums"]["session_status"]
           session_type?: Database["public"]["Enums"]["session_type"]
           title?: string
           updated_at?: string
+          video_room_name?: string | null
+          video_room_url?: string | null
         }
         Relationships: [
           {
@@ -2465,7 +2477,12 @@ export type Database = {
         | "compliance"
         | "growth_readiness"
       service_type: "subscription" | "one_time" | "session_based" | "custom"
-      session_status: "pending" | "confirmed" | "completed" | "cancelled"
+      session_status:
+        | "pending"
+        | "confirmed"
+        | "in_progress"
+        | "completed"
+        | "cancelled"
       session_type: "free" | "premium"
       subscription_status: "active" | "expired" | "cancelled" | "pending"
     }
@@ -2711,7 +2728,13 @@ export const Constants = {
         "growth_readiness",
       ],
       service_type: ["subscription", "one_time", "session_based", "custom"],
-      session_status: ["pending", "confirmed", "completed", "cancelled"],
+      session_status: [
+        "pending",
+        "confirmed",
+        "in_progress",
+        "completed",
+        "cancelled",
+      ],
       session_type: ["free", "premium"],
       subscription_status: ["active", "expired", "cancelled", "pending"],
     },

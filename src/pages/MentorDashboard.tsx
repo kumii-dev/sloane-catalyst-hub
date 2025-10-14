@@ -18,12 +18,15 @@ import {
   User,
   Check,
   X,
-  Settings
+  Settings,
+  Video
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { format, isFuture, isPast } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { VideoCallRoom } from "@/components/video/VideoCallRoom";
+import { getOrCreateVideoRoom, canJoinSession } from "@/utils/videoCallUtils";
 
 const MentorDashboard = () => {
   const [sessions, setSessions] = useState<any[]>([]);
@@ -36,6 +39,7 @@ const MentorDashboard = () => {
     completed: 0,
     totalEarnings: 0
   });
+  const [activeVideoSession, setActiveVideoSession] = useState<{id: string, roomUrl: string} | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -143,6 +147,36 @@ const MentorDashboard = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleJoinSession = async (session: any) => {
+    try {
+      if (!canJoinSession(session.scheduled_at)) {
+        toast({
+          title: "Cannot Join Yet",
+          description: "You can join 10 minutes before the scheduled time",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const roomUrl = await getOrCreateVideoRoom(session.id);
+      setActiveVideoSession({ id: session.id, roomUrl });
+    } catch (error) {
+      console.error("Failed to join session:", error);
+      toast({
+        title: "Error",
+        description: "Failed to join video call",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleLeaveSession = () => {
+    setActiveVideoSession(null);
+    if (mentorProfile) {
+      fetchSessions(mentorProfile.id);
     }
   };
 
@@ -288,6 +322,18 @@ const MentorDashboard = () => {
     s.scheduled_at && 
     isPast(new Date(s.scheduled_at))
   );
+
+  // Handle active video call
+  if (activeVideoSession) {
+    return (
+      <VideoCallRoom
+        sessionId={activeVideoSession.id}
+        roomUrl={activeVideoSession.roomUrl}
+        onLeave={handleLeaveSession}
+        userRole="mentor"
+      />
+    );
+  }
 
   if (loading) {
     return (
@@ -594,7 +640,13 @@ const MentorDashboard = () => {
                             </div>
 
                             <div className="flex gap-2 mt-4">
-                              <Button size="sm" variant="default">
+                              <Button 
+                                size="sm" 
+                                variant="default"
+                                onClick={() => handleJoinSession(session)}
+                                disabled={!canJoinSession(session.scheduled_at)}
+                              >
+                                <Video className="w-4 h-4 mr-2" />
                                 Start Session
                               </Button>
                               <Button 

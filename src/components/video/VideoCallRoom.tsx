@@ -226,20 +226,26 @@ export const VideoCallRoom = ({ sessionId, roomUrl, onLeave, userRole }: VideoCa
   useEffect(() => {
     const initCall = async () => {
       try {
+        console.log("Initializing video call with URL:", roomUrl);
         const { default: DailyIframe } = await import("@daily-co/daily-js");
         
         const daily = DailyIframe.createCallObject({
           url: roomUrl,
         });
 
+        console.log("Daily call object created");
         setCallObject(daily);
 
+        console.log("Attempting to join room...");
         await daily.join();
+        console.log("Successfully joined room");
       } catch (error) {
         console.error("Failed to initialize video call:", error);
+        console.error("Room URL was:", roomUrl);
+        console.error("Error details:", JSON.stringify(error, null, 2));
         toast({
           title: "Connection Failed",
-          description: "Could not connect to the video call",
+          description: "Could not connect to the video call. The video room may not exist or is not properly configured.",
           variant: "destructive"
         });
       }

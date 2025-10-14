@@ -96,6 +96,12 @@ const MentorDashboard = () => {
         .order('scheduled_at', { ascending: false });
 
       if (sessionsError) throw sessionsError;
+      
+      console.log('Fetched sessions:', sessionsData?.length, sessionsData?.map(s => ({ 
+        id: s.id, 
+        status: s.session_status, 
+        scheduled: s.scheduled_at 
+      })));
 
       // Fetch mentee profiles
       if (sessionsData && sessionsData.length > 0) {
@@ -326,6 +332,14 @@ const MentorDashboard = () => {
     s.scheduled_at && 
     isPast(new Date(s.scheduled_at))
   );
+  
+  console.log('Session filters:', {
+    total: sessions.length,
+    pending: pendingSessions.length,
+    upcoming: upcomingSessions.length,
+    past: pastSessions.length,
+    statuses: sessions.map(s => s.session_status)
+  });
 
   // Handle active video call
   if (activeVideoSession) {

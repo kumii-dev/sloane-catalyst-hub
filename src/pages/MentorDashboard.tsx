@@ -153,9 +153,13 @@ const MentorDashboard = () => {
   const handleJoinSession = async (session: any) => {
     try {
       if (!canJoinSession(session.scheduled_at)) {
+        const sessionTime = new Date(session.scheduled_at);
+        const now = new Date();
+        const timeUntilSession = Math.round((sessionTime.getTime() - now.getTime()) / (1000 * 60));
+        
         toast({
           title: "Cannot Join Yet",
-          description: "You can join 10 minutes before the scheduled time",
+          description: `You can join 15 minutes before the session. Time until session: ${timeUntilSession} minutes`,
           variant: "destructive"
         });
         return;

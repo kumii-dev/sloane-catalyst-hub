@@ -55,11 +55,11 @@ export const canJoinSession = (scheduledAt: string): boolean => {
   const sessionTime = new Date(scheduledAt);
   const now = new Date();
   
-  // Allow joining 10 minutes before scheduled time
-  const tenMinutesBefore = new Date(sessionTime.getTime() - 10 * 60 * 1000);
+  // Allow joining 15 minutes before scheduled time
+  const fifteenMinutesBefore = new Date(sessionTime.getTime() - 15 * 60 * 1000);
   
-  // Allow joining up to 2 hours after scheduled time
-  const twoHoursAfter = new Date(sessionTime.getTime() + 2 * 60 * 60 * 1000);
+  // Allow joining up to 24 hours after scheduled time (for flexibility)
+  const twentyFourHoursAfter = new Date(sessionTime.getTime() + 24 * 60 * 60 * 1000);
   
-  return now >= tenMinutesBefore && now <= twoHoursAfter;
+  return now >= fifteenMinutesBefore && now <= twentyFourHoursAfter;
 };

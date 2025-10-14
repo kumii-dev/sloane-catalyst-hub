@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { format, getDay, parse, isToday, isBefore } from "date-fns";
+import { format, getDay, parse, isToday, isBefore, set } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, X, Loader2 } from "lucide-react";
@@ -128,7 +128,12 @@ export const TimeSlotStep = ({ mentor, selectedDate, onNext, onBack }: TimeSlotS
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
-    onNext({ timeSlot: time });
+    
+    // Parse the time and combine with the selected date
+    const [hours, minutes] = time.split(':').map(Number);
+    const combinedDateTime = set(selectedDate, { hours, minutes, seconds: 0, milliseconds: 0 });
+    
+    onNext({ timeSlot: time, date: combinedDateTime });
   };
 
   const sessionFee = mentor.session_fee || 100;

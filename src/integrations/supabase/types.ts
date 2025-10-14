@@ -2268,7 +2268,42 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          first_name: string | null
+          last_name: string | null
+          organization: string | null
+          persona_type: Database["public"]["Enums"]["persona_type"] | null
+          profile_picture_url: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          first_name?: string | null
+          last_name?: string | null
+          organization?: string | null
+          persona_type?: Database["public"]["Enums"]["persona_type"] | null
+          profile_picture_url?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          first_name?: string | null
+          last_name?: string | null
+          organization?: string | null
+          persona_type?: Database["public"]["Enums"]["persona_type"] | null
+          profile_picture_url?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_credits: {

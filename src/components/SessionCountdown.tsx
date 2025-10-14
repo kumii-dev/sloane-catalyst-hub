@@ -19,13 +19,14 @@ export const SessionCountdown = ({ scheduledAt, className = "" }: SessionCountdo
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const now = new Date().getTime();
-      const sessionTime = new Date(scheduledAt).getTime();
-      const difference = sessionTime - now;
+      const now = new Date();
+      const sessionTime = new Date(scheduledAt);
+      const difference = sessionTime.getTime() - now.getTime();
 
       // Check if within 15 minutes before session
-      const fifteenMinutesBefore = sessionTime - (15 * 60 * 1000);
-      const isWithinJoinWindow = now >= fifteenMinutesBefore && now <= sessionTime;
+      const fifteenMinutesBefore = sessionTime.getTime() - (15 * 60 * 1000);
+      const nowTime = now.getTime();
+      const isWithinJoinWindow = nowTime >= fifteenMinutesBefore && nowTime <= sessionTime.getTime();
 
       if (difference < 0) {
         return { days: 0, hours: 0, minutes: 0, seconds: 0, isPast: true, isWithinJoinWindow: false };

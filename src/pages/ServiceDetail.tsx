@@ -6,11 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Star, Users, Globe, Mail, Phone, Check, ExternalLink, ArrowLeft, CreditCard, Coins, UsersIcon } from "lucide-react";
+import { Star, Users, Globe, Mail, Phone, Check, ExternalLink, ArrowLeft } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 import kumiiLogo from "@/assets/kumi-logo.png";
+import ServicePaymentDialog from "@/components/services/ServicePaymentDialog";
 
 interface ServiceDetail {
   id: string;
@@ -133,14 +133,6 @@ const ServiceDetail = () => {
 
   const handleSubscribe = async () => {
     setShowPaymentDialog(true);
-  };
-
-  const handlePaymentMethod = (method: 'card' | 'credits' | 'cohort') => {
-    setShowPaymentDialog(false);
-    toast({
-      title: "Feature Coming Soon",
-      description: `${method === 'card' ? 'Credit card' : method === 'credits' ? 'Credits' : 'Cohort'} payment will be available soon!`,
-    });
   };
 
   const formatPrice = () => {
@@ -505,72 +497,12 @@ const ServiceDetail = () => {
         </div>
       </div>
 
-      {/* Payment Options Dialog */}
-      <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Choose Payment Method</DialogTitle>
-            <DialogDescription>
-              Select how you'd like to subscribe to {service?.name}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-3">
-            {/* Credit Card Option */}
-            <Card className="cursor-pointer hover:border-primary transition-colors" onClick={() => handlePaymentMethod('card')}>
-              <CardContent className="p-4">
-                <div className="flex items-start space-x-4">
-                  <div className="rounded-full bg-primary/10 p-3">
-                    <CreditCard className="h-6 w-6 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold mb-1">Credit Card</h3>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      Pay ${service?.base_price || 'TBD'} with your credit card
-                    </p>
-                    <Badge variant="outline">Secure Payment</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Kumii Credits Option */}
-            <Card className="cursor-pointer hover:border-primary transition-colors" onClick={() => handlePaymentMethod('credits')}>
-              <CardContent className="p-4">
-                <div className="flex items-start space-x-4">
-                  <div className="rounded-full bg-orange-500/10 p-3">
-                    <Coins className="h-6 w-6 text-orange-500" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold mb-1">Kumii Credits</h3>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      Pay {service?.credits_price || 'TBD'} Kumii credits
-                    </p>
-                    <Badge variant="outline">Instant Access</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Cohort Member Access Option */}
-            <Card className="cursor-pointer hover:border-primary transition-colors" onClick={() => handlePaymentMethod('cohort')}>
-              <CardContent className="p-4">
-                <div className="flex items-start space-x-4">
-                  <div className="rounded-full bg-green-500/10 p-3">
-                    <UsersIcon className="h-6 w-6 text-green-500" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold mb-1">Cohort Member Access</h3>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {service?.cohort_benefits || 'Exclusive access for SMME & startup cohort members'}
-                    </p>
-                    <Badge className="bg-green-500">Exclusive Benefit</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Payment Dialog */}
+      <ServicePaymentDialog 
+        open={showPaymentDialog}
+        onOpenChange={setShowPaymentDialog}
+        service={service}
+      />
     </Layout>
   );
 };

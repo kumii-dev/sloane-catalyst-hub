@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { CalendarStep } from "./CalendarStep";
 import { TimeSlotStep } from "./TimeSlotStep";
 import { BookingDetailsStep } from "./BookingDetailsStep";
@@ -62,7 +64,17 @@ export const BookSessionDialog = ({ open, onOpenChange, mentor }: BookSessionDia
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-[95vw] sm:max-w-3xl lg:max-w-5xl max-h-[90vh] overflow-y-auto p-0 w-full">
+      <DialogContent className="max-w-[95vw] sm:max-w-3xl lg:max-w-5xl max-h-[90vh] overflow-y-auto p-0 w-full" hideClose>
+        <div className="px-3 sm:px-6 pt-4 sm:pt-6">
+          <Button
+            onClick={handleClose}
+            className="w-full bg-[#D2691E] hover:bg-[#B8632A] text-white font-semibold py-6 text-base sm:text-lg rounded-full shadow-lg"
+          >
+            <X className="mr-2 h-5 w-5" />
+            Close Session
+          </Button>
+        </div>
+        
         <BookingProgressStepper currentStep={currentStep} />
         
         <div className="px-3 sm:px-6 pb-4 sm:pb-6">

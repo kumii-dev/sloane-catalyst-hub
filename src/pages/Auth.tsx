@@ -19,7 +19,21 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if this is a password reset flow
+    const params = new URLSearchParams(window.location.search);
+    const resetParam = params.get('reset');
+    const accessToken = params.get('access_token');
+    const type = params.get('type');
+    
+    if ((resetParam === 'true' || type === 'recovery') && accessToken) {
+      setIsResettingPassword(true);
+    }
+  }, []);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -177,6 +191,91 @@ const Auth = () => {
     }
     setLoading(false);
   };
+
+  const handleUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPassword || newPassword.length < 6) {
+      toast({
+        title: "Error",
+        description: "Password must be at least 6 characters",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+
+    if (error) {
+      toast({
+        title: "Password update failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success!",
+        description: "Your password has been updated",
+      });
+      setIsResettingPassword(false);
+      setNewPassword('');
+      navigate('/onboarding');
+    }
+    setLoading(false);
+  };
+
+  if (isResettingPassword) {
+    return (
+      <div className="min-h-screen flex items-center justify-center main-gradient-light p-4">
+        <Card className="w-full max-w-md shadow-strong">
+          <CardHeader className="text-center space-y-4">
+            <div className="flex justify-center">
+              <img src={logo} alt="Kumii" className="h-16 w-auto" />
+            </div>
+            <CardTitle className="text-2xl font-bold text-foreground">Set New Password</CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Enter your new password below
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent>
+            <form onSubmit={handleUpdatePassword} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="new-password">New Password</Label>
+                <Input
+                  id="new-password"
+                  type="password"
+                  placeholder="Enter new password (min 6 characters)"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  minLength={6}
+                />
+              </div>
+              <Button type="submit" variant="default" className="w-full" disabled={loading}>
+                {loading ? "Updating..." : "Update Password"}
+              </Button>
+            </form>
+          </CardContent>
+          
+          <CardFooter className="text-center">
+            <Button 
+              variant="link" 
+              onClick={() => {
+                setIsResettingPassword(false);
+                navigate('/auth');
+              }}
+              className="text-sm mx-auto"
+            >
+              Back to sign in
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center main-gradient-light p-4">

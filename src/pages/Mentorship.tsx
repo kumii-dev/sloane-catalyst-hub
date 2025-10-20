@@ -157,24 +157,24 @@ const Mentorship = () => {
       <section className="relative overflow-hidden py-8 px-4 bg-gradient-to-br from-background via-background/95 to-muted/20">
         <div className="absolute inset-0 hero-gradient opacity-20" />
         <div className="relative mx-auto max-w-6xl text-center z-10">
-          <div className="mb-4 flex justify-center gap-4">
+          <div className="mb-4 flex flex-wrap items-center justify-center gap-2 sm:gap-4">
             <Link to="/mentee-dashboard">
-              <Button variant="default" size="lg" className="rounded-full">
+              <Button variant="default" size="lg" className="rounded-full whitespace-nowrap">
                 My Sessions
               </Button>
             </Link>
             <Link to="/mentor-dashboard">
-              <Button variant="outline" size="lg" className="rounded-full border-primary/30 hover:bg-primary/10 text-foreground">
+              <Button variant="outline" size="lg" className="rounded-full border-primary/30 hover:bg-primary/10 text-foreground whitespace-nowrap">
                 Mentor Dashboard
               </Button>
             </Link>
             <Link to="/find-mentor">
-              <Button variant="hero" size="lg" className="rounded-full">
+              <Button variant="hero" size="lg" className="rounded-full whitespace-nowrap">
                 Find a Mentor
               </Button>
             </Link>
             <Link to="/become-mentor">
-              <Button size="lg" variant="outline" className="rounded-full border-accent/30 hover:bg-accent/10 text-foreground">
+              <Button size="lg" variant="outline" className="rounded-full border-accent/30 hover:bg-accent/10 text-foreground whitespace-nowrap">
                 Become a Mentor
               </Button>
             </Link>

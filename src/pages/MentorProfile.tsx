@@ -219,32 +219,36 @@ const MentorProfile = () => {
                     </div>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     {isOwnProfile && (
                       <>
                         <Button
                           variant="default"
                           onClick={() => navigate('/mentor-dashboard')}
+                          className="whitespace-nowrap"
                         >
                           <Calendar className="w-4 h-4 mr-2" />
-                          My Dashboard
+                          <span className="hidden sm:inline">My Dashboard</span>
+                          <span className="sm:hidden">Dashboard</span>
                         </Button>
                         <Button
                           variant="outline"
                           onClick={() => navigate('/edit-mentor-profile')}
+                          className="whitespace-nowrap"
                         >
                           <Edit className="w-4 h-4 mr-2" />
-                          Edit Profile
+                          <span className="hidden sm:inline">Edit Profile</span>
+                          <span className="sm:hidden">Edit</span>
                         </Button>
                       </>
                     )}
-                    <Button variant="outline" size="icon">
+                    <Button variant="outline" size="icon" className="hidden md:flex">
                       <Calendar className="w-4 h-4" />
                     </Button>
-                    <Button variant="outline" size="icon">
+                    <Button variant="outline" size="icon" className="hidden md:flex">
                       <Globe className="w-4 h-4" />
                     </Button>
-                    <Button variant="outline" size="icon">
+                    <Button variant="outline" size="icon" className="hidden md:flex">
                       <Share2 className="w-4 h-4" />
                     </Button>
                   </div>

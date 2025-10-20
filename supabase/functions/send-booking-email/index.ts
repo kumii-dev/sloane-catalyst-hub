@@ -51,6 +51,21 @@ async function sendEmailWithRetry(
   return last as { data: any; error: any };
 }
 
+async function getEmailStatusWithRetry(id: string, attempts = 3) {
+  let last: any = null;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      last = await resend.emails.get(id);
+      if (last) return last;
+    } catch (e) {
+      console.warn(`Status fetch error on attempt ${i + 1}`, e);
+    }
+    const delay = (i + 1) * 800;
+    await new Promise((r) => setTimeout(r, delay));
+  }
+  return last;
+}
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -115,6 +130,11 @@ const handler = async (req: Request): Promise<Response> => {
       if (mentorEmailResponse?.error) {
         console.error("Failed to send mentor email:", mentorEmailResponse.error);
         throw new Error(mentorEmailResponse.error.message || "Failed to send mentor email");
+      }
+      const mentorId = mentorEmailResponse?.data?.id;
+      if (mentorId) {
+        const status = await getEmailStatusWithRetry(mentorId, 4);
+        console.log("Mentor email delivery status:", status);
       }
 
       // Create notification for mentor
@@ -188,6 +208,11 @@ const handler = async (req: Request): Promise<Response> => {
       if (menteeEmailResponse?.error) {
         console.error("Failed to send mentee email:", menteeEmailResponse.error);
         throw new Error(menteeEmailResponse.error.message || "Failed to send mentee email");
+      }
+      const menteeId = menteeEmailResponse?.data?.id;
+      if (menteeId) {
+        const status = await getEmailStatusWithRetry(menteeId, 4);
+        console.log("Mentee email delivery status:", status);
       }
 
       // Create notification for mentee

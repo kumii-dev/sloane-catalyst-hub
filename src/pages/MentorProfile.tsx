@@ -43,7 +43,7 @@ const MentorProfile = () => {
 
   const fetchMentorProfile = async () => {
     try {
-      // Check if this is the user's own profile
+      // Check if this is the user's own profile (non-blocking)
       const { data: { user } } = await supabase.auth.getUser();
       
       const { data: mentorData, error: mentorError } = await supabase
@@ -52,7 +52,10 @@ const MentorProfile = () => {
         .eq('id', id)
         .single();
 
-      if (mentorError) throw mentorError;
+      if (mentorError) {
+        console.error('Error fetching mentor:', mentorError);
+        throw mentorError;
+      }
       
       if (user && mentorData.user_id === user.id) {
         setIsOwnProfile(true);
@@ -458,7 +461,21 @@ const MentorProfile = () => {
                     <Button 
                       className="w-full" 
                       size="lg"
-                      onClick={() => setBookingDialogOpen(true)}
+                      onClick={async () => {
+                        // Check if user is authenticated
+                        const { data: { user } } = await supabase.auth.getUser();
+                        if (!user) {
+                          toast({
+                            title: "Login Required",
+                            description: "Please sign in to book a session with this mentor.",
+                            variant: "destructive"
+                          });
+                          // Redirect to login with return URL
+                          navigate(`/auth?redirect=/mentor/${id}`);
+                          return;
+                        }
+                        setBookingDialogOpen(true);
+                      }}
                     >
                       Book Session
                     </Button>

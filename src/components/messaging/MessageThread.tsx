@@ -211,8 +211,17 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, on
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-background to-muted/20">
+        <div className="text-center space-y-4">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-primary/30 rounded-full mx-auto" />
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto absolute top-0 left-1/2 -translate-x-1/2" />
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-foreground">Loading conversation</p>
+            <p className="text-xs text-muted-foreground">Please wait a moment...</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -220,23 +229,26 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, on
   return (
     <div className="flex flex-col h-full">
       {/* Thread Header */}
-      <div className="p-4 border-b border-border bg-card flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <TriangleAvatar 
-            src={otherParticipant?.profile_picture_url}
-            alt={otherParticipant?.name || 'User'}
-            fallback={otherParticipant?.name.split(' ').map((n: string) => n[0]).join('') || '?'}
-            className="h-10 w-10"
-          />
+      <div className="px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <TriangleAvatar 
+              src={otherParticipant?.profile_picture_url}
+              alt={otherParticipant?.name || 'User'}
+              fallback={otherParticipant?.name.split(' ').map((n: string) => n[0]).join('') || '?'}
+              className="h-12 w-12 ring-2 ring-primary/10"
+            />
+            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-success rounded-full border-2 border-background" />
+          </div>
           <div>
-            <h2 className="font-semibold text-foreground">
-              {otherParticipant?.name || 'Loading...'}
+            <h2 className="font-semibold text-lg text-foreground">
+              {otherParticipant?.name || 'User'}
             </h2>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>{otherParticipant?.persona_type?.replace('_', ' ') || 'User'}</span>
+              <span className="font-medium capitalize">{otherParticipant?.persona_type?.replace('_', ' ') || 'User'}</span>
               {otherParticipant?.organization && (
                 <>
-                  <span>•</span>
+                  <span className="text-muted-foreground/50">•</span>
                   <span>{otherParticipant.organization}</span>
                 </>
               )}
@@ -244,82 +256,94 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, on
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm">
-            <Phone className="h-4 w-4" />
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="icon" className="hover:bg-muted/50">
+            <Phone className="h-5 w-5 text-muted-foreground" />
           </Button>
-          <Button variant="ghost" size="sm">
-            <Video className="h-4 w-4" />
+          <Button variant="ghost" size="icon" className="hover:bg-muted/50">
+            <Video className="h-5 w-5 text-muted-foreground" />
           </Button>
-          <Button variant="ghost" size="sm">
-            <MoreVertical className="h-4 w-4" />
+          <Button variant="ghost" size="icon" className="hover:bg-muted/50">
+            <MoreVertical className="h-5 w-5 text-muted-foreground" />
           </Button>
         </div>
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-4">
-        {messages.map((message, index) => {
-          const showAvatar = index === 0 || messages[index - 1].sender_id !== message.sender_id;
-          const showTimestamp = index === messages.length - 1 || 
-            messages[index + 1]?.sender_id !== message.sender_id;
-
-          return (
-            <div
-              key={message.id}
-              className={cn(
-                'flex gap-3 animate-fade-in',
-                message.is_own && 'flex-row-reverse'
-              )}
-            >
-              {showAvatar ? (
-                <TriangleAvatar 
-                  src={message.sender_avatar}
-                  alt={message.sender_name}
-                  fallback={message.sender_name.split(' ').map(n => n[0]).join('')}
-                  className="h-8 w-8"
-                />
-              ) : (
-                <div className="w-8" />
-              )}
-
-              <div className={cn('flex-1 max-w-[70%]', message.is_own && 'flex flex-col items-end')}>
-                <div
-                  className={cn(
-                    'rounded-2xl px-4 py-2 shadow-sm',
-                    message.is_own
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted'
-                  )}
-                >
-                  <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
-                </div>
-                
-                {showTimestamp && (
-                  <div className={cn(
-                    'flex items-center gap-1 mt-1 text-xs text-muted-foreground',
-                    message.is_own && 'flex-row-reverse'
-                  )}>
-                    <span>
-                      {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
-                    </span>
-                    {message.is_own && (
-                      <CheckCheck className="h-3 w-3 text-primary" />
-                    )}
-                  </div>
-                )}
-              </div>
+      <ScrollArea className="flex-1 px-6 py-4 bg-gradient-to-b from-background to-muted/10">
+        <div className="space-y-6">
+        {messages.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full py-20 text-center">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <Send className="h-10 w-10 text-primary" />
             </div>
-          );
-        })}
+            <h3 className="text-lg font-semibold text-foreground mb-2">Start the conversation</h3>
+            <p className="text-sm text-muted-foreground max-w-md">
+              Send a message to begin chatting with {otherParticipant?.name || 'this user'}
+            </p>
+          </div>
+        ) : (
+          messages.map((message, index) => {
+            const showAvatar = index === 0 || messages[index - 1].sender_id !== message.sender_id;
+            const showTimestamp = index === messages.length - 1 || 
+              messages[index + 1]?.sender_id !== message.sender_id;
+
+            return (
+              <div
+                key={message.id}
+                className={cn(
+                  'flex gap-3 animate-fade-in',
+                  message.is_own && 'flex-row-reverse'
+                )}
+              >
+                {showAvatar ? (
+                  <TriangleAvatar 
+                    src={message.sender_avatar}
+                    alt={message.sender_name}
+                    fallback={message.sender_name.split(' ').map(n => n[0]).join('')}
+                    className="h-10 w-10 flex-shrink-0 ring-2 ring-border"
+                  />
+                ) : (
+                  <div className="w-10" />
+                )}
+
+                <div className={cn('flex-1 max-w-[70%]', message.is_own && 'flex flex-col items-end')}>
+                  <div
+                    className={cn(
+                      'rounded-2xl px-5 py-3 shadow-sm',
+                      message.is_own
+                        ? 'bg-gradient-to-br from-primary to-primary-dark text-primary-foreground'
+                        : 'bg-card text-foreground border border-border'
+                    )}
+                  >
+                    <p className="text-sm whitespace-pre-wrap break-words leading-relaxed">{message.content}</p>
+                  </div>
+                  
+                  {showTimestamp && (
+                    <div className={cn(
+                      'flex items-center gap-1 mt-1.5 text-xs text-muted-foreground px-1',
+                      message.is_own && 'flex-row-reverse'
+                    )}>
+                      <span>
+                        {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
+                      </span>
+                      {message.is_own && (
+                        <CheckCheck className="h-3 w-3 text-primary" />
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
         <div ref={messagesEndRef} />
         </div>
       </ScrollArea>
 
       {/* AI Suggestions */}
       {aiSuggestions.length > 0 && (
-        <div className="px-4 py-2 border-t border-border bg-accent/30">
+        <div className="px-6 py-3 border-t border-border bg-card/50 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className="h-4 w-4 text-primary" />
             <span className="text-xs font-medium text-muted-foreground">Quick Replies</span>
@@ -331,7 +355,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, on
                 variant="outline"
                 size="sm"
                 onClick={() => setNewMessage(suggestion)}
-                className="text-xs hover:bg-primary hover:text-primary-foreground transition-all"
+                className="text-xs hover:bg-primary hover:text-primary-foreground transition-colors"
               >
                 {suggestion}
               </Button>
@@ -341,35 +365,24 @@ export const MessageThread: React.FC<MessageThreadProps> = ({ conversationId, on
       )}
 
       {/* Input Area */}
-      <div className="p-4 border-t border-border bg-card">
-        <div className="flex gap-2">
-          <div className="flex-1 relative">
-            <Textarea
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={handleKeyPress}
-              placeholder="Type a message..."
-              className="resize-none min-h-[44px] max-h-[120px] pr-10"
-              rows={1}
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 bottom-2 h-7 w-7"
-            >
-              <Smile className="h-4 w-4" />
-            </Button>
-          </div>
-
+      <div className="p-6 border-t border-border bg-card/50 backdrop-blur-sm">
+        <div className="flex items-end gap-3">
+          <Textarea
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
+            placeholder="Type your message..."
+            className="flex-1 resize-none min-h-[100px] bg-background border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl"
+          />
           <Button
             onClick={handleSend}
             disabled={!newMessage.trim() || sending}
-            className="shrink-0 h-12 w-12 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25"
+            className="h-12 px-6 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary shadow-lg shadow-primary/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             {sending ? (
-              <Loader2 className="h-6 w-6 animate-spin" />
+              <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
-              <Send className="h-6 w-6" />
+              <Send className="h-5 w-5" />
             )}
           </Button>
         </div>

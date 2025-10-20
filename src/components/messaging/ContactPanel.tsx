@@ -79,124 +79,132 @@ export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) =>
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full p-6">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      <div className="flex items-center justify-center h-full bg-gradient-to-br from-background to-muted/20">
+        <div className="text-center space-y-4">
+          <div className="relative">
+            <div className="w-14 h-14 border-4 border-primary/30 rounded-full mx-auto" />
+            <div className="w-14 h-14 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto absolute top-0 left-1/2 -translate-x-1/2" />
+          </div>
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-foreground">Loading profile</p>
+            <p className="text-xs text-muted-foreground">Just a moment...</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!contact) {
     return (
-      <div className="flex items-center justify-center h-full p-6 text-center text-muted-foreground">
-        <p>No contact information available</p>
+      <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+        <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+          <Users className="h-8 w-8 text-muted-foreground" />
+        </div>
+        <h3 className="font-semibold text-foreground mb-2">Profile Unavailable</h3>
+        <p className="text-sm text-muted-foreground max-w-xs">
+          Contact information is not available at this time
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 animate-fade-in">
       {/* Profile Header */}
-      <div className="text-center">
-        <TriangleAvatar 
-          src={contact.profile_picture_url}
-          alt={contact.name}
-          fallback={contact.name.split(' ').map((n: string) => n[0]).join('')}
-          className="h-24 w-24 mx-auto mb-4"
-        />
-        <h2 className="text-xl font-bold text-foreground">{contact.name}</h2>
-        <p className="text-sm text-muted-foreground mb-2">{contact.role}</p>
-        
-        <div className="flex items-center justify-center gap-1 mb-4">
-          <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
-          <span className="font-semibold text-foreground">{contact.rating}</span>
-          <span className="text-sm text-muted-foreground">
-            ({contact.totalSessions} sessions)
-          </span>
+      <div className="text-center space-y-4 pb-6 border-b border-border">
+        <div className="relative inline-block">
+          <TriangleAvatar 
+            src={contact.profile_picture_url}
+            alt={contact.name}
+            fallback={contact.name.split(' ').map((n: string) => n[0]).join('')}
+            className="h-24 w-24 mx-auto ring-4 ring-primary/10"
+          />
+          <div className="absolute bottom-0 right-0 w-6 h-6 bg-success rounded-full border-4 border-background" />
         </div>
-
-        <div className="flex gap-2 justify-center">
-          <Button size="sm" variant="default">
-            <Calendar className="h-4 w-4 mr-2" />
+        <div>
+          <h2 className="text-xl font-bold text-foreground mb-1">{contact.name}</h2>
+          <p className="text-sm font-medium text-muted-foreground mb-2 capitalize">{contact.role}</p>
+          {contact.rating > 0 && (
+            <div className="flex items-center justify-center gap-1.5 bg-rating/10 rounded-full px-3 py-1 inline-flex">
+              <Star className="h-4 w-4 fill-rating text-rating" />
+              <span className="text-sm font-bold text-rating-foreground">{contact.rating}</span>
+            </div>
+          )}
+        </div>
+        <div className="flex gap-2 justify-center flex-wrap">
+          <Button size="sm" variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors">
+            <Phone className="h-4 w-4 mr-1.5" />
+            Call
+          </Button>
+          <Button size="sm" variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors">
+            <Calendar className="h-4 w-4 mr-1.5" />
             Schedule
           </Button>
-          <Button size="sm" variant="outline">
-            <DollarSign className="h-4 w-4 mr-2" />
+          <Button size="sm" variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors">
+            <DollarSign className="h-4 w-4 mr-1.5" />
             Pay
           </Button>
         </div>
       </div>
 
-      <Separator />
-
       {/* Contact Info */}
-      <div className="space-y-3">
-        <h3 className="font-semibold text-sm text-foreground">Contact Information</h3>
-        
-        <div className="flex items-center gap-2 text-sm">
-          <Briefcase className="h-4 w-4 text-muted-foreground" />
-          <span className="text-foreground">{contact.company}</span>
-        </div>
-        
-        <div className="flex items-center gap-2 text-sm">
-          <MapPin className="h-4 w-4 text-muted-foreground" />
-          <span className="text-foreground">{contact.location}</span>
-        </div>
-        
-        <div className="flex items-center gap-2 text-sm">
-          <Mail className="h-4 w-4 text-muted-foreground" />
-          <a href={`mailto:${contact.email}`} className="text-primary hover:underline">
-            {contact.email}
-          </a>
-        </div>
-        
-        <div className="flex items-center gap-2 text-sm">
-          <Phone className="h-4 w-4 text-muted-foreground" />
-          <a href={`tel:${contact.phone}`} className="text-primary hover:underline">
-            {contact.phone}
-          </a>
+      <div className="space-y-4">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+          <Briefcase className="h-4 w-4 text-primary" />
+          Contact Details
+        </h3>
+        <div className="space-y-3">
+          <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+            <Briefcase className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+            <span className="text-sm text-foreground">{contact.company}</span>
+          </div>
+          <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+            <MapPin className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+            <span className="text-sm text-foreground">{contact.location}</span>
+          </div>
+          {contact.email && (
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+              <Mail className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+              <a href={`mailto:${contact.email}`} className="text-sm text-primary hover:underline">
+                {contact.email}
+              </a>
+            </div>
+          )}
+          {contact.phone && (
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+              <Phone className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+              <a href={`tel:${contact.phone}`} className="text-sm text-primary hover:underline">
+                {contact.phone}
+              </a>
+            </div>
+          )}
         </div>
       </div>
-
-      <Separator />
 
       {/* Bio */}
-      <div className="space-y-2">
+      <div className="space-y-3">
         <h3 className="font-semibold text-sm text-foreground">About</h3>
-        <p className="text-sm text-muted-foreground">{contact.bio}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed bg-muted/50 p-4 rounded-lg">
+          {contact.bio}
+        </p>
       </div>
-
-      <Separator />
-
-      {/* Shared Cohorts */}
-      <div className="space-y-2">
-        <h3 className="font-semibold text-sm text-foreground">Shared Cohorts</h3>
-        <div className="flex flex-wrap gap-2">
-          {contact.cohorts.map((cohort, idx) => (
-            <Badge key={idx} variant="secondary" className="text-xs">
-              {cohort}
-            </Badge>
-          ))}
-        </div>
-      </div>
-
-      <Separator />
 
       {/* Shared Files */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-sm text-foreground">Shared Files</h3>
-          <Button variant="ghost" size="sm">
-            <ExternalLink className="h-3 w-3" />
-          </Button>
-        </div>
+      <div className="space-y-3">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+          <FileText className="h-4 w-4 text-primary" />
+          Shared Files
+        </h3>
         <div className="space-y-2">
           {sharedFiles.map((file, idx) => (
             <button
               key={idx}
-              className="w-full p-2 rounded-lg hover:bg-accent transition-colors text-left"
+              className="w-full p-3 rounded-lg bg-card border border-border hover:border-primary cursor-pointer transition-colors group text-left"
             >
-              <div className="flex items-start gap-2">
-                <FileText className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <FileText className="h-5 w-5 text-primary" />
+                </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate text-foreground">{file.name}</p>
                   <p className="text-xs text-muted-foreground">
@@ -209,25 +217,21 @@ export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) =>
         </div>
       </div>
 
-      <Separator />
-
       {/* Mutual Connections */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <Users className="h-4 w-4 text-muted-foreground" />
-          <h3 className="font-semibold text-sm text-foreground">
-            Mutual Connections ({mutualConnections.length})
-          </h3>
-        </div>
+      <div className="space-y-3">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+          <Users className="h-4 w-4 text-primary" />
+          Mutual Connections ({mutualConnections.length})
+        </h3>
         <div className="space-y-2">
           {mutualConnections.length > 0 ? (
             mutualConnections.map((connection, idx) => (
-              <div key={idx} className="flex items-center gap-2">
+              <div key={idx} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border hover:border-primary cursor-pointer transition-colors group">
                 <TriangleAvatar 
                   src={connection.profile_picture_url}
                   alt={connection.name}
                   fallback={connection.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
-                  className="h-8 w-8"
+                  className="h-10 w-10 ring-2 ring-transparent group-hover:ring-primary/20 transition-all"
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate text-foreground">{connection.name}</p>

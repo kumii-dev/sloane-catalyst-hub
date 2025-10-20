@@ -133,8 +133,8 @@ export function Layout({ children, showSidebar = false, hideSecondarySidebar = f
           />
         </div>
         
-        <main className="flex-1 overflow-auto main-gradient-light w-full">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden main-gradient-light w-full">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 w-full">
             {children}
           </div>
         </main>

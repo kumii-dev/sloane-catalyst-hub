@@ -19,7 +19,7 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 relative z-10 max-w-full overflow-x-hidden">
         <div className="max-w-4xl mx-auto text-center text-white">
           {/* Trust Badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-up">
@@ -42,53 +42,53 @@ const Hero = () => {
           </p>
 
           {/* Platform Services */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-up">
-            <Link to="/access-to-market" className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
-              <div className="flex items-center gap-4">
-                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
-                  <TrendingUp className="h-6 w-6 text-white" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 animate-fade-up px-2">
+            <Link to="/access-to-market" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                  <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-lg">Market Access</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Market Access</span>
               </div>
             </Link>
-            <Link to="/funding" className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
-              <div className="flex items-center gap-4">
-                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
-                  <DollarSign className="h-6 w-6 text-white" />
+            <Link to="/funding" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                  <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-lg">Funding Hub</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Funding Hub</span>
               </div>
             </Link>
-            <Link to="/credit-score" className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
-              <div className="flex items-center gap-4">
-                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
-                  <FileCheck className="h-6 w-6 text-white" />
+            <Link to="/credit-score" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                  <FileCheck className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-lg">Credit Scoring</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Credit Scoring</span>
               </div>
             </Link>
-            <Link to="/mentorship" className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
-              <div className="flex items-center gap-4">
-                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
-                  <Users className="h-6 w-6 text-white" />
+            <Link to="/mentorship" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                  <Users className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-lg">Expert Mentorship</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Expert Mentorship</span>
               </div>
             </Link>
-            <Link to="/services" className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
-              <div className="flex items-center gap-4">
-                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
-                  <Briefcase className="h-6 w-6 text-white" />
+            <Link to="/services" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                  <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-lg">Pro Services</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Pro Services</span>
               </div>
             </Link>
-            <Link to="/resources" className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
-              <div className="flex items-center gap-4">
-                <div className="rounded-xl p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
-                  <BookOpen className="h-6 w-6 text-white" />
+            <Link to="/resources" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                  <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-lg">Resources</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Resources</span>
               </div>
             </Link>
           </div>

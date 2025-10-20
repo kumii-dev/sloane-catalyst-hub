@@ -173,8 +173,8 @@ const MentorProfile = () => {
     <Layout showSidebar={true}>
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/10">
         {/* Header */}
-        <div className="border-b bg-card/80 backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-6">
+        <div className="border-b bg-card/80 backdrop-blur-sm overflow-x-hidden">
+          <div className="container mx-auto px-4 py-6 max-w-full">
             <Button
               variant="ghost"
               onClick={() => navigate('/find-mentor')}
@@ -255,31 +255,33 @@ const MentorProfile = () => {
         </div>
 
         {/* Main Content */}
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2">
               <Tabs defaultValue="profile" className="w-full">
-                <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent">
-                  <TabsTrigger value="profile" className="rounded-none border-b-2 data-[state=active]:border-primary">
+                <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent overflow-x-auto flex-nowrap">
+                  <TabsTrigger value="profile" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
                     <User className="w-4 h-4 mr-2" />
-                    Mentor Profile
+                    <span className="hidden sm:inline">Mentor Profile</span>
+                    <span className="sm:hidden">Profile</span>
                   </TabsTrigger>
-                  <TabsTrigger value="reviews" className="rounded-none border-b-2 data-[state=active]:border-primary">
+                  <TabsTrigger value="reviews" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
                     <Star className="w-4 h-4 mr-2" />
                     Reviews
                     <Badge variant="secondary" className="ml-2">{reviewCount}</Badge>
                   </TabsTrigger>
-                  <TabsTrigger value="bookshelf" className="rounded-none border-b-2 data-[state=active]:border-primary">
+                  <TabsTrigger value="bookshelf" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
                     <BookOpen className="w-4 h-4 mr-2" />
                     Library
                     <Badge variant="secondary" className="ml-2">{libraryCount}</Badge>
                   </TabsTrigger>
-                  <TabsTrigger value="similar" className="rounded-none border-b-2 data-[state=active]:border-primary">
+                  <TabsTrigger value="similar" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
                     <Users className="w-4 h-4 mr-2" />
-                    Similar Mentors
+                    <span className="hidden sm:inline">Similar Mentors</span>
+                    <span className="sm:hidden">Similar</span>
                   </TabsTrigger>
-                  <TabsTrigger value="schedule" className="rounded-none border-b-2 data-[state=active]:border-primary">
+                  <TabsTrigger value="schedule" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
                     <Calendar className="w-4 h-4 mr-2" />
                     Schedule
                     <div className="ml-2 w-2 h-2 bg-green-500 rounded-full"></div>

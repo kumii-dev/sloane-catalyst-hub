@@ -89,6 +89,15 @@ const handler = async (req: Request): Promise<Response> => {
       });
 
       console.log("Mentor email sent:", mentorEmailResponse);
+      try {
+        const mentorEmailId = mentorEmailResponse?.data?.id;
+        if (mentorEmailId) {
+          const status = await resend.emails.get(mentorEmailId);
+          console.log("Mentor email status:", status);
+        }
+      } catch (statusErr) {
+        console.error("Failed to fetch mentor email status:", statusErr);
+      }
 
       // Create notification for mentor
       const { data: notification, error: notificationError } = await supabase
@@ -157,6 +166,15 @@ const handler = async (req: Request): Promise<Response> => {
       });
 
       console.log("Mentee email sent:", menteeEmailResponse);
+      try {
+        const menteeEmailId = menteeEmailResponse?.data?.id;
+        if (menteeEmailId) {
+          const status = await resend.emails.get(menteeEmailId);
+          console.log("Mentee email status:", status);
+        }
+      } catch (statusErr) {
+        console.error("Failed to fetch mentee email status:", statusErr);
+      }
 
       // Create notification for mentee
       const { data: notification, error: notificationError } = await supabase

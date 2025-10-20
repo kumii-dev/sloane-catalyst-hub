@@ -49,6 +49,7 @@ import Files from "./pages/Files";
 import Copilot from "./pages/Copilot";
 import About from "./pages/About";
 import SessionReview from "./pages/SessionReview";
+import InstallPWA from "./pages/InstallPWA";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -106,6 +107,7 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/review/:sessionId" element={<SessionReview />} />
             <Route path="/video-creator" element={<VideoCreator />} />
+            <Route path="/install" element={<InstallPWA />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

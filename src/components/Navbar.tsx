@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -9,6 +9,8 @@ import logo from "@/assets/kumi-logo.png";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const location = useLocation();
+  const isLandingPage = location.pathname === "/";
 
   const navItems = [
     { name: "Access to Market", href: "/access-to-market" },
@@ -32,32 +34,34 @@ const Navbar = () => {
             />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <div key={item.name} className="relative group">
-                {item.href.startsWith('#') ? (
-                  <a
-                    href={item.href}
-                    className="flex items-center gap-1 text-primary-dark/80 hover:text-primary-dark transition-smooth font-semibold text-base"
-                  >
-                    {item.name}
-                    {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
-                  </a>
-                ) : (
-                  <Link
-                    to={item.href}
-                    className="flex items-center gap-1 text-primary-dark/80 hover:text-primary-dark transition-smooth font-semibold text-base"
-                  >
-                    {item.name}
-                    {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
-                  </Link>
-                )}
-                
-                {/* Dropdown would go here for items with hasDropdown */}
-              </div>
-            ))}
-          </div>
+          {/* Desktop Navigation - Hidden on landing page */}
+          {!isLandingPage && (
+            <div className="hidden md:flex items-center space-x-8">
+              {navItems.map((item) => (
+                <div key={item.name} className="relative group">
+                  {item.href.startsWith('#') ? (
+                    <a
+                      href={item.href}
+                      className="flex items-center gap-1 text-primary-dark/80 hover:text-primary-dark transition-smooth font-semibold text-base"
+                    >
+                      {item.name}
+                      {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
+                    </a>
+                  ) : (
+                    <Link
+                      to={item.href}
+                      className="flex items-center gap-1 text-primary-dark/80 hover:text-primary-dark transition-smooth font-semibold text-base"
+                    >
+                      {item.name}
+                      {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
+                    </Link>
+                  )}
+                  
+                  {/* Dropdown would go here for items with hasDropdown */}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
@@ -88,18 +92,20 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 text-white hover:text-white/80 transition-smooth"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          {/* Mobile Menu Button - Hidden on landing page */}
+          {!isLandingPage && (
+            <button
+              className="md:hidden p-2 text-white hover:text-white/80 transition-smooth"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          )}
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
+        {/* Mobile Navigation - Hidden on landing page */}
+        {!isLandingPage && isOpen && (
           <div className="md:hidden py-4 border-t border-white/20">
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => (

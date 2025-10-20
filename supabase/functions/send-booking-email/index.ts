@@ -29,6 +29,28 @@ interface BookingEmailRequest {
   menteeUserId: string;
 }
 
+// Simple retry helper to avoid transient failures and rate limits
+async function sendEmailWithRetry(
+  params: any,
+  attempts = 3
+): Promise<{ data: any; error: any }> {
+  let last: { data: any; error: any } | null = null;
+  for (let i = 0; i < attempts; i++) {
+    last = await resend.emails.send(params);
+    if (!last?.error) return last;
+    const status = last.error?.statusCode ?? 0;
+    // Retry on 429 (rate limit) and 5xx errors
+    if (status === 429 || status >= 500) {
+      const delay = (i + 1) * 600; // backoff: 600ms, 1200ms, 1800ms
+      console.warn(`Resend error (status ${status}), retrying in ${delay}ms`);
+      await new Promise((r) => setTimeout(r, delay));
+      continue;
+    }
+    break;
+  }
+  return last as { data: any; error: any };
+}
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -88,7 +110,11 @@ const handler = async (req: Request): Promise<Response> => {
         `,
       });
 
-      console.log("Mentor email sent:", mentorEmailResponse);
+      console.log("Mentor email response:", mentorEmailResponse);
+      if (mentorEmailResponse?.error) {
+        console.error("Failed to send mentor email:", mentorEmailResponse.error);
+        throw new Error(mentorEmailResponse.error.message || "Failed to send mentor email");
+      }
 
       // Create notification for mentor
       const { data: notification, error: notificationError } = await supabase
@@ -156,7 +182,11 @@ const handler = async (req: Request): Promise<Response> => {
         `,
       });
 
-      console.log("Mentee email sent:", menteeEmailResponse);
+      console.log("Mentee email response:", menteeEmailResponse);
+      if (menteeEmailResponse?.error) {
+        console.error("Failed to send mentee email:", menteeEmailResponse.error);
+        throw new Error(menteeEmailResponse.error.message || "Failed to send mentee email");
+      }
 
       // Create notification for mentee
       const { data: notification, error: notificationError } = await supabase

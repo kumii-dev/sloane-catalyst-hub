@@ -62,12 +62,12 @@ export const BookSessionDialog = ({ open, onOpenChange, mentor }: BookSessionDia
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto p-0">
+      <DialogContent className="max-w-[95vw] sm:max-w-3xl lg:max-w-5xl max-h-[90vh] overflow-y-auto p-0 w-full">
         <BookingProgressStepper currentStep={currentStep} />
         
-        <div className="px-6 pb-6">
-          <div className="flex items-center justify-end gap-1 mb-4 flex-wrap">
-            <p className="text-sm text-muted-foreground font-bold">
+        <div className="px-3 sm:px-6 pb-4 sm:pb-6">
+          <div className="flex items-center justify-center sm:justify-end gap-2 mb-4 flex-wrap">
+            <p className="text-xs sm:text-sm text-muted-foreground font-bold text-center sm:text-left">
               We time your booking session to prevent conflicts and double bookings
             </p>
             <BookingTimer onTimeout={handleTimeout} initialMinutes={10} />

@@ -174,7 +174,7 @@ const MentorProfile = () => {
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/10">
         {/* Header */}
         <div className="border-b bg-card/80 backdrop-blur-sm overflow-x-hidden">
-          <div className="container mx-auto px-4 py-6 max-w-full">
+          <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-full">
             <Button
               variant="ghost"
               onClick={() => navigate('/find-mentor')}
@@ -255,12 +255,12 @@ const MentorProfile = () => {
         </div>
 
         {/* Main Content */}
-        <div className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
+        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-full overflow-x-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2">
-              <Tabs defaultValue="profile" className="w-full">
-                <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent overflow-x-auto flex-nowrap">
+              <Tabs defaultValue="profile" className="w-full overflow-hidden">
+                <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent overflow-x-auto flex-nowrap scrollbar-hide">
                   <TabsTrigger value="profile" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
                     <User className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Mentor Profile</span>

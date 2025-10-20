@@ -82,7 +82,7 @@ export const BookSessionDialog = ({ open, onOpenChange, mentor }: BookSessionDia
             <p className="text-xs sm:text-sm text-muted-foreground font-bold text-center sm:text-left">
               We time your booking session to prevent conflicts and double bookings
             </p>
-            <BookingTimer onTimeout={handleTimeout} initialMinutes={10} />
+            <BookingTimer onTimeout={handleTimeout} initialMinutes={3} />
           </div>
           
           {currentStep === "calendar" && (

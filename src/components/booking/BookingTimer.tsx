@@ -7,7 +7,7 @@ interface BookingTimerProps {
   initialMinutes?: number;
 }
 
-export const BookingTimer = ({ onTimeout, initialMinutes = 10 }: BookingTimerProps) => {
+export const BookingTimer = ({ onTimeout, initialMinutes = 3 }: BookingTimerProps) => {
   const [timeLeft, setTimeLeft] = useState(initialMinutes * 60); // in seconds
 
   useEffect(() => {

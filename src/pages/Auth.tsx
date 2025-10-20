@@ -26,9 +26,25 @@ const Auth = () => {
   useEffect(() => {
     // Check if this is a password reset flow
     const params = new URLSearchParams(window.location.search);
+    const hash = new URLSearchParams(window.location.hash.substring(1));
     const resetParam = params.get('reset');
-    const accessToken = params.get('access_token');
-    const type = params.get('type');
+    const accessToken = params.get('access_token') || hash.get('access_token');
+    const type = params.get('type') || hash.get('type');
+    const error = hash.get('error');
+    const errorCode = hash.get('error_code');
+    
+    // If there's an error (like expired OTP), show the forgot password form
+    if (error === 'access_denied' && errorCode === 'otp_expired') {
+      setShowForgotPassword(true);
+      toast({
+        title: "Reset link expired",
+        description: "Your password reset link has expired. Please request a new one.",
+        variant: "destructive",
+      });
+      // Clean up the URL
+      window.history.replaceState({}, document.title, '/auth');
+      return;
+    }
     
     if ((resetParam === 'true' || type === 'recovery') && accessToken) {
       setIsResettingPassword(true);

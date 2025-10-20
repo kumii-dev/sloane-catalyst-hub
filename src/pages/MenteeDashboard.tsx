@@ -337,9 +337,9 @@ const MenteeDashboard = () => {
                 <div className="space-y-4">
                   {upcomingSessions.map((session) => (
                     <Card key={session.id} className="hover:shadow-lg transition-shadow">
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          <Avatar className="h-16 w-16">
+                      <CardContent className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row items-start gap-4">
+                          <Avatar className="h-16 w-16 flex-shrink-0">
                             <AvatarImage 
                               src={session.mentor_profile?.profile_picture_url} 
                               alt={session.mentor_profile?.first_name}
@@ -350,77 +350,94 @@ const MenteeDashboard = () => {
                             </AvatarFallback>
                           </Avatar>
 
-                          <div className="flex-1">
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h3 className="text-xl font-semibold mb-1">{session.title}</h3>
-                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <User className="w-4 h-4" />
-                                  <span>
-                                    {session.mentor_profile?.first_name} {session.mentor_profile?.last_name}
-                                  </span>
-                                  <span>•</span>
-                                  <span>{session.mentors?.title}</span>
+                          <div className="flex-1 min-w-0 w-full">
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                              <div className="min-w-0 flex-1">
+                                <h3 className="text-lg sm:text-xl font-semibold mb-2 break-words">{session.title}</h3>
+                                <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                                  <div className="flex items-center gap-1">
+                                    <User className="w-4 h-4 flex-shrink-0" />
+                                    <span className="truncate">
+                                      {session.mentor_profile?.first_name} {session.mentor_profile?.last_name}
+                                    </span>
+                                  </div>
+                                  {session.mentors?.title && (
+                                    <>
+                                      <span className="hidden sm:inline">•</span>
+                                      <span className="truncate">{session.mentors?.title}</span>
+                                    </>
+                                  )}
                                 </div>
                               </div>
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-2 flex-shrink-0">
                                 {getStatusIcon(session.session_status)}
-                                <Badge {...getStatusBadge(session.session_status)}>
+                                <Badge {...getStatusBadge(session.session_status)} className="whitespace-nowrap">
                                   {session.session_status}
                                 </Badge>
                               </div>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
-                              <div className="flex items-center gap-2">
-                                <Calendar className="w-4 h-4 text-primary" />
-                                <span className="font-medium">
-                                  {format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}
-                                </span>
+                            <div className="flex flex-col gap-3 mt-3">
+                              <div className="flex flex-wrap items-center gap-3 text-sm">
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
+                                  <span className="font-medium">
+                                    {format(new Date(session.scheduled_at), 'PPP')}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <Clock className="w-4 h-4 text-primary flex-shrink-0" />
+                                  <span>{format(new Date(session.scheduled_at), 'h:mm a')}</span>
+                                </div>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <span>{session.duration_minutes} min</span>
+                                </div>
                               </div>
-                              <div className="flex items-center gap-2">
-                                <Clock className="w-4 h-4 text-primary" />
-                                <span>{session.duration_minutes} minutes</span>
+                              
+                              <div className="flex flex-wrap items-center gap-2">
+                                {session.session_type && (
+                                  <Badge variant="outline" className="whitespace-nowrap">{session.session_type}</Badge>
+                                )}
+                                {session.price && (
+                                  <Badge variant="secondary" className="whitespace-nowrap">R{session.price}</Badge>
+                                )}
+                                <SessionCountdown scheduledAt={session.scheduled_at} />
                               </div>
-                              {session.session_type && (
-                                <Badge variant="outline">{session.session_type}</Badge>
-                              )}
-                              {session.price && (
-                                <Badge variant="secondary">R{session.price}</Badge>
-                              )}
-                              <SessionCountdown scheduledAt={session.scheduled_at} />
                             </div>
 
                             {session.description && (
-                              <p className="mt-3 text-sm text-muted-foreground line-clamp-2">
+                              <p className="mt-3 text-sm text-muted-foreground line-clamp-2 break-words">
                                 {session.description}
                               </p>
                             )}
 
-                            <div className="flex gap-2 mt-4">
+                            <div className="flex flex-col sm:flex-row gap-2 mt-4">
                               <Button 
                                 size="sm" 
                                 variant="default"
                                 onClick={() => handleJoinSession(session)}
                                 disabled={!canJoinSession(session.scheduled_at)}
+                                className="w-full sm:w-auto"
                               >
                                 <Video className="w-4 h-4 mr-2" />
-                                Join Session
+                                <span className="whitespace-nowrap">Join Session</span>
                               </Button>
                               <Button 
                                 size="sm" 
                                 variant="outline"
                                 onClick={() => navigate(`/messaging-hub?userId=${session.mentors?.user_id}`)}
+                                className="w-full sm:w-auto"
                               >
                                 <MessageSquare className="w-4 h-4 mr-2" />
-                                Message Mentor
+                                <span className="whitespace-nowrap">Message</span>
                               </Button>
                               <Button 
                                 size="sm" 
                                 variant="outline"
                                 onClick={() => navigate(`/mentor/${session.mentors?.id}`)}
+                                className="w-full sm:w-auto"
                               >
-                                View Profile
+                                <span className="whitespace-nowrap">View Profile</span>
                               </Button>
                             </div>
                           </div>
@@ -444,9 +461,9 @@ const MenteeDashboard = () => {
                 <div className="space-y-4">
                   {pastSessions.map((session) => (
                     <Card key={session.id} className="opacity-90">
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          <Avatar className="h-16 w-16">
+                      <CardContent className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row items-start gap-4">
+                          <Avatar className="h-16 w-16 flex-shrink-0">
                             <AvatarImage 
                               src={session.mentor_profile?.profile_picture_url} 
                               alt={session.mentor_profile?.first_name}
@@ -457,42 +474,42 @@ const MenteeDashboard = () => {
                             </AvatarFallback>
                           </Avatar>
 
-                          <div className="flex-1">
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h3 className="text-xl font-semibold mb-1">{session.title}</h3>
+                          <div className="flex-1 min-w-0 w-full">
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                              <div className="min-w-0 flex-1">
+                                <h3 className="text-lg sm:text-xl font-semibold mb-2 break-words">{session.title}</h3>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <User className="w-4 h-4" />
-                                  <span>
+                                  <User className="w-4 h-4 flex-shrink-0" />
+                                  <span className="truncate">
                                     {session.mentor_profile?.first_name} {session.mentor_profile?.last_name}
                                   </span>
                                 </div>
                               </div>
-                              <Badge {...getStatusBadge(session.session_status)}>
+                              <Badge {...getStatusBadge(session.session_status)} className="whitespace-nowrap flex-shrink-0">
                                 {session.session_status}
                               </Badge>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
+                            <div className="flex flex-col gap-2 mt-3 text-sm">
                               <div className="flex items-center gap-2">
-                                <Calendar className="w-4 h-4 text-muted-foreground" />
-                                <span>{format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}</span>
+                                <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <span className="break-words">{format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <Clock className="w-4 h-4 text-muted-foreground" />
+                                <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                                 <span>{session.duration_minutes} minutes</span>
                               </div>
                             </div>
 
                             {session.session_status === 'completed' && (
-                              <div className="flex gap-2 mt-4">
-                                <Button size="sm" variant="outline">
+                              <div className="flex flex-col sm:flex-row gap-2 mt-4">
+                                <Button size="sm" variant="outline" className="w-full sm:w-auto">
                                   <Star className="w-4 h-4 mr-2" />
-                                  Leave Review
+                                  <span className="whitespace-nowrap">Leave Review</span>
                                 </Button>
-                                <Button size="sm" variant="outline">
+                                <Button size="sm" variant="outline" className="w-full sm:w-auto">
                                   <Calendar className="w-4 h-4 mr-2" />
-                                  Book Again
+                                  <span className="whitespace-nowrap">Book Again</span>
                                 </Button>
                               </div>
                             )}
@@ -509,9 +526,9 @@ const MenteeDashboard = () => {
               <div className="space-y-4">
                 {sessions.map((session) => (
                   <Card key={session.id} className="hover:shadow-lg transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <Avatar className="h-16 w-16">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col sm:flex-row items-start gap-4">
+                        <Avatar className="h-16 w-16 flex-shrink-0">
                           <AvatarImage 
                             src={session.mentor_profile?.profile_picture_url} 
                             alt={session.mentor_profile?.first_name}
@@ -522,33 +539,33 @@ const MenteeDashboard = () => {
                           </AvatarFallback>
                         </Avatar>
 
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between mb-2">
-                            <div>
-                              <h3 className="text-xl font-semibold mb-1">{session.title}</h3>
+                        <div className="flex-1 min-w-0 w-full">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                            <div className="min-w-0 flex-1">
+                              <h3 className="text-lg sm:text-xl font-semibold mb-2 break-words">{session.title}</h3>
                               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <User className="w-4 h-4" />
-                                <span>
+                                <User className="w-4 h-4 flex-shrink-0" />
+                                <span className="truncate">
                                   {session.mentor_profile?.first_name} {session.mentor_profile?.last_name}
                                 </span>
                               </div>
                             </div>
-                            <Badge {...getStatusBadge(session.session_status)}>
+                            <Badge {...getStatusBadge(session.session_status)} className="whitespace-nowrap flex-shrink-0">
                               {session.session_status}
                             </Badge>
                           </div>
 
-                          <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
+                          <div className="flex flex-col gap-2 mt-3 text-sm">
                             <div className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4 text-primary" />
-                              <span>{format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}</span>
+                              <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
+                              <span className="break-words">{format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <Clock className="w-4 h-4 text-primary" />
+                              <Clock className="w-4 h-4 text-primary flex-shrink-0" />
                               <span>{session.duration_minutes} minutes</span>
                             </div>
                             {session.session_type && (
-                              <Badge variant="outline">{session.session_type}</Badge>
+                              <Badge variant="outline" className="w-fit whitespace-nowrap">{session.session_type}</Badge>
                             )}
                           </div>
                         </div>

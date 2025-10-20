@@ -55,7 +55,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (type === "booking_created") {
       // Email to mentor about new booking request
       const mentorEmailResponse = await resend.emails.send({
-        from: "22 on Sloane <onboarding@resend.dev>",
+        from: "22 on Sloane <noreply@kumii-test.com>",
         to: [mentorEmail],
         subject: "New Mentoring Session Booking Request",
         html: `
@@ -123,7 +123,7 @@ const handler = async (req: Request): Promise<Response> => {
     } else if (type === "booking_accepted") {
       // Email to mentee about accepted booking
       const menteeEmailResponse = await resend.emails.send({
-        from: "22 on Sloane <onboarding@resend.dev>",
+        from: "22 on Sloane <noreply@kumii-test.com>",
         to: [menteeEmail],
         subject: "Your Mentoring Session Has Been Confirmed!",
         html: `

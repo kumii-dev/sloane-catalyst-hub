@@ -55,7 +55,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (type === "booking_created") {
       // Email to mentor about new booking request
       const mentorEmailResponse = await resend.emails.send({
-        from: "22 on Sloane <noreply@kumii-test.com>",
+        from: "22 on Sloane <noreply@onboarding.com>", // CHANGE THIS to your verified domain
         to: [mentorEmail],
         subject: "New Mentoring Session Booking Request",
         html: `
@@ -89,15 +89,6 @@ const handler = async (req: Request): Promise<Response> => {
       });
 
       console.log("Mentor email sent:", mentorEmailResponse);
-      try {
-        const mentorEmailId = mentorEmailResponse?.data?.id;
-        if (mentorEmailId) {
-          const status = await resend.emails.get(mentorEmailId);
-          console.log("Mentor email status:", status);
-        }
-      } catch (statusErr) {
-        console.error("Failed to fetch mentor email status:", statusErr);
-      }
 
       // Create notification for mentor
       const { data: notification, error: notificationError } = await supabase
@@ -132,7 +123,7 @@ const handler = async (req: Request): Promise<Response> => {
     } else if (type === "booking_accepted") {
       // Email to mentee about accepted booking
       const menteeEmailResponse = await resend.emails.send({
-        from: "22 on Sloane <noreply@kumii-test.com>",
+        from: "22 on Sloane <noreply@onboarding.com>", // CHANGE THIS to your verified domain
         to: [menteeEmail],
         subject: "Your Mentoring Session Has Been Confirmed!",
         html: `
@@ -166,15 +157,6 @@ const handler = async (req: Request): Promise<Response> => {
       });
 
       console.log("Mentee email sent:", menteeEmailResponse);
-      try {
-        const menteeEmailId = menteeEmailResponse?.data?.id;
-        if (menteeEmailId) {
-          const status = await resend.emails.get(menteeEmailId);
-          console.log("Mentee email status:", status);
-        }
-      } catch (statusErr) {
-        console.error("Failed to fetch mentee email status:", statusErr);
-      }
 
       // Create notification for mentee
       const { data: notification, error: notificationError } = await supabase

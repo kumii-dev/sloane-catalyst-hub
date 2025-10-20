@@ -62,7 +62,7 @@ const ValuationModel = () => {
       <section className="py-16">
         <div className="container mx-auto px-6">
           <Tabs defaultValue="methodology" className="max-w-6xl mx-auto">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3">
               <TabsTrigger value="methodology">Methodology</TabsTrigger>
               <TabsTrigger value="input">Input</TabsTrigger>
               <TabsTrigger value="results">Results</TabsTrigger>

@@ -604,7 +604,7 @@ const FunderDashboard = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="opportunities" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-[500px]">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:w-[500px]">
             <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
             <TabsTrigger value="applications">
               Applications

@@ -212,3 +212,35 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Responsive utilities for mobile overflow prevention */
+@layer utilities {
+  /* Safe button groups that wrap on mobile */
+  .btn-group-responsive {
+    @apply flex flex-wrap items-center gap-2 sm:gap-4;
+  }
+
+  /* Tab list that scrolls horizontally on mobile */
+  .tabs-responsive {
+    @apply overflow-x-auto overflow-y-hidden flex-nowrap scrollbar-hide;
+  }
+
+  /* Text truncation for cards and tiles */
+  .text-truncate-safe {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .text-truncate-lines-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .text-truncate-lines-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

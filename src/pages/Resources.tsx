@@ -282,7 +282,7 @@ const Resources = () => {
         {/* Quick Access Tabs */}
         <section>
           <Tabs defaultValue="learning" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
               <TabsTrigger value="learning">Learning</TabsTrigger>
               <TabsTrigger value="tools">Tools</TabsTrigger>
               <TabsTrigger value="community">Community</TabsTrigger>

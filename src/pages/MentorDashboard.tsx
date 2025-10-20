@@ -465,22 +465,25 @@ const MentorDashboard = () => {
 
           {/* Sessions Tabs */}
           <Tabs defaultValue="pending" className="w-full">
-            <TabsList className="w-full justify-start mb-6">
-              <TabsTrigger value="pending" className="flex items-center gap-2">
+            <TabsList className="w-full justify-start mb-6 overflow-x-auto scrollbar-hide flex-nowrap">
+              <TabsTrigger value="pending" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                 <AlertCircle className="w-4 h-4" />
-                Pending Requests
+                <span className="hidden sm:inline">Pending Requests</span>
+                <span className="sm:hidden">Pending</span>
                 {stats.pending > 0 && (
                   <Badge variant="destructive" className="ml-1">{stats.pending}</Badge>
                 )}
               </TabsTrigger>
-              <TabsTrigger value="upcoming" className="flex items-center gap-2">
+              <TabsTrigger value="upcoming" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                 <Clock className="w-4 h-4" />
-                Upcoming Sessions
+                <span className="hidden sm:inline">Upcoming Sessions</span>
+                <span className="sm:hidden">Upcoming</span>
                 <Badge variant="secondary">{upcomingSessions.length}</Badge>
               </TabsTrigger>
-              <TabsTrigger value="past" className="flex items-center gap-2">
+              <TabsTrigger value="past" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                 <CheckCircle2 className="w-4 h-4" />
-                Past Sessions
+                <span className="hidden sm:inline">Past Sessions</span>
+                <span className="sm:hidden">Past</span>
                 <Badge variant="secondary">{pastSessions.length}</Badge>
               </TabsTrigger>
               <TabsTrigger value="all" className="flex items-center gap-2">

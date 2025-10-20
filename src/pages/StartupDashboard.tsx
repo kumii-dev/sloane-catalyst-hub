@@ -266,7 +266,7 @@ const StartupDashboard = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="matches" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
+          <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 lg:w-[400px]">
             <TabsTrigger value="matches">
               AI Matches
               {matches.filter(m => !m.is_viewed).length > 0 && (

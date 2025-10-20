@@ -240,7 +240,7 @@ const AccessToMarket = () => {
           {/* Personalized Dashboard Section */}
           {user && (
             <Tabs defaultValue="overview" className="mb-16">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="credit">Credit Score</TabsTrigger>
                 <TabsTrigger value="opportunities">Opportunities</TabsTrigger>

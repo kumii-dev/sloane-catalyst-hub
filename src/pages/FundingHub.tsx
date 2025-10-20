@@ -156,7 +156,7 @@ const FundingHub = () => {
       {/* Main Content Tabs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <Tabs defaultValue="opportunities" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-3 lg:w-[400px] mx-auto">
+          <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 lg:w-[400px] mx-auto">
             <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
             <TabsTrigger value="funders">Funders</TabsTrigger>
             <TabsTrigger value="insights">Insights</TabsTrigger>

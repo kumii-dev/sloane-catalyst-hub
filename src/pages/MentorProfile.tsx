@@ -263,32 +263,30 @@ const MentorProfile = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2">
-              <Tabs defaultValue="profile" className="w-full overflow-hidden">
-                <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent overflow-x-auto flex-nowrap scrollbar-hide">
-                  <TabsTrigger value="profile" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
-                    <User className="w-4 h-4 mr-2" />
-                    <span className="hidden sm:inline">Mentor Profile</span>
-                    <span className="sm:hidden">Profile</span>
+              <Tabs defaultValue="profile" className="w-full">
+                <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent overflow-x-auto overflow-y-hidden flex-nowrap scrollbar-hide">
+                  <TabsTrigger value="profile" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0 px-3 sm:px-4">
+                    <User className="w-4 h-4 mr-1 sm:mr-2" />
+                    <span className="text-xs sm:text-sm">Profile</span>
                   </TabsTrigger>
-                  <TabsTrigger value="reviews" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
-                    <Star className="w-4 h-4 mr-2" />
-                    Reviews
-                    <Badge variant="secondary" className="ml-2">{reviewCount}</Badge>
+                  <TabsTrigger value="reviews" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0 px-3 sm:px-4">
+                    <Star className="w-4 h-4 mr-1 sm:mr-2" />
+                    <span className="text-xs sm:text-sm">Reviews</span>
+                    <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs">{reviewCount}</Badge>
                   </TabsTrigger>
-                  <TabsTrigger value="bookshelf" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
-                    <BookOpen className="w-4 h-4 mr-2" />
-                    Library
-                    <Badge variant="secondary" className="ml-2">{libraryCount}</Badge>
+                  <TabsTrigger value="bookshelf" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0 px-3 sm:px-4">
+                    <BookOpen className="w-4 h-4 mr-1 sm:mr-2" />
+                    <span className="text-xs sm:text-sm">Library</span>
+                    <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs">{libraryCount}</Badge>
                   </TabsTrigger>
-                  <TabsTrigger value="similar" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
-                    <Users className="w-4 h-4 mr-2" />
-                    <span className="hidden sm:inline">Similar Mentors</span>
-                    <span className="sm:hidden">Similar</span>
+                  <TabsTrigger value="similar" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0 px-3 sm:px-4">
+                    <Users className="w-4 h-4 mr-1 sm:mr-2" />
+                    <span className="text-xs sm:text-sm">Similar</span>
                   </TabsTrigger>
-                  <TabsTrigger value="schedule" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    Schedule
-                    <div className="ml-2 w-2 h-2 bg-green-500 rounded-full"></div>
+                  <TabsTrigger value="schedule" className="rounded-none border-b-2 data-[state=active]:border-primary whitespace-nowrap flex-shrink-0 px-3 sm:px-4">
+                    <Calendar className="w-4 h-4 mr-1 sm:mr-2" />
+                    <span className="text-xs sm:text-sm">Schedule</span>
+                    <div className="ml-1 sm:ml-2 w-2 h-2 bg-green-500 rounded-full"></div>
                   </TabsTrigger>
                 </TabsList>
 

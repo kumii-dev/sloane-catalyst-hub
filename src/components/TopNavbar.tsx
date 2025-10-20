@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { NotificationBell } from "@/components/NotificationBell";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import logo from "@/assets/kumi-logo.png";
 
 interface TopNavbarProps {
@@ -104,11 +105,23 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
             >
               Sign Out
             </Button>
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center">
-              <span className="text-xs sm:text-sm font-bold text-white">
-                {user.email?.charAt(0).toUpperCase()}
-              </span>
-            </div>
+            <span className="text-xs text-white/90 hidden lg:inline max-w-[150px] truncate">
+              {user.email}
+            </span>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center cursor-pointer">
+                    <span className="text-xs sm:text-sm font-bold text-white">
+                      {user.email?.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{user.email}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         ) : (
           <div className="flex items-center gap-2 sm:gap-3">

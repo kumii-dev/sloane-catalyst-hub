@@ -377,22 +377,22 @@ const MentorDashboard = () => {
         {/* Header */}
         <div className="border-b bg-card/50 backdrop-blur">
           <div className="container mx-auto px-4 py-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold mb-2">Mentor Dashboard</h1>
-                <p className="text-muted-foreground">Manage your mentoring sessions and availability</p>
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2">Mentor Dashboard</h1>
+                <p className="text-sm sm:text-base text-muted-foreground">Manage your mentoring sessions and availability</p>
               </div>
-              <div className="flex gap-3">
-                <Button variant="outline" onClick={() => navigate('/mentor-availability')}>
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <Button variant="outline" onClick={() => navigate('/mentor-availability')} className="w-full sm:w-auto whitespace-nowrap">
                   <Calendar className="w-4 h-4 mr-2" />
-                  Manage Availability
+                  <span className="truncate">Manage Availability</span>
                 </Button>
-                <Button variant="outline" onClick={() => navigate('/edit-mentor-profile')}>
+                <Button variant="outline" onClick={() => navigate('/edit-mentor-profile')} className="w-full sm:w-auto whitespace-nowrap">
                   <Settings className="w-4 h-4 mr-2" />
-                  Edit Profile
+                  <span>Edit Profile</span>
                 </Button>
-                <Button onClick={() => navigate('/mentorship')}>
-                  View My Profile
+                <Button onClick={() => navigate('/mentorship')} className="w-full sm:w-auto whitespace-nowrap">
+                  <span>View My Profile</span>
                 </Button>
               </div>
             </div>
@@ -506,9 +506,9 @@ const MentorDashboard = () => {
                 <div className="space-y-4">
                   {pendingSessions.map((session) => (
                     <Card key={session.id} className="border-yellow-200 bg-yellow-50/50 dark:bg-yellow-950/10">
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          <Avatar className="h-16 w-16 ring-2 ring-yellow-400">
+                      <CardContent className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row items-start gap-4">
+                          <Avatar className="h-16 w-16 ring-2 ring-yellow-400 flex-shrink-0">
                             <AvatarImage 
                               src={session.mentee_profile?.profile_picture_url} 
                               alt={session.mentee_profile?.first_name}
@@ -519,82 +519,88 @@ const MentorDashboard = () => {
                             </AvatarFallback>
                           </Avatar>
 
-                          <div className="flex-1">
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h3 className="text-xl font-semibold mb-1">{session.title}</h3>
-                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <User className="w-4 h-4" />
-                                  <span>
-                                    {session.mentee_profile?.first_name} {session.mentee_profile?.last_name}
-                                  </span>
+                          <div className="flex-1 min-w-0 w-full">
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                              <div className="min-w-0 flex-1">
+                                <h3 className="text-lg sm:text-xl font-semibold mb-2 break-words">{session.title}</h3>
+                                <div className="flex flex-col gap-2 text-sm text-muted-foreground">
+                                  <div className="flex items-center gap-2">
+                                    <User className="w-4 h-4 flex-shrink-0" />
+                                    <span className="truncate">
+                                      {session.mentee_profile?.first_name} {session.mentee_profile?.last_name}
+                                    </span>
+                                  </div>
                                   {session.mentee_profile?.email && (
-                                    <>
-                                      <span>•</span>
-                                      <span>{session.mentee_profile.email}</span>
-                                    </>
+                                    <span className="truncate text-xs">{session.mentee_profile.email}</span>
                                   )}
                                 </div>
                               </div>
-                              <Badge className="bg-yellow-500">
+                              <Badge className="bg-yellow-500 whitespace-nowrap flex-shrink-0">
                                 New Request
                               </Badge>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
-                              <div className="flex items-center gap-2">
-                                <Calendar className="w-4 h-4 text-primary" />
-                                <span className="font-medium">
-                                  {format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}
-                                </span>
+                            <div className="flex flex-col gap-3 mt-3">
+                              <div className="flex flex-wrap items-center gap-3 text-sm">
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
+                                  <span className="font-medium break-words">
+                                    {format(new Date(session.scheduled_at), 'PPP')}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <Clock className="w-4 h-4 text-primary flex-shrink-0" />
+                                  <span>{format(new Date(session.scheduled_at), 'h:mm a')}</span>
+                                </div>
+                                <span>{session.duration_minutes} min</span>
                               </div>
-                              <div className="flex items-center gap-2">
-                                <Clock className="w-4 h-4 text-primary" />
-                                <span>{session.duration_minutes} minutes</span>
+                              
+                              <div className="flex flex-wrap items-center gap-2">
+                                {session.session_type && (
+                                  <Badge variant="outline" className="whitespace-nowrap">{session.session_type}</Badge>
+                                )}
+                                {session.price && (
+                                  <Badge variant="secondary" className="bg-green-100 text-green-800 whitespace-nowrap">
+                                    R{session.price}
+                                  </Badge>
+                                )}
+                                <SessionCountdown scheduledAt={session.scheduled_at} />
                               </div>
-                              {session.session_type && (
-                                <Badge variant="outline">{session.session_type}</Badge>
-                              )}
-                              {session.price && (
-                                <Badge variant="secondary" className="bg-green-100 text-green-800">
-                                  R{session.price}
-                                </Badge>
-                              )}
-                              <SessionCountdown scheduledAt={session.scheduled_at} />
                             </div>
 
                             {session.description && (
                               <div className="mt-3 p-3 bg-background rounded-md">
                                 <p className="text-sm font-medium mb-1">Message from mentee:</p>
-                                <p className="text-sm text-muted-foreground">{session.description}</p>
+                                <p className="text-sm text-muted-foreground break-words">{session.description}</p>
                               </div>
                             )}
 
-                            <div className="flex gap-2 mt-4">
+                            <div className="flex flex-col sm:flex-row gap-2 mt-4">
                               <Button 
                                 size="sm" 
                                 onClick={() => handleSessionAction(session.id, 'confirm')}
-                                className="bg-green-600 hover:bg-green-700"
+                                className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
                               >
                                 <Check className="w-4 h-4 mr-2" />
-                                Accept Request
+                                <span className="whitespace-nowrap">Accept Request</span>
                               </Button>
                               <Button 
                                 size="sm" 
                                 variant="outline"
                                 onClick={() => handleSessionAction(session.id, 'decline')}
-                                className="border-red-300 text-red-600 hover:bg-red-50"
+                                className="border-red-300 text-red-600 hover:bg-red-50 w-full sm:w-auto"
                               >
                                 <X className="w-4 h-4 mr-2" />
-                                Decline
+                                <span className="whitespace-nowrap">Decline</span>
                               </Button>
                               <Button 
                                 size="sm" 
                                 variant="outline"
                                 onClick={() => navigate(`/messaging-hub?userId=${session.mentee_id}`)}
+                                className="w-full sm:w-auto"
                               >
                                 <MessageSquare className="w-4 h-4 mr-2" />
-                                Message
+                                <span className="whitespace-nowrap">Message</span>
                               </Button>
                             </div>
                           </div>
@@ -619,9 +625,9 @@ const MentorDashboard = () => {
                 <div className="space-y-4">
                   {upcomingSessions.map((session) => (
                     <Card key={session.id} className="hover:shadow-lg transition-shadow">
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          <Avatar className="h-16 w-16">
+                      <CardContent className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row items-start gap-4">
+                          <Avatar className="h-16 w-16 flex-shrink-0">
                             <AvatarImage 
                               src={session.mentee_profile?.profile_picture_url} 
                               alt={session.mentee_profile?.first_name}
@@ -632,58 +638,66 @@ const MentorDashboard = () => {
                             </AvatarFallback>
                           </Avatar>
 
-                          <div className="flex-1">
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h3 className="text-xl font-semibold mb-1">{session.title}</h3>
+                          <div className="flex-1 min-w-0 w-full">
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                              <div className="min-w-0 flex-1">
+                                <h3 className="text-lg sm:text-xl font-semibold mb-2 break-words">{session.title}</h3>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <User className="w-4 h-4" />
-                                  <span>
+                                  <User className="w-4 h-4 flex-shrink-0" />
+                                  <span className="truncate">
                                     {session.mentee_profile?.first_name} {session.mentee_profile?.last_name}
                                   </span>
                                 </div>
                               </div>
-                              <Badge className="bg-blue-600">
+                              <Badge className="bg-blue-600 whitespace-nowrap flex-shrink-0">
                                 Confirmed
                               </Badge>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
-                              <div className="flex items-center gap-2">
-                                <Calendar className="w-4 h-4 text-primary" />
-                                <span className="font-medium">
-                                  {format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}
-                                </span>
+                            <div className="flex flex-col gap-3 mt-3">
+                              <div className="flex flex-wrap items-center gap-3 text-sm">
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
+                                  <span className="font-medium break-words">
+                                    {format(new Date(session.scheduled_at), 'PPP')}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <Clock className="w-4 h-4 text-primary flex-shrink-0" />
+                                  <span>{format(new Date(session.scheduled_at), 'h:mm a')}</span>
+                                </div>
+                                <span>{session.duration_minutes} min</span>
                               </div>
-                              <div className="flex items-center gap-2">
-                                <Clock className="w-4 h-4 text-primary" />
-                                <span>{session.duration_minutes} minutes</span>
+                              
+                              <div className="flex flex-wrap items-center gap-2">
+                                {session.price && (
+                                  <Badge variant="secondary" className="bg-green-100 text-green-800 whitespace-nowrap">
+                                    R{session.price}
+                                  </Badge>
+                                )}
+                                <SessionCountdown scheduledAt={session.scheduled_at} />
                               </div>
-                              {session.price && (
-                                <Badge variant="secondary" className="bg-green-100 text-green-800">
-                                  R{session.price}
-                                </Badge>
-                              )}
-                              <SessionCountdown scheduledAt={session.scheduled_at} />
                             </div>
 
-                            <div className="flex gap-2 mt-4">
+                            <div className="flex flex-col sm:flex-row gap-2 mt-4">
                               <Button 
                                 size="sm" 
                                 variant="default"
                                 onClick={() => handleJoinSession(session)}
                                 disabled={!canJoinSession(session.scheduled_at)}
+                                className="w-full sm:w-auto"
                               >
                                 <Video className="w-4 h-4 mr-2" />
-                                Start Session
+                                <span className="whitespace-nowrap">Start Session</span>
                               </Button>
                               <Button 
                                 size="sm" 
                                 variant="outline"
                                 onClick={() => navigate(`/messaging-hub?userId=${session.mentee_id}`)}
+                                className="w-full sm:w-auto"
                               >
                                 <MessageSquare className="w-4 h-4 mr-2" />
-                                Message
+                                <span className="whitespace-nowrap">Message</span>
                               </Button>
                               <Button 
                                 size="sm" 
@@ -695,8 +709,9 @@ const MentorDashboard = () => {
                                   });
                                   navigate(`/messaging-hub?userId=${session.mentee_id}`);
                                 }}
+                                className="w-full sm:w-auto"
                               >
-                                Reschedule
+                                <span className="whitespace-nowrap">Reschedule</span>
                               </Button>
                             </div>
                           </div>
@@ -721,9 +736,9 @@ const MentorDashboard = () => {
                 <div className="space-y-4">
                   {pastSessions.map((session) => (
                     <Card key={session.id} className="opacity-90">
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          <Avatar className="h-16 w-16">
+                      <CardContent className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row items-start gap-4">
+                          <Avatar className="h-16 w-16 flex-shrink-0">
                             <AvatarImage 
                               src={session.mentee_profile?.profile_picture_url} 
                               alt={session.mentee_profile?.first_name}
@@ -734,40 +749,40 @@ const MentorDashboard = () => {
                             </AvatarFallback>
                           </Avatar>
 
-                          <div className="flex-1">
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h3 className="text-xl font-semibold mb-1">{session.title}</h3>
+                          <div className="flex-1 min-w-0 w-full">
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                              <div className="min-w-0 flex-1">
+                                <h3 className="text-lg sm:text-xl font-semibold mb-2 break-words">{session.title}</h3>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <User className="w-4 h-4" />
-                                  <span>
+                                  <User className="w-4 h-4 flex-shrink-0" />
+                                  <span className="truncate">
                                     {session.mentee_profile?.first_name} {session.mentee_profile?.last_name}
                                   </span>
                                 </div>
                               </div>
-                              <Badge {...getStatusBadge(session.session_status)}>
+                              <Badge {...getStatusBadge(session.session_status)} className="whitespace-nowrap flex-shrink-0">
                                 {session.session_status}
                               </Badge>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
+                            <div className="flex flex-col gap-2 mt-3 text-sm">
                               <div className="flex items-center gap-2">
-                                <Calendar className="w-4 h-4 text-muted-foreground" />
-                                <span>{format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}</span>
+                                <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <span className="break-words">{format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <Clock className="w-4 h-4 text-muted-foreground" />
+                                <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                                 <span>{session.duration_minutes} minutes</span>
                               </div>
                               {session.price && (
-                                <Badge variant="secondary">Earned: R{session.price}</Badge>
+                                <Badge variant="secondary" className="w-fit whitespace-nowrap">Earned: R{session.price}</Badge>
                               )}
                             </div>
 
                             {session.session_status === 'completed' && (
                               <div className="flex gap-2 mt-4">
-                                <Button size="sm" variant="outline">
-                                  View Feedback
+                                <Button size="sm" variant="outline" className="w-full sm:w-auto">
+                                  <span className="whitespace-nowrap">View Feedback</span>
                                 </Button>
                               </div>
                             )}
@@ -785,9 +800,9 @@ const MentorDashboard = () => {
               <div className="space-y-4">
                 {sessions.map((session) => (
                   <Card key={session.id} className="hover:shadow-lg transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <Avatar className="h-16 w-16">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col sm:flex-row items-start gap-4">
+                        <Avatar className="h-16 w-16 flex-shrink-0">
                           <AvatarImage 
                             src={session.mentee_profile?.profile_picture_url} 
                             alt={session.mentee_profile?.first_name}
@@ -798,37 +813,39 @@ const MentorDashboard = () => {
                           </AvatarFallback>
                         </Avatar>
 
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between mb-2">
-                            <div>
-                              <h3 className="text-xl font-semibold mb-1">{session.title}</h3>
+                        <div className="flex-1 min-w-0 w-full">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                            <div className="min-w-0 flex-1">
+                              <h3 className="text-lg sm:text-xl font-semibold mb-2 break-words">{session.title}</h3>
                               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <User className="w-4 h-4" />
-                                <span>
+                                <User className="w-4 h-4 flex-shrink-0" />
+                                <span className="truncate">
                                   {session.mentee_profile?.first_name} {session.mentee_profile?.last_name}
                                 </span>
                               </div>
                             </div>
-                            <Badge {...getStatusBadge(session.session_status)}>
+                            <Badge {...getStatusBadge(session.session_status)} className="whitespace-nowrap flex-shrink-0">
                               {session.session_status}
                             </Badge>
                           </div>
 
-                          <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
+                          <div className="flex flex-col gap-2 mt-3 text-sm">
                             <div className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4 text-primary" />
-                              <span>{format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}</span>
+                              <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
+                              <span className="break-words">{format(new Date(session.scheduled_at), 'PPP')} at {format(new Date(session.scheduled_at), 'h:mm a')}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <Clock className="w-4 h-4 text-primary" />
+                              <Clock className="w-4 h-4 text-primary flex-shrink-0" />
                               <span>{session.duration_minutes} minutes</span>
                             </div>
-                            {session.session_type && (
-                              <Badge variant="outline">{session.session_type}</Badge>
-                            )}
-                            {session.price && (
-                              <Badge variant="secondary">R{session.price}</Badge>
-                            )}
+                            <div className="flex flex-wrap items-center gap-2">
+                              {session.session_type && (
+                                <Badge variant="outline" className="whitespace-nowrap">{session.session_type}</Badge>
+                              )}
+                              {session.price && (
+                                <Badge variant="secondary" className="whitespace-nowrap">R{session.price}</Badge>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>

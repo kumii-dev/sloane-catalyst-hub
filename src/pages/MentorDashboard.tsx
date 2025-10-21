@@ -391,11 +391,11 @@ const MentorDashboard = () => {
               variant="outline"
               onClick={() => {
                 setShowNotMentorDialog(false);
-                navigate('/');
+                navigate('/mentee-dashboard');
               }}
               className="w-full sm:w-auto"
             >
-              Go to Home
+              Go to Mentee Dashboard
             </Button>
             <AlertDialogAction
               onClick={() => {

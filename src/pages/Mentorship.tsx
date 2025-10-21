@@ -71,6 +71,7 @@ const Mentorship = () => {
             company,
             rating,
             total_sessions,
+            total_reviews,
             expertise_areas,
             is_premium,
             status,
@@ -132,7 +133,7 @@ const Mentorship = () => {
             title: mentor.title,
             company: mentor.company,
             rating: mentor.rating || 0,
-            sessions: mentor.total_sessions || 0,
+            sessions: (mentor.total_sessions && mentor.total_sessions > 0) ? mentor.total_sessions : (mentor.total_reviews || 0),
             expertise: mentor.expertise_areas || [],
             isPremium: mentor.is_premium,
             image: profile?.profile_picture_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.user_id}`

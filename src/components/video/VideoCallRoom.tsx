@@ -120,6 +120,7 @@ const VideoTile = ({ sessionId }: { sessionId: string }) => {
 const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomProps, "roomUrl">) => {
   const daily = useDaily();
   const [isConnecting, setIsConnecting] = useState(true);
+  const [sessionJoined, setSessionJoined] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -129,6 +130,7 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
     const handleJoined = async () => {
       console.log("Joined video call");
       setIsConnecting(false);
+      setSessionJoined(true);
       
       // Update session status to in_progress
       const { error } = await supabase
@@ -145,25 +147,27 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
     };
 
     const handleLeft = async () => {
-      console.log("Left video call");
+      console.log("Left video call, sessionJoined:", sessionJoined);
       
-      // Update session status to completed
-      const { error } = await supabase
-        .from("mentoring_sessions")
-        .update({ 
-          session_status: "completed",
-          session_completed_at: new Date().toISOString()
-        })
-        .eq("id", sessionId);
+      // Only mark as completed if the session was actually joined
+      if (sessionJoined) {
+        const { error } = await supabase
+          .from("mentoring_sessions")
+          .update({ 
+            session_status: "completed",
+            session_completed_at: new Date().toISOString()
+          })
+          .eq("id", sessionId);
 
-      if (error) {
-        console.error("Failed to update session status:", error);
+        if (error) {
+          console.error("Failed to update session status:", error);
+        }
+
+        toast({
+          title: "Session Completed",
+          description: "Thank you for joining the session!"
+        });
       }
-
-      toast({
-        title: "Session Completed",
-        description: "Thank you for joining the session!"
-      });
 
       navigate(userRole === "mentor" ? "/mentor-dashboard" : "/mentee-dashboard");
     };
@@ -172,10 +176,16 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
       console.error("Video call error:", error);
       toast({
         title: "Connection Error",
-        description: "There was an issue with the video call",
+        description: "Could not connect to the video call. Please try again or contact support.",
         variant: "destructive"
       });
       setIsConnecting(false);
+      
+      // Navigate back without marking as completed since session never started
+      setTimeout(() => {
+        onLeave();
+        navigate(userRole === "mentor" ? "/mentor-dashboard" : "/mentee-dashboard");
+      }, 2000);
     };
 
     daily.on("joined-meeting", handleJoined);
@@ -187,7 +197,7 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
       daily.off("left-meeting", handleLeft);
       daily.off("error", handleError);
     };
-  }, [daily, sessionId, toast, navigate, userRole]);
+  }, [daily, sessionId, sessionJoined, toast, navigate, userRole, onLeave]);
 
   const handleLeave = useCallback(async () => {
     if (daily) {

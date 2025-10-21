@@ -189,6 +189,9 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
           {currentQuestions.map((question) => (
             <div key={question.name} className="space-y-2">
               <Label htmlFor={question.name}>{question.label}</Label>
+              {question.type === 'multi-select-sector' && (
+                <p className="text-xs text-muted-foreground">Select one or more sectors that apply</p>
+              )}
               {question.type === 'multi-select-sector' ? (
                 <SectorMultiSelect
                   value={formData[question.name] || []}

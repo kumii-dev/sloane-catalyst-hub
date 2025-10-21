@@ -45,9 +45,16 @@ export const getOrCreateVideoRoom = async (sessionId: string): Promise<string> =
     throw error;
   }
 
-  // If room already exists, return it
+  // If room already exists, validate domain and return it or recreate
   if (session.video_room_url) {
-    return session.video_room_url;
+    const existingUrl = session.video_room_url as string;
+    // Detect stale domain from previous Daily instance and recreate if needed
+    if (/sloanedigitalhub\.daily\.co/i.test(existingUrl)) {
+      console.warn("Stale Daily room domain detected. Recreating room for session:", sessionId);
+      const newUrl = await createVideoRoom(sessionId);
+      return newUrl;
+    }
+    return existingUrl;
   }
 
   // Otherwise, create a new room

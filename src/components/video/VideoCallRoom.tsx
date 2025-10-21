@@ -294,6 +294,14 @@ export const VideoCallRoom = ({ sessionId, roomUrl, onLeave, userRole }: VideoCa
           if (newUrl) {
             console.log("Room created. Retrying join with:", newUrl);
             const { default: DailyIframe } = await import("@daily-co/daily-js");
+            // Ensure previous instance is destroyed to avoid duplicates
+            try {
+              if (callObject && callObject.destroy) {
+                await callObject.destroy();
+              }
+            } catch (destroyErr) {
+              console.warn("Failed to destroy previous call object:", destroyErr);
+            }
             const retryCall = DailyIframe.createCallObject({ url: newUrl });
             setCallObject(retryCall);
 

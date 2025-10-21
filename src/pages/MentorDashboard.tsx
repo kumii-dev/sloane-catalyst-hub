@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { 
   Calendar, 
   Clock, 
@@ -41,6 +42,7 @@ const MentorDashboard = () => {
     totalEarnings: 0
   });
   const [activeVideoSession, setActiveVideoSession] = useState<{id: string, roomUrl: string} | null>(null);
+  const [showNotMentorDialog, setShowNotMentorDialog] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -66,12 +68,7 @@ const MentorDashboard = () => {
       if (mentorError) throw mentorError;
 
       if (!mentor) {
-        toast({
-          title: "Not a mentor",
-          description: "You need to become a mentor first",
-          variant: "destructive"
-        });
-        navigate('/become-mentor');
+        setShowNotMentorDialog(true);
         return;
       }
 
@@ -374,6 +371,42 @@ const MentorDashboard = () => {
 
   return (
     <Layout showSidebar={true}>
+      {/* Not a Mentor Dialog */}
+      <AlertDialog open={showNotMentorDialog} onOpenChange={setShowNotMentorDialog}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl font-bold text-destructive">
+              Not a Mentor
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-base pt-4">
+              You need to become a mentor first before you can access the mentor dashboard. 
+              Would you like to start your mentorship journey?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowNotMentorDialog(false);
+                navigate('/');
+              }}
+              className="w-full sm:w-auto"
+            >
+              Go to Home
+            </Button>
+            <AlertDialogAction
+              onClick={() => {
+                setShowNotMentorDialog(false);
+                navigate('/become-mentor');
+              }}
+              className="w-full sm:w-auto"
+            >
+              Become a Mentor
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/10">
         {/* Header */}
         <div className="border-b bg-card/50 backdrop-blur">

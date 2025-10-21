@@ -124,6 +124,28 @@ const SessionReview = () => {
         toast.success("Review submitted successfully!");
       }
 
+      // Update mentor rating if this is a mentee reviewing a mentor
+      if (reviewerType === 'mentee') {
+        // Fetch all reviews for this mentor
+        const { data: allReviews } = await supabase
+          .from("session_reviews")
+          .select("rating")
+          .eq("reviewee_id", mentorUserId);
+
+        if (allReviews && allReviews.length > 0) {
+          const averageRating = allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length;
+          
+          // Update mentor's rating and total sessions
+          await supabase
+            .from("mentors")
+            .update({ 
+              rating: Math.round(averageRating * 10) / 10,
+              total_reviews: allReviews.length 
+            })
+            .eq("user_id", mentorUserId);
+        }
+      }
+
       // Navigate back to appropriate dashboard
       if (reviewerType === 'mentor') {
         navigate("/mentor-dashboard");

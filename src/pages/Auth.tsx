@@ -122,16 +122,26 @@ const Auth = () => {
     }
 
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
+    console.log("Attempting sign in...");
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
+    console.log("Sign in response:", { data, error });
+
     if (error) {
+      console.error("Sign in error:", error);
       toast({
         title: "Sign in failed",
         description: error.message,
         variant: "destructive",
+      });
+    } else if (data.session) {
+      console.log("Sign in successful, session:", data.session);
+      toast({
+        title: "Success!",
+        description: "Signed in successfully",
       });
     }
     setLoading(false);

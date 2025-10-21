@@ -54,6 +54,7 @@ const MentorDashboard = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
+        setLoading(false);
         navigate('/auth');
         return;
       }
@@ -82,6 +83,7 @@ const MentorDashboard = () => {
         description: "Failed to load mentor profile",
         variant: "destructive"
       });
+      setLoading(false);
     }
   };
 

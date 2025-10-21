@@ -121,6 +121,7 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
   const daily = useDaily();
   const [isConnecting, setIsConnecting] = useState(true);
   const [sessionJoined, setSessionJoined] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -150,7 +151,7 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
       console.log("Left video call, sessionJoined:", sessionJoined);
       
       // Only mark as completed if the session was actually joined
-      if (sessionJoined) {
+      if (sessionJoined && !hasError) {
         const { error } = await supabase
           .from("mentoring_sessions")
           .update({ 
@@ -174,6 +175,7 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
 
     const handleError = (error: any) => {
       console.error("Video call error:", error);
+      setHasError(true);
       toast({
         title: "Connection Error",
         description: "Could not connect to the video call. Please try again or contact support.",
@@ -181,7 +183,7 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
       });
       setIsConnecting(false);
       
-      // Navigate back without marking as completed since session never started
+      // Navigate back without marking as completed since session never started or ended due to error
       setTimeout(() => {
         onLeave();
         navigate(userRole === "mentor" ? "/mentor-dashboard" : "/mentee-dashboard");
@@ -197,7 +199,7 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
       daily.off("left-meeting", handleLeft);
       daily.off("error", handleError);
     };
-  }, [daily, sessionId, sessionJoined, toast, navigate, userRole, onLeave]);
+  }, [daily, sessionId, sessionJoined, hasError, toast, navigate, userRole, onLeave]);
 
   const handleLeave = useCallback(async () => {
     if (daily) {

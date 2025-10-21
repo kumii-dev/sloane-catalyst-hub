@@ -6,27 +6,24 @@ export const generateRoomName = (sessionId: string): string => {
 };
 
 export const createVideoRoom = async (sessionId: string): Promise<string> => {
-  // Generate room name
-  const roomName = generateRoomName(sessionId);
+  console.log("Creating video room via edge function for session:", sessionId);
   
-  // Daily.co rooms are created on-demand, we just need to format the URL
-  const roomUrl = `https://sloanedigitalhub.daily.co/${roomName}`;
-  
-  // Update the session with the video room details
-  const { error } = await supabase
-    .from("mentoring_sessions")
-    .update({
-      video_room_url: roomUrl,
-      video_room_name: roomName
-    })
-    .eq("id", sessionId);
+  // Call edge function to create Daily.co room
+  const { data, error } = await supabase.functions.invoke("create-daily-room", {
+    body: { sessionId },
+  });
 
   if (error) {
-    console.error("Failed to update session with video room:", error);
+    console.error("Failed to create video room:", error);
     throw error;
   }
 
-  return roomUrl;
+  if (!data?.roomUrl) {
+    throw new Error("No room URL returned from edge function");
+  }
+
+  console.log("Video room created:", data.roomUrl);
+  return data.roomUrl;
 };
 
 export const getOrCreateVideoRoom = async (sessionId: string): Promise<string> => {

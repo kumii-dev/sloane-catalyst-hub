@@ -34,32 +34,52 @@ const SessionReview = () => {
     setFetchError(false);
     
     try {
-      // Fetch session details with mentor and mentee information
-      const { data: session, error: sessionError } = await supabase
+      // Fetch session details
+      const { data: sessionData, error: sessionError } = await supabase
         .from("mentoring_sessions")
-        .select(`
-          *,
-          mentor:mentors!inner(
-            id,
-            user_id,
-            title
-          ),
-          mentee:profiles!mentee_id(
-            first_name,
-            last_name
-          )
-        `)
+        .select("*")
         .eq("id", sessionId)
-        .single();
+        .maybeSingle();
 
       if (sessionError) {
         console.error("Session fetch error:", sessionError);
         throw sessionError;
       }
       
-      if (!session) {
+      if (!sessionData) {
         throw new Error("Session not found");
       }
+
+      // Fetch mentor details
+      const { data: mentorData, error: mentorError } = await supabase
+        .from("mentors")
+        .select("id, user_id, title")
+        .eq("id", sessionData.mentor_id)
+        .maybeSingle();
+
+      if (mentorError) {
+        console.error("Mentor fetch error:", mentorError);
+        throw mentorError;
+      }
+
+      // Fetch mentee profile
+      const { data: menteeData, error: menteeError } = await supabase
+        .from("profiles")
+        .select("first_name, last_name")
+        .eq("user_id", sessionData.mentee_id)
+        .maybeSingle();
+
+      if (menteeError) {
+        console.error("Mentee fetch error:", menteeError);
+        throw menteeError;
+      }
+
+      // Combine the data
+      const session = {
+        ...sessionData,
+        mentor: mentorData,
+        mentee: menteeData
+      };
       
       setSession(session);
 

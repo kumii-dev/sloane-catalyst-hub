@@ -94,7 +94,7 @@ const handler = async (req: Request): Promise<Response> => {
       const mentorEmailResponse = await resend.emails.send({
         from: "22 on Sloane <noreply@kumii-test.com>",
         to: [mentorEmail],
-        bcc: ["nkambumw@gmail.com"],
+        bcc: ["nkambumw@gmail.com", "ruth@22onsloane.co"],
         subject: "New Mentoring Session Booking Request",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -172,7 +172,7 @@ const handler = async (req: Request): Promise<Response> => {
       const menteeEmailResponse = await resend.emails.send({
         from: "22 on Sloane <noreply@kumii-test.com>",
         to: [menteeEmail],
-        bcc: ["nkambumw@gmail.com"],
+        bcc: ["nkambumw@gmail.com", "ruth@22onsloane.co"],
         subject: "Your Mentoring Session Has Been Confirmed!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

@@ -8,7 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
-import { SectorMultiSelect, SETA_SECTORS } from '@/components/onboarding/SectorMultiSelect';
+import { useMentoringCategories } from '@/hooks/useMentoringCategories';
 
 interface ProgressiveProfilingProps {
   personaType: string;
@@ -20,6 +20,7 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<Record<string, any>>({});
+  const { categories, loading: categoriesLoading } = useMentoringCategories();
 
   const getQuestions = () => {
     switch (personaType) {
@@ -27,7 +28,7 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
         return [
           { step: 1, questions: [
             { name: 'business_status', label: 'Business Registration Status', type: 'select', options: ['Registered Company', 'Sole Proprietor', 'Informal Business', 'In Registration Process'] },
-            { name: 'industry', label: 'Industry/Sector', type: 'select', options: SETA_SECTORS },
+            { name: 'industry', label: 'Industry/Sector', type: 'category-select' },
             { name: 'business_age', label: 'Years in Operation', type: 'select', options: ['Pre-launch', 'Less than 1 year', '1-3 years', '3-5 years', '5+ years'] },
           ]},
           { step: 2, questions: [
@@ -49,7 +50,7 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
             { name: 'funding_range', label: 'Typical Funding Range (ZAR)', type: 'select', options: ['R0-R100k', 'R100k-R500k', 'R500k-R2M', 'R2M-R10M', 'R10M+'] },
           ]},
           { step: 2, questions: [
-            { name: 'target_sectors', label: 'Target Sectors', type: 'multi-select-sector' },
+            { name: 'target_sectors', label: 'Target Sector/Category', type: 'category-select' },
             { name: 'preferred_stage', label: 'Preferred Business Stage', type: 'select', options: ['Early Stage/Startup', 'Growth Stage', 'Scale-up', 'All Stages'] },
             { name: 'geographic_focus', label: 'Geographic Focus', type: 'select', options: ['National', 'Provincial', 'Local', 'Pan-African', 'Global'] },
           ]},
@@ -71,7 +72,7 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
         return [
           { step: 1, questions: [
             { name: 'professional_type', label: 'Professional Type', type: 'select', options: ['Mentor', 'Business Advisor', 'Executive Coach', 'Industry Expert', 'Consultant'] },
-            { name: 'expertise_areas', label: 'Expertise Areas (comma-separated)', type: 'text' },
+            { name: 'expertise_areas', label: 'Expertise Category', type: 'category-select' },
             { name: 'years_experience', label: 'Years of Experience', type: 'select', options: ['5-10 years', '10-15 years', '15-20 years', '20+ years'] },
           ]},
           { step: 2, questions: [
@@ -133,7 +134,7 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
             user_id: user.id,
             persona_type: personaType as any,
             field_name: question.name,
-            field_value: Array.isArray(value) ? { sectors: value } : { value },
+            field_value: { value },
           });
         }
       }
@@ -189,15 +190,26 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
           {currentQuestions.map((question) => (
             <div key={question.name} className="space-y-2">
               <Label htmlFor={question.name}>{question.label}</Label>
-              {question.type === 'multi-select-sector' && (
-                <p className="text-xs text-muted-foreground">Select one or more sectors that apply</p>
+              {question.type === 'category-select' && (
+                <p className="text-xs text-muted-foreground">Select the category that best applies</p>
               )}
-              {question.type === 'multi-select-sector' ? (
-                <SectorMultiSelect
-                  value={formData[question.name] || []}
-                  onChange={(value) => handleInputChange(question.name, value)}
-                  placeholder={`Select ${question.label.toLowerCase()}`}
-                />
+              {question.type === 'category-select' ? (
+                <Select
+                  value={formData[question.name] || ''}
+                  onValueChange={(value) => handleInputChange(question.name, value)}
+                  disabled={categoriesLoading}
+                >
+                  <SelectTrigger id={question.name}>
+                    <SelectValue placeholder={categoriesLoading ? "Loading categories..." : `Select ${question.label.toLowerCase()}`} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.name}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               ) : question.type === 'select' && question.options ? (
                 <Select
                   value={formData[question.name] || ''}

@@ -119,13 +119,13 @@ const MentorDashboard = () => {
 
         // Calculate stats
         const upcoming = enrichedSessions.filter(s => {
-          if (!s.scheduled_at || s.session_status === 'cancelled') return false;
+          if (!s.scheduled_at || s.session_status !== 'confirmed') return false;
           const sessionDate = new Date(s.scheduled_at);
           const today = new Date();
           today.setHours(0, 0, 0, 0);
           const sessionDay = new Date(sessionDate);
           sessionDay.setHours(0, 0, 0, 0);
-          // Include today's sessions and future sessions
+          // Include today's sessions and future sessions (confirmed only)
           return sessionDay >= today;
         }).length;
         const pending = enrichedSessions.filter(s => 
@@ -138,8 +138,13 @@ const MentorDashboard = () => {
           .filter(s => s.session_status === 'completed')
           .reduce((sum, s) => sum + (s.price || 0), 0);
 
+        // Calculate total excluding cancelled sessions
+        const nonCancelledTotal = enrichedSessions.filter(s => 
+          s.session_status !== 'cancelled'
+        ).length;
+
         setStats({
-          total: enrichedSessions.length,
+          total: nonCancelledTotal,
           upcoming,
           pending,
           completed,

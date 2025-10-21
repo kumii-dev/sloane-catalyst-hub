@@ -1299,6 +1299,7 @@ export type Database = {
           session_fee: number | null
           status: Database["public"]["Enums"]["mentor_status"]
           title: string
+          total_reviews: number | null
           total_sessions: number | null
           updated_at: string
           user_id: string
@@ -1316,6 +1317,7 @@ export type Database = {
           session_fee?: number | null
           status?: Database["public"]["Enums"]["mentor_status"]
           title: string
+          total_reviews?: number | null
           total_sessions?: number | null
           updated_at?: string
           user_id: string
@@ -1333,6 +1335,7 @@ export type Database = {
           session_fee?: number | null
           status?: Database["public"]["Enums"]["mentor_status"]
           title?: string
+          total_reviews?: number | null
           total_sessions?: number | null
           updated_at?: string
           user_id?: string

@@ -8,30 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
-
-const SETA_SECTORS = [
-  'Agriculture',
-  'Banking',
-  'Chemical Industries',
-  'Construction',
-  'Culture, Arts, Tourism, Hospitality & Sport',
-  'Education, Training & Development',
-  'Energy & Water',
-  'Fibre Processing & Manufacturing',
-  'Finance & Accounting Services',
-  'Food & Beverage Manufacturing',
-  'Health & Welfare',
-  'Insurance',
-  'Local Government',
-  'Manufacturing, Engineering & Related Services',
-  'Media, Information & Communication Technologies',
-  'Mining',
-  'Public Service',
-  'Safety & Security',
-  'Services',
-  'Transport',
-  'Wholesale & Retail',
-];
+import { SectorMultiSelect, SETA_SECTORS } from '@/components/onboarding/SectorMultiSelect';
 
 interface ProgressiveProfilingProps {
   personaType: string;
@@ -72,7 +49,7 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
             { name: 'funding_range', label: 'Typical Funding Range (ZAR)', type: 'select', options: ['R0-R100k', 'R100k-R500k', 'R500k-R2M', 'R2M-R10M', 'R10M+'] },
           ]},
           { step: 2, questions: [
-            { name: 'target_sectors', label: 'Target Sectors (comma-separated)', type: 'text' },
+            { name: 'target_sectors', label: 'Target Sectors', type: 'multi-select-sector' },
             { name: 'preferred_stage', label: 'Preferred Business Stage', type: 'select', options: ['Early Stage/Startup', 'Growth Stage', 'Scale-up', 'All Stages'] },
             { name: 'geographic_focus', label: 'Geographic Focus', type: 'select', options: ['National', 'Provincial', 'Local', 'Pan-African', 'Global'] },
           ]},
@@ -156,7 +133,7 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
             user_id: user.id,
             persona_type: personaType as any,
             field_name: question.name,
-            field_value: { value },
+            field_value: Array.isArray(value) ? { sectors: value } : { value },
           });
         }
       }
@@ -212,7 +189,13 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
           {currentQuestions.map((question) => (
             <div key={question.name} className="space-y-2">
               <Label htmlFor={question.name}>{question.label}</Label>
-              {question.type === 'select' && question.options ? (
+              {question.type === 'multi-select-sector' ? (
+                <SectorMultiSelect
+                  value={formData[question.name] || []}
+                  onChange={(value) => handleInputChange(question.name, value)}
+                  placeholder={`Select ${question.label.toLowerCase()}`}
+                />
+              ) : question.type === 'select' && question.options ? (
                 <Select
                   value={formData[question.name] || ''}
                   onValueChange={(value) => handleInputChange(question.name, value)}

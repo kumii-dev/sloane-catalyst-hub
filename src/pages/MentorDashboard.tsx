@@ -68,6 +68,7 @@ const MentorDashboard = () => {
       if (mentorError) throw mentorError;
 
       if (!mentor) {
+        setLoading(false);
         setShowNotMentorDialog(true);
         return;
       }

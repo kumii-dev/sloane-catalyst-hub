@@ -119,6 +119,14 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleSectorToggle = (name: string, sector: string) => {
+    const currentValue = formData[name] || [];
+    const newValue = currentValue.includes(sector)
+      ? currentValue.filter((s: string) => s !== sector)
+      : [...currentValue, sector];
+    setFormData({ ...formData, [name]: newValue });
+  };
+
   const handleNext = async () => {
     setLoading(true);
     try {
@@ -190,24 +198,29 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
             <div key={question.name} className="space-y-2">
               <Label htmlFor={question.name}>{question.label}</Label>
               {question.type === 'category-select' && (
-                <p className="text-xs text-muted-foreground">Select the category that best applies</p>
+                <p className="text-xs text-muted-foreground">Select one or more sectors that apply</p>
               )}
               {question.type === 'category-select' ? (
-                <Select
-                  value={formData[question.name] || ''}
-                  onValueChange={(value) => handleInputChange(question.name, value)}
-                >
-                  <SelectTrigger id={question.name}>
-                    <SelectValue placeholder={`Select ${question.label.toLowerCase()}`} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {SETA_SECTORS.map((sector) => (
-                      <SelectItem key={sector} value={sector}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-64 overflow-y-auto border rounded-lg p-3">
+                  {SETA_SECTORS.map((sector) => (
+                    <div
+                      key={sector}
+                      className="flex items-start space-x-3 p-2 border rounded hover:bg-muted/50 transition-colors"
+                    >
+                      <Checkbox
+                        id={`${question.name}-${sector}`}
+                        checked={(formData[question.name] || []).includes(sector)}
+                        onCheckedChange={() => handleSectorToggle(question.name, sector)}
+                      />
+                      <Label
+                        htmlFor={`${question.name}-${sector}`}
+                        className="font-medium cursor-pointer text-sm flex-1"
+                      >
                         {sector}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                      </Label>
+                    </div>
+                  ))}
+                </div>
               ) : question.type === 'select' && question.options ? (
                 <Select
                   value={formData[question.name] || ''}

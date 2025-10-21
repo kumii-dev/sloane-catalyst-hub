@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useListings } from "@/hooks/useListings";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, Eye, Edit, Clock, CheckCircle, XCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Loader2, Plus, Eye, Edit, Clock, CheckCircle, XCircle, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Listing {
   id: string;
@@ -25,38 +24,23 @@ interface Listing {
 const MyListings = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const [listings, setListings] = useState<Listing[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     if (!user) {
       navigate("/auth");
       return;
     }
-    fetchMyListings();
   }, [user, navigate]);
 
-  const fetchMyListings = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("listings")
-        .select("*")
-        .eq("provider_id", user?.id)
-        .order("created_at", { ascending: false });
+  const { data, isLoading, error } = useListings(
+    { provider_id: user?.id },
+    page
+  );
 
-      if (error) throw error;
-      setListings(data || []);
-    } catch (error: any) {
-      toast({
-        title: "Error loading listings",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const listings = data?.listings || [];
+  const hasMore = data?.hasMore || false;
+  const totalCount = data?.count || 0;
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -74,17 +58,17 @@ const MyListings = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
-        return "bg-green-500/10 text-green-600 hover:bg-green-500/20";
+        return "bg-success/10 text-success hover:bg-success/20";
       case "pending_approval":
-        return "bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20";
+        return "bg-warning/10 text-warning hover:bg-warning/20";
       case "rejected":
-        return "bg-red-500/10 text-red-600 hover:bg-red-500/20";
+        return "bg-destructive/10 text-destructive hover:bg-destructive/20";
       default:
-        return "bg-gray-500/10 text-gray-600 hover:bg-gray-500/20";
+        return "bg-muted/10 text-muted-foreground hover:bg-muted/20";
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-[400px]">
@@ -101,7 +85,7 @@ const MyListings = () => {
           <div>
             <h1 className="text-3xl font-bold">My Listings</h1>
             <p className="text-muted-foreground mt-1">
-              Manage your marketplace listings
+              Manage your marketplace listings • {totalCount} total
             </p>
           </div>
           <Button onClick={() => navigate("/listings/create")}>
@@ -109,6 +93,14 @@ const MyListings = () => {
             New Listing
           </Button>
         </div>
+
+        {error && (
+          <Card className="border-destructive mb-6">
+            <CardContent className="p-4">
+              <p className="text-destructive">Failed to load listings. Please try again.</p>
+            </CardContent>
+          </Card>
+        )}
 
         {listings.length === 0 ? (
           <Card>
@@ -173,6 +165,31 @@ const MyListings = () => {
                 </CardHeader>
               </Card>
             ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalCount > 20 && (
+          <div className="flex items-center justify-center gap-4 mt-8">
+            <Button
+              variant="outline"
+              onClick={() => setPage(Math.max(0, page - 1))}
+              disabled={page === 0 || isLoading}
+            >
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              Previous
+            </Button>
+            <span className="text-sm text-muted-foreground">
+              Page {page + 1} of {Math.ceil(totalCount / 20)}
+            </span>
+            <Button
+              variant="outline"
+              onClick={() => setPage(page + 1)}
+              disabled={!hasMore || isLoading}
+            >
+              Next
+              <ChevronRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         )}
       </div>

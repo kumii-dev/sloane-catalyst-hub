@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useListingDetail } from "@/hooks/useListings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -51,8 +52,10 @@ const ListingDetail = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
-  const [listing, setListing] = useState<ListingDetail | null>(null);
-  const [loading, setLoading] = useState(true);
+  
+  // Use optimized query hook
+  const { data: listing, isLoading, error: queryError } = useListingDetail(id);
+  
   const [subscribeDialog, setSubscribeDialog] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [userCohorts, setUserCohorts] = useState<any[]>([]);
@@ -60,62 +63,21 @@ const ListingDetail = () => {
   const [isFundedListing, setIsFundedListing] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      fetchListingDetails();
-      if (user) {
-        fetchUserEligibility();
-      }
-    }
-  }, [id, user]);
-
-  const fetchListingDetails = async () => {
-    try {
-      const { data: listing, error } = await supabase
-        .from("listings")
-        .select("*")
-        .eq("id", id)
-        .single();
-
-      if (error) throw error;
-
-      // Fetch provider profile
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("id, first_name, last_name, email")
-        .eq("user_id", listing.provider_id)
-        .single();
-
-      // Fetch reviews
-      const { data: reviews } = await supabase
-        .from("listing_reviews")
-        .select(`
-          id,
-          rating,
-          review_text,
-          created_at,
-          profiles!user_id(first_name, last_name)
-        `)
-        .eq("listing_id", id);
-
-      setListing({
-        ...listing,
-        provider: profile || { id: "", first_name: "", last_name: "", email: "" },
-        reviews: reviews?.map((review: any) => ({
-          ...review,
-          user: review.profiles || { first_name: "", last_name: "" }
-        })) || []
-      });
-    } catch (error: any) {
+    if (queryError) {
       toast({
         title: "Error loading listing",
-        description: error.message,
+        description: "Failed to load listing details",
         variant: "destructive",
       });
       navigate("/services");
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [queryError, toast, navigate]);
+
+  useEffect(() => {
+    if (user && id) {
+      fetchUserEligibility();
+    }
+  }, [user, id]);
 
   const fetchUserEligibility = async () => {
     if (!user) return;
@@ -252,7 +214,7 @@ const ListingDetail = () => {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Layout>
         <div className="flex items-center justify-center min-h-screen">

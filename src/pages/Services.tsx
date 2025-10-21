@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useFeaturedServices, useServiceCategories } from "@/hooks/useListings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search, Filter, Star, Users, Zap, Award, Code, Briefcase, TrendingUp, Headphones, GraduationCap, Building2, Palette, Megaphone, Scale, DollarSign, UserCheck, Sparkles } from "lucide-react";
 import { Layout } from "@/components/Layout";
-import { useToast } from "@/hooks/use-toast";
 
 interface ServiceCategory {
   id: string;
@@ -44,55 +43,13 @@ interface Service {
 }
 
 const Services = () => {
-  const [categories, setCategories] = useState<ServiceCategory[]>([]);
-  const [featuredServices, setFeaturedServices] = useState<Service[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      // Fetch main categories (no parent_id)
-      const { data: categoriesData, error: categoriesError } = await supabase
-        .from("service_categories")
-        .select("*")
-        .is("parent_id", null)
-        .eq("is_active", true)
-        .order("sort_order");
-
-      if (categoriesError) throw categoriesError;
-
-      // Fetch featured services
-      const { data: servicesData, error: servicesError } = await supabase
-        .from("services")
-        .select(`
-          *,
-          service_providers (company_name, logo_url, is_verified, is_cohort_partner),
-          service_categories (name, slug)
-        `)
-        .eq("is_featured", true)
-        .eq("is_active", true)
-        .limit(6);
-
-      if (servicesError) throw servicesError;
-
-      setCategories(categoriesData || []);
-      setFeaturedServices(servicesData || []);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load services data",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  
+  // Use optimized query hooks with caching
+  const { data: categories = [], isLoading: categoriesLoading } = useServiceCategories();
+  const { data: featuredServices = [], isLoading: servicesLoading } = useFeaturedServices();
+  
+  const loading = categoriesLoading || servicesLoading;
 
   const formatPrice = (service: Service) => {
     if (service.pricing_type === 'free') return 'Free';

@@ -252,8 +252,29 @@ export const VideoCallRoom = ({ sessionId, roomUrl, onLeave, userRole }: VideoCa
         console.log("Daily call object created");
         setCallObject(daily);
 
+        // Try to get a meeting token for private rooms
+        let token: string | undefined;
+        try {
+          const { data, error } = await supabase.functions.invoke("get-daily-token", {
+            body: { sessionId },
+          });
+          if (error) {
+            console.warn("Failed to get Daily meeting token (will try without):", error);
+          }
+          if (data?.token) {
+            token = data.token as string;
+            console.log("Obtained Daily token for session.");
+          }
+        } catch (tokenErr) {
+          console.warn("Error while requesting Daily token (will try without):", tokenErr);
+        }
+
         console.log("Attempting to join room...");
-        await daily.join();
+        if (token) {
+          await daily.join({ url: roomUrl, token });
+        } else {
+          await daily.join({ url: roomUrl });
+        }
         console.log("Successfully joined room");
       } catch (error) {
         console.error("Failed to initialize video call:", error);
@@ -274,7 +295,7 @@ export const VideoCallRoom = ({ sessionId, roomUrl, onLeave, userRole }: VideoCa
         callObject.destroy();
       }
     };
-  }, [roomUrl, toast]);
+  }, [roomUrl, sessionId, toast]);
 
   if (!callObject) {
     return (

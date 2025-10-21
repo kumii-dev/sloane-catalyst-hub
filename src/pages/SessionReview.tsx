@@ -19,6 +19,8 @@ const SessionReview = () => {
   const [hoverRating, setHoverRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fetchingSession, setFetchingSession] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
   const [session, setSession] = useState<any>(null);
   const [existingReview, setExistingReview] = useState<any>(null);
 
@@ -28,6 +30,9 @@ const SessionReview = () => {
   }, [user, sessionId]);
 
   const fetchSessionAndReview = async () => {
+    setFetchingSession(true);
+    setFetchError(false);
+    
     try {
       // Fetch session details with mentor and mentee information
       const { data: session, error: sessionError } = await supabase
@@ -47,7 +52,15 @@ const SessionReview = () => {
         .eq("id", sessionId)
         .single();
 
-      if (sessionError) throw sessionError;
+      if (sessionError) {
+        console.error("Session fetch error:", sessionError);
+        throw sessionError;
+      }
+      
+      if (!session) {
+        throw new Error("Session not found");
+      }
+      
       setSession(session);
 
       // Check if review already exists
@@ -76,6 +89,9 @@ const SessionReview = () => {
     } catch (error) {
       console.error("Error fetching session:", error);
       toast.error("Failed to load session details");
+      setFetchError(true);
+    } finally {
+      setFetchingSession(false);
     }
   };
 
@@ -160,10 +176,28 @@ const SessionReview = () => {
     }
   };
 
-  if (!session) {
+  if (fetchingSession) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="text-center">Loading...</div>
+        <div className="text-center">Loading session details...</div>
+      </div>
+    );
+  }
+
+  if (fetchError || !session) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Card className="max-w-md">
+          <CardContent className="pt-6">
+            <div className="text-center space-y-4">
+              <p className="text-destructive font-semibold">Failed to load session details</p>
+              <p className="text-sm text-muted-foreground">
+                The session could not be found or you don't have permission to review it.
+              </p>
+              <Button onClick={() => navigate(-1)}>Go Back</Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }

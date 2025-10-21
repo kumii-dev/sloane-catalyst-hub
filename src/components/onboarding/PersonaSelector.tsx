@@ -29,13 +29,13 @@ const personas = [
   {
     id: 'service_provider',
     title: 'Service Provider',
-    description: 'AWS, Microsoft, SAP, and professional service providers',
+    description: 'AWS, Microsoft, SAP, and other software systems',
     icon: Briefcase,
   },
   {
     id: 'professional',
     title: 'Professional',
-    description: 'Mentors, advisors, coaches, and industry experts',
+    description: 'Mentors, advisors, coaches, services, and industry experts',
     icon: Users,
   },
   {

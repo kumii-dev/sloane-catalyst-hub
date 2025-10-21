@@ -814,7 +814,7 @@ const MentorDashboard = () => {
                             <div className="flex flex-col sm:flex-row gap-2 mt-4">
                               <Button 
                                 size="sm" 
-                                onClick={() => navigate(`/session-review/${session.id}`)}
+                                onClick={() => navigate(`/review/${session.id}?reviewer=mentor`)}
                                 className="w-full sm:w-auto"
                               >
                                 <Star className="w-4 h-4 mr-2" />
@@ -897,8 +897,13 @@ const MentorDashboard = () => {
 
                             {session.session_status === 'completed' && (
                               <div className="flex gap-2 mt-4">
-                                <Button size="sm" variant="outline" className="w-full sm:w-auto">
-                                  <span className="whitespace-nowrap">View Feedback</span>
+                                <Button size="sm" onClick={() => navigate(`/review/${session.id}?reviewer=mentor`)} className="w-full sm:w-auto">
+                                  <Star className="w-4 h-4 mr-2" />
+                                  <span className="whitespace-nowrap">Review Session</span>
+                                </Button>
+                                <Button size="sm" variant="outline" onClick={() => navigate(`/messaging-hub?userId=${session.mentee_id}`)} className="w-full sm:w-auto">
+                                  <MessageSquare className="w-4 h-4 mr-2" />
+                                  <span className="whitespace-nowrap">Message</span>
                                 </Button>
                               </div>
                             )}

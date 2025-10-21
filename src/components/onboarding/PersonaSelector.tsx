@@ -35,7 +35,7 @@ const personas = [
   {
     id: 'professional',
     title: 'Professional Services',
-    description: 'Mentors, advisors, coaches, services, and industry experts',
+    description: 'Mentors, advisors, coaches, and industry experts',
     icon: Users,
   },
   {

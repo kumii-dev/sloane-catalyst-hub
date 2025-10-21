@@ -100,6 +100,7 @@ const secondaryContent = {
   more: {
     title: "More",
     items: [
+      { title: "Early Adopter Registration", url: "/register" },
       { title: "Settings", url: "/settings" },
       { title: "Help", url: "/help" },
       { title: "About", url: "/about" },

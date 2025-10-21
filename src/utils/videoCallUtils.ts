@@ -8,22 +8,36 @@ export const generateRoomName = (sessionId: string): string => {
 export const createVideoRoom = async (sessionId: string): Promise<string> => {
   console.log("Creating video room via edge function for session:", sessionId);
   
-  // Call edge function to create Daily.co room
-  const { data, error } = await supabase.functions.invoke("create-daily-room", {
-    body: { sessionId },
-  });
+  try {
+    // Call edge function to create Daily.co room
+    const { data, error } = await supabase.functions.invoke("create-daily-room", {
+      body: { sessionId },
+    });
 
-  if (error) {
-    console.error("Failed to create video room:", error);
-    throw error;
+    if (error) {
+      console.error("Failed to create video room:", error);
+      throw error;
+    }
+
+    if (!data?.roomUrl) {
+      throw new Error("No room URL returned from edge function");
+    }
+
+    console.log("Video room created:", data.roomUrl);
+    return data.roomUrl;
+  } catch (error) {
+    console.error("Error creating room, using fallback:", error);
+    // Fallback to default room if edge function fails
+    const fallbackUrl = "https://kumii.daily.co/kumii-Mentoring-Session";
+    
+    // Update session with fallback URL
+    await supabase
+      .from("mentoring_sessions")
+      .update({ video_room_url: fallbackUrl })
+      .eq("id", sessionId);
+    
+    return fallbackUrl;
   }
-
-  if (!data?.roomUrl) {
-    throw new Error("No room URL returned from edge function");
-  }
-
-  console.log("Video room created:", data.roomUrl);
-  return data.roomUrl;
 };
 
 export const getOrCreateVideoRoom = async (sessionId: string): Promise<string> => {

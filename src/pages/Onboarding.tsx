@@ -18,23 +18,31 @@ const Onboarding = () => {
   const checkOnboardingStatus = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        navigate('/auth');
-        return;
-      }
+      // Temporarily disabled redirects for preview
+      // if (!user) {
+      //   navigate('/auth');
+      //   return;
+      // }
 
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('persona_type, persona_completed, onboarding_step')
-        .eq('user_id', user.id)
-        .single();
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('persona_type, persona_completed, onboarding_step')
+          .eq('user_id', user.id)
+          .single();
 
-      if (profile?.persona_completed) {
-        navigate('/');
-      } else if (profile?.persona_type && profile.persona_type !== 'unassigned') {
-        setSelectedPersona(profile.persona_type);
-        setStep('profiling');
+        // Temporarily disabled redirect for preview
+        // if (profile?.persona_completed) {
+        //   navigate('/');
+        // } else 
+        if (profile?.persona_type && profile.persona_type !== 'unassigned') {
+          setSelectedPersona(profile.persona_type);
+          setStep('profiling');
+        } else {
+          setStep('persona');
+        }
       } else {
+        // Show persona selector even without login for preview
         setStep('persona');
       }
     } catch (error) {

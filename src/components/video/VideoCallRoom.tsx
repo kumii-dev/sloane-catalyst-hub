@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { DailyProvider, useDaily, useScreenShare, useLocalSessionId, useParticipantIds } from "@daily-co/daily-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -124,6 +124,7 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
   const [hasError, setHasError] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const userInitiatedLeaveRef = useRef(false);
 
   useEffect(() => {
     if (!daily) return;
@@ -148,10 +149,9 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
     };
 
     const handleLeft = async () => {
-      console.log("Left video call, sessionJoined:", sessionJoined);
+      console.log("Left video call, sessionJoined:", sessionJoined, "userInitiated:", userInitiatedLeaveRef.current, "hasError:", hasError);
       
-      // Only mark as completed if the session was actually joined
-      if (sessionJoined && !hasError) {
+      if (sessionJoined && !hasError && userInitiatedLeaveRef.current) {
         const { error } = await supabase
           .from("mentoring_sessions")
           .update({ 
@@ -168,6 +168,8 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
           title: "Session Completed",
           description: "Thank you for joining the session!"
         });
+      } else {
+        console.log("Skipping completion update due to error or non-user leave.");
       }
 
       navigate(userRole === "mentor" ? "/mentor-dashboard" : "/mentee-dashboard");
@@ -176,6 +178,7 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
     const handleError = (error: any) => {
       console.error("Video call error:", error);
       setHasError(true);
+      userInitiatedLeaveRef.current = false;
       toast({
         title: "Connection Error",
         description: "Could not connect to the video call. Please try again or contact support.",
@@ -202,6 +205,7 @@ const VideoCallContent = ({ sessionId, onLeave, userRole }: Omit<VideoCallRoomPr
   }, [daily, sessionId, sessionJoined, hasError, toast, navigate, userRole, onLeave]);
 
   const handleLeave = useCallback(async () => {
+    userInitiatedLeaveRef.current = true;
     if (daily) {
       await daily.leave();
     }

@@ -25,63 +25,83 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
       case 'smme_startup':
         return [
           { step: 1, questions: [
-            { name: 'business_status', label: 'Business Registration Status', type: 'select', options: ['Registered', 'Informal', 'In Process'] },
+            { name: 'business_status', label: 'Business Registration Status', type: 'select', options: ['Registered Company', 'Sole Proprietor', 'Informal Business', 'In Registration Process'] },
             { name: 'industry', label: 'Industry/Sector', type: 'text' },
+            { name: 'business_age', label: 'Years in Operation', type: 'select', options: ['Pre-launch', 'Less than 1 year', '1-3 years', '3-5 years', '5+ years'] },
           ]},
           { step: 2, questions: [
-            { name: 'stage', label: 'Business Stage', type: 'select', options: ['Idea', 'Early Growth', 'Scaling'] },
-            { name: 'employee_count', label: 'Number of Employees', type: 'number' },
+            { name: 'annual_revenue', label: 'Annual Revenue (ZAR)', type: 'select', options: ['R0-R100k', 'R100k-R500k', 'R500k-R2M', 'R2M-R10M', 'R10M+'] },
+            { name: 'employee_count', label: 'Number of Employees', type: 'select', options: ['Just me', '2-5', '6-20', '21-50', '50+'] },
+            { name: 'funding_history', label: 'Previous Funding Received?', type: 'select', options: ['None', 'Friends & Family', 'Grant', 'Loan', 'Equity Investment'] },
           ]},
           { step: 3, questions: [
-            { name: 'funding_needs', label: 'Do you need funding?', type: 'select', options: ['Yes', 'No', 'Maybe'] },
+            { name: 'funding_needs', label: 'Immediate Funding Needs', type: 'select', options: ['Yes, urgently', 'Yes, within 6 months', 'Planning for future', 'Not needed'] },
+            { name: 'funding_amount', label: 'Funding Amount Needed (ZAR)', type: 'select', options: ['R0-R50k', 'R50k-R250k', 'R250k-R1M', 'R1M-R5M', 'R5M+'] },
+            { name: 'market_access_needs', label: 'Primary Need', type: 'select', options: ['Funding Access', 'Market Access', 'Skills Development', 'Mentorship', 'All of the above'] },
           ]},
         ];
       case 'funder':
         return [
           { step: 1, questions: [
-            { name: 'funding_type', label: 'Type of Funding', type: 'select', options: ['Grant', 'Loan', 'Equity', 'Other'] },
-            { name: 'funding_range', label: 'Funding Range (Min-Max)', type: 'text' },
+            { name: 'organization_name', label: 'Organization Name', type: 'text' },
+            { name: 'funding_type', label: 'Type of Funding Provided', type: 'select', options: ['Grant', 'Loan', 'Equity Investment', 'Hybrid', 'Other'] },
+            { name: 'funding_range', label: 'Typical Funding Range (ZAR)', type: 'select', options: ['R0-R100k', 'R100k-R500k', 'R500k-R2M', 'R2M-R10M', 'R10M+'] },
           ]},
           { step: 2, questions: [
-            { name: 'target_sectors', label: 'Target Sectors', type: 'text' },
-            { name: 'preferred_stage', label: 'Preferred Stage', type: 'select', options: ['Early Stage', 'Scale-up', 'Both'] },
+            { name: 'target_sectors', label: 'Target Sectors (comma-separated)', type: 'text' },
+            { name: 'preferred_stage', label: 'Preferred Business Stage', type: 'select', options: ['Early Stage/Startup', 'Growth Stage', 'Scale-up', 'All Stages'] },
+            { name: 'geographic_focus', label: 'Geographic Focus', type: 'select', options: ['National', 'Provincial', 'Local', 'Pan-African', 'Global'] },
           ]},
         ];
       case 'service_provider':
         return [
           { step: 1, questions: [
-            { name: 'service_category', label: 'Service Category', type: 'select', options: ['Accounting', 'Legal', 'GRC', 'Technology', 'Marketing', 'Other'] },
-            { name: 'services_offered', label: 'Services Offered', type: 'text' },
+            { name: 'company_name', label: 'Company Name', type: 'text' },
+            { name: 'service_category', label: 'Primary Service Category', type: 'select', options: ['Cloud Services (AWS/Azure/GCP)', 'Enterprise Software (SAP/Microsoft)', 'Accounting & Finance', 'Legal & Compliance', 'GRC Services', 'Technology & IT', 'Marketing & Growth', 'Other'] },
+            { name: 'services_offered', label: 'Specific Services Offered', type: 'text' },
           ]},
           { step: 2, questions: [
-            { name: 'pricing_model', label: 'Pricing Model', type: 'select', options: ['Hourly', 'Fixed', 'Subscription'] },
+            { name: 'company_size', label: 'Company Size', type: 'select', options: ['Solo/Freelancer', 'Small (2-10)', 'Medium (11-50)', 'Large (51-200)', 'Enterprise (200+)'] },
+            { name: 'certifications', label: 'Certifications/Partnerships', type: 'text' },
+            { name: 'pricing_model', label: 'Pricing Model', type: 'select', options: ['Hourly Rate', 'Project-based', 'Monthly Subscription', 'Usage-based', 'Custom'] },
           ]},
         ];
-      case 'mentor_advisor':
+      case 'professional':
         return [
           { step: 1, questions: [
-            { name: 'expertise_areas', label: 'Expertise Areas', type: 'text' },
-            { name: 'availability', label: 'Hours Available per Month', type: 'number' },
+            { name: 'professional_type', label: 'Professional Type', type: 'select', options: ['Mentor', 'Business Advisor', 'Executive Coach', 'Industry Expert', 'Consultant'] },
+            { name: 'expertise_areas', label: 'Expertise Areas (comma-separated)', type: 'text' },
+            { name: 'years_experience', label: 'Years of Experience', type: 'select', options: ['5-10 years', '10-15 years', '15-20 years', '20+ years'] },
           ]},
           { step: 2, questions: [
-            { name: 'preferred_mentee_stage', label: 'Preferred Mentee Stage', type: 'select', options: ['Early Stage', 'Growth', 'Scale-up', 'Any'] },
+            { name: 'preferred_focus', label: 'Preferred Focus Area', type: 'select', options: ['Strategy & Growth', 'Fundraising & Finance', 'Operations & Scaling', 'Marketing & Sales', 'Technology & Innovation', 'Leadership Development'] },
+            { name: 'availability', label: 'Hours Available per Month', type: 'select', options: ['1-5 hours', '6-10 hours', '11-20 hours', '20+ hours'] },
+            { name: 'preferred_stage', label: 'Preferred Business Stage', type: 'select', options: ['Early Stage', 'Growth Stage', 'Scale-up', 'All Stages'] },
           ]},
         ];
-      case 'job_seeker':
+      case 'skills_development':
         return [
           { step: 1, questions: [
-            { name: 'skills', label: 'Your Skills', type: 'text' },
-            { name: 'experience_level', label: 'Experience Level', type: 'select', options: ['Entry', 'Mid', 'Senior', 'Executive'] },
+            { name: 'current_status', label: 'Current Status', type: 'select', options: ['Job Seeker', 'Student/Learner', 'Career Switcher', 'Aspiring Entrepreneur', 'Upskilling Professional'] },
+            { name: 'skills', label: 'Current Skills (comma-separated)', type: 'text' },
+            { name: 'education_level', label: 'Highest Education Level', type: 'select', options: ['High School', 'Certificate/Diploma', 'Undergraduate', 'Postgraduate', 'Professional Qualifications'] },
           ]},
           { step: 2, questions: [
-            { name: 'interests', label: 'Areas of Interest', type: 'select', options: ['Startup', 'Corporate', 'Freelancing'] },
+            { name: 'interest_areas', label: 'Primary Interest', type: 'select', options: ['Entrepreneurship Training', 'Technical Skills', 'Business Skills', 'Job Opportunities', 'Career Mentorship'] },
+            { name: 'experience_level', label: 'Experience Level', type: 'select', options: ['Entry Level', 'Junior (1-3 years)', 'Mid-Level (3-7 years)', 'Senior (7+ years)'] },
+            { name: 'learning_goals', label: 'Learning Goals', type: 'select', options: ['Start a Business', 'Find Employment', 'Career Advancement', 'Skill Enhancement', 'Career Change'] },
           ]},
         ];
       case 'public_private_entity':
         return [
           { step: 1, questions: [
-            { name: 'organization_type', label: 'Organization Type', type: 'select', options: ['Government', 'NGO', 'Corporate'] },
-            { name: 'engagement_interest', label: 'Engagement Interest', type: 'text' },
+            { name: 'organization_name', label: 'Organization Name', type: 'text' },
+            { name: 'organization_type', label: 'Organization Type', type: 'select', options: ['Government Agency', 'Development Finance Institution', 'NGO/NPO', 'Corporate/Enterprise', 'Industry Association'] },
+            { name: 'primary_mandate', label: 'Primary Mandate', type: 'text' },
+          ]},
+          { step: 2, questions: [
+            { name: 'engagement_interest', label: 'Engagement Interest', type: 'select', options: ['SMME Support Programs', 'Skills Development', 'Funding Opportunities', 'Market Access', 'Partnership & Collaboration'] },
+            { name: 'geographic_scope', label: 'Geographic Scope', type: 'select', options: ['National', 'Provincial', 'Municipal', 'Regional', 'International'] },
           ]},
         ];
       default:
@@ -152,14 +172,17 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 main-gradient-light">
-      <Card className="w-full max-w-2xl shadow-strong">
-        <CardHeader>
-          <CardTitle>Complete Your Profile</CardTitle>
-          <CardDescription>
-            Step {step} of {totalSteps}
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-primary/5 to-accent/10">
+      <Card className="w-full max-w-2xl shadow-strong border-primary/20 bg-card/95 backdrop-blur">
+        <CardHeader className="space-y-4">
+          <div className="inline-block">
+            <div className="h-1 w-16 bg-gradient-to-r from-primary via-accent to-primary rounded-full" />
+          </div>
+          <CardTitle className="text-2xl font-bold">Complete Your Profile</CardTitle>
+          <CardDescription className="text-base">
+            Step {step} of {totalSteps} - Help us personalize your experience
           </CardDescription>
-          <Progress value={progress} className="mt-2" />
+          <Progress value={progress} className="mt-4 h-2" />
         </CardHeader>
         <CardContent className="space-y-4">
           {currentQuestions.map((question) => (

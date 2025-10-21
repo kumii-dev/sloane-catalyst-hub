@@ -9,6 +9,30 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
 
+const SETA_SECTORS = [
+  'Agriculture',
+  'Banking',
+  'Chemical Industries',
+  'Construction',
+  'Culture, Arts, Tourism, Hospitality & Sport',
+  'Education, Training & Development',
+  'Energy & Water',
+  'Fibre Processing & Manufacturing',
+  'Finance & Accounting Services',
+  'Food & Beverage Manufacturing',
+  'Health & Welfare',
+  'Insurance',
+  'Local Government',
+  'Manufacturing, Engineering & Related Services',
+  'Media, Information & Communication Technologies',
+  'Mining',
+  'Public Service',
+  'Safety & Security',
+  'Services',
+  'Transport',
+  'Wholesale & Retail',
+];
+
 interface ProgressiveProfilingProps {
   personaType: string;
   onComplete: () => void;
@@ -26,7 +50,7 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
         return [
           { step: 1, questions: [
             { name: 'business_status', label: 'Business Registration Status', type: 'select', options: ['Registered Company', 'Sole Proprietor', 'Informal Business', 'In Registration Process'] },
-            { name: 'industry', label: 'Industry/Sector', type: 'text' },
+            { name: 'industry', label: 'Industry/Sector', type: 'select', options: SETA_SECTORS },
             { name: 'business_age', label: 'Years in Operation', type: 'select', options: ['Pre-launch', 'Less than 1 year', '1-3 years', '3-5 years', '5+ years'] },
           ]},
           { step: 2, questions: [

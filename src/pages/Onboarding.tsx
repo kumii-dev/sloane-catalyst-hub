@@ -27,16 +27,10 @@ const Onboarding = () => {
         .from('profiles')
         .select('persona_type, persona_completed, onboarding_step')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
-      if (profile?.persona_completed) {
-        navigate('/');
-      } else if (profile?.persona_type && profile.persona_type !== 'unassigned') {
-        setSelectedPersona(profile.persona_type);
-        setStep('profiling');
-      } else {
-        setStep('persona');
-      }
+      // Always start at persona on /onboarding for a consistent flow
+      setStep('persona');
     } catch (error) {
       console.error('Error checking onboarding status:', error);
       setStep('persona');

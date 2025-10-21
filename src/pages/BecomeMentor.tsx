@@ -21,15 +21,14 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { SETA_SECTORS } from "@/constants/setaSectors";
 
 const BecomeMentor = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [loadingCategories, setLoadingCategories] = useState(true);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
   
   const [formData, setFormData] = useState({
     title: "",
@@ -39,31 +38,6 @@ const BecomeMentor = () => {
     isPremium: false,
     bio: ""
   });
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const fetchCategories = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('mentoring_categories')
-        .select('*')
-        .order('name');
-
-      if (error) throw error;
-      setCategories(data || []);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load mentoring categories",
-        variant: "destructive"
-      });
-    } finally {
-      setLoadingCategories(false);
-    }
-  };
 
   const benefits = [
     {
@@ -88,11 +62,11 @@ const BecomeMentor = () => {
     }
   ];
 
-  const handleCategoryToggle = (categoryId: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(categoryId)
-        ? prev.filter(id => id !== categoryId)
-        : [...prev, categoryId]
+  const handleSectorToggle = (sector: string) => {
+    setSelectedSectors(prev => 
+      prev.includes(sector)
+        ? prev.filter(s => s !== sector)
+        : [...prev, sector]
     );
   };
 
@@ -109,10 +83,10 @@ const BecomeMentor = () => {
       return;
     }
 
-    if (selectedCategories.length === 0) {
+    if (selectedSectors.length === 0) {
       toast({
-        title: "Category Required",
-        description: "Please select at least one mentoring category.",
+        title: "Sector Required",
+        description: "Please select at least one sector.",
         variant: "destructive"
       });
       return;
@@ -141,7 +115,8 @@ const BecomeMentor = () => {
           experience_years: parseInt(formData.experienceYears),
           hourly_rate: formData.hourlyRate ? parseFloat(formData.hourlyRate) : null,
           is_premium: formData.isPremium,
-          status: 'available'
+          status: 'available',
+          expertise_areas: selectedSectors
         }, {
           onConflict: 'user_id'
         })
@@ -149,24 +124,6 @@ const BecomeMentor = () => {
         .single();
 
       if (mentorError) throw mentorError;
-
-      // Delete existing category associations
-      await supabase
-        .from('mentor_categories')
-        .delete()
-        .eq('mentor_id', mentorData.id);
-
-      // Insert new category associations
-      const categoryInserts = selectedCategories.map(categoryId => ({
-        mentor_id: mentorData.id,
-        category_id: categoryId
-      }));
-
-      const { error: categoriesError } = await supabase
-        .from('mentor_categories')
-        .insert(categoryInserts);
-
-      if (categoriesError) throw categoriesError;
 
       toast({
         title: "Success!",
@@ -278,39 +235,28 @@ const BecomeMentor = () => {
 
                 <div className="space-y-3">
                   <Label>Mentoring Focus Areas * (Select at least one)</Label>
-                  {loadingCategories ? (
-                    <div className="flex items-center justify-center py-8">
-                      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {categories.map((category) => (
-                        <div
-                          key={category.id}
-                          className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors"
-                        >
-                          <Checkbox
-                            id={category.id}
-                            checked={selectedCategories.includes(category.id)}
-                            onCheckedChange={() => handleCategoryToggle(category.id)}
-                          />
-                          <div className="flex-1">
-                            <Label
-                              htmlFor={category.id}
-                              className="font-medium cursor-pointer"
-                            >
-                              {category.name}
-                            </Label>
-                            {category.description && (
-                              <p className="text-sm text-muted-foreground mt-1">
-                                {category.description}
-                              </p>
-                            )}
-                          </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {SETA_SECTORS.map((sector) => (
+                      <div
+                        key={sector}
+                        className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors"
+                      >
+                        <Checkbox
+                          id={sector}
+                          checked={selectedSectors.includes(sector)}
+                          onCheckedChange={() => handleSectorToggle(sector)}
+                        />
+                        <div className="flex-1">
+                          <Label
+                            htmlFor={sector}
+                            className="font-medium cursor-pointer"
+                          >
+                            {sector}
+                          </Label>
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="space-y-2">

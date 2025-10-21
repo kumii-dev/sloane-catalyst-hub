@@ -13,6 +13,7 @@ import { ArrowLeft, Upload, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { SETA_SECTORS } from "@/constants/setaSectors";
 
 const profileSchema = z.object({
   first_name: z.string().trim().min(1, "First name is required").max(50, "First name must be less than 50 characters"),
@@ -32,8 +33,7 @@ const EditMentorProfile = () => {
   const [uploading, setUploading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [mentorId, setMentorId] = useState<string | null>(null);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
   
   const [formData, setFormData] = useState({
     first_name: "",
@@ -49,22 +49,7 @@ const EditMentorProfile = () => {
 
   useEffect(() => {
     fetchProfile();
-    fetchCategories();
   }, []);
-
-  const fetchCategories = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('mentoring_categories')
-        .select('*')
-        .order('name');
-
-      if (error) throw error;
-      setCategories(data || []);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  };
 
   const fetchProfile = async () => {
     try {
@@ -101,15 +86,9 @@ const EditMentorProfile = () => {
 
       if (mentorData) {
         setMentorId(mentorData.id);
-
-        // Fetch mentor categories
-        const { data: mentorCategories } = await supabase
-          .from('mentor_categories')
-          .select('category_id')
-          .eq('mentor_id', mentorData.id);
-
-        if (mentorCategories) {
-          setSelectedCategories(mentorCategories.map(mc => mc.category_id));
+        // Set selected sectors from expertise_areas
+        if (mentorData.expertise_areas) {
+          setSelectedSectors(mentorData.expertise_areas);
         }
       }
 
@@ -193,11 +172,11 @@ const EditMentorProfile = () => {
     }
   };
 
-  const handleCategoryToggle = (categoryId: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(categoryId)
-        ? prev.filter(id => id !== categoryId)
-        : [...prev, categoryId]
+  const handleSectorToggle = (sector: string) => {
+    setSelectedSectors(prev => 
+      prev.includes(sector)
+        ? prev.filter(s => s !== sector)
+        : [...prev, sector]
     );
   };
 
@@ -218,10 +197,10 @@ const EditMentorProfile = () => {
       }
     }
 
-    if (selectedCategories.length === 0) {
+    if (selectedSectors.length === 0) {
       toast({
-        title: "Category Required",
-        description: "Please select at least one mentoring category.",
+        title: "Sector Required",
+        description: "Please select at least one sector.",
         variant: "destructive"
       });
       return;
@@ -252,6 +231,7 @@ const EditMentorProfile = () => {
         hourly_rate: formData.hourly_rate ? parseFloat(formData.hourly_rate) : null,
         experience_years: formData.experience_years ? parseInt(formData.experience_years) : null,
         status: formData.status,
+        expertise_areas: selectedSectors,
       };
 
       let currentMentorId = mentorId;
@@ -273,27 +253,6 @@ const EditMentorProfile = () => {
         if (mentorError) throw mentorError;
         currentMentorId = newMentor.id;
         setMentorId(newMentor.id);
-      }
-
-      // Update mentor categories
-      if (currentMentorId) {
-        // Delete existing category associations
-        await supabase
-          .from('mentor_categories')
-          .delete()
-          .eq('mentor_id', currentMentorId);
-
-        // Insert new category associations
-        const categoryInserts = selectedCategories.map(categoryId => ({
-          mentor_id: currentMentorId,
-          category_id: categoryId
-        }));
-
-        const { error: categoriesError } = await supabase
-          .from('mentor_categories')
-          .insert(categoryInserts);
-
-        if (categoriesError) throw categoriesError;
       }
 
       toast({
@@ -491,28 +450,23 @@ const EditMentorProfile = () => {
                 <div className="space-y-3">
                   <Label>Mentoring Focus Areas * (Select at least one)</Label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {categories.map((category) => (
+                    {SETA_SECTORS.map((sector) => (
                       <div
-                        key={category.id}
+                        key={sector}
                         className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors"
                       >
                         <Checkbox
-                          id={`edit-${category.id}`}
-                          checked={selectedCategories.includes(category.id)}
-                          onCheckedChange={() => handleCategoryToggle(category.id)}
+                          id={`edit-${sector}`}
+                          checked={selectedSectors.includes(sector)}
+                          onCheckedChange={() => handleSectorToggle(sector)}
                         />
                         <div className="flex-1">
                           <Label
-                            htmlFor={`edit-${category.id}`}
+                            htmlFor={`edit-${sector}`}
                             className="font-medium cursor-pointer"
                           >
-                            {category.name}
+                            {sector}
                           </Label>
-                          {category.description && (
-                            <p className="text-sm text-muted-foreground mt-1">
-                              {category.description}
-                            </p>
-                          )}
                         </div>
                       </div>
                     ))}

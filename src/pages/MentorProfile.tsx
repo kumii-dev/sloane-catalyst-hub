@@ -33,6 +33,7 @@ const MentorProfile = () => {
   const [reviewCount, setReviewCount] = useState(0);
   const [libraryCount, setLibraryCount] = useState(0);
   const [reviews, setReviews] = useState<any[]>([]);
+  const [displayRating, setDisplayRating] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -97,8 +98,19 @@ const MentorProfile = () => {
           console.error('Error fetching reviews:', reviewsBaseError);
         }
 
+        // Prepare reviews, with a fallback in case older data used mentor table id as reviewee_id
+        let rawReviews = reviewsBase || [];
+        if (!reviewsBaseError && (!rawReviews || rawReviews.length === 0)) {
+          const { data: altReviews } = await supabase
+            .from('session_reviews')
+            .select('*')
+            .eq('reviewee_id', mentorData.id) // fallback to mentor.id
+            .order('created_at', { ascending: false });
+          rawReviews = altReviews || [];
+        }
+
         // Try to enrich with reviewer profiles (best-effort)
-        let enrichedReviews = reviewsBase || [];
+        let enrichedReviews = rawReviews;
         if (enrichedReviews.length > 0) {
           const reviewerIds = Array.from(new Set(enrichedReviews.map((r: any) => r.reviewer_id)));
           try {
@@ -112,9 +124,17 @@ const MentorProfile = () => {
             console.warn('Reviewer profiles enrichment skipped:', e);
           }
         }
-        // Prefer mentor.total_reviews maintained by trigger; fallback to count
-        setReviewCount(mentorData.total_reviews ?? (enrichedReviews?.length || 0));
+        // Prefer mentor.total_reviews maintained by trigger; if it's 0, use computed length
+        const countFromDB = mentorData.total_reviews;
+        const countFromList = enrichedReviews?.length || 0;
+        setReviewCount(countFromDB && countFromDB > 0 ? countFromDB : countFromList);
         setReviews(enrichedReviews);
+
+        // Compute average rating from fetched reviews as a fallback when DB hasn't backfilled yet
+        const avgFromList = countFromList > 0
+          ? Math.round((enrichedReviews.reduce((sum: number, r: any) => sum + (r.rating || 0), 0) / countFromList) * 10) / 10
+          : 0;
+        setDisplayRating(avgFromList);
 
         // Fetch library count for this mentor (you can adjust the query based on your library table)
         // For now, setting to 0 as placeholder - update when library feature is implemented
@@ -228,7 +248,7 @@ const MentorProfile = () => {
                       <div className="flex items-center gap-4 mt-3">
                         <Badge variant="secondary">English</Badge>
                         <div className="flex items-center gap-2">
-                          {renderStars(mentor.rating || 0)}
+                          {renderStars(mentor.rating && mentor.rating > 0 ? mentor.rating : displayRating)}
                           <span className="text-sm text-muted-foreground">({reviewCount})</span>
                         </div>
                       </div>

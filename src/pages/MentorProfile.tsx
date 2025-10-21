@@ -86,26 +86,35 @@ const MentorProfile = () => {
           setCategories(categoriesData.map((mc: any) => mc.mentoring_categories));
         }
 
-        // Fetch actual reviews from session_reviews table
-        const { data: reviewsData, count: reviewsCount } = await supabase
+        // Fetch reviews for this mentor without cross-table joins to avoid RLS issues
+        const { data: reviewsBase, error: reviewsBaseError } = await supabase
           .from('session_reviews')
-          .select(`
-            *,
-            session:mentoring_sessions(
-              title,
-              scheduled_at
-            ),
-            reviewer:profiles!session_reviews_reviewer_id_fkey(
-              first_name,
-              last_name,
-              profile_picture_url
-            )
-          `, { count: 'exact' })
+          .select('*')
           .eq('reviewee_id', mentorData.user_id)
           .order('created_at', { ascending: false });
-        
-        setReviewCount(reviewsCount || 0);
-        setReviews(reviewsData || []);
+
+        if (reviewsBaseError) {
+          console.error('Error fetching reviews:', reviewsBaseError);
+        }
+
+        // Try to enrich with reviewer profiles (best-effort)
+        let enrichedReviews = reviewsBase || [];
+        if (enrichedReviews.length > 0) {
+          const reviewerIds = Array.from(new Set(enrichedReviews.map((r: any) => r.reviewer_id)));
+          try {
+            const { data: profs } = await supabase
+              .from('profiles')
+              .select('user_id, first_name, last_name, profile_picture_url')
+              .in('user_id', reviewerIds);
+            const map = new Map((profs || []).map((p: any) => [p.user_id, p]));
+            enrichedReviews = enrichedReviews.map((r: any) => ({ ...r, reviewer: map.get(r.reviewer_id) }));
+          } catch (e) {
+            console.warn('Reviewer profiles enrichment skipped:', e);
+          }
+        }
+        // Prefer mentor.total_reviews maintained by trigger; fallback to count
+        setReviewCount(mentorData.total_reviews ?? (enrichedReviews?.length || 0));
+        setReviews(enrichedReviews);
 
         // Fetch library count for this mentor (you can adjust the query based on your library table)
         // For now, setting to 0 as placeholder - update when library feature is implemented
@@ -216,10 +225,13 @@ const MentorProfile = () => {
                     {mentor.company && (
                       <p className="text-muted-foreground">Speaker at {mentor.company}</p>
                     )}
-                    <div className="flex items-center gap-4 mt-3">
-                      <Badge variant="secondary">English</Badge>
-                      {renderStars(mentor.rating || 0)}
-                    </div>
+                      <div className="flex items-center gap-4 mt-3">
+                        <Badge variant="secondary">English</Badge>
+                        <div className="flex items-center gap-2">
+                          {renderStars(mentor.rating || 0)}
+                          <span className="text-sm text-muted-foreground">({reviewCount})</span>
+                        </div>
+                      </div>
                   </div>
 
                   <div className="flex gap-2 flex-wrap">
@@ -376,7 +388,9 @@ const MentorProfile = () => {
                                     </div>
                                     {renderStars(review.rating)}
                                   </div>
-                                  <h5 className="font-medium mb-2">{review.session?.title}</h5>
+                                  {review.session?.title && (
+                                    <h5 className="font-medium mb-2">{review.session?.title}</h5>
+                                  )}
                                   {review.review_text && (
                                     <p className="text-muted-foreground">{review.review_text}</p>
                                   )}

@@ -993,6 +993,7 @@ export type Database = {
           provider_id: string
           published_at: string | null
           rating: number | null
+          search_vector: unknown | null
           short_description: string | null
           slug: string
           status: Database["public"]["Enums"]["listing_status"] | null
@@ -1026,6 +1027,7 @@ export type Database = {
           provider_id: string
           published_at?: string | null
           rating?: number | null
+          search_vector?: unknown | null
           short_description?: string | null
           slug: string
           status?: Database["public"]["Enums"]["listing_status"] | null
@@ -1059,6 +1061,7 @@ export type Database = {
           provider_id?: string
           published_at?: string | null
           rating?: number | null
+          search_vector?: unknown | null
           short_description?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["listing_status"] | null

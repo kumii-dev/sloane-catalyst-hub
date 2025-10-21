@@ -8,7 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
-import { useMentoringCategories } from '@/hooks/useMentoringCategories';
+import { SETA_SECTORS } from '@/constants/setaSectors';
 
 interface ProgressiveProfilingProps {
   personaType: string;
@@ -20,7 +20,6 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<Record<string, any>>({});
-  const { categories, loading: categoriesLoading } = useMentoringCategories();
 
   const getQuestions = () => {
     switch (personaType) {
@@ -197,15 +196,14 @@ const ProgressiveProfiling = ({ personaType, onComplete, onSkip }: ProgressivePr
                 <Select
                   value={formData[question.name] || ''}
                   onValueChange={(value) => handleInputChange(question.name, value)}
-                  disabled={categoriesLoading}
                 >
                   <SelectTrigger id={question.name}>
-                    <SelectValue placeholder={categoriesLoading ? "Loading categories..." : `Select ${question.label.toLowerCase()}`} />
+                    <SelectValue placeholder={`Select ${question.label.toLowerCase()}`} />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.name}>
-                        {category.name}
+                    {SETA_SECTORS.map((sector) => (
+                      <SelectItem key={sector} value={sector}>
+                        {sector}
                       </SelectItem>
                     ))}
                   </SelectContent>

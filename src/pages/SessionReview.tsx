@@ -44,7 +44,7 @@ const SessionReview = () => {
             user_id,
             title
           ),
-          mentee:profiles!mentoring_sessions_mentee_id_fkey(
+          mentee:profiles!mentee_id(
             first_name,
             last_name
           )

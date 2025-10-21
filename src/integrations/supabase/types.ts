@@ -2374,6 +2374,13 @@ export type Database = {
         Args: { _conversation_id: string; _user_id: string }
         Returns: boolean
       }
+      recalculate_mentor_rating: {
+        Args: { p_mentor_user_id: string }
+        Returns: {
+          new_rating: number
+          total_reviews: number
+        }[]
+      }
     }
     Enums: {
       access_level: "public" | "registered" | "cohort_only" | "premium"

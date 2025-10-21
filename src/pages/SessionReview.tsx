@@ -160,41 +160,8 @@ const SessionReview = () => {
         toast.success("Review submitted successfully!");
       }
 
-      // Update mentor rating if this is a mentee reviewing a mentor
-      if (reviewerType === 'mentee' && mentorUserId) {
-        console.log('Updating mentor rating for user_id:', mentorUserId);
-        
-        // Fetch all reviews for this mentor
-        const { data: allReviews, error: reviewsError } = await supabase
-          .from("session_reviews")
-          .select("rating")
-          .eq("reviewee_id", mentorUserId);
-
-        console.log('All reviews for mentor:', allReviews, 'Error:', reviewsError);
-
-        if (reviewsError) {
-          console.error("Error fetching reviews:", reviewsError);
-        } else if (allReviews && allReviews.length > 0) {
-          const averageRating = allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length;
-          console.log('Calculated average rating:', averageRating, 'Total reviews:', allReviews.length);
-          
-          // Update mentor's rating and total reviews
-          const { error: updateError } = await supabase
-            .from("mentors")
-            .update({ 
-              rating: Math.round(averageRating * 10) / 10,
-              total_reviews: allReviews.length 
-            })
-            .eq("user_id", mentorUserId);
-
-          if (updateError) {
-            console.error("Error updating mentor rating:", updateError);
-            toast.error("Review saved but failed to update mentor rating");
-          } else {
-            console.log('Successfully updated mentor rating');
-          }
-        }
-      }
+      // Mentor rating is now automatically updated by database trigger
+      // The trigger recalculates rating and total_reviews on session_reviews changes
 
       // Navigate back to appropriate dashboard
       if (reviewerType === 'mentor') {

@@ -335,6 +335,7 @@ const MentorDashboard = () => {
     // Include today's sessions and future sessions
     return sessionDay >= today;
   });
+  const completedSessions = sessions.filter(s => s.session_status === 'completed');
   const pastSessions = sessions.filter(s => {
     if (!s.scheduled_at) return false;
     const sessionDate = new Date(s.scheduled_at);
@@ -480,8 +481,14 @@ const MentorDashboard = () => {
                 <span className="sm:hidden">Upcoming</span>
                 <Badge variant="secondary">{upcomingSessions.length}</Badge>
               </TabsTrigger>
-              <TabsTrigger value="past" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+              <TabsTrigger value="completed" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                 <CheckCircle2 className="w-4 h-4" />
+                <span className="hidden sm:inline">Completed</span>
+                <span className="sm:hidden">Done</span>
+                <Badge variant="secondary">{completedSessions.length}</Badge>
+              </TabsTrigger>
+              <TabsTrigger value="past" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                <Clock className="w-4 h-4" />
                 <span className="hidden sm:inline">Past Sessions</span>
                 <span className="sm:hidden">Past</span>
                 <Badge variant="secondary">{pastSessions.length}</Badge>
@@ -712,6 +719,115 @@ const MentorDashboard = () => {
                                 className="w-full sm:w-auto"
                               >
                                 <span className="whitespace-nowrap">Reschedule</span>
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+
+            {/* Completed Sessions Tab */}
+            <TabsContent value="completed">
+              {completedSessions.length === 0 ? (
+                <Card>
+                  <CardContent className="py-12 text-center">
+                    <CheckCircle2 className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                    <p className="text-lg text-muted-foreground">No completed sessions yet</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="space-y-4">
+                  {completedSessions.map((session) => (
+                    <Card key={session.id} className="border-green-200 bg-green-50/30 dark:bg-green-950/10">
+                      <CardContent className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row items-start gap-4">
+                          <Avatar className="h-16 w-16 ring-2 ring-green-400 flex-shrink-0">
+                            <AvatarImage 
+                              src={session.mentee_profile?.profile_picture_url} 
+                              alt={session.mentee_profile?.first_name}
+                            />
+                            <AvatarFallback>
+                              {session.mentee_profile?.first_name?.[0]}
+                              {session.mentee_profile?.last_name?.[0]}
+                            </AvatarFallback>
+                          </Avatar>
+
+                          <div className="flex-1 min-w-0 w-full">
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                              <div className="min-w-0 flex-1">
+                                <h3 className="text-lg sm:text-xl font-semibold mb-2 break-words">{session.title}</h3>
+                                <div className="flex flex-col gap-2 text-sm text-muted-foreground">
+                                  <div className="flex items-center gap-2">
+                                    <User className="w-4 h-4 flex-shrink-0" />
+                                    <span className="truncate">
+                                      {session.mentee_profile?.first_name} {session.mentee_profile?.last_name}
+                                    </span>
+                                  </div>
+                                  {session.mentee_profile?.email && (
+                                    <span className="truncate text-xs">{session.mentee_profile.email}</span>
+                                  )}
+                                </div>
+                              </div>
+                              <Badge className="bg-green-600 whitespace-nowrap flex-shrink-0">
+                                Completed
+                              </Badge>
+                            </div>
+
+                            <div className="flex flex-col gap-3 mt-3">
+                              <div className="flex flex-wrap items-center gap-3 text-sm">
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
+                                  <span className="font-medium break-words">
+                                    {format(new Date(session.scheduled_at), 'PPP')}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <Clock className="w-4 h-4 text-primary flex-shrink-0" />
+                                  <span>{format(new Date(session.scheduled_at), 'h:mm a')}</span>
+                                </div>
+                                <span>{session.duration_minutes} min</span>
+                              </div>
+                              
+                              <div className="flex flex-wrap items-center gap-2">
+                                {session.session_type && (
+                                  <Badge variant="outline" className="whitespace-nowrap">{session.session_type}</Badge>
+                                )}
+                                {session.price && (
+                                  <Badge variant="secondary" className="bg-green-100 text-green-800 whitespace-nowrap">
+                                    Earned: R{session.price}
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+
+                            {session.description && (
+                              <div className="mt-3 p-3 bg-background/50 rounded-md">
+                                <p className="text-sm font-medium mb-1">Session Notes:</p>
+                                <p className="text-sm text-muted-foreground break-words">{session.description}</p>
+                              </div>
+                            )}
+
+                            <div className="flex flex-col sm:flex-row gap-2 mt-4">
+                              <Button 
+                                size="sm" 
+                                onClick={() => navigate(`/session-review/${session.id}`)}
+                                className="w-full sm:w-auto"
+                              >
+                                <Star className="w-4 h-4 mr-2" />
+                                <span className="whitespace-nowrap">Review Session</span>
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                onClick={() => navigate(`/messaging-hub?userId=${session.mentee_id}`)}
+                                className="w-full sm:w-auto"
+                              >
+                                <MessageSquare className="w-4 h-4 mr-2" />
+                                <span className="whitespace-nowrap">Message</span>
                               </Button>
                             </div>
                           </div>

@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
+import EarlyAdopterRegistration from "./pages/EarlyAdopterRegistration";
 import Mentorship from "./pages/Mentorship";
 import FindMentor from "./pages/FindMentor";
 import MentorProfile from "./pages/MentorProfile";
@@ -64,6 +65,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/register" element={<EarlyAdopterRegistration />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/mentorship" element={<Mentorship />} />
             <Route path="/find-mentor" element={<FindMentor />} />

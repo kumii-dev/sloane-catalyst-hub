@@ -26,17 +26,9 @@ export const createVideoRoom = async (sessionId: string): Promise<string> => {
     console.log("Video room created:", data.roomUrl);
     return data.roomUrl;
   } catch (error) {
-    console.error("Error creating room, using fallback:", error);
-    // Fallback to default room if edge function fails
-    const fallbackUrl = "https://kumii.daily.co/kumii-Mentoring-Session";
-    
-    // Update session with fallback URL
-    await supabase
-      .from("mentoring_sessions")
-      .update({ video_room_url: fallbackUrl })
-      .eq("id", sessionId);
-    
-    return fallbackUrl;
+    console.error("Error creating video room:", error);
+    // Remove hardcoded fallback to avoid domain mismatches
+    throw error as Error;
   }
 };
 

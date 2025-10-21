@@ -280,6 +280,47 @@ export const VideoCallRoom = ({ sessionId, roomUrl, onLeave, userRole }: VideoCa
         console.error("Failed to initialize video call:", error);
         console.error("Room URL was:", roomUrl);
         console.error("Error details:", JSON.stringify(error, null, 2));
+
+        // Attempt an automatic recovery: create the room then retry join once
+        try {
+          console.log("Attempting to auto-create room via edge function and retry join...");
+          const { data, error: createErr } = await supabase.functions.invoke("create-daily-room", {
+            body: { sessionId },
+          });
+
+          if (createErr) throw createErr;
+
+          const newUrl = data?.roomUrl as string | undefined;
+          if (newUrl) {
+            console.log("Room created. Retrying join with:", newUrl);
+            const { default: DailyIframe } = await import("@daily-co/daily-js");
+            const retryCall = DailyIframe.createCallObject({ url: newUrl });
+            setCallObject(retryCall);
+
+            let retryToken: string | undefined;
+            try {
+              const { data: tokenData, error: tokenErr } = await supabase.functions.invoke("get-daily-token", {
+                body: { sessionId },
+              });
+              if (!tokenErr && tokenData?.token) {
+                retryToken = tokenData.token as string;
+              }
+            } catch (tokenRetryErr) {
+              console.warn("Retry token fetch failed (joining without token):", tokenRetryErr);
+            }
+
+            if (retryToken) {
+              await retryCall.join({ url: newUrl, token: retryToken });
+            } else {
+              await retryCall.join({ url: newUrl });
+            }
+            console.log("Retry join successful");
+            return; // success path, stop error handling
+          }
+        } catch (recoveryErr) {
+          console.error("Auto-recovery failed:", recoveryErr);
+        }
+
         toast({
           title: "Connection Failed",
           description: "Could not connect to the video call. The video room may not exist or is not properly configured.",

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search, Filter, Star, Users, Zap, Award, Code, Briefcase, TrendingUp, Headphones, GraduationCap, Building2, Palette, Megaphone, Scale, DollarSign, UserCheck, Sparkles } from "lucide-react";
 import { Layout } from "@/components/Layout";
+import { ListServiceButton } from "@/components/ListServiceButton";
 
 interface ServiceCategory {
   id: string;
@@ -124,6 +125,10 @@ const Services = () => {
             Discover essential services for your startup growth. From software solutions to professional services, 
             find everything you need in one place.
           </p>
+          
+          <div className="mb-8">
+            <ListServiceButton size="lg" className="shadow-lg" />
+          </div>
           
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto relative mb-8">

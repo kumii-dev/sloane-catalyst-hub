@@ -24,6 +24,7 @@ import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
+import { ListServiceButton } from "@/components/ListServiceButton";
 
 interface CreditScore {
   overall_score: number;
@@ -193,6 +194,10 @@ const AccessToMarket = () => {
               Connect with funders, corporates, and buyers through our trusted ecosystem powered by 
               credit scoring, profiling, and intelligent matching.
             </p>
+            
+            <div className="mb-8">
+              <ListServiceButton size="lg" className="shadow-lg" />
+            </div>
             
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">

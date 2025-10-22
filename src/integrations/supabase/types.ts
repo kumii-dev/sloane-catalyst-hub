@@ -993,7 +993,7 @@ export type Database = {
           provider_id: string
           published_at: string | null
           rating: number | null
-          search_vector: unknown | null
+          search_vector: unknown
           short_description: string | null
           slug: string
           status: Database["public"]["Enums"]["listing_status"] | null
@@ -1027,7 +1027,7 @@ export type Database = {
           provider_id: string
           published_at?: string | null
           rating?: number | null
-          search_vector?: unknown | null
+          search_vector?: unknown
           short_description?: string | null
           slug: string
           status?: Database["public"]["Enums"]["listing_status"] | null
@@ -1061,7 +1061,7 @@ export type Database = {
           provider_id?: string
           published_at?: string | null
           rating?: number | null
-          search_vector?: unknown | null
+          search_vector?: unknown
           short_description?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["listing_status"] | null
@@ -1857,6 +1857,8 @@ export type Database = {
       }
       service_providers: {
         Row: {
+          approved_at: string | null
+          business_registration_number: string | null
           company_name: string
           contact_email: string | null
           created_at: string
@@ -1866,13 +1868,21 @@ export type Database = {
           is_verified: boolean | null
           logo_url: string | null
           phone: string | null
+          proof_document_url: string | null
           rating: number | null
+          rejected_at: string | null
+          reviewed_by: string | null
+          submitted_at: string | null
           total_reviews: number | null
           updated_at: string
           user_id: string
+          vetting_notes: string | null
+          vetting_status: string | null
           website: string | null
         }
         Insert: {
+          approved_at?: string | null
+          business_registration_number?: string | null
           company_name: string
           contact_email?: string | null
           created_at?: string
@@ -1882,13 +1892,21 @@ export type Database = {
           is_verified?: boolean | null
           logo_url?: string | null
           phone?: string | null
+          proof_document_url?: string | null
           rating?: number | null
+          rejected_at?: string | null
+          reviewed_by?: string | null
+          submitted_at?: string | null
           total_reviews?: number | null
           updated_at?: string
           user_id: string
+          vetting_notes?: string | null
+          vetting_status?: string | null
           website?: string | null
         }
         Update: {
+          approved_at?: string | null
+          business_registration_number?: string | null
           company_name?: string
           contact_email?: string | null
           created_at?: string
@@ -1898,10 +1916,16 @@ export type Database = {
           is_verified?: boolean | null
           logo_url?: string | null
           phone?: string | null
+          proof_document_url?: string | null
           rating?: number | null
+          rejected_at?: string | null
+          reviewed_by?: string | null
+          submitted_at?: string | null
           total_reviews?: number | null
           updated_at?: string
           user_id?: string
+          vetting_notes?: string | null
+          vetting_status?: string | null
           website?: string | null
         }
         Relationships: []
@@ -2395,6 +2419,8 @@ export type Database = {
         | "advisor"
         | "funder"
         | "service_provider"
+        | "software_provider"
+        | "software_provider_pending"
       application_status:
         | "draft"
         | "submitted"
@@ -2634,6 +2660,8 @@ export const Constants = {
         "advisor",
         "funder",
         "service_provider",
+        "software_provider",
+        "software_provider_pending",
       ],
       application_status: [
         "draft",

@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 const ITEMS_PER_PAGE = 20;
 
 interface ListingFilters {
-  status?: string;
+  status?: "active" | "draft" | "paused" | "pending_approval" | "rejected";
   category_id?: string;
   search?: string;
   provider_id?: string;
@@ -154,14 +154,27 @@ export const useListingDetail = (id: string | undefined) => {
         .single();
 
       if (error) throw error;
+      if (!listing) throw new Error('Listing not found');
+
+      // Type-safe extraction of provider data
+      const profiles = listing.profiles;
+      const providerData = profiles && 'first_name' in profiles
+        ? (profiles as unknown as { id: string; first_name: string; last_name: string; email: string })
+        : { id: "", first_name: "", last_name: "", email: "" };
 
       return {
         ...listing,
-        provider: listing.profiles || { id: "", first_name: "", last_name: "", email: "" },
-        reviews: listing.listing_reviews?.map((review: any) => ({
-          ...review,
-          user: review.profiles || { first_name: "", last_name: "" }
-        })) || []
+        provider: providerData,
+        reviews: listing.listing_reviews?.map((review: any) => {
+          const reviewProfiles = review.profiles;
+          const userData = reviewProfiles && 'first_name' in reviewProfiles
+            ? (reviewProfiles as unknown as { first_name: string; last_name: string })
+            : { first_name: "", last_name: "" };
+          return {
+            ...review,
+            user: userData
+          };
+        }) || []
       };
     },
     enabled: !!id,

@@ -20,7 +20,7 @@ export function Layout({ children, showSidebar = false, hideSecondarySidebar = f
   const [showSecondary, setShowSecondary] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isMobile = useIsMobile();
-  const isTablet = typeof window !== 'undefined' && window.innerWidth <= 1024;
+  const isTablet = typeof window !== 'undefined' && window.innerWidth <= 768;
 
   // Auto-select sidebar section based on current route
   useEffect(() => {
@@ -58,7 +58,7 @@ export function Layout({ children, showSidebar = false, hideSecondarySidebar = f
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const handleResize = () => {
-        if (window.innerWidth <= 1024) {
+        if (window.innerWidth <= 768) {
           setSidebarOpen(false);
         } else {
           setSidebarOpen(true);

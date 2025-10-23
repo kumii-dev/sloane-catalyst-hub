@@ -107,7 +107,7 @@ export function Layout({ children, showSidebar = false, hideSecondarySidebar = f
         {/* Mobile Overlay */}
         {sidebarOpen && (isMobile || isTablet) && (
           <div 
-            className="fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity"
+            className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity"
             onClick={() => setSidebarOpen(false)}
           />
         )}
@@ -115,9 +115,9 @@ export function Layout({ children, showSidebar = false, hideSecondarySidebar = f
         {/* Sidebar - Collapsible on mobile */}
         <div className={`
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0
-          fixed lg:relative
-          z-50 lg:z-auto
+          md:translate-x-0
+          fixed md:relative
+          z-50 md:z-auto
           h-full
           transition-transform duration-300 ease-in-out
         `}>
@@ -133,7 +133,11 @@ export function Layout({ children, showSidebar = false, hideSecondarySidebar = f
           />
         </div>
         
-        <main className="flex-1 overflow-y-auto overflow-x-hidden main-gradient-light w-full">
+        <main
+          className={`flex-1 overflow-y-auto overflow-x-hidden main-gradient-light w-full transition-[margin] duration-300 ${
+            sidebarOpen && (isMobile || isTablet) ? 'ml-[314px] sm:ml-[344px]' : ''
+          }`}
+        >
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 w-full">
             {children}
           </div>

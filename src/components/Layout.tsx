@@ -73,6 +73,13 @@ export function Layout({ children, showSidebar = true, hideSecondarySidebar = fa
     }
   }, []);
 
+  // Ensure sidebar opens on desktop after route changes (e.g., post-auth redirects)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth > 768) {
+      setSidebarOpen(true);
+    }
+  }, [location.pathname]);
+
   const handlePrimarySelect = (id: string) => {
     if (selectedPrimary === id) {
       setShowSecondary(!showSecondary);

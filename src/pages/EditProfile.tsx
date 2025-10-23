@@ -26,6 +26,8 @@ const EditProfile = () => {
   useEffect(() => {
     if (user) {
       fetchProfile();
+    } else {
+      setLoading(false);
     }
   }, [user]);
 
@@ -34,11 +36,18 @@ const EditProfile = () => {
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('user_id', user?.id)
+        .eq('id', user?.id)
         .single();
 
-      if (error) throw error;
-      setProfile(data);
+      if (error && error.code !== 'PGRST116') {
+        throw error;
+      }
+      
+      setProfile(data || {
+        id: user?.id,
+        user_id: user?.id,
+        profile_completion_percentage: 0
+      });
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -84,6 +93,19 @@ const EditProfile = () => {
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto" />
             <p className="text-muted-foreground">Loading profile...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <p className="text-muted-foreground">Please sign in to view your profile.</p>
+            <Button onClick={() => navigate('/auth')}>Sign In</Button>
           </div>
         </div>
       </Layout>

@@ -13,6 +13,7 @@ import Mentorship from "./pages/Mentorship";
 import FindMentor from "./pages/FindMentor";
 import MentorProfile from "./pages/MentorProfile";
 import EditMentorProfile from "./pages/EditMentorProfile";
+import EditProfile from "./pages/EditProfile";
 import BecomeMentor from "./pages/BecomeMentor";
 import BecomeProvider from "./pages/BecomeProvider";
 import ProviderDashboard from "./pages/ProviderDashboard";
@@ -75,8 +76,9 @@ const App = () => (
           <Route path="/mentor-dashboard" element={<MentorDashboard />} />
           <Route path="/mentor-availability" element={<MentorAvailability />} />
           <Route path="/mentor/:id" element={<MentorProfile />} />
-          <Route path="/edit-mentor-profile" element={<EditMentorProfile />} />
-          <Route path="/become-mentor" element={<BecomeMentor />} />
+            <Route path="/edit-mentor-profile" element={<EditMentorProfile />} />
+            <Route path="/edit-profile" element={<EditProfile />} />
+            <Route path="/become-mentor" element={<BecomeMentor />} />
             <Route path="/become-provider" element={<BecomeProvider />} />
             <Route path="/provider-dashboard" element={<ProviderDashboard />} />
             <Route path="/funding" element={<FundingHub />} />

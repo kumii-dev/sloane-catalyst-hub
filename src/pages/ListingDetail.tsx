@@ -7,12 +7,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Star, MapPin, Clock, Coins, ArrowLeft, Shield, CheckCircle } from "lucide-react";
+import { Star, Users, Coins, ArrowLeft, Shield, CheckCircle, Mail, Globe } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Layout } from "@/components/Layout";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 interface ListingDetail {
   id: string;
@@ -236,102 +237,133 @@ const ListingDetail = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
-        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Marketplace
+          Back
         </Button>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Header Image */}
+            {/* Hero Image */}
             {listing.thumbnail_url ? (
-              <img
-                src={listing.thumbnail_url}
-                alt={listing.title}
-                className="w-full h-96 object-cover rounded-lg"
-              />
+              <div className="w-full h-64 rounded-xl overflow-hidden bg-gradient-to-br from-muted/50 to-muted flex items-center justify-center">
+                <img
+                  src={listing.thumbnail_url}
+                  alt={listing.title}
+                  className="max-h-full max-w-full object-contain"
+                />
+              </div>
             ) : (
-              <div className="w-full h-96 bg-muted rounded-lg flex items-center justify-center text-8xl">
-                💻
+              <div className="w-full h-64 bg-gradient-to-br from-muted/50 to-muted rounded-xl flex items-center justify-center">
+                <span className="text-6xl">💻</span>
               </div>
             )}
 
-            {/* Title and Description */}
-            <div>
-              <div className="flex items-start justify-between gap-4 mb-4">
-                <div>
-                  <h1 className="text-4xl font-bold mb-2">{listing.title}</h1>
-                  <p className="text-xl text-muted-foreground">{listing.short_description}</p>
-                </div>
-                <Badge className="capitalize">{listing.listing_type}</Badge>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
-                <div className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4" />
-                  <span className="capitalize">{listing.delivery_mode.replace("_", " ")}</span>
-                </div>
-                {listing.rating > 0 && (
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span>{listing.rating.toFixed(1)} ({listing.total_reviews} reviews)</span>
-                  </div>
-                )}
-                <div className="flex items-center gap-1">
-                  <Clock className="w-4 h-4" />
-                  <span>{listing.total_subscriptions} subscriptions</span>
-                </div>
-              </div>
-
+            {/* Category Badges */}
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="default" className="bg-sky-500 hover:bg-sky-600">
+                {listing.listing_type === 'software' ? 'Startup Support & Advisory' : listing.listing_type}
+              </Badge>
               {isFundedListing && (
-                <Card className="bg-blue-50 border-blue-200 mb-6">
-                  <CardContent className="p-4 flex items-center gap-3">
-                    <Shield className="w-5 h-5 text-blue-600" />
-                    <div>
-                      <p className="font-semibold text-blue-900">Sponsored Access Available</p>
-                      <p className="text-sm text-blue-700">
-                        This listing is available at no cost through your cohort membership
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+                <Badge variant="default" className="bg-orange-500 hover:bg-orange-600">
+                  Cohort Partner
+                </Badge>
               )}
             </div>
 
+            {/* Title and Meta */}
+            <div>
+              <h1 className="text-3xl font-bold mb-2">{listing.title}</h1>
+              <p className="text-lg text-muted-foreground mb-4">{listing.short_description}</p>
+              
+              <div className="flex items-center gap-4 text-sm">
+                {listing.rating > 0 && (
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    <span className="font-semibold">{listing.rating.toFixed(1)}</span>
+                    <span className="text-muted-foreground">({listing.total_reviews} reviews)</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-1 text-muted-foreground">
+                  <Users className="w-4 h-4" />
+                  <span>{listing.total_subscriptions} subscribers</span>
+                </div>
+              </div>
+            </div>
+
             {/* Tabs */}
-            <Tabs defaultValue="description" className="w-full">
-              <TabsList>
-                <TabsTrigger value="description">Description</TabsTrigger>
-                <TabsTrigger value="reviews">Reviews ({listing.total_reviews})</TabsTrigger>
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="w-full justify-start">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="features">Features</TabsTrigger>
+                <TabsTrigger value="reviews">Reviews</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="description" className="space-y-4">
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="prose max-w-none">
-                      {listing.description.split("\n").map((para, i) => (
-                        <p key={i} className="mb-4">{para}</p>
+              <TabsContent value="overview" className="space-y-6 mt-6">
+                {/* About This Service */}
+                <div>
+                  <h2 className="text-xl font-bold mb-4">About This Service</h2>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {listing.description}
+                  </p>
+                </div>
+
+                {/* Target Industries */}
+                {listing.tags && listing.tags.length > 0 && (
+                  <div>
+                    <h2 className="text-xl font-bold mb-4">Target Industries</h2>
+                    <div className="flex flex-wrap gap-2">
+                      {listing.tags.map((tag, index) => (
+                        <Badge key={index} variant="secondary" className="px-4 py-2 text-sm">
+                          {tag}
+                        </Badge>
                       ))}
                     </div>
+                  </div>
+                )}
 
-                    {listing.tags && listing.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-6">
-                        {listing.tags.map((tag, index) => (
-                          <Badge key={index} variant="secondary">{tag}</Badge>
-                        ))}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                {/* Cohort Benefits */}
+                {isFundedListing && (
+                  <div>
+                    <h2 className="text-xl font-bold mb-4">Cohort Benefits</h2>
+                    <p className="text-green-600 font-medium">
+                      Cohort members receive 50% discount on first assessment and priority support
+                    </p>
+                  </div>
+                )}
               </TabsContent>
 
-              <TabsContent value="reviews" className="space-y-4">
+              <TabsContent value="features" className="mt-6">
+                <div>
+                  <h2 className="text-xl font-bold mb-4">Key Features</h2>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                      <span className="text-muted-foreground">AI-powered analysis and recommendations</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                      <span className="text-muted-foreground">Comprehensive assessment across multiple domains</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                      <span className="text-muted-foreground">Instant credit scores and funding eligibility</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                      <span className="text-muted-foreground">Share results securely with funders</span>
+                    </li>
+                  </ul>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="reviews" className="space-y-4 mt-6">
                 {listing.reviews.length === 0 ? (
                   <Card>
-                    <CardContent className="p-6 text-center text-muted-foreground">
-                      No reviews yet. Be the first to review this listing!
+                    <CardContent className="p-8 text-center text-muted-foreground">
+                      No reviews yet. Be the first to review this service!
                     </CardContent>
                   </Card>
                 ) : (
@@ -355,7 +387,7 @@ const ListingDetail = () => {
                                     key={i}
                                     className={`w-4 h-4 ${
                                       i < review.rating
-                                        ? "fill-yellow-400 text-yellow-400"
+                                        ? "fill-amber-400 text-amber-400"
                                         : "text-gray-300"
                                     }`}
                                   />
@@ -365,7 +397,7 @@ const ListingDetail = () => {
                             <p className="text-sm text-muted-foreground mb-2">
                               {new Date(review.created_at).toLocaleDateString()}
                             </p>
-                            <p>{review.review_text}</p>
+                            <p className="text-muted-foreground">{review.review_text}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -380,29 +412,78 @@ const ListingDetail = () => {
           <div className="space-y-6">
             {/* Pricing Card */}
             <Card>
-              <CardContent className="p-6 space-y-4">
+              <CardContent className="p-6 space-y-6">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Price</p>
-                  {listing.base_price ? (
-                    <p className="text-3xl font-bold">R{listing.base_price.toFixed(2)}</p>
-                  ) : (
-                    <p className="text-lg text-muted-foreground">Contact for pricing</p>
-                  )}
-                  {listing.credits_price && (
-                    <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
-                      <Coins className="w-4 h-4" />
-                      or {listing.credits_price} Kumii Credits
-                    </p>
+                  <h3 className="text-xl font-bold mb-4">Pricing</h3>
+                  
+                  {/* Subscription Packages */}
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-semibold text-orange-600 mb-3">Kumii Credits</h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span>1 Month</span>
+                          <span className="font-semibold">{listing.credits_price || 20} Credits</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>3 Months</span>
+                          <span className="font-semibold">{listing.credits_price ? listing.credits_price * 2.5 : 50} Credits</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span>6 Months</span>
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold">{listing.credits_price ? listing.credits_price * 4.5 : 90} Credits</span>
+                            <Badge variant="secondary" className="bg-sky-500 text-white text-xs">Save 10%</Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    {listing.base_price && (
+                      <div>
+                        <h4 className="font-semibold text-orange-600 mb-3">Credit Card (ZAR)</h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span>1 Month</span>
+                            <span className="font-semibold">R{listing.base_price.toFixed(0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>3 Months</span>
+                            <span className="font-semibold">R{(listing.base_price * 2.5).toFixed(0)}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span>6 Months</span>
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold">R{(listing.base_price * 4.5).toFixed(0)}</span>
+                              <Badge variant="secondary" className="bg-sky-500 text-white text-xs">Save 10%</Badge>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {isFundedListing && (
+                    <div className="mt-4 p-3 bg-green-50 rounded-lg">
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />
+                        <p className="text-sm text-green-700">
+                          Exclusive access for sponsored programme members
+                        </p>
+                      </div>
+                    </div>
                   )}
                 </div>
 
                 <Button
-                  className="w-full"
+                  className="w-full bg-orange-600 hover:bg-orange-700"
                   size="lg"
                   onClick={() => setSubscribeDialog(true)}
                   disabled={!user}
                 >
-                  Subscribe Now
+                  Subscribe
                 </Button>
 
                 {!user && (
@@ -410,32 +491,45 @@ const ListingDetail = () => {
                     Sign in to subscribe
                   </p>
                 )}
-
-                {isFundedListing && (
-                  <div className="flex items-center gap-2 text-sm text-green-600">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>Free with your cohort</span>
-                  </div>
-                )}
               </CardContent>
             </Card>
 
             {/* Provider Card */}
             <Card>
               <CardContent className="p-6">
-                <p className="text-sm font-semibold mb-4">Provider</p>
-                <div className="flex items-center gap-3">
-                  <Avatar>
-                    <AvatarFallback>
+                <h3 className="text-xl font-bold mb-4">Provider</h3>
+                <div className="flex items-start gap-3 mb-4">
+                  <Avatar className="w-12 h-12">
+                    <AvatarFallback className="text-lg font-bold">
                       {listing.provider.first_name[0]}{listing.provider.last_name[0]}
                     </AvatarFallback>
                   </Avatar>
-                  <div>
-                    <p className="font-semibold">
-                      {listing.provider.first_name} {listing.provider.last_name}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-semibold">
+                        {listing.provider.first_name} {listing.provider.last_name}
+                      </p>
+                      {listing.rating >= 4 && (
+                        <div className="flex items-center gap-1">
+                          <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                          <span className="text-sm font-semibold">{listing.rating.toFixed(0)}</span>
+                        </div>
+                      )}
+                      <Badge variant="secondary" className="text-xs">Verified</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Leading provider of innovative business solutions for startups and SMEs
                     </p>
-                    <p className="text-sm text-muted-foreground">{listing.provider.email}</p>
                   </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Button variant="ghost" size="sm" className="w-full justify-start text-orange-600" asChild>
+                    <a href={`mailto:${listing.provider.email}`}>
+                      <Mail className="w-4 h-4 mr-2" />
+                      Contact Email
+                    </a>
+                  </Button>
                 </div>
               </CardContent>
             </Card>

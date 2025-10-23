@@ -14,11 +14,11 @@ interface LayoutProps {
   hideSecondarySidebar?: boolean;
 }
 
-export function Layout({ children, showSidebar = false, hideSecondarySidebar = false }: LayoutProps) {
+export function Layout({ children, showSidebar = true, hideSecondarySidebar = false }: LayoutProps) {
   const location = useLocation();
   const [selectedPrimary, setSelectedPrimary] = useState("apps");
   const [showSecondary, setShowSecondary] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(() => (typeof window !== 'undefined' ? window.innerWidth > 768 : false));
   const isMobile = useIsMobile();
   const isTablet = typeof window !== 'undefined' && window.innerWidth <= 768;
 

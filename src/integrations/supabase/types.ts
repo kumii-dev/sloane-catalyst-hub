@@ -617,10 +617,15 @@ export type Database = {
       funders: {
         Row: {
           created_at: string
+          decision_timeline: string | null
           description: string | null
           focus_areas: string[] | null
+          funding_model: string | null
+          geographic_preferences: string[] | null
           id: string
+          investment_criteria: string | null
           is_verified: boolean | null
+          linkedin_url: string | null
           logo_url: string | null
           max_funding_amount: number | null
           min_funding_amount: number | null
@@ -632,7 +637,10 @@ export type Database = {
           preferred_stages:
             | Database["public"]["Enums"]["company_stage"][]
             | null
+          sector_preferences: string[] | null
           sloane_credits_balance: number | null
+          stage_preferences: string[] | null
+          success_stories: string[] | null
           total_funded_amount: number | null
           total_funded_companies: number | null
           updated_at: string
@@ -641,10 +649,15 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          decision_timeline?: string | null
           description?: string | null
           focus_areas?: string[] | null
+          funding_model?: string | null
+          geographic_preferences?: string[] | null
           id?: string
+          investment_criteria?: string | null
           is_verified?: boolean | null
+          linkedin_url?: string | null
           logo_url?: string | null
           max_funding_amount?: number | null
           min_funding_amount?: number | null
@@ -656,7 +669,10 @@ export type Database = {
           preferred_stages?:
             | Database["public"]["Enums"]["company_stage"][]
             | null
+          sector_preferences?: string[] | null
           sloane_credits_balance?: number | null
+          stage_preferences?: string[] | null
+          success_stories?: string[] | null
           total_funded_amount?: number | null
           total_funded_companies?: number | null
           updated_at?: string
@@ -665,10 +681,15 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          decision_timeline?: string | null
           description?: string | null
           focus_areas?: string[] | null
+          funding_model?: string | null
+          geographic_preferences?: string[] | null
           id?: string
+          investment_criteria?: string | null
           is_verified?: boolean | null
+          linkedin_url?: string | null
           logo_url?: string | null
           max_funding_amount?: number | null
           min_funding_amount?: number | null
@@ -680,7 +701,10 @@ export type Database = {
           preferred_stages?:
             | Database["public"]["Enums"]["company_stage"][]
             | null
+          sector_preferences?: string[] | null
           sloane_credits_balance?: number | null
+          stage_preferences?: string[] | null
+          success_stories?: string[] | null
           total_funded_amount?: number | null
           total_funded_companies?: number | null
           updated_at?: string
@@ -1290,6 +1314,7 @@ export type Database = {
       }
       mentors: {
         Row: {
+          certifications: string[] | null
           company: string | null
           created_at: string
           experience_years: number | null
@@ -1297,10 +1322,16 @@ export type Database = {
           hourly_rate: number | null
           id: string
           is_premium: boolean
+          languages: string[] | null
+          linkedin_url: string | null
+          max_mentees: number | null
+          mentoring_style: string | null
           platform_fee_percentage: number | null
           rating: number | null
           session_fee: number | null
+          specializations: string[] | null
           status: Database["public"]["Enums"]["mentor_status"]
+          success_stories: string[] | null
           title: string
           total_reviews: number | null
           total_sessions: number | null
@@ -1308,6 +1339,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          certifications?: string[] | null
           company?: string | null
           created_at?: string
           experience_years?: number | null
@@ -1315,10 +1347,16 @@ export type Database = {
           hourly_rate?: number | null
           id?: string
           is_premium?: boolean
+          languages?: string[] | null
+          linkedin_url?: string | null
+          max_mentees?: number | null
+          mentoring_style?: string | null
           platform_fee_percentage?: number | null
           rating?: number | null
           session_fee?: number | null
+          specializations?: string[] | null
           status?: Database["public"]["Enums"]["mentor_status"]
+          success_stories?: string[] | null
           title: string
           total_reviews?: number | null
           total_sessions?: number | null
@@ -1326,6 +1364,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          certifications?: string[] | null
           company?: string | null
           created_at?: string
           experience_years?: number | null
@@ -1333,10 +1372,16 @@ export type Database = {
           hourly_rate?: number | null
           id?: string
           is_premium?: boolean
+          languages?: string[] | null
+          linkedin_url?: string | null
+          max_mentees?: number | null
+          mentoring_style?: string | null
           platform_fee_percentage?: number | null
           rating?: number | null
           session_fee?: number | null
+          specializations?: string[] | null
           status?: Database["public"]["Enums"]["mentor_status"]
+          success_stories?: string[] | null
           title?: string
           total_reviews?: number | null
           total_sessions?: number | null
@@ -1391,12 +1436,20 @@ export type Database = {
           email: string | null
           first_name: string | null
           id: string
+          industry_sectors: string[] | null
+          interests: string[] | null
           last_name: string | null
+          linkedin_url: string | null
+          location: string | null
           onboarding_step: number | null
           organization: string | null
           persona_completed: boolean | null
           persona_type: Database["public"]["Enums"]["persona_type"] | null
+          phone: string | null
+          profile_completion_percentage: number | null
           profile_picture_url: string | null
+          skills: string[] | null
+          twitter_url: string | null
           updated_at: string
           user_id: string
         }
@@ -1406,12 +1459,20 @@ export type Database = {
           email?: string | null
           first_name?: string | null
           id?: string
+          industry_sectors?: string[] | null
+          interests?: string[] | null
           last_name?: string | null
+          linkedin_url?: string | null
+          location?: string | null
           onboarding_step?: number | null
           organization?: string | null
           persona_completed?: boolean | null
           persona_type?: Database["public"]["Enums"]["persona_type"] | null
+          phone?: string | null
+          profile_completion_percentage?: number | null
           profile_picture_url?: string | null
+          skills?: string[] | null
+          twitter_url?: string | null
           updated_at?: string
           user_id: string
         }
@@ -1421,12 +1482,20 @@ export type Database = {
           email?: string | null
           first_name?: string | null
           id?: string
+          industry_sectors?: string[] | null
+          interests?: string[] | null
           last_name?: string | null
+          linkedin_url?: string | null
+          location?: string | null
           onboarding_step?: number | null
           organization?: string | null
           persona_completed?: boolean | null
           persona_type?: Database["public"]["Enums"]["persona_type"] | null
+          phone?: string | null
+          profile_completion_percentage?: number | null
           profile_picture_url?: string | null
+          skills?: string[] | null
+          twitter_url?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -1859,20 +1928,28 @@ export type Database = {
         Row: {
           approved_at: string | null
           business_registration_number: string | null
+          case_studies_url: string | null
           company_name: string
+          company_size: string | null
           contact_email: string | null
           created_at: string
           description: string | null
           id: string
+          implementation_timeline: string | null
           is_cohort_partner: boolean | null
           is_verified: boolean | null
+          linkedin_url: string | null
           logo_url: string | null
           phone: string | null
+          pricing_models: string[] | null
           proof_document_url: string | null
           rating: number | null
           rejected_at: string | null
           reviewed_by: string | null
+          service_categories: string[] | null
           submitted_at: string | null
+          support_offered: string[] | null
+          target_industries: string[] | null
           total_reviews: number | null
           updated_at: string
           user_id: string
@@ -1883,20 +1960,28 @@ export type Database = {
         Insert: {
           approved_at?: string | null
           business_registration_number?: string | null
+          case_studies_url?: string | null
           company_name: string
+          company_size?: string | null
           contact_email?: string | null
           created_at?: string
           description?: string | null
           id?: string
+          implementation_timeline?: string | null
           is_cohort_partner?: boolean | null
           is_verified?: boolean | null
+          linkedin_url?: string | null
           logo_url?: string | null
           phone?: string | null
+          pricing_models?: string[] | null
           proof_document_url?: string | null
           rating?: number | null
           rejected_at?: string | null
           reviewed_by?: string | null
+          service_categories?: string[] | null
           submitted_at?: string | null
+          support_offered?: string[] | null
+          target_industries?: string[] | null
           total_reviews?: number | null
           updated_at?: string
           user_id: string
@@ -1907,20 +1992,28 @@ export type Database = {
         Update: {
           approved_at?: string | null
           business_registration_number?: string | null
+          case_studies_url?: string | null
           company_name?: string
+          company_size?: string | null
           contact_email?: string | null
           created_at?: string
           description?: string | null
           id?: string
+          implementation_timeline?: string | null
           is_cohort_partner?: boolean | null
           is_verified?: boolean | null
+          linkedin_url?: string | null
           logo_url?: string | null
           phone?: string | null
+          pricing_models?: string[] | null
           proof_document_url?: string | null
           rating?: number | null
           rejected_at?: string | null
           reviewed_by?: string | null
+          service_categories?: string[] | null
           submitted_at?: string | null
+          support_offered?: string[] | null
+          target_industries?: string[] | null
           total_reviews?: number | null
           updated_at?: string
           user_id?: string
@@ -2161,18 +2254,33 @@ export type Database = {
       startup_profiles: {
         Row: {
           annual_revenue: number | null
+          business_age: string | null
+          business_model: string | null
+          business_registration_number: string | null
+          challenges: string[] | null
           company_name: string
+          competitive_advantage: string | null
           consent_data_sharing: boolean | null
           created_at: string
           credit_score: number | null
           description: string | null
+          employee_count_range: string | null
           founded_year: number | null
+          funding_amount_needed: string | null
+          funding_history: string | null
           funding_needed: number | null
+          funding_needs: string | null
+          growth_stage: string | null
           id: string
           industry: Database["public"]["Enums"]["industry_type"]
+          key_products_services: string[] | null
           location: string | null
           logo_url: string | null
+          market_access_needs: string[] | null
+          revenue_range: string | null
           stage: Database["public"]["Enums"]["company_stage"]
+          support_needed: string[] | null
+          target_market: string | null
           team_size: number | null
           updated_at: string
           user_id: string
@@ -2180,18 +2288,33 @@ export type Database = {
         }
         Insert: {
           annual_revenue?: number | null
+          business_age?: string | null
+          business_model?: string | null
+          business_registration_number?: string | null
+          challenges?: string[] | null
           company_name: string
+          competitive_advantage?: string | null
           consent_data_sharing?: boolean | null
           created_at?: string
           credit_score?: number | null
           description?: string | null
+          employee_count_range?: string | null
           founded_year?: number | null
+          funding_amount_needed?: string | null
+          funding_history?: string | null
           funding_needed?: number | null
+          funding_needs?: string | null
+          growth_stage?: string | null
           id?: string
           industry: Database["public"]["Enums"]["industry_type"]
+          key_products_services?: string[] | null
           location?: string | null
           logo_url?: string | null
+          market_access_needs?: string[] | null
+          revenue_range?: string | null
           stage: Database["public"]["Enums"]["company_stage"]
+          support_needed?: string[] | null
+          target_market?: string | null
           team_size?: number | null
           updated_at?: string
           user_id: string
@@ -2199,18 +2322,33 @@ export type Database = {
         }
         Update: {
           annual_revenue?: number | null
+          business_age?: string | null
+          business_model?: string | null
+          business_registration_number?: string | null
+          challenges?: string[] | null
           company_name?: string
+          competitive_advantage?: string | null
           consent_data_sharing?: boolean | null
           created_at?: string
           credit_score?: number | null
           description?: string | null
+          employee_count_range?: string | null
           founded_year?: number | null
+          funding_amount_needed?: string | null
+          funding_history?: string | null
           funding_needed?: number | null
+          funding_needs?: string | null
+          growth_stage?: string | null
           id?: string
           industry?: Database["public"]["Enums"]["industry_type"]
+          key_products_services?: string[] | null
           location?: string | null
           logo_url?: string | null
+          market_access_needs?: string[] | null
+          revenue_range?: string | null
           stage?: Database["public"]["Enums"]["company_stage"]
+          support_needed?: string[] | null
+          target_market?: string | null
           team_size?: number | null
           updated_at?: string
           user_id?: string
@@ -2356,6 +2494,10 @@ export type Database = {
           p_user_id: string
         }
         Returns: undefined
+      }
+      calculate_funding_match_score: {
+        Args: { funder_id_param: string; startup_id_param: string }
+        Returns: number
       }
       create_direct_conversation: {
         Args: { p_title: string; p_user1: string; p_user2: string }

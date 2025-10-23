@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { FundingOpportunityCard } from "@/components/funding/FundingOpportunityCard";
+import { ListServiceButton } from "@/components/ListServiceButton";
 import { 
   FileText, 
   Target,
@@ -202,6 +203,7 @@ const StartupDashboard = () => {
             </p>
           </div>
           <div className="flex gap-2">
+            <ListServiceButton variant="outline" size="default" />
             <Link to="/funding/startup-profile">
               <Button variant="outline">
                 <Settings className="w-4 h-4 mr-2" />

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ListServiceButton } from "@/components/ListServiceButton";
 import { 
   Calendar, 
   Clock, 
@@ -241,10 +242,13 @@ const MenteeDashboard = () => {
                 <h1 className="text-3xl font-bold mb-2">My Mentorship Journey</h1>
                 <p className="text-muted-foreground">Track your growth and upcoming sessions</p>
               </div>
-              <Button onClick={() => navigate('/find-mentor')} size="lg">
-                <Calendar className="w-4 h-4 mr-2" />
-                Book New Session
-              </Button>
+              <div className="flex gap-3">
+                <ListServiceButton variant="outline" size="lg" />
+                <Button onClick={() => navigate('/find-mentor')} size="lg">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Book New Session
+                </Button>
+              </div>
             </div>
           </div>
         </div>

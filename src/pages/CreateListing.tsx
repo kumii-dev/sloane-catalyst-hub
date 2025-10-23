@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,6 +41,39 @@ const CreateListing = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const [checkingProvider, setCheckingProvider] = useState(true);
+  const [isApprovedProvider, setIsApprovedProvider] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      checkProviderStatus();
+    } else {
+      navigate("/auth");
+    }
+  }, [user]);
+
+  const checkProviderStatus = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from("service_providers")
+        .select("vetting_status")
+        .eq("user_id", user.id)
+        .single();
+
+      if (error || !data) {
+        setIsApprovedProvider(false);
+      } else {
+        setIsApprovedProvider(data.vetting_status === "approved");
+      }
+    } catch (error) {
+      console.error("Error checking provider status:", error);
+      setIsApprovedProvider(false);
+    } finally {
+      setCheckingProvider(false);
+    }
+  };
 
   const form = useForm<ListingFormData>({
     resolver: zodResolver(listingSchema),
@@ -77,6 +110,17 @@ const CreateListing = () => {
         variant: "destructive",
       });
       navigate("/auth");
+      return;
+    }
+
+    // Check if listing type is software and user is not an approved provider
+    if (data.listing_type === "software" && !isApprovedProvider) {
+      toast({
+        title: "Provider approval required",
+        description: "You must be an approved software provider to list software services",
+        variant: "destructive",
+      });
+      navigate("/become-provider");
       return;
     }
 
@@ -150,6 +194,16 @@ const CreateListing = () => {
       setIsSubmitting(false);
     }
   };
+
+  if (checkingProvider) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="w-8 h-8 animate-spin" />
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

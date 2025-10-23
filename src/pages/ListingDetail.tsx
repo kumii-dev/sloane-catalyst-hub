@@ -373,13 +373,13 @@ const ListingDetail = () => {
                         <div className="flex items-start gap-4">
                           <Avatar>
                             <AvatarFallback>
-                              {review.user.first_name[0]}{review.user.last_name[0]}
+                              {review.user?.first_name?.[0] || 'U'}{review.user?.last_name?.[0] || 'U'}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-2">
                               <p className="font-semibold">
-                                {review.user.first_name} {review.user.last_name}
+                                {review.user?.first_name || 'Anonymous'} {review.user?.last_name || ''}
                               </p>
                               <div className="flex items-center gap-1">
                                 {[...Array(5)].map((_, i) => (
@@ -501,13 +501,13 @@ const ListingDetail = () => {
                 <div className="flex items-start gap-3 mb-4">
                   <Avatar className="w-12 h-12">
                     <AvatarFallback className="text-lg font-bold">
-                      {listing.provider.first_name[0]}{listing.provider.last_name[0]}
+                      {listing.provider?.first_name?.[0] || 'P'}{listing.provider?.last_name?.[0] || 'P'}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <p className="font-semibold">
-                        {listing.provider.first_name} {listing.provider.last_name}
+                        {listing.provider?.first_name || 'Provider'} {listing.provider?.last_name || ''}
                       </p>
                       {listing.rating >= 4 && (
                         <div className="flex items-center gap-1">
@@ -525,7 +525,7 @@ const ListingDetail = () => {
 
                 <div className="space-y-2">
                   <Button variant="ghost" size="sm" className="w-full justify-start text-orange-600" asChild>
-                    <a href={`mailto:${listing.provider.email}`}>
+                    <a href={`mailto:${listing.provider?.email || ''}`}>
                       <Mail className="w-4 h-4 mr-2" />
                       Contact Email
                     </a>

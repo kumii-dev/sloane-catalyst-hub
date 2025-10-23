@@ -129,52 +129,50 @@ export const useListingDetail = (id: string | undefined) => {
     queryFn: async () => {
       if (!id) return null;
 
-      const { data: listing, error } = await supabase
+      // Fetch listing
+      const { data: listing, error: listingError } = await supabase
         .from('listings')
-        .select(`
-          *,
-          profiles!provider_id (
-            id,
-            first_name,
-            last_name,
-            email
-          ),
-          listing_reviews (
-            id,
-            rating,
-            review_text,
-            created_at,
-            profiles!user_id (
-              first_name,
-              last_name
-            )
-          )
-        `)
+        .select('*')
         .eq('id', id)
         .single();
 
-      if (error) throw error;
+      if (listingError) throw listingError;
       if (!listing) throw new Error('Listing not found');
 
-      // Type-safe extraction of provider data
-      const profiles = listing.profiles;
-      const providerData = profiles && 'first_name' in profiles
-        ? (profiles as unknown as { id: string; first_name: string; last_name: string; email: string })
-        : { id: "", first_name: "", last_name: "", email: "" };
+      // Fetch provider profile
+      const { data: provider, error: providerError } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name, email')
+        .eq('user_id', listing.provider_id)
+        .single();
+
+      if (providerError) console.error('Provider fetch error:', providerError);
+
+      // Fetch reviews with user profiles
+      const { data: reviews, error: reviewsError } = await supabase
+        .from('listing_reviews')
+        .select('id, rating, review_text, created_at, user_id')
+        .eq('listing_id', id);
+
+      if (reviewsError) console.error('Reviews fetch error:', reviewsError);
+
+      // Fetch user profiles for reviews
+      const reviewsWithUsers = reviews && reviews.length > 0 ? await Promise.all(
+        reviews.map(async (review) => {
+          const { data: user } = await supabase
+            .from('profiles')
+            .select('first_name, last_name')
+            .eq('user_id', review.user_id)
+            .single();
+          
+          return { ...review, user };
+        })
+      ) : [];
 
       return {
         ...listing,
-        provider: providerData,
-        reviews: listing.listing_reviews?.map((review: any) => {
-          const reviewProfiles = review.profiles;
-          const userData = reviewProfiles && 'first_name' in reviewProfiles
-            ? (reviewProfiles as unknown as { first_name: string; last_name: string })
-            : { first_name: "", last_name: "" };
-          return {
-            ...review,
-            user: userData
-          };
-        }) || []
+        provider: provider || { id: "", first_name: "", last_name: "", email: "" },
+        reviews: reviewsWithUsers
       };
     },
     enabled: !!id,

@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <Layout showSidebar={true}>
+    <Layout showSidebar={false}>
       <Hero />
       <Features />
       <UserTypes />

@@ -157,7 +157,7 @@ const StartupDashboard = () => {
 
   if (!user) {
     return (
-      <Layout showSidebar={false}>
+      <Layout showSidebar={true}>
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
           <p className="text-muted-foreground mb-6">Please sign in to access your startup dashboard.</p>
@@ -171,7 +171,7 @@ const StartupDashboard = () => {
 
   if (!profile && !loading) {
     return (
-      <Layout showSidebar={false}>
+      <Layout showSidebar={true}>
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Building className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
           <h1 className="text-2xl font-bold mb-4">Complete Your Startup Profile</h1>

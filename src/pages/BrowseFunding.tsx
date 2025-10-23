@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
+import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -111,8 +111,8 @@ const BrowseFunding = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <Navbar />
+    <Layout showSidebar={true}>
+      <div className="bg-gradient-to-br from-background via-background to-muted/20">
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8">
         {/* Header */}
@@ -335,7 +335,8 @@ const BrowseFunding = () => {
       )}
 
       <Footer />
-    </div>
+      </div>
+    </Layout>
   );
 };
 

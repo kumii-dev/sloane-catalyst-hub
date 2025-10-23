@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
-import Navbar from "@/components/Navbar";
+import { Layout } from "@/components/Layout";
 
 interface ResourceCategory {
   id: string;
@@ -142,22 +142,20 @@ const ResourceCategory = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <Layout showSidebar={true}>
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-muted-foreground">Loading resources...</p>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   if (!category) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <Layout showSidebar={true}>
         <div className="container mx-auto px-6 py-15">
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">Category Not Found</h1>
@@ -167,13 +165,12 @@ const ResourceCategory = () => {
             </Button>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <Layout showSidebar={true}>
       
       {/* Header */}
       <section className="relative py-18 bg-gradient-to-br from-primary/10 via-background to-accent/10">
@@ -385,7 +382,7 @@ const ResourceCategory = () => {
           )}
         </section>
       </div>
-    </div>
+    </Layout>
   );
 };
 

@@ -203,7 +203,7 @@ const FunderDashboard = () => {
 
   if (!user) {
     return (
-      <Layout showSidebar={false}>
+      <Layout showSidebar={true}>
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
           <p className="text-muted-foreground mb-6">Please sign in to access your funder dashboard.</p>
@@ -420,7 +420,7 @@ const FunderDashboard = () => {
 
   if (!funderProfile && !loading) {
     return (
-      <Layout showSidebar={false}>
+      <Layout showSidebar={true}>
         <div className="max-w-2xl mx-auto px-4 py-16">
           <div className="text-center mb-8">
             <Building className="w-16 h-16 mx-auto text-muted-foreground mb-4" />

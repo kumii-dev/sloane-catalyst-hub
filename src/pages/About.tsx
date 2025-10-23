@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import Navbar from "@/components/Navbar";
+import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
 import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -295,8 +295,8 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">
-      <Navbar />
+    <Layout showSidebar={true}>
+      <div className="flex flex-col bg-gradient-to-br from-background via-background to-primary/5">
       
       <main className="flex-1 container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto space-y-8">
@@ -1312,7 +1312,8 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
       </main>
 
       <Footer />
-    </div>
+      </div>
+    </Layout>
   );
 };
 

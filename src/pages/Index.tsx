@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import { Layout } from "@/components/Layout";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import UserTypes from "@/components/UserTypes";
@@ -7,14 +7,13 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
-      <Navbar />
+    <Layout showSidebar={true}>
       <Hero />
       <Features />
       <UserTypes />
       <MentorshipPreview />
       <Footer />
-    </div>
+    </Layout>
   );
 };
 

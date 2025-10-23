@@ -70,7 +70,7 @@ const MyListings = () => {
 
   if (isLoading) {
     return (
-      <Layout>
+      <Layout showSidebar={true}>
         <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-[400px]">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
@@ -79,7 +79,7 @@ const MyListings = () => {
   }
 
   return (
-    <Layout>
+    <Layout showSidebar={true}>
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <div>

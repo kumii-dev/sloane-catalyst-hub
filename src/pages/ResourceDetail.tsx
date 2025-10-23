@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import Navbar from "@/components/Navbar";
+import { Layout } from "@/components/Layout";
 
 interface Resource {
   id: string;
@@ -261,22 +261,20 @@ const ResourceDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <Layout showSidebar={true}>
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-muted-foreground">Loading resource...</p>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   if (!resource) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <Layout showSidebar={true}>
         <div className="container mx-auto px-6 py-15">
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">Resource Not Found</h1>
@@ -286,7 +284,7 @@ const ResourceDetail = () => {
             </Button>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
@@ -300,8 +298,7 @@ const ResourceDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <Layout showSidebar={true}>
       
       <div className="container mx-auto px-6 py-8">
         {/* Header */}
@@ -668,7 +665,7 @@ const ResourceDetail = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

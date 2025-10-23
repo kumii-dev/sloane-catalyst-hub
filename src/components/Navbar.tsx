@@ -74,6 +74,12 @@ const Navbar = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
+                  <DropdownMenuItem asChild>
+                    <Link to="/edit-profile" className="flex items-center cursor-pointer">
+                      <User className="w-4 h-4 mr-2" />
+                      Edit Profile
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={signOut}>
                     <LogOut className="w-4 h-4 mr-2" />
                     Sign Out

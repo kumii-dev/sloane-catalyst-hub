@@ -3,10 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Menu } from "lucide-react";
+import { Search, Menu, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { NotificationBell } from "@/components/NotificationBell";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import logo from "@/assets/kumi-logo.png";
 
 interface TopNavbarProps {
@@ -108,20 +109,23 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
             <span className="text-xs text-white/90 hidden lg:inline max-w-[150px] truncate">
               {user.email}
             </span>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center cursor-pointer">
-                    <span className="text-xs sm:text-sm font-bold text-white">
-                      {user.email?.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{user.email}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
+                  <span className="text-xs sm:text-sm font-bold text-white">
+                    {user.email?.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to="/edit-profile" className="flex items-center cursor-pointer">
+                    <User className="w-4 h-4 mr-2" />
+                    Edit Profile
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         ) : (
           <div className="flex items-center gap-2 sm:gap-3">

@@ -217,7 +217,7 @@ const ListingDetail = () => {
 
   if (isLoading) {
     return (
-      <Layout>
+      <Layout showSidebar={true}>
         <div className="flex items-center justify-center min-h-screen">
           <Loader2 className="w-8 h-8 animate-spin" />
         </div>
@@ -227,7 +227,7 @@ const ListingDetail = () => {
 
   if (!listing) {
     return (
-      <Layout>
+      <Layout showSidebar={true}>
         <div className="container mx-auto px-4 py-8">
           <p>Listing not found</p>
         </div>
@@ -236,7 +236,7 @@ const ListingDetail = () => {
   }
 
   return (
-    <Layout>
+    <Layout showSidebar={true}>
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />

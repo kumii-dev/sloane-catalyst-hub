@@ -96,20 +96,20 @@ export const ListServiceButton = ({
       </Button>
 
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-destructive">Not a Provider</AlertDialogTitle>
-            <AlertDialogDescription className="space-y-3">
+        <AlertDialogContent className="max-w-2xl">
+          <AlertDialogHeader className="space-y-4">
+            <AlertDialogTitle className="text-2xl text-destructive">Not a Provider</AlertDialogTitle>
+            <AlertDialogDescription className="text-base text-muted-foreground space-y-3">
               <p>
                 To list software services, you must first register as a verified Software Service Provider.
               </p>
-              <p className="text-sm">
+              <p>
                 Registration requires vetting and approval for security and trust. 
                 Would you like to start your provider journey?
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-6">
             <AlertDialogCancel>Maybe Later</AlertDialogCancel>
             <AlertDialogAction onClick={() => {
               setShowDialog(false);

@@ -277,33 +277,6 @@ const FinancialInclusion = () => {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 bg-muted/50 p-1">
-              <TabsTrigger 
-                value="transactions"
-                className="data-[state=active]:bg-success data-[state=active]:text-success-foreground"
-              >
-                Transactions
-              </TabsTrigger>
-              <TabsTrigger 
-                value="business-health"
-                className="data-[state=active]:bg-success data-[state=active]:text-success-foreground"
-              >
-                Business Health
-              </TabsTrigger>
-              <TabsTrigger 
-                value="rewards"
-                className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground"
-              >
-                Rewards
-              </TabsTrigger>
-              <TabsTrigger 
-                value="kyc"
-                className="data-[state=active]:bg-success data-[state=active]:text-success-foreground"
-              >
-                KYC
-              </TabsTrigger>
-            </TabsList>
-
             <TabsContent value="transactions" className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">

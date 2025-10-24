@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      business_scores: {
+        Row: {
+          calculated_at: string
+          created_at: string
+          credit_tier: string
+          id: string
+          score: number
+          top_drivers: Json | null
+          trader_id: string
+        }
+        Insert: {
+          calculated_at?: string
+          created_at?: string
+          credit_tier: string
+          id?: string
+          score: number
+          top_drivers?: Json | null
+          trader_id: string
+        }
+        Update: {
+          calculated_at?: string
+          created_at?: string
+          credit_tier?: string
+          id?: string
+          score?: number
+          top_drivers?: Json | null
+          trader_id?: string
+        }
+        Relationships: []
+      }
       cohort_funded_listings: {
         Row: {
           cohort_id: string
@@ -1506,12 +1536,15 @@ export type Database = {
       profiles: {
         Row: {
           bio: string | null
+          business_name: string | null
+          business_type: string | null
           created_at: string
           email: string | null
           first_name: string | null
           id: string
           industry_sectors: string[] | null
           interests: string[] | null
+          kyc_tier: Database["public"]["Enums"]["kyc_tier_type"] | null
           last_name: string | null
           linkedin_url: string | null
           location: string | null
@@ -1522,6 +1555,7 @@ export type Database = {
           phone: string | null
           profile_completion_percentage: number | null
           profile_picture_url: string | null
+          province: string | null
           skills: string[] | null
           twitter_url: string | null
           updated_at: string
@@ -1529,12 +1563,15 @@ export type Database = {
         }
         Insert: {
           bio?: string | null
+          business_name?: string | null
+          business_type?: string | null
           created_at?: string
           email?: string | null
           first_name?: string | null
           id?: string
           industry_sectors?: string[] | null
           interests?: string[] | null
+          kyc_tier?: Database["public"]["Enums"]["kyc_tier_type"] | null
           last_name?: string | null
           linkedin_url?: string | null
           location?: string | null
@@ -1545,6 +1582,7 @@ export type Database = {
           phone?: string | null
           profile_completion_percentage?: number | null
           profile_picture_url?: string | null
+          province?: string | null
           skills?: string[] | null
           twitter_url?: string | null
           updated_at?: string
@@ -1552,12 +1590,15 @@ export type Database = {
         }
         Update: {
           bio?: string | null
+          business_name?: string | null
+          business_type?: string | null
           created_at?: string
           email?: string | null
           first_name?: string | null
           id?: string
           industry_sectors?: string[] | null
           interests?: string[] | null
+          kyc_tier?: Database["public"]["Enums"]["kyc_tier_type"] | null
           last_name?: string | null
           linkedin_url?: string | null
           location?: string | null
@@ -1568,6 +1609,7 @@ export type Database = {
           phone?: string | null
           profile_completion_percentage?: number | null
           profile_picture_url?: string | null
+          province?: string | null
           skills?: string[] | null
           twitter_url?: string | null
           updated_at?: string
@@ -1866,6 +1908,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      rewards: {
+        Row: {
+          created_at: string
+          id: string
+          lifetime_points: number
+          points: number
+          trader_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lifetime_points?: number
+          points?: number
+          trader_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lifetime_points?: number
+          points?: number
+          trader_id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       score_sharing: {
         Row: {
@@ -2474,6 +2543,42 @@ export type Database = {
         }
         Relationships: []
       }
+      transactions: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -2701,6 +2806,7 @@ export type Database = {
         | "rejected"
         | "withdrawn"
       assessment_status: "draft" | "in_progress" | "completed" | "reviewed"
+      channel_type: "app" | "ussd" | "sms" | "whatsapp" | "qr"
       company_stage:
         | "idea"
         | "pre_seed"
@@ -2738,6 +2844,7 @@ export type Database = {
         | "manufacturing"
         | "services"
         | "other"
+      kyc_tier_type: "none" | "lite" | "full"
       listing_status:
         | "draft"
         | "pending_approval"
@@ -2796,6 +2903,12 @@ export type Database = {
         | "cancelled"
       session_type: "free" | "premium"
       subscription_status: "active" | "expired" | "cancelled" | "pending"
+      transaction_type:
+        | "sale"
+        | "expense"
+        | "deposit"
+        | "withdrawal"
+        | "supplier_purchase"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2944,6 +3057,7 @@ export const Constants = {
         "withdrawn",
       ],
       assessment_status: ["draft", "in_progress", "completed", "reviewed"],
+      channel_type: ["app", "ussd", "sms", "whatsapp", "qr"],
       company_stage: [
         "idea",
         "pre_seed",
@@ -2985,6 +3099,7 @@ export const Constants = {
         "services",
         "other",
       ],
+      kyc_tier_type: ["none", "lite", "full"],
       listing_status: [
         "draft",
         "pending_approval",
@@ -3050,6 +3165,13 @@ export const Constants = {
       ],
       session_type: ["free", "premium"],
       subscription_status: ["active", "expired", "cancelled", "pending"],
+      transaction_type: [
+        "sale",
+        "expense",
+        "deposit",
+        "withdrawal",
+        "supplier_purchase",
+      ],
     },
   },
 } as const

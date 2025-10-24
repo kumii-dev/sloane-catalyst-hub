@@ -69,6 +69,13 @@ const BusinessScore = ({ traderId, refreshTrigger }: BusinessScoreProps) => {
     E: "text-red-600",
   };
 
+  const formatDriverValue = (key: string, value: any) => {
+    if (typeof value === "string") {
+      return value.replace(/\$/g, "R");
+    }
+    return String(value);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -101,7 +108,7 @@ const BusinessScore = ({ traderId, refreshTrigger }: BusinessScoreProps) => {
                   {Object.entries(score.top_drivers).slice(0, 3).map(([key, value]) => (
                     <li key={key} className="flex justify-between">
                       <span className="capitalize">{key.replace("_", " ")}</span>
-                      <span>{String(value)}</span>
+                      <span>{formatDriverValue(key, value)}</span>
                     </li>
                   ))}
                 </ul>

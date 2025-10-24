@@ -18,7 +18,8 @@ import {
   BarChart3,
   FileText,
   Calculator,
-  LineChart
+  LineChart,
+  UserCheck
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
@@ -168,6 +169,14 @@ const AccessToMarket = () => {
       href: "/funding/browse",
       color: "bg-green-500/10 text-green-600",
       action: "Browse Funders"
+    },
+    {
+      icon: UserCheck,
+      title: "Financial Inclusion",
+      description: "Enabling unbanked businesses in formal sectors to access credit scoring, funding, software, and services",
+      href: "/financial-inclusion",
+      color: "bg-teal-500/10 text-teal-600",
+      action: "Get Included"
     }
   ];
 

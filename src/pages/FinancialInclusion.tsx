@@ -19,7 +19,8 @@ import {
   Plus,
   TrendingUp,
   Award,
-  Wallet
+  Wallet,
+  Activity
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -173,15 +174,15 @@ const FinancialInclusion = () => {
   if (user) {
     return (
       <div className="min-h-screen bg-background">
-        <header className="border-b border-border bg-card">
+        <header className="border-b border-border bg-gradient-to-r from-success/10 via-card to-secondary/10">
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">
-                {profile?.business_name || "Financial Inclusion Dashboard"}
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-success to-secondary bg-clip-text text-transparent">
+                {profile?.business_name || "Kumii Financial Dashboard"}
               </h1>
               <p className="text-sm text-muted-foreground">{user.email}</p>
             </div>
-            <Button variant="outline" onClick={handleSignOut}>
+            <Button variant="outline" onClick={handleSignOut} className="border-success/30 hover:bg-success/10">
               <LogOut className="mr-2 h-4 w-4" />
               Sign Out
             </Button>
@@ -190,13 +191,13 @@ const FinancialInclusion = () => {
 
         <main className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow border-success/30 shadow-soft bg-gradient-to-br from-success/5 to-transparent">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Business Health</CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                <TrendingUp className="h-4 w-4 text-success" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold text-success">
                   {businessScore?.score || "-"}
                 </div>
                 <p className="text-xs text-muted-foreground">
@@ -205,26 +206,26 @@ const FinancialInclusion = () => {
               </CardContent>
             </Card>
 
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow border-secondary/30 shadow-soft bg-gradient-to-br from-secondary/5 to-transparent">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Rewards Points</CardTitle>
-                <Award className="h-4 w-4 text-muted-foreground" />
+                <Award className="h-4 w-4 text-secondary" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{rewards?.points || 0}</div>
+                <div className="text-2xl font-bold text-secondary">{rewards?.points || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   Earn 10 points per transaction
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow border-success/30 shadow-soft bg-gradient-to-br from-success/5 to-transparent">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">KYC Status</CardTitle>
-                <Wallet className="h-4 w-4 text-muted-foreground" />
+                <Wallet className="h-4 w-4 text-success" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold capitalize">{profile?.kyc_tier || "none"}</div>
+                <div className="text-2xl font-bold capitalize text-foreground">{profile?.kyc_tier || "none"}</div>
                 <p className="text-xs text-muted-foreground">
                   Upgrade to unlock more features
                 </p>
@@ -233,11 +234,31 @@ const FinancialInclusion = () => {
           </div>
 
           <Tabs defaultValue="transactions" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="transactions">Transactions</TabsTrigger>
-              <TabsTrigger value="business-health">Business Health</TabsTrigger>
-              <TabsTrigger value="rewards">Rewards</TabsTrigger>
-              <TabsTrigger value="kyc">KYC</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4 bg-muted/50 p-1">
+              <TabsTrigger 
+                value="transactions"
+                className="data-[state=active]:bg-success data-[state=active]:text-success-foreground"
+              >
+                Transactions
+              </TabsTrigger>
+              <TabsTrigger 
+                value="business-health"
+                className="data-[state=active]:bg-success data-[state=active]:text-success-foreground"
+              >
+                Business Health
+              </TabsTrigger>
+              <TabsTrigger 
+                value="rewards"
+                className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground"
+              >
+                Rewards
+              </TabsTrigger>
+              <TabsTrigger 
+                value="kyc"
+                className="data-[state=active]:bg-success data-[state=active]:text-success-foreground"
+              >
+                KYC
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="transactions" className="space-y-6">
@@ -250,7 +271,10 @@ const FinancialInclusion = () => {
                           <CardTitle>Transactions</CardTitle>
                           <CardDescription>Log your daily sales and expenses</CardDescription>
                         </div>
-                        <Button onClick={() => setShowTransactionForm(!showTransactionForm)}>
+                        <Button 
+                          onClick={() => setShowTransactionForm(!showTransactionForm)}
+                          className="bg-success hover:bg-success/90 text-success-foreground"
+                        >
                           <Plus className="mr-2 h-4 w-4" />
                           {showTransactionForm ? "Cancel" : "Add Transaction"}
                         </Button>

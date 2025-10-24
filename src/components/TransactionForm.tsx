@@ -107,6 +107,7 @@ const TransactionForm = ({ traderId, onSuccess, onTransactionAdded }: Transactio
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="app">App</SelectItem>
+            <SelectItem value="cash">Cash</SelectItem>
             <SelectItem value="ussd">USSD</SelectItem>
             <SelectItem value="sms">SMS</SelectItem>
             <SelectItem value="whatsapp">WhatsApp</SelectItem>

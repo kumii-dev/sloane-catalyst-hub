@@ -2806,7 +2806,7 @@ export type Database = {
         | "rejected"
         | "withdrawn"
       assessment_status: "draft" | "in_progress" | "completed" | "reviewed"
-      channel_type: "app" | "ussd" | "sms" | "whatsapp" | "qr"
+      channel_type: "app" | "ussd" | "sms" | "whatsapp" | "qr" | "cash"
       company_stage:
         | "idea"
         | "pre_seed"
@@ -3057,7 +3057,7 @@ export const Constants = {
         "withdrawn",
       ],
       assessment_status: ["draft", "in_progress", "completed", "reviewed"],
-      channel_type: ["app", "ussd", "sms", "whatsapp", "qr"],
+      channel_type: ["app", "ussd", "sms", "whatsapp", "qr", "cash"],
       company_stage: [
         "idea",
         "pre_seed",

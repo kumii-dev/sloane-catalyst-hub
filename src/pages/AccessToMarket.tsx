@@ -134,7 +134,7 @@ const AccessToMarket = () => {
       icon: Calculator,
       title: "Financial Model Builder",
       description: "Build dynamic 3-statement financial models with IFRS and US GAAP support",
-      href: "/access-to-market/financial-model",
+      href: "https://financial-statement-builder.vercel.app/",
       color: "bg-cyan-500/10 text-cyan-600",
       action: "Build Model"
     },

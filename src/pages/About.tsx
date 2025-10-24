@@ -311,17 +311,17 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
           </div>
 
           <Tabs defaultValue="script" className="w-full">
-            <TabsList className={`grid w-full ${devMode ? 'grid-cols-4' : 'grid-cols-1'} max-w-3xl mx-auto`}>
+            <TabsList className={`grid w-full ${devMode ? 'grid-cols-4' : 'grid-cols-2'} max-w-3xl mx-auto`}>
               <TabsTrigger value="script" className="gap-2">
                 <Video className="w-4 h-4" />
                 Video Script
               </TabsTrigger>
+              <TabsTrigger value="database" className="gap-2">
+                <Database className="w-4 h-4" />
+                Database
+              </TabsTrigger>
               {devMode && (
                 <>
-                  <TabsTrigger value="database" className="gap-2">
-                    <Database className="w-4 h-4" />
-                    Database
-                  </TabsTrigger>
                   <TabsTrigger value="journeys" className="gap-2">
                     <Map className="w-4 h-4" />
                     Journey Maps
@@ -647,8 +647,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
           </div>
             </TabsContent>
 
-            {devMode && (
-              <TabsContent value="database" className="space-y-8 mt-8">
+            <TabsContent value="database" className="space-y-8 mt-8">
               <Card className="border-2">
                 <CardContent className="p-8 space-y-6">
                   <div className="flex items-center gap-3 mb-4">
@@ -897,7 +896,6 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 </CardContent>
               </Card>
             </TabsContent>
-            )}
 
             {devMode && (
               <TabsContent value="journeys" className="space-y-8 mt-8">

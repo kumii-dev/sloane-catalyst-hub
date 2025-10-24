@@ -60,7 +60,7 @@ const EditProfile = () => {
     }
   };
 
-  const handleSaveBasic = async (data: any) => {
+  const handleSaveBasic = async (data: any, exitEditMode: boolean = true) => {
     setSaving(true);
     try {
       const { error } = await supabase
@@ -70,13 +70,15 @@ const EditProfile = () => {
 
       if (error) throw error;
 
-      toast({
-        title: 'Success',
-        description: 'Profile updated successfully',
-      });
+      if (exitEditMode) {
+        toast({
+          title: 'Success',
+          description: 'Profile updated successfully',
+        });
+        setIsEditing(false);
+      }
       
       await fetchProfile();
-      setIsEditing(false);
     } catch (error: any) {
       toast({
         title: 'Error',

@@ -28,7 +28,7 @@ type ProfileFormData = z.infer<typeof profileSchema>;
 
 interface BasicProfileEditorProps {
   profile: any;
-  onSave: (data: any) => Promise<void>;
+  onSave: (data: any, exitEditMode?: boolean) => Promise<void>;
   saving: boolean;
 }
 
@@ -96,8 +96,8 @@ const BasicProfileEditor = ({ profile, onSave, saving }: BasicProfileEditorProps
 
       setProfilePicture(publicUrl);
       
-      // Update profile immediately
-      await onSave({ profile_picture_url: publicUrl });
+      // Update profile immediately without exiting edit mode
+      await onSave({ profile_picture_url: publicUrl }, false);
     } catch (error: any) {
       toast({
         title: 'Upload failed',

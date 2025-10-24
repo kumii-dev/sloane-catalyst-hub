@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Save } from 'lucide-react';
+import { Save, Upload, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { SectorMultiSelect } from '@/components/onboarding/SectorMultiSelect';
@@ -24,6 +24,9 @@ const StartupProfileEditor = ({ userId, onSaveComplete }: StartupProfileEditorPr
   const [challenges, setChallenges] = useState('');
   const [support, setSupport] = useState('');
   const [products, setProducts] = useState('');
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
 
   const { register, handleSubmit, setValue, watch } = useForm();
 
@@ -47,6 +50,10 @@ const StartupProfileEditor = ({ userId, onSaveComplete }: StartupProfileEditorPr
         Object.keys(data).forEach((key) => {
           setValue(key, data[key]);
         });
+        // Set logo preview if exists
+        if (data.logo_url) {
+          setLogoPreview(data.logo_url);
+        }
         // Industry sectors are managed in the profiles table
         setMarketAccess(data.market_access_needs || []);
         setChallenges(data.challenges?.join(', ') || '');
@@ -64,12 +71,77 @@ const StartupProfileEditor = ({ userId, onSaveComplete }: StartupProfileEditorPr
     }
   };
 
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: 'Error',
+          description: 'Logo file size must be less than 5MB',
+          variant: 'destructive',
+        });
+        return;
+      }
+      
+      setLogoFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadLogo = async (): Promise<string | null> => {
+    if (!logoFile) return watch('logo_url') || null;
+
+    setUploadingLogo(true);
+    try {
+      const fileExt = logoFile.name.split('.').pop();
+      const fileName = `${userId}-${Date.now()}.${fileExt}`;
+      const filePath = `company-logos/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('profile-pictures')
+        .upload(filePath, logoFile, {
+          upsert: true,
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('profile-pictures')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error: any) {
+      toast({
+        title: 'Error uploading logo',
+        description: error.message,
+        variant: 'destructive',
+      });
+      return null;
+    } finally {
+      setUploadingLogo(false);
+    }
+  };
+
+  const removeLogo = () => {
+    setLogoFile(null);
+    setLogoPreview(null);
+    setValue('logo_url', '');
+  };
+
   const onSubmit = async (data: any) => {
     setSaving(true);
     try {
+      // Upload logo if new file selected
+      const logoUrl = await uploadLogo();
+      
       const profileData = {
         ...data,
         user_id: userId,
+        logo_url: logoUrl,
         market_access_needs: marketAccess.length > 0 ? marketAccess : null,
         challenges: challenges ? challenges.split(',').map(s => s.trim()).filter(Boolean) : null,
         support_needed: support ? support.split(',').map(s => s.trim()).filter(Boolean) : null,
@@ -151,6 +223,49 @@ const StartupProfileEditor = ({ userId, onSaveComplete }: StartupProfileEditorPr
                 <SelectItem value="5+ years">5+ years</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="logo">Company Logo</Label>
+            <div className="space-y-3">
+              {logoPreview && (
+                <div className="relative inline-block">
+                  <img 
+                    src={logoPreview} 
+                    alt="Company logo preview" 
+                    className="h-24 w-24 object-contain border rounded-lg p-2"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    className="absolute -top-2 -right-2 h-6 w-6"
+                    onClick={removeLogo}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+              <div className="flex items-center gap-2">
+                <Input
+                  id="logo"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoChange}
+                  className="hidden"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => document.getElementById('logo')?.click()}
+                  disabled={uploadingLogo}
+                >
+                  <Upload className="mr-2 h-4 w-4" />
+                  {uploadingLogo ? 'Uploading...' : logoPreview ? 'Change Logo' : 'Upload Logo'}
+                </Button>
+                <span className="text-sm text-muted-foreground">Max 5MB</span>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -330,9 +445,9 @@ const StartupProfileEditor = ({ userId, onSaveComplete }: StartupProfileEditorPr
 
       {/* Submit Button */}
       <div className="flex justify-end">
-        <Button type="submit" disabled={saving}>
+        <Button type="submit" disabled={saving || uploadingLogo}>
           <Save className="mr-2 h-4 w-4" />
-          {saving ? 'Saving...' : 'Save Startup Profile'}
+          {saving ? 'Saving...' : uploadingLogo ? 'Uploading...' : 'Save Startup Profile'}
         </Button>
       </div>
     </form>

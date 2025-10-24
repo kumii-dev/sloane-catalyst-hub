@@ -9,16 +9,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Upload, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { SETA_SECTORS } from "@/constants/setaSectors";
 
-const profileSchema = z.object({
-  first_name: z.string().trim().min(1, "First name is required").max(50, "First name must be less than 50 characters"),
-  last_name: z.string().trim().min(1, "Last name is required").max(50, "Last name must be less than 50 characters"),
-  bio: z.string().trim().max(1000, "Bio must be less than 1000 characters").optional(),
+const mentorSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(100, "Title must be less than 100 characters"),
   company: z.string().trim().max(100, "Company must be less than 100 characters").optional(),
   hourly_rate: z.string().optional(),
@@ -30,16 +27,20 @@ const EditMentorProfile = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [mentorId, setMentorId] = useState<string | null>(null);
   const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
   
-  const [formData, setFormData] = useState({
+  // Basic info from profiles table (read-only)
+  const [profileInfo, setProfileInfo] = useState({
     first_name: "",
     last_name: "",
     bio: "",
     profile_picture_url: "",
+  });
+
+  // Mentor-specific data (editable)
+  const [formData, setFormData] = useState({
     title: "",
     company: "",
     hourly_rate: "",
@@ -92,11 +93,16 @@ const EditMentorProfile = () => {
         }
       }
 
-      setFormData({
+      // Set basic profile info (read-only)
+      setProfileInfo({
         first_name: profileData?.first_name || "",
         last_name: profileData?.last_name || "",
         bio: profileData?.bio || "",
         profile_picture_url: profileData?.profile_picture_url || "",
+      });
+
+      // Set mentor-specific data (editable)
+      setFormData({
         title: mentorData?.title || "",
         company: mentorData?.company || "",
         hourly_rate: mentorData?.hourly_rate?.toString() || "",
@@ -115,62 +121,6 @@ const EditMentorProfile = () => {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !userId) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast({
-        title: "Invalid file",
-        description: "Please upload an image file",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast({
-        title: "File too large",
-        description: "Please upload an image smaller than 5MB",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setUploading(true);
-    try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${userId}/${Date.now()}.${fileExt}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('profile-pictures')
-        .upload(fileName, file, { upsert: true });
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('profile-pictures')
-        .getPublicUrl(fileName);
-
-      setFormData(prev => ({ ...prev, profile_picture_url: publicUrl }));
-
-      toast({
-        title: "Success",
-        description: "Profile picture uploaded successfully"
-      });
-    } catch (error) {
-      console.error('Upload error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to upload image",
-        variant: "destructive"
-      });
-    } finally {
-      setUploading(false);
-    }
-  };
 
   const handleSectorToggle = (sector: string) => {
     setSelectedSectors(prev => 
@@ -183,9 +133,9 @@ const EditMentorProfile = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form data
+    // Validate mentor-specific data only
     try {
-      profileSchema.parse(formData);
+      mentorSchema.parse(formData);
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
@@ -210,20 +160,7 @@ const EditMentorProfile = () => {
     try {
       if (!userId) throw new Error("User not authenticated");
 
-      // Update profile
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          bio: formData.bio,
-          profile_picture_url: formData.profile_picture_url,
-        })
-        .eq('user_id', userId);
-
-      if (profileError) throw profileError;
-
-      // Update or create mentor profile
+      // Update only mentor-specific data
       const mentorData = {
         user_id: userId,
         title: formData.title,
@@ -302,79 +239,42 @@ const EditMentorProfile = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Profile Picture */}
-              <div className="flex flex-col items-center gap-4">
-                <Avatar className="h-32 w-32">
-                  <AvatarImage src={formData.profile_picture_url} alt="Profile" className="object-cover" />
-                  <AvatarFallback className="text-4xl">
-                    {formData.first_name?.[0]}{formData.last_name?.[0]}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <Input
-                    id="picture"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    disabled={uploading}
-                    className="hidden"
-                  />
-                  <Label htmlFor="picture">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      disabled={uploading}
-                      onClick={() => document.getElementById('picture')?.click()}
-                    >
-                      {uploading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Uploading...
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="w-4 h-4 mr-2" />
-                          Upload Photo
-                        </>
-                      )}
-                    </Button>
-                  </Label>
+              {/* Basic Profile Info (Read-only) */}
+              <div className="border-b pb-6">
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Basic Profile Information</h3>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigate('/edit-profile')}
+                  >
+                    Edit Basic Info
+                  </Button>
                 </div>
-              </div>
-
-              {/* Basic Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="first_name">First Name *</Label>
-                  <Input
-                    id="first_name"
-                    value={formData.first_name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, first_name: e.target.value }))}
-                    required
-                    maxLength={50}
-                  />
+                <div className="flex items-start gap-6 bg-muted/30 p-4 rounded-lg">
+                  <Avatar className="h-24 w-24">
+                    <AvatarImage src={profileInfo.profile_picture_url} alt="Profile" className="object-cover" />
+                    <AvatarFallback className="text-2xl">
+                      {profileInfo.first_name?.[0]}{profileInfo.last_name?.[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 space-y-2">
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Name</Label>
+                      <p className="font-medium">{profileInfo.first_name} {profileInfo.last_name}</p>
+                    </div>
+                    {profileInfo.bio && (
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Bio</Label>
+                        <div className="text-sm" dangerouslySetInnerHTML={{ __html: profileInfo.bio }} />
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <Label htmlFor="last_name">Last Name *</Label>
-                  <Input
-                    id="last_name"
-                    value={formData.last_name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, last_name: e.target.value }))}
-                    required
-                    maxLength={50}
-                  />
-                </div>
-              </div>
-
-              {/* Bio */}
-              <div>
-                <Label htmlFor="bio">Bio</Label>
-                <RichTextEditor
-                  value={formData.bio}
-                  onChange={(value) => setFormData(prev => ({ ...prev, bio: value }))}
-                  placeholder="Tell us about yourself..."
-                  maxLength={1000}
-                />
+                <p className="text-xs text-muted-foreground mt-2">
+                  Basic information is shared across all your profiles. Edit it from your main profile page.
+                </p>
               </div>
 
               {/* Mentor Information */}
@@ -478,7 +378,7 @@ const EditMentorProfile = () => {
               <div className="flex gap-4">
                 <Button
                   type="submit"
-                  disabled={saving || uploading}
+                  disabled={saving}
                   className="flex-1"
                 >
                   {saving ? (
@@ -494,7 +394,7 @@ const EditMentorProfile = () => {
                   type="button"
                   variant="outline"
                   onClick={() => navigate(-1)}
-                  disabled={saving || uploading}
+                  disabled={saving}
                 >
                   Cancel
                 </Button>

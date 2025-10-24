@@ -123,6 +123,11 @@ const StartupProfileEditor = ({ userId }: StartupProfileEditorProps) => {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="logo_url">Company Logo URL</Label>
+            <Input id="logo_url" {...register('logo_url')} placeholder="https://example.com/logo.png" />
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="business_registration_number">Registration Number</Label>
             <Input id="business_registration_number" {...register('business_registration_number')} />
           </div>

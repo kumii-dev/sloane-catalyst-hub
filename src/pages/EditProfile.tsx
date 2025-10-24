@@ -22,6 +22,7 @@ const EditProfile = () => {
   const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('basic');
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -74,7 +75,8 @@ const EditProfile = () => {
         description: 'Profile updated successfully',
       });
       
-      fetchProfile();
+      await fetchProfile();
+      setIsEditing(false);
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -127,20 +129,28 @@ const EditProfile = () => {
           
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold">Edit Profile</h1>
+              <h1 className="text-3xl font-bold">{isEditing ? 'Edit Profile' : 'My Profile'}</h1>
               <p className="text-muted-foreground mt-1">
-                Complete your profile for better matching opportunities
+                {isEditing ? 'Complete your profile for better matching opportunities' : 'View and manage your profile information'}
               </p>
             </div>
-            {profile && (
-              <div className="text-right">
-                <p className="text-sm text-muted-foreground mb-1">Profile Completion</p>
-                <div className="flex items-center gap-3">
-                  <Progress value={profile.profile_completion_percentage || 0} className="w-32" />
-                  <span className="font-semibold text-lg">{profile.profile_completion_percentage || 0}%</span>
+            <div className="flex items-center gap-4">
+              {profile && (
+                <div className="text-right">
+                  <p className="text-sm text-muted-foreground mb-1">Profile Completion</p>
+                  <div className="flex items-center gap-3">
+                    <Progress value={profile.profile_completion_percentage || 0} className="w-32" />
+                    <span className="font-semibold text-lg">{profile.profile_completion_percentage || 0}%</span>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+              {!isEditing && (
+                <Button onClick={() => setIsEditing(true)}>
+                  <Save className="mr-2 h-4 w-4" />
+                  Edit Profile
+                </Button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -170,11 +180,52 @@ const EditProfile = () => {
               </TabsList>
 
               <TabsContent value="basic" className="space-y-4 mt-6">
-                <BasicProfileEditor
-                  profile={profile}
-                  onSave={handleSaveBasic}
-                  saving={saving}
-                />
+                {isEditing ? (
+                  <BasicProfileEditor
+                    profile={profile}
+                    onSave={handleSaveBasic}
+                    saving={saving}
+                  />
+                ) : (
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Full Name</label>
+                        <p className="text-lg mt-1">{profile?.full_name || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Email</label>
+                        <p className="text-lg mt-1">{profile?.email || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Phone</label>
+                        <p className="text-lg mt-1">{profile?.phone || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Location</label>
+                        <p className="text-lg mt-1">{profile?.location || 'Not provided'}</p>
+                      </div>
+                    </div>
+                    {profile?.bio && (
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Bio</label>
+                        <p className="text-lg mt-1">{profile.bio}</p>
+                      </div>
+                    )}
+                    {profile?.skills?.length > 0 && (
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Skills</label>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {profile.skills.map((skill: string) => (
+                            <span key={skill} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </TabsContent>
 
               {profile?.persona_type === 'smme_startup' && (

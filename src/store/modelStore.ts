@@ -175,6 +175,7 @@ export interface ModelState {
   
   setStandard: (standard: Standard) => void;
   setActiveScenario: (scenario: Scenario) => void;
+  setFrequency: (frequency: Frequency) => void;
   setCompany: (company: Partial<CompanyProfile>) => void;
   setRevenue: (revenue: RevenueDriver[]) => void;
   setCOGS: (cogs: COGSDriver) => void;
@@ -254,6 +255,7 @@ export const useModelStore = create<ModelState>((set) => ({
   
   setStandard: (standard) => set({ standard }),
   setActiveScenario: (activeScenario) => set({ activeScenario }),
+  setFrequency: (frequency) => set({ frequency }),
   setCompany: (company) => set((state) => ({ company: { ...state.company, ...company } })),
   setRevenue: (revenue) => set({ revenue }),
   setCOGS: (cogs) => set({ cogs }),

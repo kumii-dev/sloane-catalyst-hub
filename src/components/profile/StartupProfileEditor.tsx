@@ -93,13 +93,17 @@ const StartupProfileEditor = ({ userId, onSaveComplete }: StartupProfileEditorPr
   };
 
   const uploadLogo = async (): Promise<string | null> => {
-    if (!logoFile) return watch('logo_url') || null;
+    if (!logoFile) {
+      const preview = logoPreview || watch('logo_url');
+      // Preserve existing hosted URL when no new file is chosen
+      return typeof preview === 'string' && preview.startsWith('http') ? preview : null;
+    }
 
     setUploadingLogo(true);
     try {
       const fileExt = logoFile.name.split('.').pop();
       const fileName = `${userId}-${Date.now()}.${fileExt}`;
-      const filePath = `company-logos/${fileName}`;
+      const filePath = `company-logos/${userId}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('profile-pictures')
@@ -138,16 +142,18 @@ const StartupProfileEditor = ({ userId, onSaveComplete }: StartupProfileEditorPr
       // Upload logo if new file selected
       const logoUrl = await uploadLogo();
       
-      const profileData = {
+      let profileData: any = {
         ...data,
         user_id: userId,
-        logo_url: logoUrl,
         market_access_needs: marketAccess.length > 0 ? marketAccess : null,
         challenges: challenges ? challenges.split(',').map(s => s.trim()).filter(Boolean) : null,
         support_needed: support ? support.split(',').map(s => s.trim()).filter(Boolean) : null,
         key_products_services: products ? products.split(',').map(s => s.trim()).filter(Boolean) : null,
       };
 
+      if (logoUrl !== null) {
+        profileData.logo_url = logoUrl;
+      }
       if (startupId) {
         const { error } = await supabase
           .from('startup_profiles')

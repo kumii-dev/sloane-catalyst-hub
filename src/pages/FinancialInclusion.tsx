@@ -192,7 +192,10 @@ const FinancialInclusion = () => {
 
         <main className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow border-success/30 shadow-soft bg-gradient-to-br from-success/5 to-transparent">
+            <Card 
+              className="cursor-pointer hover:shadow-lg transition-shadow border-success/30 shadow-soft bg-gradient-to-br from-success/5 to-transparent"
+              onClick={() => setActiveTab("business-health")}
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Business Health</CardTitle>
                 <TrendingUp className="h-4 w-4 text-success" />
@@ -207,7 +210,10 @@ const FinancialInclusion = () => {
               </CardContent>
             </Card>
 
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow border-secondary/30 shadow-soft bg-gradient-to-br from-secondary/5 to-transparent">
+            <Card 
+              className="cursor-pointer hover:shadow-lg transition-shadow border-secondary/30 shadow-soft bg-gradient-to-br from-secondary/5 to-transparent"
+              onClick={() => setActiveTab("rewards")}
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Rewards Points</CardTitle>
                 <Award className="h-4 w-4 text-secondary" />

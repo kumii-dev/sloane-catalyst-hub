@@ -156,9 +156,9 @@ const EditProfile = () => {
           
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold">{isEditing ? 'Edit Profile' : 'My Profile'}</h1>
+              <h1 className="text-3xl font-bold">{isEditing ? 'Edit Profile' : 'Profile Management'}</h1>
               <p className="text-muted-foreground mt-1">
-                {isEditing ? 'Complete your profile for better matching opportunities' : 'View and manage your profile information'}
+                {isEditing ? 'Complete your profile for better matching opportunities' : 'Complete your profile to unlock better matches and guaranteed access to the Kumii Ecosystem'}
               </p>
             </div>
             <div className="flex items-center gap-4">

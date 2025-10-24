@@ -237,7 +237,13 @@ const EditProfile = () => {
 
               {profile?.persona_type === 'smme_startup' && (
                 <TabsContent value="startup" className="space-y-4 mt-6">
-                  <StartupProfileEditor userId={user?.id || ''} />
+                  {isEditing ? (
+                    <StartupProfileEditor userId={user?.id || ''} />
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      Click "Edit Profile" to update your business information
+                    </div>
+                  )}
                 </TabsContent>
               )}
 

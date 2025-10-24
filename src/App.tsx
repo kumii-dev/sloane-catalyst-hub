@@ -37,6 +37,7 @@ import CreditScoreResults from "./pages/CreditScoreResults";
 import DocumentGenerator from "./pages/DocumentGenerator";
 import FinancialModelBuilder from "./pages/FinancialModelBuilder";
 import ValuationModel from "./pages/ValuationModel";
+import FinancialInclusion from "./pages/FinancialInclusion";
 import VideoCreator from "./pages/VideoCreator";
 import CreateListing from "./pages/CreateListing";
 import ListingDetail from "./pages/ListingDetail";
@@ -90,6 +91,7 @@ const App = () => (
             <Route path="/access-to-market/document-generator" element={<DocumentGenerator />} />
             <Route path="/access-to-market/financial-model" element={<FinancialModelBuilder />} />
             <Route path="/access-to-market/valuation" element={<ValuationModel />} />
+            <Route path="/financial-inclusion" element={<FinancialInclusion />} />
             <Route path="/smart-matching" element={<MatchingDashboard />} />
           <Route path="/credit-score" element={<CreditScore />} />
           <Route path="/credit-score/assessment" element={<CreditScoreAssessment />} />

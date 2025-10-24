@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   UserCheck, 
   Shield, 
@@ -12,13 +14,33 @@ import {
   Building2,
   FileText,
   Users,
-  Zap
+  Zap,
+  LogOut,
+  Plus,
+  TrendingUp,
+  Award,
+  Wallet
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import TransactionForm from "@/components/TransactionForm";
+import TransactionList from "@/components/TransactionList";
+import BusinessScore from "@/components/BusinessScore";
+import KYCUpgrade from "@/components/KYCUpgrade";
+import RewardsManagement from "@/components/RewardsManagement";
+import BusinessHealthReport from "@/components/BusinessHealthReport";
 
 const FinancialInclusion = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [profile, setProfile] = useState<any>(null);
+  const [rewards, setRewards] = useState<any>(null);
+  const [businessScore, setBusinessScore] = useState<any>(null);
+  const [showTransactionForm, setShowTransactionForm] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const benefits = [
     {
@@ -85,6 +107,208 @@ const FinancialInclusion = () => {
     "Community or supplier references"
   ];
 
+  useEffect(() => {
+    if (user) {
+      loadProfile(user.id);
+    }
+  }, [user]);
+
+  const loadProfile = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error loading profile:", error);
+      return;
+    }
+
+    setProfile(data);
+    loadRewards(userId);
+    loadBusinessScore(userId);
+  };
+
+  const loadRewards = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("rewards")
+      .select("*")
+      .eq("trader_id", userId)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error loading rewards:", error);
+    } else {
+      setRewards(data);
+    }
+  };
+
+  const loadBusinessScore = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("business_scores")
+      .select("*")
+      .eq("trader_id", userId)
+      .order("calculated_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error loading score:", error);
+    } else {
+      setBusinessScore(data);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast({
+      title: "Signed out",
+      description: "You've been signed out successfully.",
+    });
+    navigate("/");
+  };
+
+  // If logged in, show dashboard
+  if (user) {
+    return (
+      <div className="min-h-screen bg-background">
+        <header className="border-b border-border bg-card">
+          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">
+                {profile?.business_name || "Financial Inclusion Dashboard"}
+              </h1>
+              <p className="text-sm text-muted-foreground">{user.email}</p>
+            </div>
+            <Button variant="outline" onClick={handleSignOut}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign Out
+            </Button>
+          </div>
+        </header>
+
+        <main className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Business Health</CardTitle>
+                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {businessScore?.score || "-"}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {businessScore ? `Credit Tier: ${businessScore.credit_tier}` : "Start logging transactions"}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Rewards Points</CardTitle>
+                <Award className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{rewards?.points || 0}</div>
+                <p className="text-xs text-muted-foreground">
+                  Earn 10 points per transaction
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">KYC Status</CardTitle>
+                <Wallet className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold capitalize">{profile?.kyc_tier || "none"}</div>
+                <p className="text-xs text-muted-foreground">
+                  Upgrade to unlock more features
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Tabs defaultValue="transactions" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="transactions">Transactions</TabsTrigger>
+              <TabsTrigger value="business-health">Business Health</TabsTrigger>
+              <TabsTrigger value="rewards">Rewards</TabsTrigger>
+              <TabsTrigger value="kyc">KYC</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="transactions" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <CardTitle>Transactions</CardTitle>
+                          <CardDescription>Log your daily sales and expenses</CardDescription>
+                        </div>
+                        <Button onClick={() => setShowTransactionForm(!showTransactionForm)}>
+                          <Plus className="mr-2 h-4 w-4" />
+                          {showTransactionForm ? "Cancel" : "Add Transaction"}
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      {showTransactionForm && (
+                        <div className="mb-6">
+                          <TransactionForm
+                            traderId={user.id}
+                            onSuccess={() => setShowTransactionForm(false)}
+                            onTransactionAdded={() => {
+                              setRefreshTrigger(prev => prev + 1);
+                              loadRewards(user.id);
+                              loadBusinessScore(user.id);
+                            }}
+                          />
+                        </div>
+                      )}
+                      <TransactionList traderId={user.id} refreshTrigger={refreshTrigger} />
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="lg:col-span-1">
+                  <BusinessScore traderId={user.id} refreshTrigger={refreshTrigger} />
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="business-health" className="space-y-6">
+              <BusinessHealthReport 
+                traderId={user.id} 
+                refreshTrigger={refreshTrigger}
+              />
+            </TabsContent>
+
+            <TabsContent value="rewards" className="space-y-6">
+              <RewardsManagement 
+                traderId={user.id}
+                refreshTrigger={refreshTrigger}
+              />
+            </TabsContent>
+
+            <TabsContent value="kyc" className="space-y-6">
+              <KYCUpgrade
+                currentTier={profile?.kyc_tier || "none"}
+                userId={user.id}
+                onSuccess={() => loadProfile(user.id)}
+              />
+            </TabsContent>
+          </Tabs>
+        </main>
+      </div>
+    );
+  }
+
+  // If not logged in, show landing page
   return (
     <Layout showSidebar={true}>
       {/* Hero Section */}
@@ -102,21 +326,12 @@ const FinancialInclusion = () => {
               Empowering formal sector businesses without traditional banking footprints to access 
               credit scoring, funding, software, and professional services through alternative verification methods.
             </p>
-            {user ? (
-              <Button size="lg" asChild>
-                <Link to="/credit-score-assessment">
-                  Start Your Assessment
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-            ) : (
-              <Button size="lg" asChild>
-                <Link to="/auth">
-                  Get Started Today
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-            )}
+            <Button size="lg" asChild>
+              <Link to="/auth">
+                Get Started Today
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -288,35 +503,17 @@ const FinancialInclusion = () => {
                 previously out of reach for unbanked businesses.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                {user ? (
-                  <>
-                    <Button size="lg" asChild>
-                      <Link to="/credit-score-assessment">
-                        Start Assessment
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </Link>
-                    </Button>
-                    <Button size="lg" variant="outline" asChild>
-                      <Link to="/onboarding">
-                        Complete Profile
-                      </Link>
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button size="lg" asChild>
-                      <Link to="/auth">
-                        Create Free Account
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </Link>
-                    </Button>
-                    <Button size="lg" variant="outline" asChild>
-                      <Link to="/about">
-                        Learn More
-                      </Link>
-                    </Button>
-                  </>
-                )}
+                <Button size="lg" asChild>
+                  <Link to="/auth">
+                    Create Free Account
+                    <ArrowRight className="w-4 w-4 ml-2" />
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <Link to="/about">
+                    Learn More
+                  </Link>
+                </Button>
               </div>
             </CardContent>
           </Card>

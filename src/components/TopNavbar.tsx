@@ -49,7 +49,7 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="h-16 bg-gradient-to-r from-white via-white via-30% via-primary-light via-60% to-primary border-b border-primary-dark/20 px-4 flex items-center w-full shadow-medium sticky top-0 z-30">
+    <header className="h-16 bg-gradient-to-r from-white via-white via-30% via-primary-light via-60% to-primary border-b border-primary-dark/20 px-4 flex items-center w-full shadow-medium sticky top-0 z-50">
       {/* Hamburger Menu - Mobile/Tablet */}
       {onMenuToggle && (
         <Button

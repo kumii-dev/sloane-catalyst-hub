@@ -23,10 +23,12 @@ const EditProfile = () => {
   const [profile, setProfile] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('basic');
   const [isEditing, setIsEditing] = useState(false);
+  const [startupProfile, setStartupProfile] = useState<any>(null);
 
   useEffect(() => {
     if (user) {
       fetchProfile();
+      fetchStartupProfile();
     } else {
       setLoading(false);
     }
@@ -60,6 +62,24 @@ const EditProfile = () => {
     }
   };
 
+  const fetchStartupProfile = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('startup_profiles')
+        .select('*')
+        .eq('user_id', user?.id)
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') {
+        throw error;
+      }
+      
+      setStartupProfile(data);
+    } catch (error: any) {
+      console.error('Error fetching startup profile:', error);
+    }
+  };
+
   const handleSaveBasic = async (data: any, exitEditMode: boolean = true) => {
     setSaving(true);
     try {
@@ -88,6 +108,11 @@ const EditProfile = () => {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleStartupProfileSaveComplete = async () => {
+    setIsEditing(false);
+    await fetchStartupProfile();
   };
 
   if (loading) {
@@ -238,10 +263,126 @@ const EditProfile = () => {
               {profile?.persona_type === 'smme_startup' && (
                 <TabsContent value="startup" className="space-y-4 mt-6">
                   {isEditing ? (
-                    <StartupProfileEditor userId={user?.id || ''} />
+                    <StartupProfileEditor userId={user?.id || ''} onSaveComplete={handleStartupProfileSaveComplete} />
+                  ) : startupProfile ? (
+                    <div className="space-y-6">
+                      {startupProfile.logo_url && (
+                        <div className="flex items-center gap-4">
+                          <img src={startupProfile.logo_url} alt="Company logo" className="h-20 w-20 object-contain" loading="lazy" />
+                        </div>
+                      )}
+                      
+                      <div>
+                        <h3 className="text-lg font-semibold mb-4">Business Information</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Company Name</label>
+                            <p className="text-lg mt-1">{startupProfile.company_name || 'Not provided'}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Registration Number</label>
+                            <p className="text-lg mt-1">{startupProfile.business_registration_number || 'Not provided'}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Business Age</label>
+                            <p className="text-lg mt-1">{startupProfile.business_age || 'Not provided'}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Employee Count</label>
+                            <p className="text-lg mt-1">{startupProfile.employee_count_range || 'Not provided'}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Annual Revenue</label>
+                            <p className="text-lg mt-1">{startupProfile.revenue_range || 'Not provided'}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Growth Stage</label>
+                            <p className="text-lg mt-1">{startupProfile.growth_stage || 'Not provided'}</p>
+                          </div>
+                        </div>
+                        {startupProfile.description && (
+                          <div className="mt-4">
+                            <label className="text-sm font-medium text-muted-foreground">Business Description</label>
+                            <p className="text-lg mt-1">{startupProfile.description}</p>
+                          </div>
+                        )}
+                        {startupProfile.key_products_services?.length > 0 && (
+                          <div className="mt-4">
+                            <label className="text-sm font-medium text-muted-foreground">Key Products/Services</label>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              {startupProfile.key_products_services.map((product: string) => (
+                                <span key={product} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm">
+                                  {product}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div>
+                        <h3 className="text-lg font-semibold mb-4">Funding Information</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Funding Needs</label>
+                            <p className="text-lg mt-1">{startupProfile.funding_needs || 'Not provided'}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Funding Amount Needed</label>
+                            <p className="text-lg mt-1">{startupProfile.funding_amount_needed || 'Not provided'}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Previous Funding</label>
+                            <p className="text-lg mt-1">{startupProfile.funding_history || 'Not provided'}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h3 className="text-lg font-semibold mb-4">Market & Operations</h3>
+                        <div className="grid grid-cols-1 gap-6">
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Target Market</label>
+                            <p className="text-lg mt-1">{startupProfile.target_market || 'Not provided'}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Competitive Advantage</label>
+                            <p className="text-lg mt-1">{startupProfile.competitive_advantage || 'Not provided'}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Business Model</label>
+                            <p className="text-lg mt-1">{startupProfile.business_model || 'Not provided'}</p>
+                          </div>
+                          {startupProfile.challenges?.length > 0 && (
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Challenges</label>
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {startupProfile.challenges.map((challenge: string) => (
+                                  <span key={challenge} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm">
+                                    {challenge}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {startupProfile.support_needed?.length > 0 && (
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Support Needed</label>
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {startupProfile.support_needed.map((support: string) => (
+                                  <span key={support} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm">
+                                    {support}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   ) : (
                     <div className="text-center py-8 text-muted-foreground">
-                      Click "Edit Profile" to update your business information
+                      Click "Edit Profile" to add your business information
                     </div>
                   )}
                 </TabsContent>

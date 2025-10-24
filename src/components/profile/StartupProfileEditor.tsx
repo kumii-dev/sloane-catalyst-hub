@@ -12,9 +12,10 @@ import { SectorMultiSelect } from '@/components/onboarding/SectorMultiSelect';
 
 interface StartupProfileEditorProps {
   userId: string;
+  onSaveComplete?: () => void;
 }
 
-const StartupProfileEditor = ({ userId }: StartupProfileEditorProps) => {
+const StartupProfileEditor = ({ userId, onSaveComplete }: StartupProfileEditorProps) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [startupId, setStartupId] = useState<string | null>(null);
@@ -95,6 +96,10 @@ const StartupProfileEditor = ({ userId }: StartupProfileEditorProps) => {
         title: 'Success',
         description: 'Startup profile updated successfully',
       });
+      
+      if (onSaveComplete) {
+        onSaveComplete();
+      }
     } catch (error: any) {
       toast({
         title: 'Error',

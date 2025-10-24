@@ -108,12 +108,12 @@ serve(async (req) => {
     // Top drivers
     const topDrivers = {
       profit_margin: `${profitMargin.toFixed(1)}%`,
-      net_position: `$${netPosition.toFixed(2)}`,
+      net_position: `R${netPosition.toFixed(2)}`,
       expense_ratio: `${(expenseRatio * 100).toFixed(1)}%`,
       total_transactions: transactionVolume,
-      revenue: `$${totalRevenue.toFixed(2)}`,
-      expenses: `$${totalExpenses.toFixed(2)}`,
-      withdrawals: `$${totalWithdrawals.toFixed(2)}`,
+      revenue: `R${totalRevenue.toFixed(2)}`,
+      expenses: `R${totalExpenses.toFixed(2)}`,
+      withdrawals: `R${totalWithdrawals.toFixed(2)}`,
     };
 
     // Insert or update score

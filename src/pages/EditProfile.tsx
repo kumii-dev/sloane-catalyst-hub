@@ -267,8 +267,8 @@ const EditProfile = () => {
                   ) : startupProfile ? (
                     <div className="space-y-6">
                       {startupProfile.logo_url && (
-                        <div className="flex items-center gap-4">
-                          <img src={startupProfile.logo_url} alt="Company logo" className="h-20 w-20 object-contain" loading="lazy" />
+                        <div className="flex items-center gap-4 mb-8">
+                          <img src={startupProfile.logo_url} alt="Company logo" className="h-32 w-32 object-contain border rounded-lg p-3 shadow-lg bg-white" loading="lazy" />
                         </div>
                       )}
                       

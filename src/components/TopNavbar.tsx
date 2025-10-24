@@ -74,12 +74,12 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
       </div>
 
       {/* Center-Right - Navigation Links */}
-      <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-center ml-32">
+      <nav className="flex items-center space-x-4 md:space-x-6 flex-1 justify-center md:ml-32 overflow-x-auto">
         {navItems.map((item) => (
           <Link
             key={item.href}
             to={item.href}
-            className={`text-base font-semibold transition-colors ${
+            className={`text-base font-semibold whitespace-nowrap transition-colors ${
               isActive(item.href) 
                 ? 'text-primary-dark border-b-2 border-primary-dark pb-4' 
                 : 'text-primary-dark/80 hover:text-primary-dark'
@@ -94,15 +94,15 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
       <div className="flex items-center gap-2 sm:gap-4">
         {user ? (
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link to="/about" className="text-sm sm:text-base text-white font-medium hidden md:inline hover:text-white/80 transition-colors">About</Link>
-            <div className="text-white">
+            <Link to="/about" className="text-sm sm:text-base text-foreground font-medium hidden md:inline hover:text-foreground/80 transition-colors">About</Link>
+            <div className="text-foreground">
               <NotificationBell />
             </div>
             <Link to="/edit-profile">
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-sm sm:text-base text-white hover:text-white hover:bg-white/20 flex items-center gap-2"
+              className="text-sm sm:text-base text-foreground hover:text-foreground hover:bg-foreground/10 flex items-center gap-2"
               >
                 <User className="h-4 w-4" />
                 <span className="hidden md:inline">Profile</span>
@@ -112,17 +112,17 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
               variant="ghost"
               size="sm"
               onClick={() => signOut()}
-              className="text-sm sm:text-base text-white hover:text-white hover:bg-white/20 hidden sm:flex"
+              className="text-sm sm:text-base text-foreground hover:text-foreground hover:bg-foreground/10 hidden sm:flex"
             >
               Sign Out
             </Button>
-            <span className="text-xs text-white/90 hidden lg:inline max-w-[150px] truncate">
+            <span className="text-xs text-foreground/70 hidden lg:inline max-w-[150px] truncate">
               {user.email}
             </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors lg:hidden">
-                  <span className="text-xs sm:text-sm font-bold text-white">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-foreground/10 rounded-full flex items-center justify-center cursor-pointer hover:bg-foreground/20 transition-colors lg:hidden">
+                  <span className="text-xs sm:text-sm font-bold text-foreground">
                     {user.email?.charAt(0).toUpperCase()}
                   </span>
                 </div>
@@ -139,9 +139,9 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
           </div>
         ) : (
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link to="/about" className="text-sm sm:text-base text-white font-medium hidden md:inline hover:text-white/80 transition-colors">About</Link>
+            <Link to="/about" className="text-sm sm:text-base text-foreground font-medium hidden md:inline hover:text-foreground/80 transition-colors">About</Link>
             <Link to="/auth">
-              <Button variant="ghost" size="sm" className="text-sm sm:text-base text-white hover:text-white hover:bg-white/20 hidden sm:flex">
+              <Button variant="ghost" size="sm" className="text-sm sm:text-base hover:bg-foreground/10 hidden sm:flex">
                 Sign In
               </Button>
             </Link>

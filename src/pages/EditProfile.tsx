@@ -216,8 +216,8 @@ const EditProfile = () => {
                 ) : (
                   <div className="space-y-6">
                     {profile?.profile_picture_url && (
-                      <div className="flex items-center gap-4">
-                        <img src={profile.profile_picture_url} alt="User profile picture" className="h-20 w-20 rounded-full object-cover" loading="lazy" />
+                      <div className="flex items-center gap-4 mb-8">
+                        <img src={profile.profile_picture_url} alt="User profile picture" className="h-32 w-32 rounded-full object-cover border-4 border-primary/20 shadow-lg" loading="lazy" />
                       </div>
                     )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

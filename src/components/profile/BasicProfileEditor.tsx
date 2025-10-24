@@ -82,7 +82,7 @@ const BasicProfileEditor = ({ profile, onSave, saving }: BasicProfileEditorProps
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${profile?.user_id}-${Date.now()}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const filePath = `${profile?.user_id}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('profile-pictures')

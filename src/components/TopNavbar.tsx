@@ -98,6 +98,16 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
             <div className="text-white">
               <NotificationBell />
             </div>
+            <Link to="/edit-profile">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-sm sm:text-base text-white hover:text-white hover:bg-white/20 flex items-center gap-2"
+              >
+                <User className="h-4 w-4" />
+                <span className="hidden md:inline">Profile</span>
+              </Button>
+            </Link>
             <Button
               variant="ghost"
               size="sm"
@@ -111,7 +121,7 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
             </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors lg:hidden">
                   <span className="text-xs sm:text-sm font-bold text-white">
                     {user.email?.charAt(0).toUpperCase()}
                   </span>

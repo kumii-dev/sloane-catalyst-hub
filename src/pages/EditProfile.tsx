@@ -37,8 +37,8 @@ const EditProfile = () => {
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', user?.id)
-        .single();
+        .eq('user_id', user?.id)
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') {
         throw error;
@@ -190,10 +190,15 @@ const EditProfile = () => {
                   />
                 ) : (
                   <div className="space-y-6">
+                    {profile?.profile_picture_url && (
+                      <div className="flex items-center gap-4">
+                        <img src={profile.profile_picture_url} alt="User profile picture" className="h-20 w-20 rounded-full object-cover" loading="lazy" />
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="text-sm font-medium text-muted-foreground">Full Name</label>
-                        <p className="text-lg mt-1">{profile?.full_name || 'Not provided'}</p>
+                        <p className="text-lg mt-1">{[profile?.first_name, profile?.last_name].filter(Boolean).join(' ') || 'Not provided'}</p>
                       </div>
                       <div>
                         <label className="text-sm font-medium text-muted-foreground">Email</label>

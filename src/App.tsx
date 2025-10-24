@@ -54,6 +54,7 @@ import Copilot from "./pages/Copilot";
 import About from "./pages/About";
 import SessionReview from "./pages/SessionReview";
 import InstallPWA from "./pages/InstallPWA";
+import MatchingDashboard from "./pages/MatchingDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -89,6 +90,7 @@ const App = () => (
             <Route path="/access-to-market/document-generator" element={<DocumentGenerator />} />
             <Route path="/access-to-market/financial-model" element={<FinancialModelBuilder />} />
             <Route path="/access-to-market/valuation" element={<ValuationModel />} />
+            <Route path="/smart-matching" element={<MatchingDashboard />} />
           <Route path="/credit-score" element={<CreditScore />} />
           <Route path="/credit-score/assessment" element={<CreditScoreAssessment />} />
           <Route path="/credit-score/results/:assessmentId" element={<CreditScoreResults />} />

@@ -1108,6 +1108,36 @@ export type Database = {
           },
         ]
       }
+      match_notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean | null
+          match_id: string
+          match_type: string
+          notification_sent_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          match_id: string
+          match_type: string
+          notification_sent_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          match_id?: string
+          match_type?: string
+          notification_sent_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       mentor_availability: {
         Row: {
           created_at: string
@@ -1210,6 +1240,50 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "mentor_date_overrides_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentor_matches: {
+        Row: {
+          created_at: string
+          id: string
+          is_dismissed: boolean | null
+          is_viewed: boolean | null
+          match_reasons: string[] | null
+          match_score: number
+          mentee_user_id: string
+          mentor_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          is_viewed?: boolean | null
+          match_reasons?: string[] | null
+          match_score: number
+          mentee_user_id: string
+          mentor_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          is_viewed?: boolean | null
+          match_reasons?: string[] | null
+          match_score?: number
+          mentee_user_id?: string
+          mentor_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_matches_mentor_id_fkey"
             columns: ["mentor_id"]
             isOneToOne: false
             referencedRelation: "mentors"
@@ -1924,6 +1998,50 @@ export type Database = {
           },
         ]
       }
+      service_matches: {
+        Row: {
+          buyer_user_id: string
+          created_at: string
+          id: string
+          is_dismissed: boolean | null
+          is_viewed: boolean | null
+          match_reasons: string[] | null
+          match_score: number
+          service_id: string
+          updated_at: string
+        }
+        Insert: {
+          buyer_user_id: string
+          created_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          is_viewed?: boolean | null
+          match_reasons?: string[] | null
+          match_score: number
+          service_id: string
+          updated_at?: string
+        }
+        Update: {
+          buyer_user_id?: string
+          created_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          is_viewed?: boolean | null
+          match_reasons?: string[] | null
+          match_score?: number
+          service_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_matches_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_providers: {
         Row: {
           approved_at: string | null
@@ -2499,6 +2617,14 @@ export type Database = {
         Args: { funder_id_param: string; startup_id_param: string }
         Returns: number
       }
+      calculate_mentor_match_score: {
+        Args: { mentee_user_id_param: string; mentor_id_param: string }
+        Returns: number
+      }
+      calculate_service_match_score: {
+        Args: { buyer_user_id_param: string; service_id_param: string }
+        Returns: number
+      }
       create_direct_conversation: {
         Args: { p_title: string; p_user1: string; p_user2: string }
         Returns: string
@@ -2511,6 +2637,10 @@ export type Database = {
           p_user_id: string
         }
         Returns: undefined
+      }
+      generate_mentor_matches_for_user: {
+        Args: { user_id_param: string }
+        Returns: number
       }
       get_other_participant_profiles: {
         Args: { p_conversation_id: string }

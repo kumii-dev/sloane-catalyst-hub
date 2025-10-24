@@ -42,6 +42,7 @@ const FinancialInclusion = () => {
   const [businessScore, setBusinessScore] = useState<any>(null);
   const [showTransactionForm, setShowTransactionForm] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [activeTab, setActiveTab] = useState("transactions");
 
   const benefits = [
     {
@@ -219,7 +220,10 @@ const FinancialInclusion = () => {
               </CardContent>
             </Card>
 
-            <Card className="cursor-pointer hover:shadow-lg transition-shadow border-success/30 shadow-soft bg-gradient-to-br from-success/5 to-transparent">
+            <Card 
+              className="cursor-pointer hover:shadow-lg transition-shadow border-success/30 shadow-soft bg-gradient-to-br from-success/5 to-transparent"
+              onClick={() => setActiveTab("kyc")}
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">KYC Status</CardTitle>
                 <Wallet className="h-4 w-4 text-success" />
@@ -233,7 +237,7 @@ const FinancialInclusion = () => {
             </Card>
           </div>
 
-          <Tabs defaultValue="transactions" className="space-y-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full grid-cols-4 bg-muted/50 p-1">
               <TabsTrigger 
                 value="transactions"

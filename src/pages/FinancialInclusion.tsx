@@ -40,6 +40,7 @@ const FinancialInclusion = () => {
   const [profile, setProfile] = useState<any>(null);
   const [rewards, setRewards] = useState<any>(null);
   const [businessScore, setBusinessScore] = useState<any>(null);
+  const [transactionCount, setTransactionCount] = useState<number>(0);
   const [showTransactionForm, setShowTransactionForm] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [activeTab, setActiveTab] = useState("transactions");
@@ -130,6 +131,20 @@ const FinancialInclusion = () => {
     setProfile(data);
     loadRewards(userId);
     loadBusinessScore(userId);
+    loadTransactionCount(userId);
+  };
+
+  const loadTransactionCount = async (userId: string) => {
+    const { count, error } = await supabase
+      .from("transactions")
+      .select("*", { count: "exact", head: true })
+      .eq("trader_id", userId);
+
+    if (error) {
+      console.error("Error loading transaction count:", error);
+    } else {
+      setTransactionCount(count || 0);
+    }
   };
 
   const loadRewards = async (userId: string) => {
@@ -191,7 +206,25 @@ const FinancialInclusion = () => {
         </header>
 
         <main className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <Card 
+              className="cursor-pointer hover:shadow-lg transition-shadow border-success/30 shadow-soft bg-gradient-to-br from-success/5 to-transparent"
+              onClick={() => setActiveTab("transactions")}
+            >
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Transactions</CardTitle>
+                <Wallet className="h-4 w-4 text-success" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-success">
+                  {transactionCount}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Total logged transactions
+                </p>
+              </CardContent>
+            </Card>
+
             <Card 
               className="cursor-pointer hover:shadow-lg transition-shadow border-success/30 shadow-soft bg-gradient-to-br from-success/5 to-transparent"
               onClick={() => setActiveTab("business-health")}
@@ -300,6 +333,7 @@ const FinancialInclusion = () => {
                               setRefreshTrigger(prev => prev + 1);
                               loadRewards(user.id);
                               loadBusinessScore(user.id);
+                              loadTransactionCount(user.id);
                             }}
                           />
                         </div>

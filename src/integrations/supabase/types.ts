@@ -2801,8 +2801,36 @@ export type Database = {
         Args: { _assessment_id: string; _user_id: string }
         Returns: boolean
       }
+      is_cohort_member: {
+        Args: { _cohort_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_conversation_participant: {
         Args: { _conversation_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_funder: {
+        Args: { _funder_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_listing_owner: {
+        Args: { _listing_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_mentor: {
+        Args: { _mentor_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_opportunity_funder: {
+        Args: { _opportunity_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_service_provider: {
+        Args: { _provider_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_startup_owner: {
+        Args: { _startup_id: string; _user_id: string }
         Returns: boolean
       }
       recalculate_mentor_rating: {

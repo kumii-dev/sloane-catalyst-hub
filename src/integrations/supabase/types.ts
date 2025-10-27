@@ -395,6 +395,336 @@ export type Database = {
         Row: {
           amount: number
           balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_transactions_2024_q1: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_transactions_2024_q2: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_transactions_2024_q3: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_transactions_2024_q4: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_transactions_2025_q1: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_transactions_2025_q2: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_transactions_2025_q3: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_transactions_2025_q4: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_transactions_default: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          transaction_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credits_transactions_old_backup: {
+        Row: {
+          amount: number
+          balance_after: number
           created_at: string | null
           description: string | null
           id: string
@@ -1533,6 +1863,396 @@ export type Database = {
         }
         Relationships: []
       }
+      messages_2024_q1: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages_2024_q2: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages_2024_q3: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages_2024_q4: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages_2025_q1: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages_2025_q2: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages_2025_q3: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages_2025_q4: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages_default: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages_old_backup: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       model_states: {
         Row: {
           created_at: string
@@ -2606,6 +3326,366 @@ export type Database = {
         }
         Relationships: []
       }
+      transactions_2024_q1: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions_2024_q2: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions_2024_q3: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions_2024_q4: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions_2025_q1: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions_2025_q2: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions_2025_q3: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions_2025_q4: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions_default: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions_old_backup: {
+        Row: {
+          amount: number
+          channel: Database["public"]["Enums"]["channel_type"]
+          created_at: string
+          description: string | null
+          id: string
+          provenance: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id: string
+          txn_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: Database["public"]["Enums"]["channel_type"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          provenance?: Json | null
+          trader_id?: string
+          txn_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -2760,6 +3840,10 @@ export type Database = {
       create_direct_conversation: {
         Args: { p_title: string; p_user1: string; p_user2: string }
         Returns: string
+      }
+      create_quarterly_partition: {
+        Args: { start_date: string; table_name: string }
+        Returns: undefined
       }
       deduct_credits: {
         Args: {

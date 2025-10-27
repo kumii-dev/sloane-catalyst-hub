@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, Star, Users, Zap, Award, ArrowLeft, Plus, List, Coins, BarChart3, Gift, Briefcase, ShoppingCart, Code, Shield, Brain, Cloud, FolderKanban, Scale, Building, Rocket } from "lucide-react";
+import { Search, Filter, Star, Users, Zap, Award, ArrowLeft, Plus, List, Coins, BarChart3, Gift, Briefcase, ShoppingCart, Code, Shield, Brain, Cloud, FolderKanban, Scale, Building, Rocket, ChevronDown, ChevronUp } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -58,6 +58,7 @@ const ServiceCategory = () => {
   const [useCaseFilter, setUseCaseFilter] = useState<string>("all");
   const [cohortFilter, setCohortFilter] = useState<string>("all");
   const [loading, setLoading] = useState(true);
+  const [showCategories, setShowCategories] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -424,7 +425,29 @@ const ServiceCategory = () => {
 
       <div className="container mx-auto px-4 py-12">
         {/* Unified Category Display */}
-        {slug === 'software-services' && subCategories.length > 0 ? (
+        {slug === 'software-services' && subCategories.length > 0 && (
+          <div className="mb-8 flex justify-center">
+            <Button
+              onClick={() => setShowCategories(!showCategories)}
+              variant="outline"
+              className="gap-2"
+            >
+              {showCategories ? (
+                <>
+                  <ChevronUp className="h-4 w-4" />
+                  Hide Categories & Show All Services
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="h-4 w-4" />
+                  Show Categories
+                </>
+              )}
+            </Button>
+          </div>
+        )}
+        
+        {slug === 'software-services' && subCategories.length > 0 && showCategories ? (
           <section className="mb-16">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Explore Categories</h2>

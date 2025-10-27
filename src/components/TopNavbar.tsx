@@ -68,7 +68,8 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
           <img 
             src={logo} 
             alt="Kumii" 
-            className="h-16 sm:h-20 w-auto"
+            className="h-16 sm:h-20 w-auto object-cover object-top"
+            style={{ clipPath: 'inset(0 0 15% 0)' }}
           />
         </Link>
       </div>

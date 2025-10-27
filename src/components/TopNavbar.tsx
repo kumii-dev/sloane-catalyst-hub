@@ -68,7 +68,7 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
           <img 
             src={logo} 
             alt="Kumii" 
-            className="h-10 sm:h-12 w-auto"
+            className="h-16 sm:h-20 w-auto"
           />
         </Link>
       </div>

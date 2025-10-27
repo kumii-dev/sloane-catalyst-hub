@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { generateTestScriptsPDF } from "@/utils/testScriptsPdfGenerator";
+import { generateDatabaseDocumentationPDF } from "@/utils/databaseDocumentationPdfGenerator";
 
 const About = () => {
   const navigate = useNavigate();
@@ -222,6 +223,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
       generateTestScriptsPDF();
       toast.dismiss();
       toast.success("Test scripts PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate PDF");
+    }
+  };
+
+  const downloadDatabaseDocumentation = () => {
+    try {
+      toast.loading("Generating database documentation PDF...");
+      generateDatabaseDocumentationPDF();
+      toast.dismiss();
+      toast.success("Database documentation PDF downloaded!");
     } catch (error) {
       console.error('PDF generation error:', error);
       toast.dismiss();
@@ -650,12 +664,18 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             <TabsContent value="database" className="space-y-8 mt-8">
               <Card className="border-2">
                 <CardContent className="p-8 space-y-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Database className="w-8 h-8 text-primary" />
-                    <div>
-                      <h2 className="text-2xl font-bold">Database Structure</h2>
-                      <p className="text-muted-foreground">Complete overview of all tables and relationships</p>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <Database className="w-8 h-8 text-primary" />
+                      <div>
+                        <h2 className="text-2xl font-bold">Database Structure</h2>
+                        <p className="text-muted-foreground">Complete overview of all tables and relationships</p>
+                      </div>
                     </div>
+                    <Button onClick={downloadDatabaseDocumentation} variant="default" size="lg">
+                      <FileDown className="w-4 h-4 mr-2" />
+                      Download Documentation
+                    </Button>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-primary/5 rounded-lg">

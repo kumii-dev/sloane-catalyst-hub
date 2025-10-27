@@ -55,6 +55,11 @@ const ValuationModel = () => {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Comprehensive business valuations for companies at any stage—from ideation to publicly listed.
           </p>
+          <Button size="lg" asChild>
+            <a href="https://business-evaluation.kumii-test.com/" target="_blank" rel="noopener noreferrer">
+              Begin Your Valuation
+            </a>
+          </Button>
         </div>
       </section>
 
@@ -137,8 +142,10 @@ const ValuationModel = () => {
                       <p className="text-muted-foreground mb-6">
                         Complete a comprehensive assessment to receive your business valuation
                       </p>
-                      <Button size="lg">
-                        Begin Valuation Input
+                      <Button size="lg" asChild>
+                        <a href="https://business-evaluation.kumii-test.com/" target="_blank" rel="noopener noreferrer">
+                          Begin Your Valuation
+                        </a>
                       </Button>
                     </div>
                   </div>

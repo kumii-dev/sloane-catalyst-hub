@@ -41,9 +41,11 @@ const DocumentGenerator = () => {
             Powered by advanced AI, our platform generates comprehensive 50-60 page business plans that 
             match professional standards. Perfect for entrepreneurs, startups, and growing businesses.
           </p>
-          <Button size="lg" className="gap-2">
-            <Sparkles className="h-5 w-5" />
-            Start Creating Your Plan
+          <Button size="lg" className="gap-2" asChild>
+            <a href="https://business-plan.kumii-test.com/" target="_blank" rel="noopener noreferrer">
+              <Sparkles className="h-5 w-5" />
+              Start Creating Your Plan
+            </a>
           </Button>
         </div>
       </section>
@@ -112,8 +114,10 @@ const DocumentGenerator = () => {
               </div>
 
               <div className="pt-6 border-t">
-                <Button size="lg" className="w-full md:w-auto">
-                  Get Started Now
+                <Button size="lg" className="w-full md:w-auto" asChild>
+                  <a href="https://business-plan.kumii-test.com/" target="_blank" rel="noopener noreferrer">
+                    Get Started Now
+                  </a>
                 </Button>
               </div>
             </CardContent>

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Loader2, 
   Plus, 
@@ -32,6 +33,7 @@ const ProviderDashboard = () => {
     total_revenue: 0,
     total_views: 0,
   });
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!user) {
@@ -40,7 +42,6 @@ const ProviderDashboard = () => {
     }
     fetchProviderData();
   }, [user]);
-
   const fetchProviderData = async () => {
     if (!user) return;
 
@@ -85,6 +86,40 @@ const ProviderDashboard = () => {
       }
     } catch (error) {
       console.error('Error fetching provider data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleWithdraw = async () => {
+    if (!user) return;
+    setLoading(true);
+    try {
+      const { error: delProvErr } = await supabase
+        .from('service_providers')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('vetting_status', 'pending');
+      if (delProvErr) throw delProvErr;
+
+      await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('role', 'software_provider_pending');
+
+      toast({
+        title: 'Application withdrawn',
+        description: 'You can reapply now.',
+      });
+      navigate('/become-provider');
+    } catch (err: any) {
+      console.error('Withdraw failed', err);
+      toast({
+        title: 'Unable to withdraw application',
+        description: err?.message || 'Please try again or contact support.',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -159,6 +194,12 @@ const ProviderDashboard = () => {
                     <li>• You'll receive an email notification once approved</li>
                     <li>• Typical review time: 24-48 hours</li>
                   </ul>
+                </div>
+
+                <div className="flex justify-end">
+                  <Button variant="destructive" onClick={handleWithdraw} disabled={loading}>
+                    Withdraw application to re-apply
+                  </Button>
                 </div>
               </div>
             </CardContent>

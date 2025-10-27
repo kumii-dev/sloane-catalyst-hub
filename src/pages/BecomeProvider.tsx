@@ -10,7 +10,9 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Shield, CheckCircle, FileText, Building2, Phone, Globe } from 'lucide-react';
+import { Loader2, Shield, CheckCircle, FileText, Building2, Phone, Globe, Upload, X } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { TriangleAvatar } from '@/components/ui/triangle-avatar';
 
 const BecomeProvider = () => {
   const { user } = useAuth();
@@ -19,15 +21,22 @@ const BecomeProvider = () => {
   const [loading, setLoading] = useState(false);
   const [existingApplication, setExistingApplication] = useState<any>(null);
   const [checkingStatus, setCheckingStatus] = useState(true);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string>('');
+  const [uploading, setUploading] = useState(false);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
     company_name: '',
     description: '',
     website: '',
     contact_email: '',
+    contact_person: '',
     phone: '',
     business_registration_number: '',
     proof_document_url: '',
+    logo_url: '',
   });
 
   useEffect(() => {
@@ -36,7 +45,92 @@ const BecomeProvider = () => {
       return;
     }
     checkExistingApplication();
+    fetchCategories();
   }, [user]);
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('service_categories')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order', { ascending: true });
+
+      if (error) throw error;
+      setCategories(data || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Logo must be less than 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload an image file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLogoFile(file);
+    setLogoPreview(URL.createObjectURL(file));
+  };
+
+  const uploadLogo = async (): Promise<string | null> => {
+    if (!logoFile || !user) return null;
+
+    setUploading(true);
+    try {
+      const fileExt = logoFile.name.split('.').pop();
+      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+      const filePath = `provider-logos/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('public-files')
+        .upload(filePath, logoFile);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('public-files')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error: any) {
+      console.error('Error uploading logo:', error);
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to upload logo",
+        variant: "destructive",
+      });
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const toggleCategory = (categoryId: string) => {
+    setSelectedCategories(prev =>
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
 
   const checkExistingApplication = async () => {
     if (!user) return;
@@ -71,7 +165,7 @@ const BecomeProvider = () => {
     }
 
     // Validation
-    if (!formData.company_name || !formData.description || !formData.contact_email) {
+    if (!formData.company_name || !formData.description || !formData.contact_email || !formData.contact_person) {
       toast({
         title: "Missing information",
         description: "Please fill in all required fields",
@@ -80,9 +174,27 @@ const BecomeProvider = () => {
       return;
     }
 
+    if (selectedCategories.length === 0) {
+      toast({
+        title: "Missing information",
+        description: "Please select at least one software category",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
+      // Upload logo if provided
+      let logoUrl = formData.logo_url;
+      if (logoFile) {
+        const uploadedUrl = await uploadLogo();
+        if (uploadedUrl) {
+          logoUrl = uploadedUrl;
+        }
+      }
+
       const { error } = await supabase
         .from('service_providers')
         .insert({
@@ -91,9 +203,12 @@ const BecomeProvider = () => {
           description: formData.description,
           website: formData.website || null,
           contact_email: formData.contact_email,
+          contact_person: formData.contact_person,
           phone: formData.phone || null,
           business_registration_number: formData.business_registration_number || null,
           proof_document_url: formData.proof_document_url || null,
+          logo_url: logoUrl || null,
+          service_categories: selectedCategories,
           vetting_status: 'pending',
         });
 
@@ -245,6 +360,49 @@ const BecomeProvider = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
+                {/* Logo Upload */}
+                <div>
+                  <Label>Company Logo</Label>
+                  <div className="flex items-start gap-4 mt-2">
+                    {logoPreview ? (
+                      <div className="relative">
+                        <TriangleAvatar
+                          src={logoPreview}
+                          alt="Company logo preview"
+                          className="w-24 h-24"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
+                          onClick={() => {
+                            setLogoFile(null);
+                            setLogoPreview('');
+                          }}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center w-24 h-24 border-2 border-dashed rounded-lg border-muted-foreground/25 bg-muted/50">
+                        <Upload className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoChange}
+                        className="cursor-pointer"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Upload your company logo (max 5MB, PNG/JPG recommended)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div>
                   <Label htmlFor="company_name">Company Name *</Label>
                   <Input
@@ -264,6 +422,18 @@ const BecomeProvider = () => {
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Tell us about your company and software offerings"
                     rows={4}
+                    required
+                  />
+                </div>
+
+                {/* Contact Person */}
+                <div>
+                  <Label htmlFor="contact_person">Contact Person *</Label>
+                  <Input
+                    id="contact_person"
+                    value={formData.contact_person}
+                    onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
+                    placeholder="Full name of contact person"
                     required
                   />
                 </div>
@@ -325,6 +495,36 @@ const BecomeProvider = () => {
                   </p>
                 </div>
 
+                {/* Software Categories */}
+                <div>
+                  <Label>Software Categories You Supply *</Label>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Select all categories that apply to your software offerings
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-64 overflow-y-auto p-4 border rounded-lg bg-muted/20">
+                    {categories.map((category) => (
+                      <div key={category.id} className="flex items-start space-x-2">
+                        <Checkbox
+                          id={category.id}
+                          checked={selectedCategories.includes(category.id)}
+                          onCheckedChange={() => toggleCategory(category.id)}
+                        />
+                        <label
+                          htmlFor={category.id}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                        >
+                          {category.name}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                  {selectedCategories.length > 0 && (
+                    <p className="text-xs text-muted-foreground mt-2">
+                      {selectedCategories.length} {selectedCategories.length === 1 ? 'category' : 'categories'} selected
+                    </p>
+                  )}
+                </div>
+
                 <div className="p-4 bg-muted rounded-lg">
                   <h3 className="font-semibold mb-2 text-sm">What happens next?</h3>
                   <ul className="space-y-2 text-sm text-muted-foreground">
@@ -356,12 +556,12 @@ const BecomeProvider = () => {
                 <Button
                   type="submit"
                   className="flex-1"
-                  disabled={loading}
+                  disabled={loading || uploading}
                 >
-                  {loading ? (
+                  {loading || uploading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Submitting...
+                      {uploading ? 'Uploading...' : 'Submitting...'}
                     </>
                   ) : (
                     'Submit Application'

@@ -725,7 +725,7 @@ export type Database = {
         Row: {
           amount: number
           balance_after: number
-          created_at: string | null
+          created_at: string
           description: string | null
           id: string
           reference_id: string | null
@@ -735,7 +735,7 @@ export type Database = {
         Insert: {
           amount: number
           balance_after: number
-          created_at?: string | null
+          created_at?: string
           description?: string | null
           id?: string
           reference_id?: string | null
@@ -745,7 +745,7 @@ export type Database = {
         Update: {
           amount?: number
           balance_after?: number
-          created_at?: string | null
+          created_at?: string
           description?: string | null
           id?: string
           reference_id?: string | null

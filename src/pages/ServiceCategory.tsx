@@ -455,7 +455,7 @@ const ServiceCategory = () => {
           </div>
         )}
         
-        {slug === 'software-services' && subCategories.length > 0 && showCategories ? (
+        {slug === 'software-services' && subCategories.length > 0 && showCategories && (
           <section className="mb-16">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Explore Categories</h2>
@@ -501,7 +501,9 @@ const ServiceCategory = () => {
               })}
             </div>
           </section>
-        ) : subCategories.length > 0 ? (
+        )}
+
+        {slug !== 'software-services' && subCategories.length > 0 && (
           <section className="mb-16">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Explore Categories</h2>
@@ -542,7 +544,7 @@ const ServiceCategory = () => {
               })}
             </div>
           </section>
-        ) : null}
+        )}
 
         {/* Services Section - Show when categories are hidden OR when not on main software-services page */}
         {(!showCategories || slug !== 'software-services' || subCategories.length === 0) && (

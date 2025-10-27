@@ -3876,6 +3876,36 @@ export type Database = {
         Args: { user_id_param: string }
         Returns: number
       }
+      get_active_queries: {
+        Args: never
+        Returns: {
+          duration_seconds: number
+          pid: number
+          query_text: string
+          state: string
+          wait_event: string
+        }[]
+      }
+      get_database_stats: {
+        Args: never
+        Returns: {
+          category: string
+          stat_name: string
+          stat_value: string
+        }[]
+      }
+      get_index_usage: {
+        Args: never
+        Returns: {
+          index_name: string
+          index_size: string
+          scans: number
+          schema_name: string
+          table_name: string
+          tuples_read: number
+          usage_status: string
+        }[]
+      }
       get_other_participant_profiles: {
         Args: { p_conversation_id: string }
         Returns: {
@@ -3886,6 +3916,40 @@ export type Database = {
           persona_type: Database["public"]["Enums"]["persona_type"]
           profile_picture_url: string
           user_id: string
+        }[]
+      }
+      get_partition_stats: {
+        Args: never
+        Returns: {
+          last_vacuum: string
+          partition_name: string
+          row_count: number
+          status: string
+          table_size: string
+        }[]
+      }
+      get_table_bloat: {
+        Args: never
+        Returns: {
+          bloat_pct: number
+          bloat_size: string
+          recommendation: string
+          schema_name: string
+          table_name: string
+        }[]
+      }
+      get_table_statistics: {
+        Args: never
+        Returns: {
+          dead_rows: number
+          indexes_size: string
+          last_analyze: string
+          last_vacuum: string
+          live_rows: number
+          schema_name: string
+          table_name: string
+          table_size: string
+          total_size: string
         }[]
       }
       has_funder_assessment_access: {

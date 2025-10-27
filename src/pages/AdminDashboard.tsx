@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { CheckCircle, XCircle, Eye, Package, Users } from "lucide-react";
+import { CheckCircle, XCircle, Eye, Package, Users, Activity } from "lucide-react";
 
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -102,6 +102,10 @@ export default function AdminDashboard() {
               <Users className="w-4 h-4" />
               Cohorts
             </TabsTrigger>
+            <TabsTrigger value="performance" className="flex items-center gap-2">
+              <Activity className="w-4 h-4" />
+              Performance
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="listings" className="space-y-4">
@@ -177,6 +181,20 @@ export default function AdminDashboard() {
               <CardContent>
                 <Button onClick={() => navigate("/admin/cohorts")}>
                   Go to Cohort Manager
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="performance">
+            <Card>
+              <CardHeader>
+                <CardTitle>Database Performance</CardTitle>
+                <CardDescription>Monitor database health and query performance</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button onClick={() => navigate("/admin/performance")}>
+                  Open Performance Dashboard
                 </Button>
               </CardContent>
             </Card>

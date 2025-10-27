@@ -56,6 +56,7 @@ import About from "./pages/About";
 import SessionReview from "./pages/SessionReview";
 import InstallPWA from "./pages/InstallPWA";
 import MatchingDashboard from "./pages/MatchingDashboard";
+import PerformanceDashboard from "./pages/PerformanceDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -102,6 +103,7 @@ const App = () => (
             <Route path="/my-subscriptions" element={<MySubscriptions />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/cohorts" element={<CohortManager />} />
+            <Route path="/admin/performance" element={<PerformanceDashboard />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/category/:slug" element={<ServiceCategory />} />
             <Route path="/services/:id" element={<ServiceDetail />} />

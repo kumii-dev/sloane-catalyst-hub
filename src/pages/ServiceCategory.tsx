@@ -71,7 +71,7 @@ const ServiceCategory = () => {
     if (category) {
       fetchServices();
     }
-  }, [category, sortBy, pricingFilter, providerFilter, ratingFilter, useCaseFilter, cohortFilter, searchQuery]);
+  }, [category, sortBy, pricingFilter, providerFilter, ratingFilter, useCaseFilter, cohortFilter, searchQuery, showCategories, subCategories]);
 
   // Dynamic SEO: title, description, canonical
   useEffect(() => {
@@ -143,8 +143,16 @@ const ServiceCategory = () => {
           *,
           service_providers (company_name, logo_url, is_verified, is_cohort_partner)
         `)
-        .eq("category_id", category.id)
         .eq("is_active", true);
+
+      // If we're on software-services page and categories are hidden, fetch from all subcategories
+      if (slug === 'software-services' && !showCategories && subCategories.length > 0) {
+        const subCategoryIds = subCategories.map(sub => sub.id);
+        query = query.in("category_id", subCategoryIds);
+      } else {
+        // Otherwise, just fetch for the current category
+        query = query.eq("category_id", category.id);
+      }
 
       // Apply search filter
       if (searchQuery) {
@@ -536,10 +544,13 @@ const ServiceCategory = () => {
           </section>
         ) : null}
 
-        {/* Services Section */}
-        <section className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold">Available in {category.name}</h2>
+        {/* Services Section - Show when categories are hidden OR when not on main software-services page */}
+        {(!showCategories || slug !== 'software-services' || subCategories.length === 0) && (
+          <section className="mb-16">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-3xl font-bold">
+                {slug === 'software-services' && !showCategories ? 'All Software Services' : `Available in ${category.name}`}
+              </h2>
             <Button variant="ghost" onClick={() => { 
               setSearchQuery(""); 
               setPricingFilter("all"); 
@@ -633,7 +644,6 @@ const ServiceCategory = () => {
               </Link>
             ))}
           </div>
-        </section>
 
           {services.length === 0 && (
             <div className="text-center py-12">
@@ -660,6 +670,8 @@ const ServiceCategory = () => {
               </Button>
             </div>
           )}
+        </section>
+        )}
 
         {/* Stats Section */}
         {services.length > 0 && (

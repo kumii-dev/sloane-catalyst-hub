@@ -11,6 +11,27 @@ import { Separator } from '@/components/ui/separator';
 import { Github, Mail } from 'lucide-react';
 import logo from '@/assets/kumi-logo.png';
 
+// Helper to detect iframe (Preview environment)
+const isInIframe = () => {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+};
+
+// Get proper redirect URL for iframe/preview scenarios
+const getRedirectUrl = (path: string = '/onboarding') => {
+  if (isInIframe()) {
+    try {
+      return `${window.top!.location.origin}${path}`;
+    } catch (e) {
+      return `${window.location.origin}${path}`;
+    }
+  }
+  return `${window.location.origin}${path}`;
+};
+
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -95,7 +116,7 @@ const Auth = () => {
     }
 
     setLoading(true);
-    const redirectUrl = `${window.location.origin}/onboarding`;
+    const redirectUrl = getRedirectUrl('/onboarding');
     
     const { error } = await supabase.auth.signUp({
       email,
@@ -164,38 +185,82 @@ const Auth = () => {
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/onboarding`
-      }
-    });
-
-    if (error) {
-      toast({
-        title: "Google sign in failed",
-        description: error.message,
-        variant: "destructive",
+    
+    if (isInIframe()) {
+      // For iframe (Preview), get OAuth URL and redirect top window
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: getRedirectUrl('/onboarding'),
+          skipBrowserRedirect: true
+        }
       });
+
+      if (error) {
+        toast({
+          title: "Google sign in failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else if (data?.url) {
+        window.top!.location.href = data.url;
+      }
+    } else {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/onboarding`
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Google sign in failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
     }
     setLoading(false);
   };
 
   const handleGithubSignIn = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'github',
-      options: {
-        redirectTo: `${window.location.origin}/onboarding`
-      }
-    });
-
-    if (error) {
-      toast({
-        title: "GitHub sign in failed",
-        description: error.message,
-        variant: "destructive",
+    
+    if (isInIframe()) {
+      // For iframe (Preview), get OAuth URL and redirect top window
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: getRedirectUrl('/onboarding'),
+          skipBrowserRedirect: true
+        }
       });
+
+      if (error) {
+        toast({
+          title: "GitHub sign in failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else if (data?.url) {
+        window.top!.location.href = data.url;
+      }
+    } else {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: `${window.location.origin}/onboarding`
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "GitHub sign in failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
     }
     setLoading(false);
   };
@@ -213,7 +278,7 @@ const Auth = () => {
 
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-      redirectTo: `${window.location.origin}/auth?reset=true`,
+      redirectTo: getRedirectUrl('/auth?reset=true'),
     });
 
     if (error) {

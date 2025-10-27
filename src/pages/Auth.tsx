@@ -23,6 +23,17 @@ const Auth = () => {
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const navigate = useNavigate();
 
+  const checkAndRedirect = async (userId: string) => {
+    const { data: roleData } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    navigate(roleData ? '/admin/performance' : '/onboarding');
+  };
+
   useEffect(() => {
     // Check if this is a password reset flow
     const params = new URLSearchParams(window.location.search);
@@ -53,44 +64,19 @@ const Auth = () => {
 
   useEffect(() => {
     // Check if user is already logged in
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session) {
-        // Check if user is admin
-        const { data: roleData } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
-        
-        if (roleData) {
-          // Admin users go to admin dashboard
-          navigate('/admin/performance');
-        } else {
-          // Regular users go to onboarding
-          navigate('/onboarding');
-        }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        // Defer Supabase calls to avoid deadlocks in the callback
+        setTimeout(() => {
+          checkAndRedirect(session.user.id);
+        }, 0);
       }
     });
 
     // Check for existing session
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (session) {
-        // Check if user is admin
-        const { data: roleData } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
-        
-        if (roleData) {
-          // Admin users go to admin dashboard
-          navigate('/admin/performance');
-        } else {
-          // Regular users go to onboarding
-          navigate('/onboarding');
-        }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        checkAndRedirect(session.user.id);
       }
     });
 
@@ -171,6 +157,7 @@ const Auth = () => {
         title: "Success!",
         description: "Signed in successfully",
       });
+      await checkAndRedirect(data.session.user.id);
     }
     setLoading(false);
   };

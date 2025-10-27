@@ -660,15 +660,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-primary/5 rounded-lg">
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-primary">38</div>
+                      <div className="text-3xl font-bold text-primary">45+</div>
                       <div className="text-sm text-muted-foreground">Total Tables</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-primary">8</div>
+                      <div className="text-3xl font-bold text-primary">23+</div>
                       <div className="text-sm text-muted-foreground">Custom Functions</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-primary">3</div>
+                      <div className="text-3xl font-bold text-primary">4</div>
                       <div className="text-sm text-muted-foreground">Storage Buckets</div>
                     </div>
                   </div>
@@ -682,14 +682,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {[
+                          { name: "business_scores", desc: "Business health and credit scoring" },
                           { name: "cohort_funded_listings", desc: "Links cohorts to funded listings" },
                           { name: "cohort_memberships", desc: "Tracks user memberships in cohorts" },
                           { name: "cohorts", desc: "Sponsored cohort programs" },
+                          { name: "conversation_participants", desc: "Messaging conversation members" },
+                          { name: "conversations", desc: "Direct and group conversations" },
                           { name: "credit_assessments", desc: "Business credit score assessments" },
                           { name: "credits_transactions", desc: "Platform credits transaction history" },
                           { name: "credits_wallet", desc: "User credit balance management" },
                           { name: "event_registrations", desc: "User event registrations" },
                           { name: "events", desc: "Platform events and webinars" },
+                          { name: "file_shares", desc: "File sharing permissions" },
+                          { name: "files", desc: "User uploaded files and documents" },
                           { name: "funders", desc: "Funder organization profiles" },
                           { name: "funding_applications", desc: "Funding opportunity applications" },
                           { name: "funding_matches", desc: "AI-matched funding opportunities" },
@@ -697,13 +702,16 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                           { name: "listing_categories", desc: "Categories for marketplace listings" },
                           { name: "listing_reviews", desc: "User reviews for listings" },
                           { name: "listings", desc: "Marketplace listings (services/products)" },
+                          { name: "match_notifications", desc: "Notifications for AI matches" },
                           { name: "mentor_availability", desc: "Mentor weekly availability schedule" },
                           { name: "mentor_categories", desc: "Links mentors to expertise areas" },
                           { name: "mentor_date_overrides", desc: "Specific date availability overrides" },
+                          { name: "mentor_matches", desc: "AI-matched mentor recommendations" },
                           { name: "mentoring_categories", desc: "Mentorship expertise categories" },
                           { name: "mentoring_sessions", desc: "Scheduled mentorship sessions" },
                           { name: "mentors", desc: "Mentor profiles and availability" },
                           { name: "messages", desc: "User notifications and messages" },
+                          { name: "model_states", desc: "Financial model saved states" },
                           { name: "profiles", desc: "User profile information" },
                           { name: "progressive_profile_data", desc: "Progressive profiling data" },
                           { name: "resource_bookmarks", desc: "User bookmarked resources" },
@@ -711,15 +719,20 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                           { name: "resource_progress", desc: "User progress on resources" },
                           { name: "resource_ratings", desc: "User ratings for resources" },
                           { name: "resources", desc: "Learning resources and materials" },
+                          { name: "rewards", desc: "User rewards and gamification points" },
                           { name: "score_sharing", desc: "Credit score sharing with funders" },
                           { name: "scoring_criteria", desc: "Assessment scoring criteria" },
                           { name: "service_categories", desc: "Service provider categories" },
+                          { name: "service_matches", desc: "AI-matched service recommendations" },
                           { name: "service_providers", desc: "Service provider profiles" },
                           { name: "service_reviews", desc: "Reviews for services" },
                           { name: "service_subscriptions", desc: "User service subscriptions" },
                           { name: "services", desc: "Professional services offered" },
+                          { name: "session_reviews", desc: "Mentor session ratings and feedback" },
                           { name: "startup_profiles", desc: "Startup business profiles" },
+                          { name: "transactions", desc: "Business transaction records" },
                           { name: "user_roles", desc: "User role assignments (admin, etc.)" },
+                          { name: "user_subscriptions", desc: "User listing subscriptions" },
                         ].map((table) => (
                           <div key={table.name} className="p-3 bg-card border rounded-lg hover:border-primary/50 transition-colors">
                             <div className="font-mono text-sm font-semibold text-primary">{table.name}</div>
@@ -841,6 +854,13 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                             <span className="text-xs px-2 py-1 bg-destructive/10 text-destructive rounded">Private</span>
                           </div>
                           <div className="text-xs text-muted-foreground mt-1">Stores credit assessment documents</div>
+                        </div>
+                        <div className="p-3 bg-card border rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div className="font-mono text-sm font-semibold text-primary">files</div>
+                            <span className="text-xs px-2 py-1 bg-destructive/10 text-destructive rounded">Private</span>
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">User uploaded files and documents</div>
                         </div>
                         <div className="p-3 bg-card border rounded-lg">
                           <div className="flex items-center justify-between">

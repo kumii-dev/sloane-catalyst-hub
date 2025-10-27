@@ -1197,6 +1197,7 @@ export type Database = {
           industry_focus: Database["public"]["Enums"]["industry_type"][] | null
           min_credit_score: number | null
           requirements: string
+          search_vector: unknown
           sloane_credits_allocation: number | null
           stage_requirements:
             | Database["public"]["Enums"]["company_stage"][]
@@ -1222,6 +1223,7 @@ export type Database = {
           industry_focus?: Database["public"]["Enums"]["industry_type"][] | null
           min_credit_score?: number | null
           requirements: string
+          search_vector?: unknown
           sloane_credits_allocation?: number | null
           stage_requirements?:
             | Database["public"]["Enums"]["company_stage"][]
@@ -1247,6 +1249,7 @@ export type Database = {
           industry_focus?: Database["public"]["Enums"]["industry_type"][] | null
           min_credit_score?: number | null
           requirements?: string
+          search_vector?: unknown
           sloane_credits_allocation?: number | null
           stage_requirements?:
             | Database["public"]["Enums"]["company_stage"][]
@@ -1762,6 +1765,7 @@ export type Database = {
           mentoring_style: string | null
           platform_fee_percentage: number | null
           rating: number | null
+          search_vector: unknown
           session_fee: number | null
           specializations: string[] | null
           status: Database["public"]["Enums"]["mentor_status"]
@@ -1787,6 +1791,7 @@ export type Database = {
           mentoring_style?: string | null
           platform_fee_percentage?: number | null
           rating?: number | null
+          search_vector?: unknown
           session_fee?: number | null
           specializations?: string[] | null
           status?: Database["public"]["Enums"]["mentor_status"]
@@ -1812,6 +1817,7 @@ export type Database = {
           mentoring_style?: string | null
           platform_fee_percentage?: number | null
           rating?: number | null
+          search_vector?: unknown
           session_fee?: number | null
           specializations?: string[] | null
           status?: Database["public"]["Enums"]["mentor_status"]
@@ -2303,6 +2309,7 @@ export type Database = {
           profile_completion_percentage: number | null
           profile_picture_url: string | null
           province: string | null
+          search_vector: unknown
           skills: string[] | null
           twitter_url: string | null
           updated_at: string
@@ -2330,6 +2337,7 @@ export type Database = {
           profile_completion_percentage?: number | null
           profile_picture_url?: string | null
           province?: string | null
+          search_vector?: unknown
           skills?: string[] | null
           twitter_url?: string | null
           updated_at?: string
@@ -2357,6 +2365,7 @@ export type Database = {
           profile_completion_percentage?: number | null
           profile_picture_url?: string | null
           province?: string | null
+          search_vector?: unknown
           skills?: string[] | null
           twitter_url?: string | null
           updated_at?: string
@@ -2574,6 +2583,7 @@ export type Database = {
           prerequisites: string[] | null
           rating: number | null
           resource_type: Database["public"]["Enums"]["resource_type"]
+          search_vector: unknown
           slug: string
           sponsor_logo_url: string | null
           sponsor_name: string | null
@@ -2605,6 +2615,7 @@ export type Database = {
           prerequisites?: string[] | null
           rating?: number | null
           resource_type: Database["public"]["Enums"]["resource_type"]
+          search_vector?: unknown
           slug: string
           sponsor_logo_url?: string | null
           sponsor_name?: string | null
@@ -2636,6 +2647,7 @@ export type Database = {
           prerequisites?: string[] | null
           rating?: number | null
           resource_type?: Database["public"]["Enums"]["resource_type"]
+          search_vector?: unknown
           slug?: string
           sponsor_logo_url?: string | null
           sponsor_name?: string | null
@@ -3065,6 +3077,7 @@ export type Database = {
           pricing_type: Database["public"]["Enums"]["pricing_type"]
           provider_id: string
           rating: number | null
+          search_vector: unknown
           service_type: Database["public"]["Enums"]["service_type"]
           short_description: string | null
           target_industries: string[] | null
@@ -3092,6 +3105,7 @@ export type Database = {
           pricing_type: Database["public"]["Enums"]["pricing_type"]
           provider_id: string
           rating?: number | null
+          search_vector?: unknown
           service_type: Database["public"]["Enums"]["service_type"]
           short_description?: string | null
           target_industries?: string[] | null
@@ -3119,6 +3133,7 @@ export type Database = {
           pricing_type?: Database["public"]["Enums"]["pricing_type"]
           provider_id?: string
           rating?: number | null
+          search_vector?: unknown
           service_type?: Database["public"]["Enums"]["service_type"]
           short_description?: string | null
           target_industries?: string[] | null
@@ -3212,6 +3227,7 @@ export type Database = {
           logo_url: string | null
           market_access_needs: string[] | null
           revenue_range: string | null
+          search_vector: unknown
           stage: Database["public"]["Enums"]["company_stage"]
           support_needed: string[] | null
           target_market: string | null
@@ -3246,6 +3262,7 @@ export type Database = {
           logo_url?: string | null
           market_access_needs?: string[] | null
           revenue_range?: string | null
+          search_vector?: unknown
           stage: Database["public"]["Enums"]["company_stage"]
           support_needed?: string[] | null
           target_market?: string | null
@@ -3280,6 +3297,7 @@ export type Database = {
           logo_url?: string | null
           market_access_needs?: string[] | null
           revenue_range?: string | null
+          search_vector?: unknown
           stage?: Database["public"]["Enums"]["company_stage"]
           support_needed?: string[] | null
           target_market?: string | null
@@ -3922,6 +3940,16 @@ export type Database = {
         Returns: {
           new_rating: number
           total_reviews: number
+        }[]
+      }
+      search_all: {
+        Args: { result_limit?: number; search_query: string }
+        Returns: {
+          description: string
+          rank: number
+          result_id: string
+          result_type: string
+          title: string
         }[]
       }
     }

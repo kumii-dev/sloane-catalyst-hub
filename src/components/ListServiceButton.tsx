@@ -68,7 +68,7 @@ export const ListServiceButton = ({
     }
 
     if (providerStatus === 'approved') {
-      navigate('/create-listing');
+      navigate('/listings/create');
     } else if (providerStatus === 'pending') {
       navigate('/provider-dashboard');
     } else {

@@ -40,6 +40,7 @@ import ValuationModel from "./pages/ValuationModel";
 import FinancialInclusion from "./pages/FinancialInclusion";
 import VideoCreator from "./pages/VideoCreator";
 import CreateListing from "./pages/CreateListing";
+import EditListing from "./pages/EditListing";
 import ListingDetail from "./pages/ListingDetail";
 import MyListings from "./pages/MyListings";
 import MySubscriptions from "./pages/MySubscriptions";
@@ -101,9 +102,10 @@ const App = () => (
           <Route path="/credit-score" element={<CreditScore />} />
           <Route path="/credit-score/assessment" element={<CreditScoreAssessment />} />
           <Route path="/credit-score/results/:assessmentId" element={<CreditScoreResults />} />
-            <Route path="/listings/create" element={<CreateListing />} />
-            <Route path="/listings/:id" element={<ListingDetail />} />
-            <Route path="/my-listings" element={<MyListings />} />
+          <Route path="/listings/create" element={<CreateListing />} />
+          <Route path="/listings/:id/edit" element={<EditListing />} />
+          <Route path="/listings/:id" element={<ListingDetail />} />
+          <Route path="/my-listings" element={<MyListings />} />
             <Route path="/my-subscriptions" element={<MySubscriptions />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/mentorship" element={<MentorshipManagement />} />

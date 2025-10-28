@@ -31,6 +31,8 @@ export default function UserManagement() {
   const [showPersonaDialog, setShowPersonaDialog] = useState(false);
   const [showMessageDialog, setShowMessageDialog] = useState(false);
   const [messageContent, setMessageContent] = useState('');
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<{ type: string; data: any } | null>(null);
 
   useEffect(() => {
     if (!authLoading) {
@@ -130,7 +132,15 @@ export default function UserManagement() {
     fetchUsers();
   };
 
-  const revokeAdmin = async (userId: string, email: string) => {
+  const revokeAdmin = (userId: string, email: string) => {
+    setConfirmAction({
+      type: 'revokeAdmin',
+      data: { userId, email }
+    });
+    setShowConfirmDialog(true);
+  };
+
+  const executeRevokeAdmin = async (userId: string, email: string) => {
     const { error } = await supabase
       .from('user_roles')
       .delete()
@@ -147,7 +157,28 @@ export default function UserManagement() {
     fetchUsers();
   };
 
-  const toggleUserStatus = async (userId: string, currentStatus: boolean, email: string) => {
+  const handleConfirmAction = () => {
+    if (!confirmAction) return;
+
+    if (confirmAction.type === 'toggleStatus') {
+      executeToggleUserStatus(confirmAction.data.userId, confirmAction.data.currentStatus, confirmAction.data.email);
+    } else if (confirmAction.type === 'revokeAdmin') {
+      executeRevokeAdmin(confirmAction.data.userId, confirmAction.data.email);
+    }
+
+    setShowConfirmDialog(false);
+    setConfirmAction(null);
+  };
+
+  const toggleUserStatus = (userId: string, currentStatus: boolean, email: string) => {
+    setConfirmAction({
+      type: 'toggleStatus',
+      data: { userId, currentStatus, email }
+    });
+    setShowConfirmDialog(true);
+  };
+
+  const executeToggleUserStatus = async (userId: string, currentStatus: boolean, email: string) => {
     const { error } = await supabase
       .from('profiles')
       .update({ is_active: !currentStatus })
@@ -648,6 +679,31 @@ export default function UserManagement() {
               <Button onClick={sendMessageToUser}>
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Send Message
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Confirmation Dialog */}
+        <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirm Action</DialogTitle>
+              <DialogDescription>
+                {confirmAction?.type === 'toggleStatus' 
+                  ? `Are you sure you want to ${confirmAction.data.currentStatus ? 'disable' : 'enable'} ${confirmAction.data.email}?`
+                  : confirmAction?.type === 'revokeAdmin'
+                  ? `Are you sure you want to revoke admin access for ${confirmAction.data.email}?`
+                  : 'Are you sure you want to proceed?'
+                }
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>
+                Cancel
+              </Button>
+              <Button variant="destructive" onClick={handleConfirmAction}>
+                Confirm
               </Button>
             </DialogFooter>
           </DialogContent>

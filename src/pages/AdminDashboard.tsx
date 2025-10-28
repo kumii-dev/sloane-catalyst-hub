@@ -16,6 +16,8 @@ export default function AdminDashboard() {
   const [pendingListings, setPendingListings] = useState<any[]>([]);
   const [pageLoading, setPageLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [totalUsers, setTotalUsers] = useState<number>(0);
+  const [activeListings, setActiveListings] = useState<number>(0);
 
   useEffect(() => {
     if (!authLoading) {
@@ -43,23 +45,45 @@ export default function AdminDashboard() {
     }
 
     setIsAdmin(true);
-    fetchPendingListings();
+    fetchDashboardData();
   };
 
-  const fetchPendingListings = async () => {
+  const fetchDashboardData = async () => {
     setPageLoading(true);
-    const { data, error } = await supabase
+    
+    // Fetch pending listings
+    const { data: pendingData, error: pendingError } = await supabase
       .from("listings")
       .select("*")
       .eq("status", "pending_approval")
       .order("created_at", { ascending: false });
 
-    if (error) {
+    if (pendingError) {
       toast.error("Failed to load listings");
-      console.error(error);
+      console.error(pendingError);
     } else {
-      setPendingListings(data || []);
+      setPendingListings(pendingData || []);
     }
+
+    // Fetch total users count
+    const { count: usersCount, error: usersError } = await supabase
+      .from("profiles")
+      .select("*", { count: 'exact', head: true });
+
+    if (!usersError && usersCount !== null) {
+      setTotalUsers(usersCount);
+    }
+
+    // Fetch active listings count
+    const { count: activeCount, error: activeError } = await supabase
+      .from("listings")
+      .select("*", { count: 'exact', head: true })
+      .eq("status", "active");
+
+    if (!activeError && activeCount !== null) {
+      setActiveListings(activeCount);
+    }
+
     setPageLoading(false);
   };
 
@@ -78,7 +102,7 @@ export default function AdminDashboard() {
       console.error(error);
     } else {
       toast.success(`Listing ${approved ? "approved" : "rejected"}`);
-      fetchPendingListings();
+      fetchDashboardData();
     }
   };
 
@@ -130,7 +154,7 @@ export default function AdminDashboard() {
                   <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">Loading...</div>
+                  <div className="text-2xl font-bold">{totalUsers}</div>
                 </CardContent>
               </Card>
               <Card>
@@ -148,7 +172,7 @@ export default function AdminDashboard() {
                   <Package className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">Loading...</div>
+                  <div className="text-2xl font-bold">{activeListings}</div>
                 </CardContent>
               </Card>
               <Card>

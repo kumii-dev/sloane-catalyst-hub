@@ -101,13 +101,13 @@ const BecomeProvider = () => {
       const filePath = `provider-logos/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('public-files')
+        .from('profile-pictures')
         .upload(filePath, logoFile);
 
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from('public-files')
+        .from('profile-pictures')
         .getPublicUrl(filePath);
 
       return publicUrl;

@@ -206,7 +206,7 @@ const Services = () => {
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold">Featured Services</h2>
-            <Link to="/services/all">
+            <Link to="/services/category/software-services">
               <Button variant="outline">View All Services</Button>
             </Link>
           </div>

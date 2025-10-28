@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import { DollarSign, TrendingUp, Users, Coins } from 'lucide-react';
 
 export default function FinancialOverview() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalCreditsInCirculation: 0,
@@ -25,8 +25,10 @@ export default function FinancialOverview() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    checkAdminStatus();
-  }, [user]);
+    if (!authLoading) {
+      checkAdminStatus();
+    }
+  }, [user, authLoading]);
 
   const checkAdminStatus = async () => {
     if (!user) {

@@ -5,6 +5,7 @@ import { Shield, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 export const AdminRoleSwitcher = () => {
   const { user } = useAuth();
@@ -13,6 +14,7 @@ export const AdminRoleSwitcher = () => {
     return localStorage.getItem('adminMode') === 'true';
   });
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     checkAdminStatus();
@@ -41,12 +43,8 @@ export const AdminRoleSwitcher = () => {
     localStorage.setItem('adminMode', String(newMode));
     toast.success(`Switched to ${newMode ? 'Admin' : 'User'} mode`);
     
-    // Reload page to apply role changes
-    if (newMode) {
-      window.location.href = '/admin';
-    } else {
-      window.location.href = '/';
-    }
+    // Navigate without full reload to preserve session
+    navigate(newMode ? '/admin' : '/', { replace: true });
   };
 
   if (loading || !isAdmin) {

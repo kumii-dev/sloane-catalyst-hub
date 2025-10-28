@@ -14,7 +14,7 @@ import { usePerformanceMonitoring, DatabaseStat } from '@/hooks/usePerformanceMo
 
 const PerformanceDashboard = () => {
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [autoRefresh, setAutoRefresh] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);

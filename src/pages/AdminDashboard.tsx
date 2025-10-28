@@ -11,15 +11,17 @@ import { toast } from "sonner";
 import { CheckCircle, XCircle, Eye, Package, Users, Activity, Shield, DollarSign, UserPlus, BarChart3 } from "lucide-react";
 
 export default function AdminDashboard() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [pendingListings, setPendingListings] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    checkAdminStatus();
-  }, [user]);
+    if (!authLoading) {
+      checkAdminStatus();
+    }
+  }, [user, authLoading]);
 
   const checkAdminStatus = async () => {
     if (!user) {
@@ -45,7 +47,7 @@ export default function AdminDashboard() {
   };
 
   const fetchPendingListings = async () => {
-    setLoading(true);
+    setPageLoading(true);
     const { data, error } = await supabase
       .from("listings")
       .select("*")
@@ -58,7 +60,7 @@ export default function AdminDashboard() {
     } else {
       setPendingListings(data || []);
     }
-    setLoading(false);
+    setPageLoading(false);
   };
 
   const handleApproval = async (listingId: string, approved: boolean) => {
@@ -220,7 +222,7 @@ export default function AdminDashboard() {
                 <CardDescription>Review and approve marketplace listings</CardDescription>
               </CardHeader>
               <CardContent>
-                {loading ? (
+                {pageLoading ? (
                   <p>Loading...</p>
                 ) : pendingListings.length === 0 ? (
                   <p className="text-muted-foreground">No pending listings</p>

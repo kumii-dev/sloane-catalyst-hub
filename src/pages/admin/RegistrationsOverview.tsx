@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 import { UserPlus, Building, Users, DollarSign, CheckCircle, XCircle, Eye } from 'lucide-react';
 
 export default function RegistrationsOverview() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [pendingProviders, setPendingProviders] = useState<any[]>([]);
   const [pendingFunders, setPendingFunders] = useState<any[]>([]);
@@ -21,8 +21,10 @@ export default function RegistrationsOverview() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    checkAdminStatus();
-  }, [user]);
+    if (!authLoading) {
+      checkAdminStatus();
+    }
+  }, [user, authLoading]);
 
   const checkAdminStatus = async () => {
     if (!user) {

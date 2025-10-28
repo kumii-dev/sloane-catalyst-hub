@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import { Shield, UserCheck, UserX, Mail, Search } from 'lucide-react';
 
 export default function UserManagement() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [users, setUsers] = useState<any[]>([]);
   const [adminEmail, setAdminEmail] = useState('');
@@ -22,8 +22,10 @@ export default function UserManagement() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    checkAdminStatus();
-  }, [user]);
+    if (!authLoading) {
+      checkAdminStatus();
+    }
+  }, [user, authLoading]);
 
   const checkAdminStatus = async () => {
     if (!user) {

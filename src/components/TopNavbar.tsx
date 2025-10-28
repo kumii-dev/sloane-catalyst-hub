@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Menu, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { NotificationBell } from "@/components/NotificationBell";
+import { AdminRoleSwitcher } from "@/components/admin/AdminRoleSwitcher";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import logo from "@/assets/kumi-logo.png";
@@ -95,6 +96,7 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
       <div className="flex items-center gap-2 sm:gap-4">
         {user ? (
           <div className="flex items-center gap-2 sm:gap-3">
+            <AdminRoleSwitcher />
             <Link to="/about" className="text-sm sm:text-base text-foreground font-medium hidden md:inline hover:text-foreground/80 transition-colors">About</Link>
             <div className="text-foreground">
               <NotificationBell />

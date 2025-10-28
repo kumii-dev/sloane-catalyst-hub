@@ -45,6 +45,9 @@ import MyListings from "./pages/MyListings";
 import MySubscriptions from "./pages/MySubscriptions";
 import AdminDashboard from "./pages/AdminDashboard";
 import CohortManager from "./pages/CohortManager";
+import UserManagement from "./pages/admin/UserManagement";
+import RegistrationsOverview from "./pages/admin/RegistrationsOverview";
+import FinancialOverview from "./pages/admin/FinancialOverview";
 import MessagingHub from "./pages/MessagingHub";
 import Activity from "./pages/Activity";
 import MyActivity from "./pages/MyActivity";
@@ -101,9 +104,12 @@ const App = () => (
             <Route path="/listings/:id" element={<ListingDetail />} />
             <Route path="/my-listings" element={<MyListings />} />
             <Route path="/my-subscriptions" element={<MySubscriptions />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/cohorts" element={<CohortManager />} />
-            <Route path="/admin/performance" element={<PerformanceDashboard />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/cohorts" element={<CohortManager />} />
+          <Route path="/admin/performance" element={<PerformanceDashboard />} />
+          <Route path="/admin/users" element={<UserManagement />} />
+          <Route path="/admin/registrations" element={<RegistrationsOverview />} />
+          <Route path="/admin/financial" element={<FinancialOverview />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/category/:slug" element={<ServiceCategory />} />
             <Route path="/services/:id" element={<ServiceDetail />} />

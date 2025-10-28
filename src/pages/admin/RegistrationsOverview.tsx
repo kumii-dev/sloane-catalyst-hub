@@ -1,0 +1,372 @@
+import { useState, useEffect } from 'react';
+import { Layout } from '@/components/Layout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { UserPlus, Building, Users, DollarSign, CheckCircle, XCircle, Eye } from 'lucide-react';
+
+export default function RegistrationsOverview() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [pendingProviders, setPendingProviders] = useState<any[]>([]);
+  const [pendingFunders, setPendingFunders] = useState<any[]>([]);
+  const [pendingMentors, setPendingMentors] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    checkAdminStatus();
+  }, [user]);
+
+  const checkAdminStatus = async () => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .single();
+
+    if (error || !data) {
+      toast.error('Access denied. Admin privileges required.');
+      navigate('/');
+      return;
+    }
+
+    setIsAdmin(true);
+    fetchAllPendingRegistrations();
+  };
+
+  const fetchAllPendingRegistrations = async () => {
+    setLoading(true);
+
+    // Fetch pending service providers
+    const { data: providers } = await supabase
+      .from('service_providers')
+      .select('*, profiles(first_name, last_name, email)')
+      .eq('vetting_status', 'pending')
+      .order('created_at', { ascending: false });
+
+    // Fetch pending mentors (those without approval)
+    const { data: mentors } = await supabase
+      .from('mentors')
+      .select('*, profiles(first_name, last_name, email)')
+      .eq('status', 'unavailable')
+      .order('created_at', { ascending: false });
+
+    // Fetch new funders (created recently, is_verified = false)
+    const { data: funders } = await supabase
+      .from('funders')
+      .select('*, profiles(first_name, last_name, email)')
+      .eq('is_verified', false)
+      .order('created_at', { ascending: false });
+
+    setPendingProviders(providers || []);
+    setPendingMentors(mentors || []);
+    setPendingFunders(funders || []);
+    setLoading(false);
+  };
+
+  const handleProviderApproval = async (providerId: string, approved: boolean) => {
+    const { error } = await supabase
+      .from('service_providers')
+      .update({
+        vetting_status: approved ? 'approved' : 'rejected'
+      })
+      .eq('id', providerId);
+
+    if (error) {
+      toast.error('Failed to update provider');
+      console.error(error);
+    } else {
+      toast.success(`Provider ${approved ? 'approved' : 'rejected'}`);
+      fetchAllPendingRegistrations();
+    }
+  };
+
+  const handleMentorApproval = async (mentorId: string, approved: boolean) => {
+    const { error } = await supabase
+      .from('mentors')
+      .update({
+        status: approved ? 'available' : 'unavailable'
+      })
+      .eq('id', mentorId);
+
+    if (error) {
+      toast.error('Failed to update mentor');
+      console.error(error);
+    } else {
+      toast.success(`Mentor ${approved ? 'approved' : 'rejected'}`);
+      fetchAllPendingRegistrations();
+    }
+  };
+
+  const handleFunderApproval = async (funderId: string, approved: boolean) => {
+    const { error } = await supabase
+      .from('funders')
+      .update({
+        is_verified: approved
+      })
+      .eq('id', funderId);
+
+    if (error) {
+      toast.error('Failed to update funder');
+      console.error(error);
+    } else {
+      toast.success(`Funder ${approved ? 'verified' : 'rejected'}`);
+      fetchAllPendingRegistrations();
+    }
+  };
+
+  if (!isAdmin) {
+    return null;
+  }
+
+  return (
+    <Layout>
+      <div className="container mx-auto py-8 px-4">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2">New Registrations</h1>
+          <p className="text-muted-foreground">Review and approve new registrations across all personas</p>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Pending Providers</CardTitle>
+              <Building className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{pendingProviders.length}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Pending Mentors</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{pendingMentors.length}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Unverified Funders</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{pendingFunders.length}</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Tabs defaultValue="providers" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="providers">Service Providers</TabsTrigger>
+            <TabsTrigger value="mentors">Mentors</TabsTrigger>
+            <TabsTrigger value="funders">Funders</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="providers">
+            <Card>
+              <CardHeader>
+                <CardTitle>Pending Service Providers</CardTitle>
+                <CardDescription>Review and approve service provider applications</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <p>Loading...</p>
+                ) : pendingProviders.length === 0 ? (
+                  <p className="text-muted-foreground">No pending providers</p>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Company</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Applied</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {pendingProviders.map((provider) => (
+                        <TableRow key={provider.id}>
+                          <TableCell>
+                            {provider.profiles?.first_name} {provider.profiles?.last_name}
+                          </TableCell>
+                          <TableCell>{provider.profiles?.email}</TableCell>
+                          <TableCell>{provider.company_name}</TableCell>
+                          <TableCell>
+                            <Badge variant="outline">{provider.vetting_status}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            {new Date(provider.created_at).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="default"
+                                size="sm"
+                                onClick={() => handleProviderApproval(provider.id, true)}
+                              >
+                                <CheckCircle className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleProviderApproval(provider.id, false)}
+                              >
+                                <XCircle className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="mentors">
+            <Card>
+              <CardHeader>
+                <CardTitle>Pending Mentors</CardTitle>
+                <CardDescription>Review and approve mentor applications</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <p>Loading...</p>
+                ) : pendingMentors.length === 0 ? (
+                  <p className="text-muted-foreground">No pending mentors</p>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Title</TableHead>
+                        <TableHead>Company</TableHead>
+                        <TableHead>Applied</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {pendingMentors.map((mentor) => (
+                        <TableRow key={mentor.id}>
+                          <TableCell>
+                            {mentor.profiles?.first_name} {mentor.profiles?.last_name}
+                          </TableCell>
+                          <TableCell>{mentor.profiles?.email}</TableCell>
+                          <TableCell>{mentor.title}</TableCell>
+                          <TableCell>{mentor.company}</TableCell>
+                          <TableCell>
+                            {new Date(mentor.created_at).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="default"
+                                size="sm"
+                                onClick={() => handleMentorApproval(mentor.id, true)}
+                              >
+                                <CheckCircle className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleMentorApproval(mentor.id, false)}
+                              >
+                                <XCircle className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="funders">
+            <Card>
+              <CardHeader>
+                <CardTitle>Unverified Funders</CardTitle>
+                <CardDescription>Review and verify funder registrations</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <p>Loading...</p>
+                ) : pendingFunders.length === 0 ? (
+                  <p className="text-muted-foreground">No unverified funders</p>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Organization</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Registered</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {pendingFunders.map((funder) => (
+                        <TableRow key={funder.id}>
+                          <TableCell>
+                            {funder.profiles?.first_name} {funder.profiles?.last_name}
+                          </TableCell>
+                          <TableCell>{funder.profiles?.email}</TableCell>
+                          <TableCell>{funder.organization_name}</TableCell>
+                          <TableCell>{funder.organization_type}</TableCell>
+                          <TableCell>
+                            {new Date(funder.created_at).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="default"
+                                size="sm"
+                                onClick={() => handleFunderApproval(funder.id, true)}
+                              >
+                                <CheckCircle className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleFunderApproval(funder.id, false)}
+                              >
+                                <XCircle className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </Layout>
+  );
+}

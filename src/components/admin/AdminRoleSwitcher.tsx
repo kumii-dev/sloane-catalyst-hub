@@ -9,7 +9,9 @@ import { toast } from 'sonner';
 export const AdminRoleSwitcher = () => {
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
-  const [adminMode, setAdminMode] = useState(false);
+  const [adminMode, setAdminMode] = useState(() => {
+    return localStorage.getItem('adminMode') === 'true';
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,11 +36,13 @@ export const AdminRoleSwitcher = () => {
   };
 
   const toggleAdminMode = () => {
-    setAdminMode(!adminMode);
-    toast.success(`Switched to ${!adminMode ? 'Admin' : 'User'} mode`);
+    const newMode = !adminMode;
+    setAdminMode(newMode);
+    localStorage.setItem('adminMode', String(newMode));
+    toast.success(`Switched to ${newMode ? 'Admin' : 'User'} mode`);
     
     // Reload page to apply role changes
-    if (!adminMode) {
+    if (newMode) {
       window.location.href = '/admin';
     } else {
       window.location.href = '/';

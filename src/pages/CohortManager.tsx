@@ -261,11 +261,133 @@ export default function CohortManager() {
           </Dialog>
         </div>
 
-        <Tabs defaultValue="listings" className="space-y-6">
+        <Tabs defaultValue="cohorts" className="space-y-6">
           <TabsList>
+            <TabsTrigger value="cohorts">All Cohorts</TabsTrigger>
             <TabsTrigger value="listings">Bulk Assign Listings</TabsTrigger>
             <TabsTrigger value="emails">Email Auto-Assignment</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="cohorts">
+            <Card>
+              <CardHeader>
+                <CardTitle>Cohort Management</CardTitle>
+                <CardDescription>View and manage all cohorts used across the platform</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <p>Loading cohorts...</p>
+                ) : cohorts.length === 0 ? (
+                  <p className="text-muted-foreground">No cohorts found. Create one to get started.</p>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Sponsor</TableHead>
+                        <TableHead>Credits</TableHead>
+                        <TableHead>Duration</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Members</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {cohorts.map((cohort) => (
+                        <TableRow key={cohort.id}>
+                          <TableCell>
+                            <div>
+                              <div className="font-medium">{cohort.name}</div>
+                              <div className="text-sm text-muted-foreground">{cohort.description}</div>
+                            </div>
+                          </TableCell>
+                          <TableCell>{cohort.sponsor_name}</TableCell>
+                          <TableCell>{cohort.credits_allocated || 0}</TableCell>
+                          <TableCell>
+                            <div className="text-sm">
+                              {cohort.start_date && (
+                                <div>Start: {new Date(cohort.start_date).toLocaleDateString()}</div>
+                              )}
+                              {cohort.end_date && (
+                                <div>End: {new Date(cohort.end_date).toLocaleDateString()}</div>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant={cohort.is_active ? "default" : "secondary"}>
+                              {cohort.is_active ? "Active" : "Inactive"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={async () => {
+                                const { count } = await supabase
+                                  .from("cohort_memberships")
+                                  .select("*", { count: 'exact', head: true })
+                                  .eq("cohort_id", cohort.id)
+                                  .eq("is_active", true);
+                                toast.info(`${count || 0} active members in ${cohort.name}`);
+                              }}
+                            >
+                              <Users className="w-4 h-4 mr-1" />
+                              View Members
+                            </Button>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={async () => {
+                                  const newStatus = !cohort.is_active;
+                                  const { error } = await supabase
+                                    .from("cohorts")
+                                    .update({ is_active: newStatus })
+                                    .eq("id", cohort.id);
+                                  
+                                  if (error) {
+                                    toast.error("Failed to update cohort status");
+                                  } else {
+                                    toast.success(`Cohort ${newStatus ? 'activated' : 'deactivated'}`);
+                                    fetchData();
+                                  }
+                                }}
+                              >
+                                {cohort.is_active ? "Deactivate" : "Activate"}
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={async () => {
+                                  if (!confirm(`Are you sure you want to delete ${cohort.name}?`)) return;
+                                  
+                                  const { error } = await supabase
+                                    .from("cohorts")
+                                    .delete()
+                                    .eq("id", cohort.id);
+                                  
+                                  if (error) {
+                                    toast.error("Failed to delete cohort");
+                                  } else {
+                                    toast.success("Cohort deleted");
+                                    fetchData();
+                                  }
+                                }}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="listings">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

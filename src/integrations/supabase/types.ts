@@ -2297,6 +2297,7 @@ export type Database = {
           id: string
           industry_sectors: string[] | null
           interests: string[] | null
+          is_active: boolean | null
           kyc_tier: Database["public"]["Enums"]["kyc_tier_type"] | null
           last_name: string | null
           linkedin_url: string | null
@@ -2325,6 +2326,7 @@ export type Database = {
           id?: string
           industry_sectors?: string[] | null
           interests?: string[] | null
+          is_active?: boolean | null
           kyc_tier?: Database["public"]["Enums"]["kyc_tier_type"] | null
           last_name?: string | null
           linkedin_url?: string | null
@@ -2353,6 +2355,7 @@ export type Database = {
           id?: string
           industry_sectors?: string[] | null
           interests?: string[] | null
+          is_active?: boolean | null
           kyc_tier?: Database["public"]["Enums"]["kyc_tier_type"] | null
           last_name?: string | null
           linkedin_url?: string | null

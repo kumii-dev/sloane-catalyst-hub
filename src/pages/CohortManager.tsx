@@ -14,7 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Plus, Users, CheckCircle, Upload, Trash2, ArrowLeft } from "lucide-react";
+import { Plus, Users, CheckCircle, Upload, Trash2, ArrowLeft, Edit } from "lucide-react";
 
 export default function CohortManager() {
   const { user } = useAuth();
@@ -27,6 +27,8 @@ export default function CohortManager() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [emailMappings, setEmailMappings] = useState<any[]>([]);
   const [bulkEmails, setBulkEmails] = useState("");
+  const [editingCohort, setEditingCohort] = useState<any>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   // Form states
   const [cohortForm, setCohortForm] = useState({
@@ -172,6 +174,48 @@ export default function CohortManager() {
     }
   };
 
+  const handleEditCohort = (cohort: any) => {
+    setEditingCohort(cohort);
+    setCohortForm({
+      name: cohort.name,
+      description: cohort.description || "",
+      sponsor_name: cohort.sponsor_name,
+      sponsor_logo_url: cohort.sponsor_logo_url || "",
+      credits_allocated: cohort.credits_allocated || 0,
+      start_date: cohort.start_date ? cohort.start_date.split('T')[0] : "",
+      end_date: cohort.end_date ? cohort.end_date.split('T')[0] : "",
+    });
+    setIsEditDialogOpen(true);
+  };
+
+  const handleUpdateCohort = async () => {
+    if (!editingCohort) return;
+
+    const { error } = await supabase
+      .from("cohorts")
+      .update(cohortForm)
+      .eq("id", editingCohort.id);
+
+    if (error) {
+      toast.error("Failed to update cohort");
+      console.error(error);
+    } else {
+      toast.success("Cohort updated successfully");
+      setIsEditDialogOpen(false);
+      setEditingCohort(null);
+      setCohortForm({
+        name: "",
+        description: "",
+        sponsor_name: "",
+        sponsor_logo_url: "",
+        credits_allocated: 0,
+        start_date: "",
+        end_date: "",
+      });
+      fetchData();
+    }
+  };
+
   if (!isAdmin) {
     return null;
   }
@@ -261,6 +305,71 @@ export default function CohortManager() {
           </Dialog>
         </div>
 
+        {/* Edit Cohort Dialog */}
+        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Edit Cohort</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Cohort Name</Label>
+                <Input
+                  value={cohortForm.name}
+                  onChange={(e) => setCohortForm({ ...cohortForm, name: e.target.value })}
+                  placeholder="e.g., Q1 2025 Startups"
+                />
+              </div>
+              <div>
+                <Label>Description</Label>
+                <Textarea
+                  value={cohortForm.description}
+                  onChange={(e) => setCohortForm({ ...cohortForm, description: e.target.value })}
+                  placeholder="Describe the cohort..."
+                />
+              </div>
+              <div>
+                <Label>Sponsor Name</Label>
+                <Input
+                  value={cohortForm.sponsor_name}
+                  onChange={(e) => setCohortForm({ ...cohortForm, sponsor_name: e.target.value })}
+                  placeholder="Sponsor organization name"
+                />
+              </div>
+              <div>
+                <Label>Credits Allocated</Label>
+                <Input
+                  type="number"
+                  value={cohortForm.credits_allocated}
+                  onChange={(e) => setCohortForm({ ...cohortForm, credits_allocated: parseInt(e.target.value) || 0 })}
+                  placeholder="Total credits for cohort"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Start Date</Label>
+                  <Input
+                    type="date"
+                    value={cohortForm.start_date}
+                    onChange={(e) => setCohortForm({ ...cohortForm, start_date: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <Label>End Date</Label>
+                  <Input
+                    type="date"
+                    value={cohortForm.end_date}
+                    onChange={(e) => setCohortForm({ ...cohortForm, end_date: e.target.value })}
+                  />
+                </div>
+              </div>
+              <Button onClick={handleUpdateCohort} className="w-full">
+                Update Cohort
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
         <Tabs defaultValue="cohorts" className="space-y-6">
           <TabsList>
             <TabsTrigger value="cohorts">All Cohorts</TabsTrigger>
@@ -337,6 +446,13 @@ export default function CohortManager() {
                           </TableCell>
                           <TableCell>
                             <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEditCohort(cohort)}
+                              >
+                                <Edit className="w-4 h-4" />
+                              </Button>
                               <Button
                                 variant="outline"
                                 size="sm"
@@ -528,40 +644,44 @@ export default function CohortManager() {
                   <CardDescription>Existing automatic assignments</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2 max-h-96 overflow-y-auto">
-                    {emailMappings.length === 0 ? (
-                      <p className="text-sm text-muted-foreground text-center py-4">
-                        No email mappings yet
-                      </p>
-                    ) : (
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Email</TableHead>
-                            <TableHead>Cohort</TableHead>
-                            <TableHead></TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {emailMappings.map((mapping) => (
-                            <TableRow key={mapping.id}>
-                              <TableCell className="text-xs">{mapping.email}</TableCell>
-                              <TableCell className="text-xs">{mapping.cohorts?.name}</TableCell>
-                              <TableCell>
-                                <Button
-                                  size="sm"
-                                  variant="ghost"
-                                  onClick={() => handleDeleteMapping(mapping.id)}
-                                >
-                                  <Trash2 className="w-3 h-3" />
-                                </Button>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    )}
-                  </div>
+                   <div className="space-y-2 max-h-96 overflow-y-auto">
+                     {loading ? (
+                       <p className="text-sm text-muted-foreground text-center py-4">
+                         Loading mappings...
+                       </p>
+                     ) : emailMappings.length === 0 ? (
+                       <p className="text-sm text-muted-foreground text-center py-4">
+                         No email mappings yet
+                       </p>
+                     ) : (
+                       <Table>
+                         <TableHeader>
+                           <TableRow>
+                             <TableHead>Email</TableHead>
+                             <TableHead>Cohort</TableHead>
+                             <TableHead></TableHead>
+                           </TableRow>
+                         </TableHeader>
+                         <TableBody>
+                           {emailMappings.map((mapping) => (
+                             <TableRow key={mapping.id}>
+                               <TableCell className="text-sm">{mapping.email}</TableCell>
+                               <TableCell className="text-sm">{mapping.cohorts?.name || 'Unknown'}</TableCell>
+                               <TableCell>
+                                 <Button
+                                   size="sm"
+                                   variant="ghost"
+                                   onClick={() => handleDeleteMapping(mapping.id)}
+                                 >
+                                   <Trash2 className="w-3 h-3" />
+                                 </Button>
+                               </TableCell>
+                             </TableRow>
+                           ))}
+                         </TableBody>
+                       </Table>
+                     )}
+                   </div>
                 </CardContent>
               </Card>
             </div>

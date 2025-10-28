@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Star, Users, Globe, Mail, Phone, Check, ExternalLink, ArrowLeft } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
-import kumiiLogo from "@/assets/kumi-logo.png";
+import kumiiLogo from "@/assets/kumii-logo.png";
 import ServicePaymentDialog from "@/components/services/ServicePaymentDialog";
 
 interface ServiceDetail {

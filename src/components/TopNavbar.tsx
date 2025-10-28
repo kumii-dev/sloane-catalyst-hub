@@ -9,7 +9,7 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { AdminRoleSwitcher } from "@/components/admin/AdminRoleSwitcher";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import logo from "@/assets/kumi-logo.png";
+import logo from "@/assets/kumii-logo.png";
 
 interface TopNavbarProps {
   onMenuToggle?: () => void;

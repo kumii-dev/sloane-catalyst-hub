@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
 import { Github, Mail } from 'lucide-react';
-import logo from '@/assets/kumi-logo.png';
+import logo from '@/assets/kumii-logo.png';
 
 // Helper to detect iframe (Preview environment)
 const isInIframe = () => {

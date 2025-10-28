@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AssessmentResults } from "@/components/assessment/AssessmentResults";
 import jsPDF from "jspdf";
-import logoImg from "@/assets/kumi-logo.png";
+import logoImg from "@/assets/kumii-logo.png";
 
 interface DocumentUpload {
   type: string;

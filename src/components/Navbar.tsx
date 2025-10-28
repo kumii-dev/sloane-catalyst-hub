@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import logo from "@/assets/kumi-logo.png";
+import logo from "@/assets/kumii-logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

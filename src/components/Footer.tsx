@@ -1,7 +1,7 @@
 import { Building2, Mail, Phone, MapPin, Twitter, Linkedin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import logo from "@/assets/kumi-logo.png";
+import logo from "@/assets/kumii-logo.png";
 
 const Footer = () => {
   const footerLinks = [

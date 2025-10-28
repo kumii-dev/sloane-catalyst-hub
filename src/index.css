@@ -29,10 +29,10 @@
     --muted: 210 20% 95%;
     --muted-foreground: 240 1% 25%;
 
-    /* Accent: Brand Purple for highlights and CTAs */
-    --accent: 237 27% 51%;
-    --accent-foreground: 0 0% 100%;
-    --accent-light: 237 27% 65%;
+    /* Accent: Kumii Green for highlights and CTAs */
+    --accent: 142 76% 73%;
+    --accent-foreground: 240 1% 25%;
+    --accent-light: 142 76% 80%;
     --accent-magenta: 323 67% 39%;
     
     /* Rating/Achievement Colors */
@@ -97,9 +97,9 @@
     --muted: 240 1% 20%;
     --muted-foreground: 0 0% 65%;
 
-    --accent: 237 27% 51%;
-    --accent-foreground: 0 0% 100%;
-    --accent-light: 237 27% 65%;
+    --accent: 142 76% 73%;
+    --accent-foreground: 240 1% 12%;
+    --accent-light: 142 76% 80%;
 
     --gen-grey: 240 1% 25%;
     

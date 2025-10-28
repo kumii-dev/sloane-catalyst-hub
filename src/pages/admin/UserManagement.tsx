@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -19,6 +20,7 @@ export default function UserManagement() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<any[]>([]);
   const [adminEmail, setAdminEmail] = useState('');
+  const [selectedRole, setSelectedRole] = useState<'admin' | 'mentorship_admin'>('admin');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -109,21 +111,22 @@ export default function UserManagement() {
       .from('user_roles')
       .insert({
         user_id: targetUser.user_id,
-        role: 'admin'
+        role: selectedRole
       });
 
     if (error) {
       if (error.code === '23505') {
-        toast.error('User is already an admin');
+        toast.error(`User already has ${selectedRole} role`);
       } else {
-        toast.error('Failed to approve admin');
+        toast.error(`Failed to grant ${selectedRole} access`);
         console.error(error);
       }
       return;
     }
 
-    toast.success(`${adminEmail} has been approved as admin`);
+    toast.success(`${adminEmail} has been granted ${selectedRole === 'admin' ? 'Admin' : 'Mentorship Admin'} access`);
     setAdminEmail('');
+    setSelectedRole('admin');
     fetchUsers();
   };
 
@@ -168,7 +171,7 @@ export default function UserManagement() {
 
     const { error } = await supabase
       .from('profiles')
-      .update({ persona_type: newPersona })
+      .update({ persona_type: newPersona as any })
       .eq('user_id', selectedUser.user_id);
 
     if (error) {
@@ -531,18 +534,32 @@ export default function UserManagement() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex gap-4 mb-6">
-                  <Input
-                    type="email"
-                    placeholder="user@example.com"
-                    value={adminEmail}
-                    onChange={(e) => setAdminEmail(e.target.value)}
-                    className="max-w-md"
-                  />
-                  <Button onClick={approveAdmin}>
-                    <UserCheck className="w-4 h-4 mr-2" />
-                    Grant Admin Access
-                  </Button>
+                <div className="space-y-4 mb-6">
+                  <div>
+                    <Label htmlFor="role-select">Role Type</Label>
+                    <Select value={selectedRole} onValueChange={(v) => setSelectedRole(v as 'admin' | 'mentorship_admin')}>
+                      <SelectTrigger id="role-select">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="admin">Full Admin</SelectItem>
+                        <SelectItem value="mentorship_admin">Mentorship Admin</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex gap-2">
+                    <Input
+                      type="email"
+                      placeholder="user@example.com"
+                      value={adminEmail}
+                      onChange={(e) => setAdminEmail(e.target.value)}
+                      className="flex-1"
+                    />
+                    <Button onClick={approveAdmin}>
+                      <UserCheck className="w-4 h-4 mr-2" />
+                      Grant Access
+                    </Button>
+                  </div>
                 </div>
                 <div className="mt-6">
                   <h3 className="text-lg font-semibold mb-4">Current Administrators</h3>

@@ -784,6 +784,38 @@ export type Database = {
         }
         Relationships: []
       }
+      email_cohort_mappings: {
+        Row: {
+          cohort_id: string
+          created_at: string
+          created_by: string
+          email: string
+          id: string
+        }
+        Insert: {
+          cohort_id: string
+          created_at?: string
+          created_by: string
+          email: string
+          id?: string
+        }
+        Update: {
+          cohort_id?: string
+          created_at?: string
+          created_by?: string
+          email?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_cohort_mappings_cohort_id_fkey"
+            columns: ["cohort_id"]
+            isOneToOne: false
+            referencedRelation: "cohorts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_registrations: {
         Row: {
           attended: boolean | null

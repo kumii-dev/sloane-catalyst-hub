@@ -44,6 +44,7 @@ import ListingDetail from "./pages/ListingDetail";
 import MyListings from "./pages/MyListings";
 import MySubscriptions from "./pages/MySubscriptions";
 import AdminDashboard from "./pages/AdminDashboard";
+import MentorshipManagement from "./pages/admin/MentorshipManagement";
 import CohortManager from "./pages/CohortManager";
 import UserManagement from "./pages/admin/UserManagement";
 import RegistrationsOverview from "./pages/admin/RegistrationsOverview";
@@ -105,6 +106,7 @@ const App = () => (
             <Route path="/my-listings" element={<MyListings />} />
             <Route path="/my-subscriptions" element={<MySubscriptions />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/mentorship" element={<MentorshipManagement />} />
           <Route path="/admin/cohorts" element={<CohortManager />} />
           <Route path="/admin/performance" element={<PerformanceDashboard />} />
           <Route path="/admin/users" element={<UserManagement />} />

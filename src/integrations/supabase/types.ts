@@ -4035,6 +4035,7 @@ export type Database = {
         | "service_provider"
         | "software_provider"
         | "software_provider_pending"
+        | "mentorship_admin"
       application_status:
         | "draft"
         | "submitted"
@@ -4284,6 +4285,7 @@ export const Constants = {
         "service_provider",
         "software_provider",
         "software_provider_pending",
+        "mentorship_admin",
       ],
       application_status: [
         "draft",

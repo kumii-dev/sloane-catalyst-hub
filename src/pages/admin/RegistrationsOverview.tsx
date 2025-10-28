@@ -80,6 +80,18 @@ export default function RegistrationsOverview() {
   };
 
   const handleProviderApproval = async (providerId: string, approved: boolean) => {
+    // First get the provider details
+    const { data: provider, error: fetchError } = await supabase
+      .from('service_providers')
+      .select('user_id, contact_person, company_name')
+      .eq('id', providerId)
+      .single();
+
+    if (fetchError || !provider) {
+      toast.error('Failed to fetch provider details');
+      return;
+    }
+
     const { error } = await supabase
       .from('service_providers')
       .update({
@@ -92,6 +104,36 @@ export default function RegistrationsOverview() {
       console.error(error);
     } else {
       toast.success(`Provider ${approved ? 'approved' : 'rejected'}`);
+      
+      // Send notification message if approved
+      if (approved) {
+        // Create or get conversation with the provider
+        const { data: conversation, error: convError } = await supabase
+          .from('conversations')
+          .insert({
+            conversation_type: 'direct',
+            title: 'Application Status Update'
+          })
+          .select()
+          .single();
+
+        if (conversation && !convError) {
+          // Add provider as participant
+          await supabase.from('conversation_participants').insert({
+            conversation_id: conversation.id,
+            user_id: provider.user_id
+          });
+
+          // Send approval message
+          await supabase.from('conversation_messages').insert({
+            conversation_id: conversation.id,
+            sender_id: user!.id,
+            content: `🎉 Congratulations ${provider.contact_person || provider.company_name}!\n\nYour application has been approved, and you can now start creating your listings on the platform.\n\n📋 Next Steps:\n• Please read and accept the platform terms and conditions\n• Visit your dashboard to view and manage your listings\n• Start showcasing your services to our community\n\nWelcome to the platform!`,
+            message_type: 'text'
+          });
+        }
+      }
+      
       fetchAllPendingRegistrations();
     }
   };

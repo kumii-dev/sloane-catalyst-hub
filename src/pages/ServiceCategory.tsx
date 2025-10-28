@@ -480,12 +480,12 @@ const ServiceCategory = () => {
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {listings.map((listing) => (
               <Link key={listing.id} to={`/listings/${listing.id}`}>
                 <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
                   {listing.thumbnail_url && (
-                    <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-t-lg overflow-hidden">
+                    <div className="h-36 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-t-lg overflow-hidden">
                       <img 
                         src={listing.thumbnail_url} 
                         alt={listing.title}
@@ -493,40 +493,40 @@ const ServiceCategory = () => {
                       />
                     </div>
                   )}
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
-                      <Badge variant="secondary" className="text-xs">
+                  <CardHeader className="pb-3 pt-4 px-4">
+                    <div className="flex items-center justify-between mb-1.5 flex-wrap gap-1.5">
+                      <Badge variant="secondary" className="text-[10px] px-2 py-0.5">
                         {listing.listing_type}
                       </Badge>
                       {listing.status === 'active' && (
-                        <Badge className="text-xs bg-green-500 text-white border-0">
+                        <Badge className="text-[10px] px-2 py-0.5 bg-green-500 text-white border-0">
                           Active
                         </Badge>
                       )}
                       {listing.credits_price && (
-                        <Badge className="text-xs bg-gradient-to-r from-purple-500 to-purple-600 text-white border-0">
-                          <Coins className="h-3 w-3 mr-1" />
-                          {listing.credits_price} Credits
+                        <Badge className="text-[10px] px-2 py-0.5 bg-gradient-to-r from-purple-500 to-purple-600 text-white border-0">
+                          <Coins className="h-2.5 w-2.5 mr-0.5" />
+                          {listing.credits_price}
                         </Badge>
                       )}
                     </div>
-                    <CardTitle className="group-hover:text-primary transition-colors line-clamp-1">
+                    <CardTitle className="group-hover:text-primary transition-colors line-clamp-1 text-base">
                       {listing.title}
                     </CardTitle>
-                    <CardDescription className="line-clamp-2">
+                    <CardDescription className="line-clamp-2 text-xs">
                       {listing.short_description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center text-sm text-muted-foreground">
-                        <div className="flex items-center mr-4">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+                  <CardContent className="pb-4 px-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center text-xs text-muted-foreground gap-3">
+                        <div className="flex items-center">
+                          <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400 mr-0.5" />
                           <span>{listing.rating}</span>
-                          <span className="ml-1">({listing.total_reviews})</span>
+                          <span className="ml-0.5 text-[10px]">({listing.total_reviews})</span>
                         </div>
                         <div className="flex items-center">
-                          <Users className="h-4 w-4 mr-1" />
+                          <Users className="h-3.5 w-3.5 mr-0.5" />
                           <span>{listing.total_subscriptions}</span>
                         </div>
                       </div>
@@ -534,7 +534,7 @@ const ServiceCategory = () => {
                     
                     <div className="flex items-center justify-end">
                       <div className="text-right">
-                        <div className="font-semibold text-primary">
+                        <div className="font-semibold text-primary text-sm">
                           {formatPrice(listing)}
                         </div>
                       </div>

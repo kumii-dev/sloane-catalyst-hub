@@ -6,72 +6,74 @@
 
 @layer base {
   :root {
+    /* Kumii Official Brand Colors */
     --background: 0 0% 100%;
-    --foreground: 240 1% 25%;
+    --foreground: 300 1% 27%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 1% 25%;
+    --card-foreground: 300 1% 27%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 1% 25%;
+    --popover-foreground: 300 1% 27%;
 
-    /* Primary: Kumii Green (Brand Signature Color) */
-    --primary: 90 13% 46%;
+    /* Primary: Sage Green #7A8566 (Brand Signature Color) */
+    --primary: 82 13% 46%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 90 13% 56%;
-    --primary-dark: 90 13% 36%;
-    --primary-darker: 90 13% 26%;
+    --primary-light: 82 54% 73%;
+    --primary-dark: 82 13% 36%;
+    --primary-darker: 82 13% 26%;
 
-    /* Secondary: Dark for contrast and professionalism */
-    --secondary: 240 1% 25%;
+    /* Secondary: Dark Charcoal #444345 */
+    --secondary: 300 1% 27%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 20% 95%;
-    --muted-foreground: 240 1% 25%;
+    /* Muted: Light Gray #CDCDCE */
+    --muted: 300 1% 81%;
+    --muted-foreground: 300 1% 27%;
 
-    /* Accent: Kumii Green for highlights and CTAs */
-    --accent: 90 13% 46%;
-    --accent-foreground: 0 0% 100%;
-    --accent-light: 90 13% 56%;
-    --accent-magenta: 323 67% 39%;
+    /* Accent: Light Green #C5DF94 */
+    --accent: 82 54% 73%;
+    --accent-foreground: 300 1% 27%;
+    --accent-light: 82 54% 80%;
+    --accent-dark: 82 13% 46%;
     
     /* Rating/Achievement Colors */
     --rating: 45 93% 58%;
     --rating-foreground: 45 93% 20%;
     --rating-muted: 45 20% 85%;
 
-    /* Gen Grey: Brand neutral color */
-    --gen-grey: 240 1% 25%;
+    /* Gen Grey: Dark Charcoal #444345 */
+    --gen-grey: 300 1% 27%;
     --gen-grey-foreground: 0 0% 100%;
 
-    /* Success: Keep existing green */
-    --success: 160 75% 40%;
-    --success-foreground: 0 0% 100%;
+    /* Success: Light Green */
+    --success: 82 54% 73%;
+    --success-foreground: 300 1% 27%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 94%;
-    --ring: 90 13% 46%;
+    --border: 300 1% 81%;
+    --input: 300 1% 95%;
+    --ring: 82 13% 46%;
 
     --radius: 0.75rem;
 
     /* Kumii Brand Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(90 13% 46%), hsl(90 13% 36%));
-    --gradient-hero: linear-gradient(135deg, hsl(240 1% 25%) 0%, hsl(90 13% 46%) 50%, hsl(90 13% 56%) 100%);
-    --gradient-accent: linear-gradient(90deg, hsl(90 13% 46%), hsl(90 13% 56%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
-    --gradient-main-light: linear-gradient(135deg, hsl(0 0% 98%) 0%, hsl(210 20% 96%) 50%, hsl(90 10% 96%) 100%);
-    --gradient-green-dark: linear-gradient(90deg, hsl(90 13% 46%), hsl(240 1% 25%));
+    --gradient-primary: linear-gradient(135deg, hsl(82 13% 46%), hsl(82 54% 73%));
+    --gradient-hero: linear-gradient(135deg, hsl(300 1% 27%) 0%, hsl(82 13% 46%) 50%, hsl(82 54% 73%) 100%);
+    --gradient-accent: linear-gradient(90deg, hsl(82 54% 73%), hsl(82 54% 80%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(300 1% 98%) 100%);
+    --gradient-main-light: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(300 1% 95%) 50%, hsl(82 20% 96%) 100%);
+    --gradient-green-dark: linear-gradient(90deg, hsl(82 13% 46%), hsl(300 1% 27%));
 
     /* Professional shadows with brand colors */
-    --shadow-soft: 0 2px 20px -4px hsl(240 1% 25% / 0.1);
-    --shadow-medium: 0 8px 30px -8px hsl(240 1% 25% / 0.15);
-    --shadow-strong: 0 20px 40px -12px hsl(240 1% 25% / 0.25);
-    --shadow-glow: 0 0 40px hsl(90 13% 46% / 0.3);
-    --shadow-green: 0 4px 20px hsl(90 13% 46% / 0.25);
-    --shadow-dark: 0 4px 20px hsl(240 1% 25% / 0.25);
+    --shadow-soft: 0 2px 20px -4px hsl(300 1% 27% / 0.1);
+    --shadow-medium: 0 8px 30px -8px hsl(300 1% 27% / 0.15);
+    --shadow-strong: 0 20px 40px -12px hsl(300 1% 27% / 0.25);
+    --shadow-glow: 0 0 40px hsl(82 54% 73% / 0.3);
+    --shadow-green: 0 4px 20px hsl(82 13% 46% / 0.25);
+    --shadow-dark: 0 4px 20px hsl(300 1% 27% / 0.25);
 
     /* Smooth transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -79,47 +81,51 @@
   }
 
   .dark {
-    --background: 240 1% 12%;
-    --foreground: 0 0% 95%;
+    /* Kumii Dark Mode */
+    --background: 300 1% 27%;
+    --foreground: 0 0% 100%;
 
-    --card: 240 1% 15%;
-    --card-foreground: 0 0% 95%;
+    --card: 300 1% 27%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 240 1% 15%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 300 1% 27%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 90 13% 46%;
+    --primary: 82 13% 46%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 1% 25%;
+    --secondary: 300 1% 20%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 1% 20%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 300 1% 35%;
+    --muted-foreground: 300 1% 81%;
 
-    --accent: 90 13% 46%;
-    --accent-foreground: 0 0% 100%;
-    --accent-light: 90 13% 56%;
+    --accent: 82 54% 73%;
+    --accent-foreground: 300 1% 27%;
+    --accent-light: 82 54% 80%;
 
-    --gen-grey: 240 1% 25%;
+    --gen-grey: 300 1% 81%;
     
     --rating: 45 93% 58%;
     --rating-foreground: 45 93% 20%;
     --rating-muted: 45 20% 85%;
 
+    --success: 82 54% 73%;
+    --success-foreground: 300 1% 27%;
+
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 1% 25%;
-    --input: 240 1% 20%;
-    --ring: 90 13% 46%;
+    --border: 300 1% 40%;
+    --input: 300 1% 35%;
+    --ring: 82 13% 46%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(90 13% 46%), hsl(90 13% 36%));
-    --gradient-hero: linear-gradient(135deg, hsl(240 1% 12%) 0%, hsl(90 13% 46%) 50%, hsl(90 13% 56%) 100%);
-    --gradient-main-light: linear-gradient(135deg, hsl(240 1% 18%) 0%, hsl(240 1% 16%) 50%, hsl(90 10% 20%) 100%);
-    --shadow-soft: 0 2px 20px -4px hsl(0 0% 0% / 0.3);
-    --shadow-medium: 0 8px 30px -8px hsl(0 0% 0% / 0.4);
-    --shadow-strong: 0 20px 40px -12px hsl(0 0% 0% / 0.5);
+    --gradient-primary: linear-gradient(135deg, hsl(82 13% 46%), hsl(82 54% 73%));
+    --gradient-hero: linear-gradient(135deg, hsl(300 1% 27%) 0%, hsl(82 13% 46%) 50%, hsl(82 54% 73%) 100%);
+    --gradient-main-light: linear-gradient(135deg, hsl(300 1% 30%) 0%, hsl(300 1% 27%) 50%, hsl(82 10% 30%) 100%);
+    --shadow-soft: 0 2px 20px -4px hsl(0 0% 0% / 0.5);
+    --shadow-medium: 0 8px 30px -8px hsl(0 0% 0% / 0.6);
+    --shadow-strong: 0 20px 40px -12px hsl(0 0% 0% / 0.7);
   }
 }
 

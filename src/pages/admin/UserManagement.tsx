@@ -13,7 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Shield, UserCheck, UserX, Search, Ban, CheckCircle, RefreshCw, MessageSquare, Download, Users } from 'lucide-react';
+import { Shield, UserCheck, UserX, Search, Ban, CheckCircle, RefreshCw, MessageSquare, Download, Users, ArrowLeft } from 'lucide-react';
 
 export default function UserManagement() {
   const { user, loading: authLoading } = useAuth();
@@ -285,6 +285,12 @@ export default function UserManagement() {
     <Layout>
       <div className="container mx-auto py-8 px-4">
         <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <Button variant="outline" onClick={() => navigate('/admin')} className="gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Dashboard
+            </Button>
+          </div>
           <h1 className="text-4xl font-bold mb-2">User Management</h1>
           <p className="text-muted-foreground">Comprehensive user and access control</p>
         </div>

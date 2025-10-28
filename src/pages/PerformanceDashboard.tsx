@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Activity, Database, HardDrive, AlertTriangle, TrendingUp, RefreshCw } from 'lucide-react';
+import { Activity, Database, HardDrive, AlertTriangle, TrendingUp, RefreshCw, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Layout } from '@/components/Layout';
@@ -88,6 +88,12 @@ const PerformanceDashboard = () => {
   return (
     <Layout>
       <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center gap-4 mb-4">
+          <Button variant="outline" onClick={() => navigate('/admin')} className="gap-2">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Dashboard
+          </Button>
+        </div>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold">Database Performance</h1>

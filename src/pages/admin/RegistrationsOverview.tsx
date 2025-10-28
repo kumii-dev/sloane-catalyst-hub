@@ -9,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { UserPlus, Building, Users, DollarSign, CheckCircle, XCircle, Eye } from 'lucide-react';
+import { UserPlus, Building, Users, DollarSign, CheckCircle, XCircle, Eye, ArrowLeft } from 'lucide-react';
 
 export default function RegistrationsOverview() {
   const { user, loading: authLoading } = useAuth();
@@ -180,6 +180,12 @@ export default function RegistrationsOverview() {
     <Layout>
       <div className="container mx-auto py-8 px-4">
         <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <Button variant="outline" onClick={() => navigate('/admin')} className="gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Dashboard
+            </Button>
+          </div>
           <h1 className="text-4xl font-bold mb-2">New Registrations</h1>
           <p className="text-muted-foreground">Review and approve new registrations across all personas</p>
         </div>

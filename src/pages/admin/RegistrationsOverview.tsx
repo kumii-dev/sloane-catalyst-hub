@@ -55,21 +55,21 @@ export default function RegistrationsOverview() {
     // Fetch pending service providers
     const { data: providers } = await supabase
       .from('service_providers')
-      .select('*, profiles(first_name, last_name, email)')
+      .select('*')
       .eq('vetting_status', 'pending')
       .order('created_at', { ascending: false });
 
     // Fetch pending mentors (those without approval)
     const { data: mentors } = await supabase
       .from('mentors')
-      .select('*, profiles(first_name, last_name, email)')
+      .select('*')
       .eq('status', 'unavailable')
       .order('created_at', { ascending: false });
 
     // Fetch new funders (created recently, is_verified = false)
     const { data: funders } = await supabase
       .from('funders')
-      .select('*, profiles(first_name, last_name, email)')
+      .select('*')
       .eq('is_verified', false)
       .order('created_at', { ascending: false });
 
@@ -207,9 +207,9 @@ export default function RegistrationsOverview() {
                       {pendingProviders.map((provider) => (
                         <TableRow key={provider.id}>
                           <TableCell>
-                            {provider.profiles?.first_name} {provider.profiles?.last_name}
+                            {provider.contact_person || 'N/A'}
                           </TableCell>
-                          <TableCell>{provider.profiles?.email}</TableCell>
+                          <TableCell>{provider.contact_email}</TableCell>
                           <TableCell>{provider.company_name}</TableCell>
                           <TableCell>
                             <Badge variant="outline">{provider.vetting_status}</Badge>
@@ -271,9 +271,9 @@ export default function RegistrationsOverview() {
                       {pendingMentors.map((mentor) => (
                         <TableRow key={mentor.id}>
                           <TableCell>
-                            {mentor.profiles?.first_name} {mentor.profiles?.last_name}
+                            {mentor.full_name || 'N/A'}
                           </TableCell>
-                          <TableCell>{mentor.profiles?.email}</TableCell>
+                          <TableCell>{mentor.email}</TableCell>
                           <TableCell>{mentor.title}</TableCell>
                           <TableCell>{mentor.company}</TableCell>
                           <TableCell>
@@ -333,9 +333,9 @@ export default function RegistrationsOverview() {
                       {pendingFunders.map((funder) => (
                         <TableRow key={funder.id}>
                           <TableCell>
-                            {funder.profiles?.first_name} {funder.profiles?.last_name}
+                            Contact Person
                           </TableCell>
-                          <TableCell>{funder.profiles?.email}</TableCell>
+                          <TableCell>-</TableCell>
                           <TableCell>{funder.organization_name}</TableCell>
                           <TableCell>{funder.organization_type}</TableCell>
                           <TableCell>

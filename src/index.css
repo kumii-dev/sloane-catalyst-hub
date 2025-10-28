@@ -15,15 +15,15 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 1% 25%;
 
-    /* Primary: Sloane Orange (Brand Signature Color) */
-    --primary: 20 86% 54%;
-    --primary-foreground: 0 0% 100%;
-    --primary-light: 20 86% 65%;
-    --primary-dark: 20 86% 45%;
-    --primary-darker: 20 76% 38%;
+    /* Primary: Kumii Green (Brand Signature Color) */
+    --primary: 142 76% 73%;
+    --primary-foreground: 240 1% 12%;
+    --primary-light: 142 76% 80%;
+    --primary-dark: 142 76% 65%;
+    --primary-darker: 142 76% 55%;
 
-    /* Secondary: Brand Blue for trust and professionalism */
-    --secondary: 194 98% 40%;
+    /* Secondary: Dark for contrast and professionalism */
+    --secondary: 240 1% 25%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 210 20% 95%;
@@ -53,25 +53,25 @@
 
     --border: 210 20% 90%;
     --input: 210 20% 94%;
-    --ring: 20 86% 54%;
+    --ring: 142 76% 73%;
 
     --radius: 0.75rem;
 
-    /* 22 On Sloane Brand Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(20 86% 54%), hsl(194 98% 40%));
-    --gradient-hero: linear-gradient(135deg, hsl(240 1% 25%) 0%, hsl(194 98% 40%) 50%, hsl(20 86% 54%) 100%);
-    --gradient-accent: linear-gradient(90deg, hsl(20 86% 54%), hsl(20 86% 65%));
+    /* Kumii Brand Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(142 76% 73%), hsl(142 76% 65%));
+    --gradient-hero: linear-gradient(135deg, hsl(240 1% 25%) 0%, hsl(142 76% 73%) 50%, hsl(142 76% 80%) 100%);
+    --gradient-accent: linear-gradient(90deg, hsl(142 76% 73%), hsl(142 76% 80%));
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
-    --gradient-main-light: linear-gradient(135deg, hsl(0 0% 98%) 0%, hsl(210 20% 96%) 50%, hsl(20 20% 96%) 100%);
-    --gradient-orange-blue: linear-gradient(90deg, hsl(20 86% 54%), hsl(194 98% 40%));
+    --gradient-main-light: linear-gradient(135deg, hsl(0 0% 98%) 0%, hsl(210 20% 96%) 50%, hsl(142 20% 96%) 100%);
+    --gradient-green-dark: linear-gradient(90deg, hsl(142 76% 73%), hsl(240 1% 25%));
 
     /* Professional shadows with brand colors */
     --shadow-soft: 0 2px 20px -4px hsl(240 1% 25% / 0.1);
     --shadow-medium: 0 8px 30px -8px hsl(240 1% 25% / 0.15);
     --shadow-strong: 0 20px 40px -12px hsl(240 1% 25% / 0.25);
-    --shadow-glow: 0 0 40px hsl(20 86% 54% / 0.3);
-    --shadow-orange: 0 4px 20px hsl(20 86% 54% / 0.25);
-    --shadow-blue: 0 4px 20px hsl(194 98% 40% / 0.25);
+    --shadow-glow: 0 0 40px hsl(142 76% 73% / 0.3);
+    --shadow-green: 0 4px 20px hsl(142 76% 73% / 0.25);
+    --shadow-dark: 0 4px 20px hsl(240 1% 25% / 0.25);
 
     /* Smooth transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -88,10 +88,10 @@
     --popover: 240 1% 15%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 20 86% 54%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 142 76% 73%;
+    --primary-foreground: 240 1% 12%;
 
-    --secondary: 194 98% 40%;
+    --secondary: 240 1% 25%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 240 1% 20%;
@@ -112,11 +112,11 @@
 
     --border: 240 1% 25%;
     --input: 240 1% 20%;
-    --ring: 20 86% 54%;
+    --ring: 142 76% 73%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(20 86% 54%), hsl(194 98% 40%));
-    --gradient-hero: linear-gradient(135deg, hsl(240 1% 12%) 0%, hsl(194 98% 40%) 50%, hsl(20 86% 54%) 100%);
-    --gradient-main-light: linear-gradient(135deg, hsl(240 1% 18%) 0%, hsl(240 1% 16%) 50%, hsl(20 20% 20%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(142 76% 73%), hsl(142 76% 65%));
+    --gradient-hero: linear-gradient(135deg, hsl(240 1% 12%) 0%, hsl(142 76% 73%) 50%, hsl(142 76% 80%) 100%);
+    --gradient-main-light: linear-gradient(135deg, hsl(240 1% 18%) 0%, hsl(240 1% 16%) 50%, hsl(142 20% 20%) 100%);
     --shadow-soft: 0 2px 20px -4px hsl(0 0% 0% / 0.3);
     --shadow-medium: 0 8px 30px -8px hsl(0 0% 0% / 0.4);
     --shadow-strong: 0 20px 40px -12px hsl(0 0% 0% / 0.5);

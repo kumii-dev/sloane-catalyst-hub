@@ -6,7 +6,19 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, Eye, Edit, Clock, CheckCircle, XCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, Plus, Eye, Edit, Clock, CheckCircle, XCircle, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Listing {
   id: string;
@@ -24,7 +36,10 @@ interface Listing {
 const MyListings = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [page, setPage] = useState(0);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [listingToDelete, setListingToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) {
@@ -65,6 +80,42 @@ const MyListings = () => {
         return "bg-destructive/10 text-destructive hover:bg-destructive/20";
       default:
         return "bg-muted/10 text-muted-foreground hover:bg-muted/20";
+    }
+  };
+
+  const handleDeleteClick = (listingId: string) => {
+    setListingToDelete(listingId);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!listingToDelete) return;
+
+    try {
+      const { error } = await supabase
+        .from("listings")
+        .delete()
+        .eq("id", listingToDelete);
+
+      if (error) throw error;
+
+      toast({
+        title: "Listing deleted",
+        description: "Your listing has been successfully deleted.",
+      });
+
+      // Refresh the page to show updated listings
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting listing:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete listing. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleteDialogOpen(false);
+      setListingToDelete(null);
     }
   };
 
@@ -153,14 +204,33 @@ const MyListings = () => {
                         </div>
                       </div>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => navigate(`/listings/${listing.id}`)}
-                    >
-                      <Eye className="w-4 h-4 mr-2" />
-                      View
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate(`/listings/${listing.id}`)}
+                      >
+                        <Eye className="w-4 h-4 mr-2" />
+                        View
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate(`/listings/${listing.id}/edit`)}
+                      >
+                        <Edit className="w-4 h-4 mr-2" />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDeleteClick(listing.id)}
+                        className="text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </Button>
+                    </div>
                   </div>
                 </CardHeader>
               </Card>
@@ -192,6 +262,26 @@ const MyListings = () => {
             </Button>
           </div>
         )}
+
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Listing</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete this listing? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteConfirm}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </Layout>
   );

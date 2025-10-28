@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useFeaturedServices, useServiceCategories } from "@/hooks/useListings";
+import { useListings, useServiceCategories } from "@/hooks/useListings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,28 +19,19 @@ interface ServiceCategory {
   sort_order: number;
 }
 
-interface Service {
+interface Listing {
   id: string;
-  name: string;
+  title: string;
   short_description: string;
   rating: number;
   total_reviews: number;
-  total_subscribers: number;
-  pricing_type: string;
+  total_subscriptions: number;
   base_price?: number;
   credits_price?: number;
-  is_featured: boolean;
-  banner_image_url?: string;
-  service_providers: {
-    company_name: string;
-    logo_url?: string;
-    is_verified: boolean;
-    is_cohort_partner: boolean;
-  };
-  service_categories: {
-    name: string;
-    slug: string;
-  };
+  is_featured?: boolean;
+  thumbnail_url?: string;
+  listing_type: string;
+  status: string;
 }
 
 const Services = () => {
@@ -48,15 +39,14 @@ const Services = () => {
   
   // Use optimized query hooks with caching
   const { data: categories = [], isLoading: categoriesLoading } = useServiceCategories();
-  const { data: featuredServices = [], isLoading: servicesLoading } = useFeaturedServices();
+  const { data: listingsData, isLoading: listingsLoading } = useListings({ status: 'active' }, 0);
+  const featuredListings = listingsData?.listings || [];
   
-  const loading = categoriesLoading || servicesLoading;
+  const loading = categoriesLoading || listingsLoading;
 
-  const formatPrice = (service: Service) => {
-    if (service.pricing_type === 'free') return 'Free';
-    if (service.pricing_type === 'contact_for_pricing') return 'Contact for pricing';
-    if (service.credits_price) return `${service.credits_price} credits`;
-    if (service.base_price) return `R${service.base_price}`;
+  const formatPrice = (listing: Listing) => {
+    if (listing.credits_price) return `${listing.credits_price} credits`;
+    if (listing.base_price) return `R${listing.base_price}`;
     return 'View pricing';
   };
 
@@ -212,14 +202,14 @@ const Services = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredServices.map((service) => (
-              <Link key={service.id} to={`/services/${service.id}`} className="group">
+            {featuredListings.map((listing) => (
+              <Link key={listing.id} to={`/listings/${listing.id}`} className="group">
                 <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">
-                  {service.banner_image_url && (
+                  {listing.thumbnail_url && (
                     <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-t-lg overflow-hidden">
                       <img 
-                        src={service.banner_image_url} 
-                        alt={service.name}
+                        src={listing.thumbnail_url} 
+                        alt={listing.title}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -227,19 +217,19 @@ const Services = () => {
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between gap-2 mb-3">
                       <Badge variant="secondary" className="text-xs font-medium">
-                        {service.service_categories.name}
+                        {listing.listing_type}
                       </Badge>
-                      {service.service_providers.is_cohort_partner && (
-                        <Badge className="text-xs bg-orange-500 hover:bg-orange-600">
-                          Cohort Partner
+                      {listing.status === 'active' && (
+                        <Badge className="text-xs bg-green-500 hover:bg-green-600">
+                          Active
                         </Badge>
                       )}
                     </div>
                     <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                      {service.name}
+                      {listing.title}
                     </CardTitle>
                     <CardDescription className="text-sm line-clamp-2 min-h-[2.5rem]">
-                      {service.short_description}
+                      {listing.short_description}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -248,12 +238,12 @@ const Services = () => {
                       <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-medium">{service.rating}</span>
-                          <span className="text-muted-foreground">({service.total_reviews})</span>
+                          <span className="font-medium">{listing.rating}</span>
+                          <span className="text-muted-foreground">({listing.total_reviews})</span>
                         </div>
                         <div className="flex items-center gap-1 text-muted-foreground">
                           <Users className="h-4 w-4" />
-                          <span>{service.total_subscribers}</span>
+                          <span>{listing.total_subscriptions}</span>
                         </div>
                       </div>
                     </div>
@@ -261,32 +251,11 @@ const Services = () => {
                     {/* Divider */}
                     <div className="border-t border-border/50"></div>
                     
-                    {/* Provider and Price */}
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                        {service.service_providers.logo_url ? (
-                          <img 
-                            src={service.service_providers.logo_url} 
-                            alt={service.service_providers.company_name}
-                            className="w-6 h-6 rounded-sm flex-shrink-0 object-contain"
-                          />
-                        ) : (
-                          <div className="w-6 h-6 bg-muted rounded-sm flex-shrink-0"></div>
-                        )}
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-sm text-muted-foreground truncate">
-                            {service.service_providers.company_name}
-                          </span>
-                          {service.service_providers.is_verified && (
-                            <Badge variant="outline" className="text-xs px-1 py-0 h-5 flex-shrink-0">
-                              ✓
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                      <div className="text-right flex-shrink-0">
+                    {/* Price */}
+                    <div className="flex items-center justify-end">
+                      <div className="text-right">
                         <div className="font-semibold text-primary text-sm">
-                          {formatPrice(service)}
+                          {formatPrice(listing)}
                         </div>
                       </div>
                     </div>

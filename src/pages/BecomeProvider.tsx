@@ -32,7 +32,6 @@ const BecomeProvider = () => {
     description: '',
     website: '',
     contact_email: '',
-    contact_person: '',
     phone: '',
     business_registration_number: '',
     proof_document_url: '',
@@ -165,7 +164,7 @@ const BecomeProvider = () => {
     }
 
     // Validation
-    if (!formData.company_name || !formData.description || !formData.contact_email || !formData.contact_person) {
+    if (!formData.company_name || !formData.description || !formData.contact_email) {
       toast({
         title: "Missing information",
         description: "Please fill in all required fields",
@@ -203,7 +202,6 @@ const BecomeProvider = () => {
           description: formData.description,
           website: formData.website || null,
           contact_email: formData.contact_email,
-          contact_person: formData.contact_person,
           phone: formData.phone || null,
           business_registration_number: formData.business_registration_number || null,
           proof_document_url: formData.proof_document_url || null,
@@ -422,18 +420,6 @@ const BecomeProvider = () => {
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Tell us about your company and software offerings"
                     rows={4}
-                    required
-                  />
-                </div>
-
-                {/* Contact Person */}
-                <div>
-                  <Label htmlFor="contact_person">Contact Person *</Label>
-                  <Input
-                    id="contact_person"
-                    value={formData.contact_person}
-                    onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
-                    placeholder="Full name of contact person"
                     required
                   />
                 </div>

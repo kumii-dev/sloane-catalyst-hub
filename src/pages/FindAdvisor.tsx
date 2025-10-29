@@ -208,32 +208,48 @@ const FindAdvisor = () => {
                 
                 {/* Filters Row */}
                 <div className="flex flex-col md:flex-row gap-4">
-                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger className="w-full md:w-[250px]">
-                      <SelectValue placeholder="Category" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background">
-                      <SelectItem value="all">All Categories</SelectItem>
-                      {categories.map((category: any) => (
-                        <SelectItem key={category.id} value={category.name}>
-                          {category.name}
+                  <div className="w-full md:w-[250px]">
+                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                      <SelectTrigger className="h-12">
+                        <Filter className="w-4 h-4 mr-2" />
+                        <SelectValue placeholder="Select Category" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background z-50 max-h-[300px]">
+                        <SelectItem value="all">
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium">All Categories</span>
+                            <Badge variant="secondary" className="ml-auto">
+                              {advisors.length}
+                            </Badge>
+                          </div>
                         </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                        {categories.length > 0 ? (
+                          categories.map((category: any) => (
+                            <SelectItem key={category.id} value={category.name}>
+                              {category.name}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem value="loading" disabled>
+                            Loading categories...
+                          </SelectItem>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
                   <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger className="w-full md:w-[200px]">
+                    <SelectTrigger className="w-full md:w-[200px] h-12">
                       <SelectValue placeholder="Sort By" />
                     </SelectTrigger>
-                    <SelectContent className="bg-background">
+                    <SelectContent className="bg-background z-50">
                       <SelectItem value="rating">Highest Rated</SelectItem>
                       <SelectItem value="sessions">Most Sessions</SelectItem>
                       <SelectItem value="recent">Recently Joined</SelectItem>
                     </SelectContent>
                   </Select>
                   
-                  <Button variant="outline" className="w-full md:w-auto">
+                  <Button variant="outline" className="w-full md:w-auto h-12">
                     <Filter className="w-4 h-4 mr-2" />
                     More Filters
                   </Button>

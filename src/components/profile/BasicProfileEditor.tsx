@@ -122,6 +122,14 @@ const BasicProfileEditor = ({ profile, onSave, saving }: BasicProfileEditorProps
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {/* Completion Notice */}
+      <div className="p-4 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900 rounded-lg">
+        <h3 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">Complete Your Profile for Best Results</h3>
+        <p className="text-sm text-orange-800 dark:text-orange-200">
+          Fill in all fields below to reach 100% profile completion and unlock AI-powered recommendations, credit scoring, and better matching opportunities.
+        </p>
+      </div>
+
       {/* Profile Picture */}
       <div className="flex items-center gap-6">
         <Avatar className="h-24 w-24">
@@ -178,35 +186,35 @@ const BasicProfileEditor = ({ profile, onSave, saving }: BasicProfileEditorProps
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phone">Phone</Label>
-          <Input id="phone" {...register('phone')} />
+          <Label htmlFor="phone">Phone Number (Recommended)</Label>
+          <Input id="phone" {...register('phone')} placeholder="+27 123 456 789" />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="location">Location</Label>
+          <Label htmlFor="location">Location (Recommended)</Label>
           <Input id="location" placeholder="City, Country" {...register('location')} />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="organization">Organization</Label>
-          <Input id="organization" {...register('organization')} />
+          <Label htmlFor="organization">Organization (Recommended)</Label>
+          <Input id="organization" {...register('organization')} placeholder="Your company or institution" />
         </div>
       </div>
 
       {/* Bio */}
       <div className="space-y-2">
-        <Label htmlFor="bio">Bio</Label>
+        <Label htmlFor="bio">Bio (Recommended)</Label>
         <Textarea
           id="bio"
           {...register('bio')}
-          placeholder="Tell us about yourself..."
+          placeholder="Tell us about yourself, your experience, and what you're looking for..."
           rows={4}
         />
       </div>
 
       {/* Industry Sectors */}
       <div className="space-y-2">
-        <Label>Industry Sectors</Label>
+        <Label>Industry Sectors (Recommended)</Label>
         <SectorMultiSelect
           value={selectedSectors}
           onChange={setSelectedSectors}
@@ -215,7 +223,7 @@ const BasicProfileEditor = ({ profile, onSave, saving }: BasicProfileEditorProps
 
       {/* Skills */}
       <div className="space-y-2">
-        <Label htmlFor="skills">Skills</Label>
+        <Label htmlFor="skills">Skills (Recommended)</Label>
         <Input
           id="skills"
           value={skills}
@@ -226,7 +234,7 @@ const BasicProfileEditor = ({ profile, onSave, saving }: BasicProfileEditorProps
 
       {/* Interests */}
       <div className="space-y-2">
-        <Label htmlFor="interests">Interests</Label>
+        <Label htmlFor="interests">Interests (Recommended)</Label>
         <Input
           id="interests"
           value={interests}
@@ -238,7 +246,7 @@ const BasicProfileEditor = ({ profile, onSave, saving }: BasicProfileEditorProps
       {/* Social Links */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="linkedin_url">LinkedIn URL</Label>
+          <Label htmlFor="linkedin_url">LinkedIn URL (Recommended)</Label>
           <Input id="linkedin_url" {...register('linkedin_url')} placeholder="https://linkedin.com/in/username" />
           {errors.linkedin_url && (
             <p className="text-sm text-destructive">{errors.linkedin_url.message}</p>

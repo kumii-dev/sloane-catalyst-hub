@@ -176,8 +176,13 @@ const EditProfile = () => {
                   <p className="text-sm text-muted-foreground mb-1">Profile Completion</p>
                   <div className="flex items-center gap-3">
                     <Progress value={profile.profile_completion_percentage || 0} className="w-32" />
-                    <span className="font-semibold text-lg">{profile.profile_completion_percentage || 0}%</span>
+                    <span className={`font-semibold text-lg ${(profile.profile_completion_percentage || 0) === 100 ? 'text-green-600' : 'text-orange-600'}`}>
+                      {profile.profile_completion_percentage || 0}%
+                    </span>
                   </div>
+                  {(profile.profile_completion_percentage || 0) < 100 && (
+                    <p className="text-xs text-orange-600 mt-1">Fill in all fields to reach 100%</p>
+                  )}
                 </div>
               )}
               {!isEditing && (

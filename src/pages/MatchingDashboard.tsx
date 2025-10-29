@@ -83,6 +83,7 @@ const MatchingDashboard = () => {
   const [fundingMatches, setFundingMatches] = useState<FundingMatch[]>([]);
   const [loading, setLoading] = useState(true);
   const [regenerating, setRegenerating] = useState(false);
+  const [startupProfile, setStartupProfile] = useState<any>(null);
 
   useEffect(() => {
     if (user) {
@@ -168,14 +169,16 @@ const MatchingDashboard = () => {
         .order('match_score', { ascending: false });
 
       // Fetch funding matches (if user has startup profile)
-      const { data: startupProfile } = await supabase
+      const { data: startupProfileData } = await supabase
         .from('startup_profiles')
         .select('id')
         .eq('user_id', user.id)
         .single();
 
+      setStartupProfile(startupProfileData);
+
       let fundingData = null;
-      if (startupProfile) {
+      if (startupProfileData) {
         const { data } = await supabase
           .from('funding_matches')
           .select(`
@@ -194,7 +197,7 @@ const MatchingDashboard = () => {
               funder:funders(organization_name)
             )
           `)
-          .eq('startup_id', startupProfile.id)
+          .eq('startup_id', startupProfileData.id)
           .eq('is_dismissed', false)
           .order('match_score', { ascending: false });
         
@@ -619,11 +622,15 @@ const MatchingDashboard = () => {
                   <DollarSign className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-xl font-semibold mb-2">No funding matches yet</h3>
                   <p className="text-muted-foreground mb-6">
-                    Complete your startup profile to get funding recommendations
+                    {!startupProfile
+                      ? "Create your startup profile to get funding recommendations"
+                      : "We're generating your personalized funding matches. Check back soon!"}
                   </p>
-                  <Link to="/edit-profile?tab=startup&edit=1">
-                    <Button>Create Startup Profile</Button>
-                  </Link>
+                  {!startupProfile && (
+                    <Link to="/edit-profile?tab=startup&edit=1">
+                      <Button>Create Startup Profile</Button>
+                    </Link>
+                  )}
                 </CardContent>
               </Card>
             ) : (

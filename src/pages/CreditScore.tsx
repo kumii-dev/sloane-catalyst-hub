@@ -202,16 +202,45 @@ const CreditScore = () => {
                 <CardTitle className="text-center">Credit Assessment Platform</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <p className="text-muted-foreground mb-6">
-                  The credit assessment platform is being finalized. 
-                  Complete your startup profile to be ready when it launches.
-                </p>
-                <Button asChild>
-                  <a href="/funding/startup-dashboard">
-                    Complete Startup Profile
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
+                {profileLoading ? (
+                  <p className="text-muted-foreground mb-6">Loading...</p>
+                ) : !startupProfile ? (
+                  <>
+                    <p className="text-muted-foreground mb-6">
+                      Create your startup profile to access the credit assessment platform.
+                    </p>
+                    <Button asChild>
+                      <Link to="/edit-profile?tab=startup&edit=1">
+                        Create Startup Profile
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Link>
+                    </Button>
+                  </>
+                ) : (userProfile?.profile_completion_percentage ?? 0) < 100 ? (
+                  <>
+                    <p className="text-muted-foreground mb-6">
+                      Complete your profile to unlock the credit assessment platform.
+                    </p>
+                    <Button asChild>
+                      <Link to="/edit-profile?edit=1">
+                        Complete Profile
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Link>
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-muted-foreground mb-6">
+                      The credit assessment platform is being finalized. Check back soon!
+                    </p>
+                    <Button asChild>
+                      <Link to="/funding/startup-dashboard">
+                        View Dashboard
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Link>
+                    </Button>
+                  </>
+                )}
               </CardContent>
             </Card>
           </div>

@@ -271,7 +271,7 @@ const EditProfile = () => {
                           <img src={startupProfile.logo_url} alt="Company logo" className="h-32 w-32 object-contain border rounded-lg p-3 shadow-lg bg-white" loading="lazy" />
                         )}
                         <Button 
-                          onClick={() => navigate('/startup-dashboard')}
+                          onClick={() => navigate('/funding/startup-dashboard')}
                           className="shrink-0"
                         >
                           <LayoutDashboard className="mr-2 h-4 w-4" />

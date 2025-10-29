@@ -47,6 +47,15 @@ const Services = () => {
   }, 0);
   const featuredListings = listingsData?.listings || [];
   const loading = categoriesLoading || listingsLoading;
+  // Filter categories based on search query
+  const filteredCategories = categories
+    .filter(category => category.slug !== 'software-services')
+    .filter(category => 
+      searchQuery === "" || 
+      category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      category.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
   const formatPrice = (listing: Listing) => {
     if (listing.credits_price) return `${listing.credits_price} credits`;
     if (listing.base_price) return `R${listing.base_price}`;
@@ -114,7 +123,7 @@ const Services = () => {
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto relative mb-8">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-            <Input placeholder="Search services, providers, or categories..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 pr-12 h-12 text-lg" />
+            <Input placeholder="Search advisors, coaches, or services..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 pr-12 h-12 text-lg" />
             <Button size="sm" className="absolute right-2 top-1/2 transform -translate-y-1/2">
               <Filter className="h-4 w-4" />
             </Button>
@@ -147,7 +156,12 @@ const Services = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories.filter(category => category.slug !== 'software-services').map(category => {
+            {filteredCategories.length === 0 ? (
+              <div className="col-span-full text-center py-12">
+                <p className="text-muted-foreground">No categories found matching "{searchQuery}"</p>
+              </div>
+            ) : (
+              filteredCategories.map(category => {
             const IconComponent = getIconComponent(category.icon);
             const colorClass = getCategoryColor(category.icon);
             const linkTo = category.slug === 'professional-services' ? '/find-advisor' : `/services/category/${category.slug}`;
@@ -169,7 +183,8 @@ const Services = () => {
                     </CardHeader>
                   </Card>
                 </Link>;
-          })}
+              })
+            )}
           </div>
         </section>
 

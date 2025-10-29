@@ -11,6 +11,7 @@ import Onboarding from "./pages/Onboarding";
 import EarlyAdopterRegistration from "./pages/EarlyAdopterRegistration";
 import Mentorship from "./pages/Mentorship";
 import FindMentor from "./pages/FindMentor";
+import FindAdvisor from "./pages/FindAdvisor";
 import MentorProfile from "./pages/MentorProfile";
 import EditMentorProfile from "./pages/EditMentorProfile";
 import EditProfile from "./pages/EditProfile";
@@ -81,6 +82,7 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/mentorship" element={<Mentorship />} />
             <Route path="/find-mentor" element={<FindMentor />} />
+            <Route path="/find-advisor" element={<FindAdvisor />} />
             <Route path="/mentee-dashboard" element={<MenteeDashboard />} />
           <Route path="/mentor-dashboard" element={<MentorDashboard />} />
           <Route path="/mentor-availability" element={<MentorAvailability />} />

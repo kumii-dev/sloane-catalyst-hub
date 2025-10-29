@@ -164,10 +164,13 @@ const Services = () => {
             {categories.filter((category) => category.slug !== 'software-services').map((category) => {
               const IconComponent = getIconComponent(category.icon);
               const colorClass = getCategoryColor(category.icon);
+              const linkTo = category.slug === 'professional-services' 
+                ? '/find-advisor' 
+                : `/services/category/${category.slug}`;
               return (
                 <Link
                   key={category.id}
-                  to={`/services/category/${category.slug}`}
+                  to={linkTo}
                   className="group"
                 >
                   <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">

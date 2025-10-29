@@ -52,6 +52,7 @@ const AccessToMarket = () => {
   const [creditScore, setCreditScore] = useState<CreditScore | null>(null);
   const [featuredFunders, setFeaturedFunders] = useState<FunderProfile[]>([]);
   const [matchedOpportunities, setMatchedOpportunities] = useState([]);
+  const [fundingMatchesCount, setFundingMatchesCount] = useState(0);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [startupProfile, setStartupProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -116,9 +117,22 @@ const AccessToMarket = () => {
             )
           `)
           .eq('startup_id', startup?.id)
+          .eq('is_dismissed', false)
           .limit(3);
 
-        if (matches) setMatchedOpportunities(matches);
+        if (matches) {
+          setMatchedOpportunities(matches);
+          setFundingMatchesCount(matches.length);
+        }
+        
+        // Also get total count of funding matches (not just the limited 3)
+        const { count } = await supabase
+          .from('funding_matches')
+          .select('*', { count: 'exact', head: true })
+          .eq('startup_id', startup?.id)
+          .eq('is_dismissed', false);
+        
+        if (count !== null) setFundingMatchesCount(count);
       }
     } catch (error) {
       console.error('Error fetching market data:', error);
@@ -312,7 +326,7 @@ const AccessToMarket = () => {
                           <div className="flex items-center justify-between">
                             <div>
                               <div className="text-2xl font-bold text-green-600">
-                                {featuredFunders.length}
+                                {fundingMatchesCount}
                               </div>
                               <div className="text-sm text-green-600">Matched Funders</div>
                             </div>

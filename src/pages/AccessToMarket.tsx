@@ -306,7 +306,7 @@ const AccessToMarket = () => {
                       
                       <Card 
                         className="bg-green-50 border-green-200 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105"
-                        onClick={() => navigate('/matching-dashboard')}
+                        onClick={() => navigate('/smart-matching')}
                       >
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,9 +14,37 @@ import {
 import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const CreditScore = () => {
   const { user } = useAuth();
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [startupProfile, setStartupProfile] = useState<any>(null);
+  const [profileLoading, setProfileLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const load = async () => {
+      if (!user) { setProfileLoading(false); return; }
+      try {
+        const { data: p } = await supabase
+          .from('profiles')
+          .select('profile_completion_percentage')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        setUserProfile(p);
+
+        const { data: sp } = await supabase
+          .from('startup_profiles')
+          .select('id')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        setStartupProfile(sp);
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+    load();
+  }, [user]);
 
   const features = [
     {

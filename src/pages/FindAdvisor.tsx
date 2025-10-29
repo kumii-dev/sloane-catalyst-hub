@@ -159,11 +159,19 @@ const FindAdvisor = () => {
               <p className="text-xl md:text-2xl font-semibold mb-2">
                 Expert Business Advisors & Coaches
               </p>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
                 Connect with experienced professionals for strategic business guidance, coaching, and consulting services. 
                 Choose from <span className="font-semibold text-foreground">community advisory sessions</span> or{" "}
                 <span className="font-semibold text-primary">premium consulting services</span>.
               </p>
+              
+              <Button 
+                size="lg"
+                onClick={() => navigate('/become-advisor')}
+                className="mb-8"
+              >
+                Become an Advisor or Coach
+              </Button>
               
               {/* Stats */}
               <div className="flex flex-wrap justify-center gap-4 mb-8">

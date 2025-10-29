@@ -15,6 +15,7 @@ import MentorProfile from "./pages/MentorProfile";
 import EditMentorProfile from "./pages/EditMentorProfile";
 import EditProfile from "./pages/EditProfile";
 import BecomeMentor from "./pages/BecomeMentor";
+import BecomeAdvisor from "./pages/BecomeAdvisor";
 import BecomeProvider from "./pages/BecomeProvider";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import MenteeDashboard from "./pages/MenteeDashboard";
@@ -87,6 +88,7 @@ const App = () => (
             <Route path="/edit-mentor-profile" element={<EditMentorProfile />} />
             <Route path="/edit-profile" element={<EditProfile />} />
             <Route path="/become-mentor" element={<BecomeMentor />} />
+            <Route path="/become-advisor" element={<BecomeAdvisor />} />
             <Route path="/become-provider" element={<BecomeProvider />} />
             <Route path="/provider-dashboard" element={<ProviderDashboard />} />
             <Route path="/funding" element={<FundingHub />} />

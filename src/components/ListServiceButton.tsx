@@ -67,13 +67,8 @@ export const ListServiceButton = ({
       return;
     }
 
-    if (providerStatus === 'approved') {
-      navigate('/listings/create');
-    } else if (providerStatus === 'pending') {
-      navigate('/provider-dashboard');
-    } else {
-      setShowDialog(true);
-    }
+    // Direct to advisor/coach registration
+    navigate('/become-advisor');
   };
 
   return (
@@ -90,36 +85,11 @@ export const ListServiceButton = ({
         ) : (
           <>
             <Plus className="h-4 w-4 mr-2" />
-            List a Software Service
+            Become an Advisor / Coach
           </>
         )}
       </Button>
 
-      <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
-        <AlertDialogContent className="max-w-2xl">
-          <AlertDialogHeader className="space-y-4">
-            <AlertDialogTitle className="text-2xl text-destructive">Not a Provider</AlertDialogTitle>
-            <AlertDialogDescription className="text-base text-muted-foreground space-y-3">
-              <p>
-                To list software services, you must first register as a verified Software Service Provider.
-              </p>
-              <p>
-                Registration requires vetting and approval for security and trust. 
-                Would you like to start your provider journey?
-              </p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="mt-6">
-            <AlertDialogCancel>Maybe Later</AlertDialogCancel>
-            <AlertDialogAction onClick={() => {
-              setShowDialog(false);
-              navigate('/become-provider');
-            }}>
-              Register as Provider
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   );
 };

@@ -150,9 +150,9 @@ const Services = () => {
         {/* Service Categories */}
         <section className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Browse by Category</h2>
+            <h2 className="text-3xl font-bold mb-4">Browse by Specialty</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover services organized by category to help you find exactly what you need for your business.
+              Find expert advisors and coaches across different specialties to accelerate your business growth.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -191,19 +191,19 @@ const Services = () => {
 
         {/* Stats Section */}
         <section className="bg-muted/30 rounded-lg p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">Join the Growing Community</h3>
+          <h3 className="text-2xl font-bold mb-4">Connect with Expert Guidance</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <div className="text-3xl font-bold text-primary mb-2">500+</div>
-              <div className="text-muted-foreground">Services Available</div>
-            </div>
-            <div>
               <div className="text-3xl font-bold text-primary mb-2">200+</div>
-              <div className="text-muted-foreground">Trusted Providers</div>
+              <div className="text-muted-foreground">Expert Advisors</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-primary mb-2">10k+</div>
-              <div className="text-muted-foreground">Active Users</div>
+              <div className="text-3xl font-bold text-primary mb-2">50+</div>
+              <div className="text-muted-foreground">Specialties</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-primary mb-2">5k+</div>
+              <div className="text-muted-foreground">Sessions Delivered</div>
             </div>
           </div>
         </section>

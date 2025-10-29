@@ -422,42 +422,103 @@ const StartupDashboard = () => {
                     Keep your profile updated to get better funding matches
                   </CardDescription>
                 </CardHeader>
-                 <CardContent className="space-y-4">
-                   <div className="grid grid-cols-2 gap-4">
-                     <div>
-                       <label className="text-sm font-medium">Company Name</label>
-                       <p className="text-sm text-muted-foreground">{profile.company_name}</p>
-                     </div>
-                     <div>
-                       <label className="text-sm font-medium">Industry</label>
-                       <p className="text-sm text-muted-foreground capitalize">{profile.industry}</p>
-                     </div>
-                   </div>
-                   <div>
-                      <label className="text-sm font-medium">Growth Stage</label>
-                      <p className="text-sm text-muted-foreground capitalize">{profile.growth_stage || 'Not specified'}</p>
+                <CardContent className="space-y-6">
+                  <div className="flex items-start justify-between gap-4 mb-8">
+                    {profile.logo_url && (
+                      <img src={profile.logo_url} alt="Company logo" className="h-32 w-32 object-contain border rounded-lg p-3 shadow-lg bg-white" loading="lazy" />
+                    )}
+                    <Link to="/edit-profile?tab=startup&edit=1">
+                      <Button>
+                        <Settings className="w-4 h-4 mr-2" />
+                        Edit Profile
+                      </Button>
+                    </Link>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Business Information</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Company Name</label>
+                        <p className="text-lg mt-1">{profile.company_name || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Registration Number</label>
+                        <p className="text-lg mt-1">{profile.business_registration_number || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Business Age</label>
+                        <p className="text-lg mt-1">{profile.business_age || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Employee Count</label>
+                        <p className="text-lg mt-1">{profile.employee_count_range || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Annual Revenue</label>
+                        <p className="text-lg mt-1">{profile.revenue_range || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Growth Stage</label>
+                        <p className="text-lg mt-1">{profile.growth_stage || 'Not provided'}</p>
+                      </div>
                     </div>
-                    <div>
-                       <label className="text-sm font-medium">Funding Amount Needed</label>
-                       <p className="text-sm text-muted-foreground">
-                         {profile.funding_amount_needed || 'Not specified'}
-                       </p>
-                     </div>
-                   
-                   <div>
-                     <label className="text-sm font-medium">Description</label>
-                     <p className="text-sm text-muted-foreground">{profile.description || 'No description provided'}</p>
-                   </div>
-                   
-                   <div className="flex justify-end">
-                     <Link to="/edit-profile?tab=startup&edit=1">
-                       <Button>
-                         <Settings className="w-4 h-4 mr-2" />
-                         Edit Profile
-                       </Button>
-                     </Link>
-                   </div>
-                 </CardContent>
+                    {profile.description && (
+                      <div className="mt-4">
+                        <label className="text-sm font-medium text-muted-foreground">Business Description</label>
+                        <p className="text-lg mt-1">{profile.description}</p>
+                      </div>
+                    )}
+                    {profile.key_products_services?.length > 0 && (
+                      <div className="mt-4">
+                        <label className="text-sm font-medium text-muted-foreground">Key Products/Services</label>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {profile.key_products_services.map((product: string) => (
+                            <span key={product} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm">
+                              {product}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Funding Information</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Funding Needs</label>
+                        <p className="text-lg mt-1">{profile.funding_needs || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Funding Amount Needed</label>
+                        <p className="text-lg mt-1">{profile.funding_amount_needed || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Previous Funding</label>
+                        <p className="text-lg mt-1">{profile.funding_history || 'Not provided'}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Market & Operations</h3>
+                    <div className="grid grid-cols-1 gap-6">
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Target Market</label>
+                        <p className="text-lg mt-1">{profile.target_market || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Competitive Advantage</label>
+                        <p className="text-lg mt-1">{profile.competitive_advantage || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Business Model</label>
+                        <p className="text-lg mt-1">{profile.business_model || 'Not provided'}</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
                </Card>
              )}
            </TabsContent>

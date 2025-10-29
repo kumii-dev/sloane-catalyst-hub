@@ -19,15 +19,33 @@ import { useToast } from "@/hooks/use-toast";
 
 const FindAdvisor = () => {
   const navigate = useNavigate();
-  const [advisors, setAdvisors] = useState([]);
+  const [advisors, setAdvisors] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("rating");
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
     fetchAdvisors();
+    fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    try {
+      // @ts-ignore - Supabase type inference issue
+      const { data } = await supabase
+        .from('service_categories')
+        .select('id, name, slug')
+        .eq('status', 'active')
+        .is('parent_id', null);
+      
+      setCategories((data || []) as any[]);
+    } catch (error) {
+      console.error('Failed to load categories:', error);
+    }
+  };
 
   const fetchAdvisors = async () => {
     try {
@@ -85,7 +103,15 @@ const FindAdvisor = () => {
       advisor.expertise_areas?.some((area: string) => area.toLowerCase().includes(searchQuery.toLowerCase())) ||
       advisor.specializations?.some((spec: string) => spec.toLowerCase().includes(searchQuery.toLowerCase()));
     
-    return matchesSearch;
+    const matchesCategory = selectedCategory === "all" || 
+      advisor.specializations?.some((spec: string) => 
+        spec.toLowerCase().includes(selectedCategory.toLowerCase())
+      ) ||
+      advisor.expertise_areas?.some((area: string) => 
+        area.toLowerCase().includes(selectedCategory.toLowerCase())
+      );
+    
+    return matchesSearch && matchesCategory;
   });
 
   const renderStars = (rating: number) => {
@@ -163,22 +189,36 @@ const FindAdvisor = () => {
               <div className="space-y-4">
                 {/* Main Search */}
                 <div className="relative">
-                  <Search className="absolute left-4 top-4 h-5 w-5 text-muted-foreground" />
+                  <Search className="absolute left-4 top-3.5 h-5 w-5 text-muted-foreground" />
                   <Input
                     placeholder="Search by specialization, industry, or advisor name..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-12 h-14 text-base"
+                    className="pl-12 h-12 text-base"
                   />
                 </div>
                 
                 {/* Filters Row */}
                 <div className="flex flex-col md:flex-row gap-4">
+                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <SelectTrigger className="w-full md:w-[250px]">
+                      <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background">
+                      <SelectItem value="all">All Categories</SelectItem>
+                      {categories.map((category: any) => (
+                        <SelectItem key={category.id} value={category.name}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
                   <Select value={sortBy} onValueChange={setSortBy}>
                     <SelectTrigger className="w-full md:w-[200px]">
                       <SelectValue placeholder="Sort By" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-background">
                       <SelectItem value="rating">Highest Rated</SelectItem>
                       <SelectItem value="sessions">Most Sessions</SelectItem>
                       <SelectItem value="recent">Recently Joined</SelectItem>

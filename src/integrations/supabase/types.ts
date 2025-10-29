@@ -14,6 +14,208 @@ export type Database = {
   }
   public: {
     Tables: {
+      advisor_availability: {
+        Row: {
+          advisor_id: string
+          created_at: string
+          day_of_week: number
+          end_time: string
+          id: string
+          is_available: boolean | null
+          start_time: string
+          updated_at: string
+        }
+        Insert: {
+          advisor_id: string
+          created_at?: string
+          day_of_week: number
+          end_time: string
+          id?: string
+          is_available?: boolean | null
+          start_time: string
+          updated_at?: string
+        }
+        Update: {
+          advisor_id?: string
+          created_at?: string
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          is_available?: boolean | null
+          start_time?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "advisor_availability_advisor_id_fkey"
+            columns: ["advisor_id"]
+            isOneToOne: false
+            referencedRelation: "advisors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      advisor_categories: {
+        Row: {
+          advisor_id: string
+          category_id: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          advisor_id: string
+          category_id: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          advisor_id?: string
+          category_id?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "advisor_categories_advisor_id_fkey"
+            columns: ["advisor_id"]
+            isOneToOne: false
+            referencedRelation: "advisors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "advisor_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      advisor_sessions: {
+        Row: {
+          advisor_id: string
+          amount_paid: number | null
+          client_user_id: string
+          created_at: string
+          duration_minutes: number
+          id: string
+          meeting_link: string | null
+          notes: string | null
+          scheduled_at: string
+          session_type: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          advisor_id: string
+          amount_paid?: number | null
+          client_user_id: string
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          meeting_link?: string | null
+          notes?: string | null
+          scheduled_at: string
+          session_type?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          advisor_id?: string
+          amount_paid?: number | null
+          client_user_id?: string
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          meeting_link?: string | null
+          notes?: string | null
+          scheduled_at?: string
+          session_type?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "advisor_sessions_advisor_id_fkey"
+            columns: ["advisor_id"]
+            isOneToOne: false
+            referencedRelation: "advisors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      advisors: {
+        Row: {
+          approved_at: string | null
+          bio: string | null
+          company: string | null
+          created_at: string
+          expertise_areas: string[] | null
+          hourly_rate: number | null
+          id: string
+          is_premium: boolean | null
+          rating: number | null
+          rejected_at: string | null
+          rejection_reason: string | null
+          search_vector: unknown
+          specializations: string[] | null
+          status: string | null
+          title: string
+          total_reviews: number | null
+          total_sessions: number | null
+          updated_at: string
+          user_id: string
+          vetting_status: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          approved_at?: string | null
+          bio?: string | null
+          company?: string | null
+          created_at?: string
+          expertise_areas?: string[] | null
+          hourly_rate?: number | null
+          id?: string
+          is_premium?: boolean | null
+          rating?: number | null
+          rejected_at?: string | null
+          rejection_reason?: string | null
+          search_vector?: unknown
+          specializations?: string[] | null
+          status?: string | null
+          title: string
+          total_reviews?: number | null
+          total_sessions?: number | null
+          updated_at?: string
+          user_id: string
+          vetting_status?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          approved_at?: string | null
+          bio?: string | null
+          company?: string | null
+          created_at?: string
+          expertise_areas?: string[] | null
+          hourly_rate?: number | null
+          id?: string
+          is_premium?: boolean | null
+          rating?: number | null
+          rejected_at?: string | null
+          rejection_reason?: string | null
+          search_vector?: unknown
+          specializations?: string[] | null
+          status?: string | null
+          title?: string
+          total_reviews?: number | null
+          total_sessions?: number | null
+          updated_at?: string
+          user_id?: string
+          vetting_status?: string | null
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
       business_scores: {
         Row: {
           calculated_at: string
@@ -3999,6 +4201,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_advisor: {
+        Args: { _advisor_id: string; _user_id: string }
         Returns: boolean
       }
       is_assessment_owner: {

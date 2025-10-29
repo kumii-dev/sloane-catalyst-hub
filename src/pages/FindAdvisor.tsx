@@ -50,9 +50,10 @@ const FindAdvisor = () => {
   const fetchAdvisors = async () => {
     try {
       const { data: advisorsData, error: advisorsError } = await supabase
-        .from('mentors')
+        .from('advisors')
         .select('*')
         .eq('status', 'available')
+        .eq('vetting_status', 'approved')
         .order('rating', { ascending: false });
 
       if (advisorsError) throw advisorsError;
@@ -65,7 +66,7 @@ const FindAdvisor = () => {
       }
 
       const userIds = advisorList.map((a: any) => a.user_id).filter(Boolean);
-      const mentorIds = advisorList.map((a: any) => a.id).filter(Boolean);
+      const advisorIds = advisorList.map((a: any) => a.id).filter(Boolean);
 
       // Fetch profiles
       const { data: profilesData, error: profilesError } = await supabase
@@ -75,11 +76,11 @@ const FindAdvisor = () => {
 
       if (profilesError) throw profilesError;
 
-      // Fetch mentor categories with category details
-      const { data: mentorCategoriesData } = await supabase
-        .from('mentor_categories')
+      // Fetch advisor categories with category details
+      const { data: advisorCategoriesData } = await supabase
+        .from('advisor_categories')
         .select(`
-          mentor_id,
+          advisor_id,
           category_id,
           service_categories:category_id (
             id,
@@ -87,27 +88,27 @@ const FindAdvisor = () => {
             slug
           )
         `)
-        .in('mentor_id', mentorIds);
+        .in('advisor_id', advisorIds);
 
       const profileByUserId = Object.fromEntries(
         (profilesData || []).map((p: any) => [p.user_id, p])
       );
 
-      // Group categories by mentor_id
-      const categoriesByMentorId: { [key: string]: any[] } = {};
-      (mentorCategoriesData || []).forEach((mc: any) => {
-        if (!categoriesByMentorId[mc.mentor_id]) {
-          categoriesByMentorId[mc.mentor_id] = [];
+      // Group categories by advisor_id
+      const categoriesByAdvisorId: { [key: string]: any[] } = {};
+      (advisorCategoriesData || []).forEach((ac: any) => {
+        if (!categoriesByAdvisorId[ac.advisor_id]) {
+          categoriesByAdvisorId[ac.advisor_id] = [];
         }
-        if (mc.service_categories) {
-          categoriesByMentorId[mc.mentor_id].push(mc.service_categories);
+        if (ac.service_categories) {
+          categoriesByAdvisorId[ac.advisor_id].push(ac.service_categories);
         }
       });
 
       const merged = advisorList.map((a: any) => ({
         ...a,
         profiles: profileByUserId[a.user_id] || null,
-        categories: categoriesByMentorId[a.id] || [],
+        categories: categoriesByAdvisorId[a.id] || [],
       }));
 
       setAdvisors(merged);
@@ -288,161 +289,53 @@ const FindAdvisor = () => {
           </Card>
 
           {/* Advisors & Coaches Section */}
-          <div className="mb-12">
+          <div>
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
               <Briefcase className="w-6 h-6 text-primary" />
-              Advisors & Coaches
+              Professional Advisors & Coaches
             </h2>
-            {filteredAdvisors.filter((a: any) => 
-              a.title?.toLowerCase().includes('advisor') || 
-              a.title?.toLowerCase().includes('coach') ||
-              a.title?.toLowerCase().includes('consultant')
-            ).length > 0 ? (
+            {filteredAdvisors.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredAdvisors
-                  .filter((a: any) => 
-                    a.title?.toLowerCase().includes('advisor') || 
-                    a.title?.toLowerCase().includes('coach') ||
-                    a.title?.toLowerCase().includes('consultant')
-                  )
-                  .map((advisor: any) => (
-                    <Card 
-                      key={advisor.id}
-                      variant="glass"
-                      className="hover:shadow-lg transition-all duration-300 cursor-pointer"
-                      onClick={() => navigate(`/mentor/${advisor.id}`)}
-                    >
-                      <CardHeader className="pb-4">
-                        <div className="flex flex-col items-center text-center space-y-3">
-                          <TriangleAvatar
-                            src={advisor.profiles?.profile_picture_url}
-                            alt={`${advisor.profiles?.first_name || 'Advisor'}`}
-                            fallback={`${advisor.profiles?.first_name?.[0] || ''}${advisor.profiles?.last_name?.[0] || ''}`}
-                            className="w-20 h-20"
-                            style={{ width: '80px', height: '80px' }}
-                          />
-                          {renderStars(advisor.rating || 0)}
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div className="text-center">
-                          <h3 className="font-semibold text-lg mb-1">
-                            {advisor.profiles?.first_name} {advisor.profiles?.last_name}
-                          </h3>
-                          <p className="text-sm font-medium text-muted-foreground">{advisor.title}</p>
-                          {advisor.company && (
-                            <p className="text-sm text-muted-foreground">{advisor.company}</p>
-                          )}
-                        </div>
-
-                        {advisor.specializations && advisor.specializations.length > 0 && (
-                          <div className="flex flex-wrap gap-1 justify-center">
-                            {advisor.specializations.slice(0, 2).map((spec: string, idx: number) => (
-                              <Badge key={idx} variant="secondary" className="text-xs">
-                                {spec}
-                              </Badge>
-                            ))}
-                          </div>
-                        )}
-
-                        <div className="flex justify-center">
-                          <Badge 
-                            className={`text-xs ${advisor.status === 'available' ? 'bg-success text-success-foreground' : ''}`}
-                            variant={advisor.status === 'available' ? 'default' : 'secondary'}
-                          >
-                            {advisor.status === 'available' ? '✓ Available' : 'Not Available'}
-                          </Badge>
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <Button 
-                          className="w-full" 
-                          variant="outline"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/mentor/${advisor.id}`);
-                          }}
-                        >
-                          View Profile
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  ))}
-              </div>
-            ) : (
-              <Card className="p-8 text-center">
-                <p className="text-muted-foreground">No advisors or coaches found matching your criteria</p>
-              </Card>
-            )}
-          </div>
-
-
-          {/* Mentors Section */}
-          <div>
-            <h2 className="text-2xl font-bold mb-6">
-              Mentors
-            </h2>
-            
-            {filteredAdvisors.filter((a: any) => 
-              !a.title?.toLowerCase().includes('advisor') && 
-              !a.title?.toLowerCase().includes('coach') &&
-              !a.title?.toLowerCase().includes('consultant')
-            ).length === 0 ? (
-              <Card className="p-12 text-center">
-                <p className="text-muted-foreground text-lg">No mentors found matching your criteria</p>
-                <p className="text-sm text-muted-foreground mt-2">Try adjusting your search or filters</p>
-                <Button className="mt-4" onClick={() => navigate('/become-advisor')}>
-                  Become a Mentor
-                </Button>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredAdvisors
-                  .filter((a: any) => 
-                    !a.title?.toLowerCase().includes('advisor') && 
-                    !a.title?.toLowerCase().includes('coach') &&
-                    !a.title?.toLowerCase().includes('consultant')
-                  )
-                  .map((mentor: any) => (
+                {filteredAdvisors.map((advisor: any) => (
                   <Card 
-                    key={mentor.id}
-                    variant={mentor.is_premium ? "premium" : "glass"}
-                    className={`${mentor.is_premium ? 'relative hover:shadow-xl' : 'hover:shadow-lg'} transition-all duration-300 cursor-pointer ${mentor.is_premium ? 'overflow-hidden' : ''}`}
-                    onClick={() => navigate(`/mentor/${mentor.id}`)}
+                    key={advisor.id}
+                    variant={advisor.is_premium ? "premium" : "glass"}
+                    className={`${advisor.is_premium ? 'relative hover:shadow-xl' : 'hover:shadow-lg'} transition-all duration-300 cursor-pointer ${advisor.is_premium ? 'overflow-hidden' : ''}`}
+                    onClick={() => navigate(`/advisor/${advisor.id}`)}
                   >
-                    {mentor.is_premium && (
+                    {advisor.is_premium && (
                       <div className="absolute top-0 right-0 bg-gradient-to-br from-rating to-primary text-rating-foreground px-3 py-1 rounded-bl-lg text-xs font-bold flex items-center gap-1">
                         <Crown className="w-3 h-3" />
                         PREMIUM
                       </div>
                     )}
-                    <CardHeader className={mentor.is_premium ? "pt-8 pb-4" : "pb-4"}>
+                    <CardHeader className={advisor.is_premium ? "pt-8 pb-4" : "pb-4"}>
                       <div className="flex flex-col items-center text-center space-y-3">
                         <TriangleAvatar
-                          src={mentor.profiles?.profile_picture_url}
-                          alt={`${mentor.profiles?.first_name || 'Mentor'}`}
-                          fallback={`${mentor.profiles?.first_name?.[0] || ''}${mentor.profiles?.last_name?.[0] || ''}`}
-                          className={mentor.is_premium ? "w-24 h-24" : "w-20 h-20"}
-                          style={{ width: mentor.is_premium ? '96px' : '80px', height: mentor.is_premium ? '96px' : '80px' }}
+                          src={advisor.profiles?.profile_picture_url}
+                          alt={`${advisor.profiles?.first_name || 'Advisor'}`}
+                          fallback={`${advisor.profiles?.first_name?.[0] || ''}${advisor.profiles?.last_name?.[0] || ''}`}
+                          className={advisor.is_premium ? "w-24 h-24" : "w-20 h-20"}
+                          style={{ width: advisor.is_premium ? '96px' : '80px', height: advisor.is_premium ? '96px' : '80px' }}
                         />
-                        {renderStars(mentor.rating || 0)}
+                        {renderStars(advisor.rating || 0)}
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       <div className="text-center">
-                        <h3 className={`${mentor.is_premium ? 'font-bold' : 'font-semibold'} text-lg mb-1`}>
-                          {mentor.profiles?.first_name} {mentor.profiles?.last_name}
+                        <h3 className={`${advisor.is_premium ? 'font-bold' : 'font-semibold'} text-lg mb-1`}>
+                          {advisor.profiles?.first_name} {advisor.profiles?.last_name}
                         </h3>
-                        <p className={`text-sm font-medium ${mentor.is_premium ? 'text-primary' : 'text-muted-foreground'}`}>{mentor.title}</p>
-                        {mentor.company && (
-                          <p className="text-sm text-muted-foreground">{mentor.company}</p>
+                        <p className={`text-sm font-medium ${advisor.is_premium ? 'text-primary' : 'text-muted-foreground'}`}>{advisor.title}</p>
+                        {advisor.company && (
+                          <p className="text-sm text-muted-foreground">{advisor.company}</p>
                         )}
                       </div>
 
-                      {mentor.specializations && mentor.specializations.length > 0 && (
+                      {advisor.specializations && advisor.specializations.length > 0 && (
                         <div className="flex flex-wrap gap-1 justify-center">
-                          {mentor.specializations.slice(0, 2).map((spec: string, idx: number) => (
-                            <Badge key={idx} variant={mentor.is_premium ? "outline" : "secondary"} className="text-xs">
+                          {advisor.specializations.slice(0, 2).map((spec: string, idx: number) => (
+                            <Badge key={idx} variant={advisor.is_premium ? "outline" : "secondary"} className="text-xs">
                               {spec}
                             </Badge>
                           ))}
@@ -451,34 +344,42 @@ const FindAdvisor = () => {
 
                       <div className="flex justify-center">
                         <Badge 
-                          className={`text-xs ${mentor.status === 'available' ? 'bg-success text-success-foreground' : ''}`}
-                          variant={mentor.status === 'available' ? 'default' : 'secondary'}
+                          className={`text-xs ${advisor.status === 'available' ? 'bg-success text-success-foreground' : ''}`}
+                          variant={advisor.status === 'available' ? 'default' : 'secondary'}
                         >
-                          {mentor.status === 'available' ? '✓ Available' : 'Not Available'}
+                          {advisor.status === 'available' ? '✓ Available' : 'Not Available'}
                         </Badge>
                       </div>
 
-                      {mentor.hourly_rate && (
+                      {advisor.hourly_rate && (
                         <p className="text-center text-sm font-semibold text-primary">
-                          ${mentor.hourly_rate}/hour
+                          ${advisor.hourly_rate}/hour
                         </p>
                       )}
                     </CardContent>
                     <CardFooter>
                       <Button 
                         className="w-full" 
-                        variant={mentor.is_premium ? "default" : "outline"}
+                        variant={advisor.is_premium ? "default" : "outline"}
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/mentor/${mentor.id}`);
+                          navigate(`/advisor/${advisor.id}`);
                         }}
                       >
-                        {mentor.is_premium ? 'Book Session' : 'View Profile'}
+                        {advisor.is_premium ? 'Book Session' : 'View Profile'}
                       </Button>
                     </CardFooter>
                   </Card>
                 ))}
               </div>
+            ) : (
+              <Card className="p-12 text-center">
+                <p className="text-muted-foreground text-lg">No advisors or coaches found matching your criteria</p>
+                <p className="text-sm text-muted-foreground mt-2">Try adjusting your search or filters</p>
+                <Button className="mt-4" onClick={() => navigate('/become-advisor')}>
+                  Become an Advisor
+                </Button>
+              </Card>
             )}
           </div>
         </div>

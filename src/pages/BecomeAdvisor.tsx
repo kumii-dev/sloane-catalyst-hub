@@ -136,28 +136,28 @@ const BecomeAdvisor = () => {
 
       if (profileError) throw profileError;
 
-      // Create advisor/coach profile using mentors table
+      // Create advisor profile using advisors table
       const { error: advisorError } = await supabase
-        .from('mentors')
+        .from('advisors')
         .upsert({
           user_id: user.id,
           title: formData.title,
           company: formData.company,
-          experience_years: parseInt(formData.experienceYears),
+          years_experience: parseInt(formData.experienceYears),
           hourly_rate: formData.hourlyRate ? parseFloat(formData.hourlyRate) : null,
           is_premium: formData.isPremium,
           status: 'available',
+          vetting_status: 'pending',
           expertise_areas: selectedSectors,
-          specializations: formData.specialization
-        }, {
-          onConflict: 'user_id'
+          specializations: formData.specialization,
+          bio: formData.bio
         });
 
       if (advisorError) throw advisorError;
 
       toast({
         title: "Success!",
-        description: "Your advisor/coach profile has been created successfully.",
+        description: "Your advisor profile has been submitted for approval.",
       });
 
       navigate("/services");

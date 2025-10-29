@@ -13,7 +13,9 @@ import Mentorship from "./pages/Mentorship";
 import FindMentor from "./pages/FindMentor";
 import FindAdvisor from "./pages/FindAdvisor";
 import MentorProfile from "./pages/MentorProfile";
+import AdvisorProfile from "./pages/AdvisorProfile";
 import EditMentorProfile from "./pages/EditMentorProfile";
+import EditAdvisorProfile from "./pages/EditAdvisorProfile";
 import EditProfile from "./pages/EditProfile";
 import BecomeMentor from "./pages/BecomeMentor";
 import BecomeAdvisor from "./pages/BecomeAdvisor";
@@ -83,6 +85,8 @@ const App = () => (
             <Route path="/mentorship" element={<Mentorship />} />
             <Route path="/find-mentor" element={<FindMentor />} />
             <Route path="/find-advisor" element={<FindAdvisor />} />
+            <Route path="/advisor/:id" element={<AdvisorProfile />} />
+            <Route path="/edit-advisor-profile" element={<EditAdvisorProfile />} />
             <Route path="/mentee-dashboard" element={<MenteeDashboard />} />
           <Route path="/mentor-dashboard" element={<MentorDashboard />} />
           <Route path="/mentor-availability" element={<MentorAvailability />} />

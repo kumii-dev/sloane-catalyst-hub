@@ -224,17 +224,18 @@ const MatchingDashboard = () => {
 
     setRegenerating(true);
     try {
-      // Call function to regenerate mentor matches
-      const { data, error } = await supabase
-        .rpc('generate_mentor_matches_for_user', {
-          user_id_param: user.id
-        });
+      // Call the generate-matches edge function to regenerate all matches
+      const { data, error } = await supabase.functions.invoke('generate-matches');
 
       if (error) throw error;
 
+      const totalMatches = (data?.matches?.mentors || 0) + 
+                          (data?.matches?.services || 0) + 
+                          (data?.matches?.funding || 0);
+
       toast({
         title: "Matches Updated!",
-        description: `Found ${data} new mentor matches for you.`
+        description: `Found ${totalMatches} new matches for you across all categories.`
       });
 
       // Refresh all matches

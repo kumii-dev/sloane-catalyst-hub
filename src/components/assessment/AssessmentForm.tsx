@@ -795,6 +795,22 @@ export const AssessmentForm = () => {
         description: "Your credit score has been calculated successfully. PDF downloading...",
       });
 
+      // Generate AI matches in the background
+      try {
+        setProcessingMessage('Generating personalized matches...');
+        const { error: matchError } = await supabase.functions.invoke('generate-matches');
+        
+        if (!matchError) {
+          toast({
+            title: "Matches Generated!",
+            description: "We've found personalized funding, mentor, and service matches for you.",
+          });
+        }
+      } catch (matchError) {
+        console.error('Error generating matches:', matchError);
+        // Don't fail the assessment if match generation fails
+      }
+
       if (resAssessment) {
         setAssessmentResult(resAssessment);
         

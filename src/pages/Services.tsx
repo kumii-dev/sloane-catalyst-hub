@@ -109,7 +109,7 @@ const Services = () => {
       <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Services Marketplace
+            Professional Services
           </h1>
           <p className="text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">
             Discover essential services for your startup growth. From software solutions to professional services, 

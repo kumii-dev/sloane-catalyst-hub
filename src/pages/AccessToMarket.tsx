@@ -24,7 +24,7 @@ import {
 import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ListServiceButton } from "@/components/ListServiceButton";
 
 interface CreditScore {
@@ -48,6 +48,7 @@ interface FunderProfile {
 
 const AccessToMarket = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [creditScore, setCreditScore] = useState<CreditScore | null>(null);
   const [featuredFunders, setFeaturedFunders] = useState<FunderProfile[]>([]);
   const [matchedOpportunities, setMatchedOpportunities] = useState([]);
@@ -286,7 +287,10 @@ const AccessToMarket = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="grid md:grid-cols-3 gap-6">
-                      <Card className="bg-blue-50 border-blue-200">
+                      <Card 
+                        className="bg-blue-50 border-blue-200 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105"
+                        onClick={() => navigate('/credit-score')}
+                      >
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
@@ -300,7 +304,10 @@ const AccessToMarket = () => {
                         </CardContent>
                       </Card>
                       
-                      <Card className="bg-green-50 border-green-200">
+                      <Card 
+                        className="bg-green-50 border-green-200 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105"
+                        onClick={() => navigate('/matching-dashboard')}
+                      >
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
@@ -314,7 +321,10 @@ const AccessToMarket = () => {
                         </CardContent>
                       </Card>
                       
-                      <Card className="bg-purple-50 border-purple-200">
+                      <Card 
+                        className="bg-purple-50 border-purple-200 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105"
+                        onClick={() => navigate('/funding/browse')}
+                      >
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>

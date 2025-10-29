@@ -35,7 +35,6 @@ const FindAdvisor = () => {
         .from('mentors')
         .select('*')
         .eq('status', 'available')
-        .or('mentor_type.eq.advisor,mentor_type.is.null')
         .order('rating', { ascending: false });
 
       if (advisorsError) throw advisorsError;

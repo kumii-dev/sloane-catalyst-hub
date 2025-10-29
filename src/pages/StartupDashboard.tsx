@@ -433,14 +433,14 @@ const StartupDashboard = () => {
                        <p className="text-sm text-muted-foreground capitalize">{profile.industry}</p>
                      </div>
                    </div>
-                    <div>
-                      <label className="text-sm font-medium">Stage</label>
-                      <p className="text-sm text-muted-foreground capitalize">{profile.stage.replace('_', ' ')}</p>
+                   <div>
+                      <label className="text-sm font-medium">Growth Stage</label>
+                      <p className="text-sm text-muted-foreground capitalize">{profile.growth_stage || 'Not specified'}</p>
                     </div>
                     <div>
-                       <label className="text-sm font-medium">Funding Needed</label>
+                       <label className="text-sm font-medium">Funding Amount Needed</label>
                        <p className="text-sm text-muted-foreground">
-                         {profile.funding_needed ? formatAmount(profile.funding_needed) : 'Not specified'}
+                         {profile.funding_amount_needed || 'Not specified'}
                        </p>
                      </div>
                    

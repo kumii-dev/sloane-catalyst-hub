@@ -174,8 +174,6 @@ const FindAdvisor = () => {
     );
   }
 
-  const premiumAdvisors = filteredAdvisors.filter((a: any) => a.is_premium);
-  const regularAdvisors = filteredAdvisors.filter((a: any) => !a.is_premium);
 
   return (
     <Layout showSidebar={true}>
@@ -378,100 +376,6 @@ const FindAdvisor = () => {
             )}
           </div>
 
-          {/* Premium Mentors Section */}
-          {premiumAdvisors.filter((a: any) => 
-            !a.title?.toLowerCase().includes('advisor') && 
-            !a.title?.toLowerCase().includes('coach') &&
-            !a.title?.toLowerCase().includes('consultant')
-          ).length > 0 && (
-            <div className="mb-12">
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <Crown className="w-6 h-6 text-rating" />
-                Premium Mentors
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {premiumAdvisors
-                  .filter((a: any) => 
-                    !a.title?.toLowerCase().includes('advisor') && 
-                    !a.title?.toLowerCase().includes('coach') &&
-                    !a.title?.toLowerCase().includes('consultant')
-                  )
-                  .map((advisor: any) => (
-                  <Card 
-                    key={advisor.id}
-                    variant="premium"
-                    className="relative hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer"
-                    onClick={() => navigate(`/mentor/${advisor.id}`)}
-                  >
-                    <div className="absolute top-0 right-0 bg-gradient-to-br from-rating to-primary text-rating-foreground px-3 py-1 rounded-bl-lg text-xs font-bold flex items-center gap-1">
-                      <Crown className="w-3 h-3" />
-                      PREMIUM
-                    </div>
-                    <CardHeader className="pt-8 pb-4">
-                      <div className="flex flex-col items-center text-center space-y-3">
-                        <TriangleAvatar
-                          src={advisor.profiles?.profile_picture_url}
-                          alt={`${advisor.profiles?.first_name || 'Mentor'}`}
-                          fallback={`${advisor.profiles?.first_name?.[0] || ''}${advisor.profiles?.last_name?.[0] || ''}`}
-                          className="w-24 h-24"
-                          style={{ width: '96px', height: '96px' }}
-                        />
-                        {renderStars(advisor.rating || 0)}
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="text-center">
-                        <h3 className="font-bold text-lg mb-1">
-                          {advisor.profiles?.first_name} {advisor.profiles?.last_name}
-                        </h3>
-                        <p className="text-sm font-medium text-primary">{advisor.title}</p>
-                        {advisor.company && (
-                          <p className="text-sm text-muted-foreground">{advisor.company}</p>
-                        )}
-                      </div>
-
-                      {advisor.specializations && advisor.specializations.length > 0 && (
-                        <div className="flex flex-wrap gap-1 justify-center">
-                          {advisor.specializations.slice(0, 2).map((spec: string, idx: number) => (
-                            <Badge key={idx} variant="outline" className="text-xs">
-                              {spec}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-
-                      <div className="flex justify-center">
-                        <Badge 
-                          className={`text-xs ${advisor.status === 'available' ? 'bg-success text-success-foreground' : ''}`}
-                          variant={advisor.status === 'available' ? 'default' : 'secondary'}
-                        >
-                          {advisor.status === 'available' ? '✓ Available' : 'Not Available'}
-                        </Badge>
-                      </div>
-
-                      {advisor.hourly_rate && (
-                        <p className="text-center text-sm font-semibold text-primary">
-                          ${advisor.hourly_rate}/hour
-                        </p>
-                      )}
-                    </CardContent>
-                    <CardFooter>
-                      <Button 
-                        className="w-full" 
-                        variant="default"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/mentor/${advisor.id}`);
-                        }}
-                      >
-                        Book Session
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Mentors Section */}
           <div>

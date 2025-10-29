@@ -266,11 +266,18 @@ const EditProfile = () => {
                     <StartupProfileEditor userId={user?.id || ''} onSaveComplete={handleStartupProfileSaveComplete} />
                   ) : startupProfile ? (
                     <div className="space-y-6">
-                      {startupProfile.logo_url && (
-                        <div className="flex items-center gap-4 mb-8">
+                      <div className="flex items-start justify-between gap-4 mb-8">
+                        {startupProfile.logo_url && (
                           <img src={startupProfile.logo_url} alt="Company logo" className="h-32 w-32 object-contain border rounded-lg p-3 shadow-lg bg-white" loading="lazy" />
-                        </div>
-                      )}
+                        )}
+                        <Button 
+                          onClick={() => navigate('/startup-dashboard')}
+                          className="shrink-0"
+                        >
+                          <LayoutDashboard className="mr-2 h-4 w-4" />
+                          Go to Company Dashboard
+                        </Button>
+                      </div>
                       
                       <div>
                         <h3 className="text-lg font-semibold mb-4">Business Information</h3>
@@ -378,16 +385,6 @@ const EditProfile = () => {
                             </div>
                           )}
                         </div>
-                      </div>
-                      
-                      <div className="mt-8 pt-6 border-t">
-                        <Button 
-                          onClick={() => navigate('/startup-dashboard')}
-                          className="w-full md:w-auto"
-                        >
-                          <LayoutDashboard className="mr-2 h-4 w-4" />
-                          Go to Company Dashboard
-                        </Button>
                       </div>
                     </div>
                   ) : (

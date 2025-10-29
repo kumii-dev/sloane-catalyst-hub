@@ -112,8 +112,8 @@ const Services = () => {
             Professional Services
           </h1>
           <p className="text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">
-            Discover essential services for your startup growth. From software solutions to professional services, 
-            find everything you need in one place.
+            Connect with experienced advisors and coaches to accelerate your startup growth. Get expert guidance, 
+            strategic insights, and personalized support for your business journey.
           </p>
           
           <div className="mb-8">

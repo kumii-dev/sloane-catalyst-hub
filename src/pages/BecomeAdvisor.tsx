@@ -148,8 +148,7 @@ const BecomeAdvisor = () => {
           is_premium: formData.isPremium,
           status: 'available',
           expertise_areas: selectedSectors,
-          specializations: formData.specialization,
-          mentor_type: 'advisor' // Distinguish from mentors
+          specializations: formData.specialization
         }, {
           onConflict: 'user_id'
         });

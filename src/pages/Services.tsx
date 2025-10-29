@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Search, Filter, Star, Users, Zap, Award, Code, Briefcase, TrendingUp, Headphones, GraduationCap, Building2, Palette, Megaphone, Scale, DollarSign, UserCheck, Sparkles } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ListServiceButton } from "@/components/ListServiceButton";
-
 interface ServiceCategory {
   id: string;
   name: string;
@@ -18,7 +17,6 @@ interface ServiceCategory {
   parent_id?: string;
   sort_order: number;
 }
-
 interface Listing {
   id: string;
   title: string;
@@ -33,23 +31,27 @@ interface Listing {
   listing_type: string;
   status: string;
 }
-
 const Services = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  
-  // Use optimized query hooks with caching
-  const { data: categories = [], isLoading: categoriesLoading } = useServiceCategories();
-  const { data: listingsData, isLoading: listingsLoading } = useListings({ status: 'active' }, 0);
-  const featuredListings = listingsData?.listings || [];
-  
-  const loading = categoriesLoading || listingsLoading;
 
+  // Use optimized query hooks with caching
+  const {
+    data: categories = [],
+    isLoading: categoriesLoading
+  } = useServiceCategories();
+  const {
+    data: listingsData,
+    isLoading: listingsLoading
+  } = useListings({
+    status: 'active'
+  }, 0);
+  const featuredListings = listingsData?.listings || [];
+  const loading = categoriesLoading || listingsLoading;
   const formatPrice = (listing: Listing) => {
     if (listing.credits_price) return `${listing.credits_price} credits`;
     if (listing.base_price) return `R${listing.base_price}`;
     return 'View pricing';
   };
-
   const getIconComponent = (iconName: string) => {
     const icons: Record<string, typeof Code> = {
       'Code': Code,
@@ -63,11 +65,10 @@ const Services = () => {
       'Scale': Scale,
       'DollarSign': DollarSign,
       'UserCheck': UserCheck,
-      'Sparkles': Sparkles,
+      'Sparkles': Sparkles
     };
     return icons[iconName] || Briefcase;
   };
-
   const getCategoryColor = (iconName: string) => {
     const colors: Record<string, string> = {
       'Code': 'bg-gradient-to-br from-blue-500 to-blue-600',
@@ -81,40 +82,30 @@ const Services = () => {
       'Scale': 'bg-gradient-to-br from-slate-500 to-slate-600',
       'DollarSign': 'bg-gradient-to-br from-emerald-500 to-emerald-600',
       'UserCheck': 'bg-gradient-to-br from-cyan-500 to-cyan-600',
-      'Sparkles': 'bg-gradient-to-br from-violet-500 to-violet-600',
+      'Sparkles': 'bg-gradient-to-br from-violet-500 to-violet-600'
     };
     return colors[iconName] || 'bg-gradient-to-br from-gray-500 to-gray-600';
   };
-
   if (loading) {
-    return (
-      <Layout showSidebar={true}>
+    return <Layout showSidebar={true}>
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-8">
             <div className="h-8 bg-muted rounded w-48"></div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-32 bg-muted rounded"></div>
-              ))}
+              {[1, 2, 3].map(i => <div key={i} className="h-32 bg-muted rounded"></div>)}
             </div>
           </div>
         </div>
-      </Layout>
-    );
+      </Layout>;
   }
-
-  return (
-    <Layout showSidebar={true}>
+  return <Layout showSidebar={true}>
       {/* Hero Section */}
       <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Professional Services
+            Services Marketplace
           </h1>
-          <p className="text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">
-            Connect with experienced advisors and coaches to accelerate your startup growth. Get expert guidance, 
-            strategic insights, and personalized support for your business journey.
-          </p>
+          <p className="text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">Get expert guidance, strategic insights, and personalized support for your business journey.</p>
           
           <div className="mb-8">
             <ListServiceButton size="lg" className="shadow-lg" />
@@ -123,12 +114,7 @@ const Services = () => {
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto relative mb-8">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-            <Input
-              placeholder="Search services, providers, or categories..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-12 h-12 text-lg"
-            />
+            <Input placeholder="Search services, providers, or categories..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 pr-12 h-12 text-lg" />
             <Button size="sm" className="absolute right-2 top-1/2 transform -translate-y-1/2">
               <Filter className="h-4 w-4" />
             </Button>
@@ -161,18 +147,11 @@ const Services = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories.filter((category) => category.slug !== 'software-services').map((category) => {
-              const IconComponent = getIconComponent(category.icon);
-              const colorClass = getCategoryColor(category.icon);
-              const linkTo = category.slug === 'professional-services' 
-                ? '/find-advisor' 
-                : `/services/category/${category.slug}`;
-              return (
-                <Link
-                  key={category.id}
-                  to={linkTo}
-                  className="group"
-                >
+            {categories.filter(category => category.slug !== 'software-services').map(category => {
+            const IconComponent = getIconComponent(category.icon);
+            const colorClass = getCategoryColor(category.icon);
+            const linkTo = category.slug === 'professional-services' ? '/find-advisor' : `/services/category/${category.slug}`;
+            return <Link key={category.id} to={linkTo} className="group">
                   <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">
                     <CardHeader className="text-center pb-4">
                       <div className={`w-16 h-16 rounded-xl ${colorClass} flex items-center justify-center mx-auto mb-4 relative`}>
@@ -189,9 +168,8 @@ const Services = () => {
                       </CardDescription>
                     </CardHeader>
                   </Card>
-                </Link>
-              );
-            })}
+                </Link>;
+          })}
           </div>
         </section>
 
@@ -215,8 +193,6 @@ const Services = () => {
           </div>
         </section>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Services;

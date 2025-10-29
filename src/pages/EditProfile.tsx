@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, LayoutDashboard } from 'lucide-react';
 import BasicProfileEditor from '@/components/profile/BasicProfileEditor';
 import StartupProfileEditor from '@/components/profile/StartupProfileEditor';
 import FunderProfileEditor from '@/components/profile/FunderProfileEditor';
@@ -378,6 +378,16 @@ const EditProfile = () => {
                             </div>
                           )}
                         </div>
+                      </div>
+                      
+                      <div className="mt-8 pt-6 border-t">
+                        <Button 
+                          onClick={() => navigate('/startup-dashboard')}
+                          className="w-full md:w-auto"
+                        >
+                          <LayoutDashboard className="mr-2 h-4 w-4" />
+                          Go to Company Dashboard
+                        </Button>
                       </div>
                     </div>
                   ) : (

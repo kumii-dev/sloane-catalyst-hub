@@ -38,7 +38,7 @@ const FindAdvisor = () => {
       const { data } = await supabase
         .from('service_categories')
         .select('id, name, slug')
-        .eq('status', 'active')
+        .eq('is_active', true)
         .order('name');
       
       setCategories((data || []) as any[]);

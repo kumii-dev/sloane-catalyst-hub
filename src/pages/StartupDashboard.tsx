@@ -60,6 +60,7 @@ const StartupDashboard = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
   const [profile, setProfile] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -71,6 +72,15 @@ const StartupDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
+      
+      // Fetch user profile for completion percentage
+      const { data: userData } = await supabase
+        .from('profiles')
+        .select('profile_completion_percentage')
+        .eq('user_id', user!.id)
+        .single();
+      
+      setUserProfile(userData);
       
       // Fetch startup profile
       const { data: profileData } = await supabase
@@ -317,11 +327,15 @@ const StartupDashboard = () => {
                 <Target className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-xl font-semibold mb-2">No matches yet</h3>
                 <p className="text-muted-foreground mb-6">
-                  Complete your profile to get AI-powered funding recommendations
+                  {userProfile?.profile_completion_percentage < 100 
+                    ? "Complete your profile to get AI-powered funding recommendations"
+                    : "We're generating your personalized funding matches. Check back soon!"}
                 </p>
-                <Link to="/edit-profile?tab=startup&edit=1">
-                  <Button>Update Profile</Button>
-                </Link>
+                {userProfile?.profile_completion_percentage < 100 && (
+                  <Link to="/edit-profile?tab=startup&edit=1">
+                    <Button>Update Profile</Button>
+                  </Link>
+                )}
               </div>
             )}
           </TabsContent>

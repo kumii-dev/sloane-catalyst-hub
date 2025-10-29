@@ -51,6 +51,8 @@ const AccessToMarket = () => {
   const [creditScore, setCreditScore] = useState<CreditScore | null>(null);
   const [featuredFunders, setFeaturedFunders] = useState<FunderProfile[]>([]);
   const [matchedOpportunities, setMatchedOpportunities] = useState([]);
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [startupProfile, setStartupProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -70,12 +72,23 @@ const AccessToMarket = () => {
 
       // If user is logged in, fetch personalized data
       if (user) {
+        // Fetch user profile for completion percentage
+        const { data: userData } = await supabase
+          .from('profiles')
+          .select('profile_completion_percentage')
+          .eq('user_id', user.id)
+          .single();
+        
+        setUserProfile(userData);
+        
         // Fetch user's startup profile for credit score
         const { data: startup } = await supabase
           .from('startup_profiles')
-          .select('id, credit_score')
+          .select('*')
           .eq('user_id', user.id)
           .single();
+
+        setStartupProfile(startup);
 
         if (startup?.credit_score) {
           // Generate mock detailed credit scores based on overall score
@@ -373,11 +386,19 @@ const AccessToMarket = () => {
                       <div className="text-center py-8">
                         <Shield className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
                         <p className="text-muted-foreground mb-4">
-                          Complete your startup profile to get your credit score
+                          {!startupProfile 
+                            ? "Create your startup profile to get your credit score"
+                            : userProfile?.profile_completion_percentage < 100
+                            ? "Complete your startup profile to get your credit score"
+                            : "Your credit score is being calculated. Check back soon!"}
                         </p>
-                        <Button asChild>
-                          <Link to="/funding/startup-dashboard">Complete Profile</Link>
-                        </Button>
+                        {(!startupProfile || userProfile?.profile_completion_percentage < 100) && (
+                          <Button asChild>
+                            <Link to="/edit-profile?tab=startup&edit=1">
+                              {!startupProfile ? "Create Profile" : "Complete Profile"}
+                            </Link>
+                          </Button>
+                        )}
                       </div>
                     )}
                   </CardContent>

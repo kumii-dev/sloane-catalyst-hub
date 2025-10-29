@@ -164,8 +164,7 @@ const Services = () => {
               filteredCategories.map(category => {
             const IconComponent = getIconComponent(category.icon);
             const colorClass = getCategoryColor(category.icon);
-            const linkTo = category.slug === 'professional-services' ? '/find-advisor' : `/services/category/${category.slug}`;
-            return <Link key={category.id} to={linkTo} className="group">
+            return <Link key={category.id} to="/find-advisor" className="group">
                   <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">
                     <CardHeader className="text-center pb-4">
                       <div className={`w-16 h-16 rounded-xl ${colorClass} flex items-center justify-center mx-auto mb-4 relative`}>

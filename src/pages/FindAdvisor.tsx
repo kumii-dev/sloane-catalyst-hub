@@ -65,6 +65,9 @@ const FindAdvisor = () => {
       }
 
       const userIds = advisorList.map((a: any) => a.user_id).filter(Boolean);
+      const mentorIds = advisorList.map((a: any) => a.id).filter(Boolean);
+
+      // Fetch profiles
       const { data: profilesData, error: profilesError } = await supabase
         .from('profiles')
         .select('user_id, first_name, last_name, profile_picture_url')
@@ -72,13 +75,39 @@ const FindAdvisor = () => {
 
       if (profilesError) throw profilesError;
 
+      // Fetch mentor categories with category details
+      const { data: mentorCategoriesData } = await supabase
+        .from('mentor_categories')
+        .select(`
+          mentor_id,
+          category_id,
+          service_categories:category_id (
+            id,
+            name,
+            slug
+          )
+        `)
+        .in('mentor_id', mentorIds);
+
       const profileByUserId = Object.fromEntries(
         (profilesData || []).map((p: any) => [p.user_id, p])
       );
 
+      // Group categories by mentor_id
+      const categoriesByMentorId: { [key: string]: any[] } = {};
+      (mentorCategoriesData || []).forEach((mc: any) => {
+        if (!categoriesByMentorId[mc.mentor_id]) {
+          categoriesByMentorId[mc.mentor_id] = [];
+        }
+        if (mc.service_categories) {
+          categoriesByMentorId[mc.mentor_id].push(mc.service_categories);
+        }
+      });
+
       const merged = advisorList.map((a: any) => ({
         ...a,
         profiles: profileByUserId[a.user_id] || null,
+        categories: categoriesByMentorId[a.id] || [],
       }));
 
       setAdvisors(merged);
@@ -101,9 +130,11 @@ const FindAdvisor = () => {
       advisor.profiles?.first_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       advisor.profiles?.last_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       advisor.expertise_areas?.some((area: string) => area.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      advisor.specializations?.some((spec: string) => spec.toLowerCase().includes(searchQuery.toLowerCase()));
+      advisor.specializations?.some((spec: string) => spec.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      advisor.categories?.some((cat: any) => cat.name?.toLowerCase().includes(searchQuery.toLowerCase()));
     
     const matchesCategory = selectedCategory === "all" || 
+      advisor.categories?.some((cat: any) => cat.name === selectedCategory) ||
       advisor.specializations?.some((spec: string) => 
         spec.toLowerCase().includes(selectedCategory.toLowerCase())
       ) ||

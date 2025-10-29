@@ -178,7 +178,7 @@ const StartupDashboard = () => {
           <p className="text-muted-foreground mb-6">
             Create your startup profile to access funding opportunities and get personalized matches.
           </p>
-          <Link to="/funding/startup-profile">
+          <Link to="/edit-profile?tab=startup&edit=1">
             <Button>
               <Plus className="w-4 h-4 mr-2" />
               Create Profile
@@ -204,7 +204,7 @@ const StartupDashboard = () => {
           </div>
           <div className="flex gap-2">
             <ListServiceButton variant="outline" size="default" />
-            <Link to="/funding/startup-profile">
+            <Link to="/edit-profile?tab=startup&edit=1">
               <Button variant="outline">
                 <Settings className="w-4 h-4 mr-2" />
                 Edit Profile
@@ -319,7 +319,7 @@ const StartupDashboard = () => {
                 <p className="text-muted-foreground mb-6">
                   Complete your profile to get AI-powered funding recommendations
                 </p>
-                <Link to="/funding/startup-profile">
+                <Link to="/edit-profile?tab=startup&edit=1">
                   <Button>Update Profile</Button>
                 </Link>
               </div>
@@ -436,7 +436,7 @@ const StartupDashboard = () => {
                    </div>
                    
                    <div className="flex justify-end">
-                     <Link to="/funding/startup-profile">
+                     <Link to="/edit-profile?tab=startup&edit=1">
                        <Button>
                          <Settings className="w-4 h-4 mr-2" />
                          Edit Profile

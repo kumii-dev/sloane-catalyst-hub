@@ -621,7 +621,7 @@ const MatchingDashboard = () => {
                   <p className="text-muted-foreground mb-6">
                     Complete your startup profile to get funding recommendations
                   </p>
-                  <Link to="/funding/startup-profile">
+                  <Link to="/edit-profile?tab=startup&edit=1">
                     <Button>Create Startup Profile</Button>
                   </Link>
                 </CardContent>

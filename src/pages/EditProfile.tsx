@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -18,6 +18,7 @@ import ServiceProviderProfileEditor from '@/components/profile/ServiceProviderPr
 const EditProfile = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState<any>(null);
@@ -33,6 +34,14 @@ const EditProfile = () => {
       setLoading(false);
     }
   }, [user]);
+
+  // Initialize from query params
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    const edit = searchParams.get('edit');
+    if (tab) setActiveTab(tab);
+    if (edit === '1' || edit === 'true') setIsEditing(true);
+  }, [searchParams]);
 
   const fetchProfile = async () => {
     try {

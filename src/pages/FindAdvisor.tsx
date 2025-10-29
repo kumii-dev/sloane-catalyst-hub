@@ -39,7 +39,7 @@ const FindAdvisor = () => {
         .from('service_categories')
         .select('id, name, slug')
         .eq('status', 'active')
-        .is('parent_id', null);
+        .order('name');
       
       setCategories((data || []) as any[]);
     } catch (error) {

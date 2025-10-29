@@ -132,15 +132,15 @@ const Services = () => {
           <div className="flex flex-wrap gap-4 justify-center">
             <Badge variant="secondary" className="px-4 py-2">
               <Zap className="h-4 w-4 mr-2" />
-              500+ Services
+              Expert Advisors & Coaches
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
               <Users className="h-4 w-4 mr-2" />
-              Trusted Providers
+              Trusted Professionals
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
               <Award className="h-4 w-4 mr-2" />
-              Cohort Benefits
+              Personalized Guidance
             </Badge>
           </div>
         </div>

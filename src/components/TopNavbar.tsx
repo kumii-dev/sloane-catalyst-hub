@@ -5,6 +5,7 @@ import { Menu, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { NotificationBell } from "@/components/NotificationBell";
 import { AdminRoleSwitcher } from "@/components/admin/AdminRoleSwitcher";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import logo from "@/assets/kumii-logo.png";
 
@@ -45,6 +46,7 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
       <div className="flex items-center gap-2 sm:gap-4">
         {user ? (
           <div className="flex items-center gap-2 sm:gap-3">
+            <ThemeToggle />
             <AdminRoleSwitcher />
             <Link to="/about" className="text-sm sm:text-base text-foreground font-medium hidden md:inline hover:text-foreground/80 transition-colors">About</Link>
             <div className="text-foreground">
@@ -91,6 +93,7 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
           </div>
         ) : (
           <div className="flex items-center gap-2 sm:gap-3">
+            <ThemeToggle />
             <Link to="/about" className="text-sm sm:text-base text-foreground font-medium hidden md:inline hover:text-foreground/80 transition-colors">About</Link>
             <Link to="/auth">
               <Button variant="ghost" size="sm" className="text-sm sm:text-base hover:bg-foreground/10 hidden sm:flex">

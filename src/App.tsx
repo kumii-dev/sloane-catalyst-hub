@@ -24,6 +24,8 @@ import ProviderDashboard from "./pages/ProviderDashboard";
 import MenteeDashboard from "./pages/MenteeDashboard";
 import MentorDashboard from "./pages/MentorDashboard";
 import MentorAvailability from "./pages/MentorAvailability";
+import AdvisorDashboard from "./pages/AdvisorDashboard";
+import AdvisorAvailability from "./pages/AdvisorAvailability";
 import FundingHub from "./pages/FundingHub";
 import BrowseFunding from "./pages/BrowseFunding";
 import StartupDashboard from "./pages/StartupDashboard";
@@ -90,6 +92,8 @@ const App = () => (
           <Route path="/mentor-dashboard" element={<MentorDashboard />} />
           <Route path="/mentor-availability" element={<MentorAvailability />} />
           <Route path="/mentor/:id" element={<MentorProfile />} />
+          <Route path="/advisor-dashboard" element={<AdvisorDashboard />} />
+          <Route path="/advisor-availability" element={<AdvisorAvailability />} />
             <Route path="/edit-mentor-profile" element={<EditMentorProfile />} />
             <Route path="/edit-profile" element={<EditProfile />} />
             <Route path="/become-mentor" element={<BecomeMentor />} />

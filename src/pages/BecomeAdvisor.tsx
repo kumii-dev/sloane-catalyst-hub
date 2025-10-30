@@ -136,24 +136,52 @@ const BecomeAdvisor = () => {
 
       if (profileError) throw profileError;
 
-      // Create advisor profile using advisors table
-      const { error: advisorError } = await supabase
+      // Check if advisor profile already exists
+      const { data: existingAdvisor } = await supabase
         .from('advisors')
-        .upsert({
-          user_id: user.id,
-          title: formData.title,
-          company: formData.company,
-          years_experience: parseInt(formData.experienceYears),
-          hourly_rate: formData.hourlyRate ? parseFloat(formData.hourlyRate) : null,
-          is_premium: formData.isPremium,
-          status: 'available',
-          vetting_status: 'pending',
-          expertise_areas: selectedSectors,
-          specializations: formData.specialization,
-          bio: formData.bio
-        });
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle();
 
-      if (advisorError) throw advisorError;
+      if (existingAdvisor) {
+        // Update existing advisor profile
+        const { error: advisorError } = await supabase
+          .from('advisors')
+          .update({
+            title: formData.title,
+            company: formData.company,
+            years_experience: parseInt(formData.experienceYears),
+            hourly_rate: formData.hourlyRate ? parseFloat(formData.hourlyRate) : null,
+            is_premium: formData.isPremium,
+            status: 'available',
+            vetting_status: 'pending',
+            expertise_areas: selectedSectors,
+            specializations: formData.specialization,
+            bio: formData.bio
+          })
+          .eq('user_id', user.id);
+
+        if (advisorError) throw advisorError;
+      } else {
+        // Create new advisor profile
+        const { error: advisorError } = await supabase
+          .from('advisors')
+          .insert({
+            user_id: user.id,
+            title: formData.title,
+            company: formData.company,
+            years_experience: parseInt(formData.experienceYears),
+            hourly_rate: formData.hourlyRate ? parseFloat(formData.hourlyRate) : null,
+            is_premium: formData.isPremium,
+            status: 'available',
+            vetting_status: 'pending',
+            expertise_areas: selectedSectors,
+            specializations: formData.specialization,
+            bio: formData.bio
+          });
+
+        if (advisorError) throw advisorError;
+      }
 
       toast({
         title: "Success!",

@@ -206,7 +206,7 @@ export default function AdminDashboard() {
                 <Button onClick={() => navigate("/admin/mentorship")} className="h-20">
                   <div className="flex flex-col items-center gap-2">
                     <Users className="w-6 h-6" />
-                    <span>Mentorship Admin</span>
+                    <span>Mentorship & Advisory</span>
                   </div>
                 </Button>
                 <Button onClick={() => navigate("/admin/financial")} className="h-20">

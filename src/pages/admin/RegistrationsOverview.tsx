@@ -17,6 +17,7 @@ export default function RegistrationsOverview() {
   const [pendingProviders, setPendingProviders] = useState<any[]>([]);
   const [pendingFunders, setPendingFunders] = useState<any[]>([]);
   const [pendingMentors, setPendingMentors] = useState<any[]>([]);
+  const [pendingAdvisors, setPendingAdvisors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -73,9 +74,17 @@ export default function RegistrationsOverview() {
       .eq('is_verified', false)
       .order('created_at', { ascending: false });
 
+    // Fetch pending advisors
+    const { data: advisors } = await supabase
+      .from('advisors')
+      .select('*')
+      .eq('vetting_status', 'pending')
+      .order('created_at', { ascending: false });
+
     setPendingProviders(providers || []);
     setPendingMentors(mentors || []);
     setPendingFunders(funders || []);
+    setPendingAdvisors(advisors || []);
     setLoading(false);
   };
 
@@ -181,6 +190,54 @@ export default function RegistrationsOverview() {
     }
   };
 
+  const handleAdvisorApproval = async (advisorId: string, approved: boolean) => {
+    // First get the advisor details
+    const { data: advisor, error: fetchError } = await supabase
+      .from('advisors')
+      .select('user_id')
+      .eq('id', advisorId)
+      .single();
+
+    if (fetchError || !advisor) {
+      toast.error('Failed to fetch advisor details');
+      return;
+    }
+
+    // Validate user_id
+    const isValidUserId = advisor.user_id && advisor.user_id !== '00000000-0000-0000-0000-000000000000';
+    
+    if (!isValidUserId) {
+      toast.error('Invalid user account. Advisor must have a valid registered account before approval.');
+      console.error('Invalid user_id:', advisor.user_id);
+      return;
+    }
+
+    const { error } = await supabase
+      .from('advisors')
+      .update({
+        vetting_status: approved ? 'approved' : 'rejected',
+        status: approved ? 'available' : 'unavailable'
+      })
+      .eq('id', advisorId);
+
+    if (error) {
+      toast.error('Failed to update advisor');
+      console.error(error);
+    } else {
+      toast.success(`Advisor ${approved ? 'approved' : 'rejected'}`);
+      
+      // Assign advisor role if approved
+      if (approved) {
+        await supabase.from('user_roles').insert({
+          user_id: advisor.user_id,
+          role: 'advisor'
+        });
+      }
+      
+      fetchAllPendingRegistrations();
+    }
+  };
+
   if (!isAdmin) {
     return null;
   }
@@ -200,7 +257,7 @@ export default function RegistrationsOverview() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Pending Providers</CardTitle>
@@ -208,6 +265,15 @@ export default function RegistrationsOverview() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{pendingProviders.length}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Pending Advisors</CardTitle>
+              <UserPlus className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{pendingAdvisors.length}</div>
             </CardContent>
           </Card>
           <Card>
@@ -233,6 +299,7 @@ export default function RegistrationsOverview() {
         <Tabs defaultValue="providers" className="space-y-6">
           <TabsList>
             <TabsTrigger value="providers">Service Providers</TabsTrigger>
+            <TabsTrigger value="advisors">Advisors</TabsTrigger>
             <TabsTrigger value="mentors">Mentors</TabsTrigger>
             <TabsTrigger value="funders">Funders</TabsTrigger>
           </TabsList>
@@ -287,6 +354,68 @@ export default function RegistrationsOverview() {
                                 variant="destructive"
                                 size="sm"
                                 onClick={() => handleProviderApproval(provider.id, false)}
+                              >
+                                <XCircle className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="advisors">
+            <Card>
+              <CardHeader>
+                <CardTitle>Pending Advisors</CardTitle>
+                <CardDescription>Review and approve advisor applications</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <p>Loading...</p>
+                ) : pendingAdvisors.length === 0 ? (
+                  <p className="text-muted-foreground">No pending advisors</p>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Title</TableHead>
+                        <TableHead>Company</TableHead>
+                        <TableHead>Experience</TableHead>
+                        <TableHead>Applied</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {pendingAdvisors.map((advisor) => (
+                        <TableRow key={advisor.id}>
+                          <TableCell>
+                            {advisor.full_name || 'N/A'}
+                          </TableCell>
+                          <TableCell>{advisor.title}</TableCell>
+                          <TableCell>{advisor.company}</TableCell>
+                          <TableCell>{advisor.years_experience} years</TableCell>
+                          <TableCell>
+                            {new Date(advisor.created_at).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="default"
+                                size="sm"
+                                onClick={() => handleAdvisorApproval(advisor.id, true)}
+                              >
+                                <CheckCircle className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleAdvisorApproval(advisor.id, false)}
                               >
                                 <XCircle className="w-4 h-4" />
                               </Button>

@@ -53,25 +53,46 @@ export default function MentorshipManagement() {
 
   const fetchMentors = async () => {
     setLoading(true);
-    const { data, error } = await supabase
+    
+    // Fetch mentors
+    const { data: mentorsData, error: mentorsError } = await supabase
       .from("mentors")
-      .select(`
-        *,
-        profiles:user_id (
-          first_name,
-          last_name,
-          email,
-          profile_picture_url
-        )
-      `)
+      .select("*")
       .order("created_at", { ascending: false });
 
-    if (error) {
-      console.error("Error fetching mentors:", error);
+    if (mentorsError) {
+      console.error("Error fetching mentors:", mentorsError);
       toast.error("Failed to load mentors");
-    } else {
-      setMentors(data || []);
+      setLoading(false);
+      return;
     }
+
+    // Fetch profiles for mentors
+    if (mentorsData && mentorsData.length > 0) {
+      const userIds = mentorsData.map(m => m.user_id);
+      const { data: profilesData, error: profilesError } = await supabase
+        .from("profiles")
+        .select("user_id, first_name, last_name, email, profile_picture_url")
+        .in("user_id", userIds);
+
+      if (!profilesError && profilesData) {
+        const profilesByUserId = Object.fromEntries(
+          profilesData.map(p => [p.user_id, p])
+        );
+        
+        const mentorsWithProfiles = mentorsData.map(mentor => ({
+          ...mentor,
+          profiles: profilesByUserId[mentor.user_id]
+        }));
+        
+        setMentors(mentorsWithProfiles);
+      } else {
+        setMentors(mentorsData);
+      }
+    } else {
+      setMentors([]);
+    }
+    
     setLoading(false);
   };
 
@@ -137,25 +158,46 @@ export default function MentorshipManagement() {
 
   const fetchAdvisors = async () => {
     setLoading(true);
-    const { data, error } = await supabase
+    
+    // Fetch advisors
+    const { data: advisorsData, error: advisorsError } = await supabase
       .from("advisors")
-      .select(`
-        *,
-        profiles:user_id (
-          first_name,
-          last_name,
-          email,
-          profile_picture_url
-        )
-      `)
+      .select("*")
       .order("created_at", { ascending: false });
 
-    if (error) {
-      console.error("Error fetching advisors:", error);
+    if (advisorsError) {
+      console.error("Error fetching advisors:", advisorsError);
       toast.error("Failed to load advisors");
-    } else {
-      setAdvisors(data || []);
+      setLoading(false);
+      return;
     }
+
+    // Fetch profiles for advisors
+    if (advisorsData && advisorsData.length > 0) {
+      const userIds = advisorsData.map(a => a.user_id);
+      const { data: profilesData, error: profilesError } = await supabase
+        .from("profiles")
+        .select("user_id, first_name, last_name, email, profile_picture_url")
+        .in("user_id", userIds);
+
+      if (!profilesError && profilesData) {
+        const profilesByUserId = Object.fromEntries(
+          profilesData.map(p => [p.user_id, p])
+        );
+        
+        const advisorsWithProfiles = advisorsData.map(advisor => ({
+          ...advisor,
+          profiles: profilesByUserId[advisor.user_id]
+        }));
+        
+        setAdvisors(advisorsWithProfiles);
+      } else {
+        setAdvisors(advisorsData);
+      }
+    } else {
+      setAdvisors([]);
+    }
+    
     setLoading(false);
   };
 

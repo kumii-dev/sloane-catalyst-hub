@@ -112,7 +112,7 @@ const handler = async (req: Request): Promise<Response> => {
             
             <p>Please log in to your dashboard to review and accept or decline this booking.</p>
             
-            <a href="https://preview--sloane-catalyst-hub.lovable.app/mentor-dashboard" 
+            <a href="https://kumii-test.com/mentor-dashboard" 
                style="display: inline-block; background-color: #9b87f5; color: white; padding: 12px 24px; 
                       text-decoration: none; border-radius: 6px; margin: 20px 0;">
               View Dashboard
@@ -190,7 +190,7 @@ const handler = async (req: Request): Promise<Response> => {
             
             <p>You'll receive the meeting link closer to the session time. Make sure to prepare any questions or topics you'd like to discuss.</p>
             
-            <a href="https://preview--sloane-catalyst-hub.lovable.app/mentee-dashboard" 
+            <a href="https://kumii-test.com/mentee-dashboard" 
                style="display: inline-block; background-color: #9b87f5; color: white; padding: 12px 24px; 
                       text-decoration: none; border-radius: 6px; margin: 20px 0;">
               View My Sessions

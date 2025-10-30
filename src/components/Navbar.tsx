@@ -14,7 +14,7 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Access to Market", href: "/access-to-market" },
-    { name: "Services", href: "/services", hasDropdown: true },
+    { name: "Advisors", href: "/find-advisor", hasDropdown: true },
     { name: "Funding", href: "/funding" },
     { name: "Mentorship", href: "/mentorship" },
     { name: "Resources", href: "/resources", hasDropdown: true },

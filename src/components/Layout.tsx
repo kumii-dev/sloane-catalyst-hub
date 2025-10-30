@@ -46,7 +46,7 @@ export function Layout({ children, showSidebar = true, hideSecondarySidebar = fa
       path.startsWith('/funding') ||
       path.startsWith('/credit-score') ||
       path.startsWith('/mentorship') ||
-      path.startsWith('/services') ||
+      path.startsWith('/find-advisor') ||
       path.startsWith('/resources')
     ) {
       setSelectedPrimary('apps');

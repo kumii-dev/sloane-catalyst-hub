@@ -160,7 +160,7 @@ const BecomeAdvisor = () => {
         description: "Your advisor profile has been submitted for approval.",
       });
 
-      navigate("/services");
+      navigate("/find-advisor");
     } catch (error: any) {
       toast({
         title: "Error",

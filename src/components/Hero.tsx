@@ -75,7 +75,7 @@ const Hero = () => {
                 <span className="text-white font-semibold text-base sm:text-lg">Expert Mentorship</span>
               </div>
             </Link>
-            <Link to="/services" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+            <Link to="/find-advisor" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
                   <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-white" />

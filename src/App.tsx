@@ -28,7 +28,6 @@ import FundingHub from "./pages/FundingHub";
 import BrowseFunding from "./pages/BrowseFunding";
 import StartupDashboard from "./pages/StartupDashboard";
 import FunderDashboard from "./pages/FunderDashboard";
-import Services from "./pages/Services";
 import ServiceCategory from "./pages/ServiceCategory";
 import ServiceDetail from "./pages/ServiceDetail";
 import Resources from "./pages/Resources";
@@ -122,7 +121,7 @@ const App = () => (
           <Route path="/admin/users" element={<UserManagement />} />
           <Route path="/admin/registrations" element={<RegistrationsOverview />} />
           <Route path="/admin/financial" element={<FinancialOverview />} />
-            <Route path="/services" element={<Services />} />
+            <Route path="/find-advisor" element={<FindAdvisor />} />
             <Route path="/services/category/:slug" element={<ServiceCategory />} />
             <Route path="/services/:id" element={<ServiceDetail />} />
             <Route path="/resources" element={<Resources />} />

@@ -92,6 +92,15 @@ export default function RegistrationsOverview() {
       return;
     }
 
+    // Validate user_id
+    const isValidUserId = provider.user_id && provider.user_id !== '00000000-0000-0000-0000-000000000000';
+    
+    if (!isValidUserId) {
+      toast.error('Invalid user account. Provider must have a valid registered account before approval.');
+      console.error('Invalid user_id:', provider.user_id);
+      return;
+    }
+
     const { error } = await supabase
       .from('service_providers')
       .update({

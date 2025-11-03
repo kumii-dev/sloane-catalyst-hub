@@ -14,6 +14,7 @@ import html2canvas from "html2canvas";
 import { generateTestScriptsPDF } from "@/utils/testScriptsPdfGenerator";
 import { generateDatabaseDocumentationPDF } from "@/utils/databaseDocumentationPdfGenerator";
 import { generateKumiiPresentation } from "@/utils/kumiiPresentationGenerator";
+import { generateJourneyMapsPDF } from "@/utils/journeyMapsPdfGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
@@ -263,6 +264,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadJourneyMaps = () => {
+    try {
+      toast.loading("Generating Journey Maps PDF...");
+      generateJourneyMapsPDF();
+      toast.dismiss();
+      toast.success("Journey Maps PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate Journey Maps");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -386,16 +400,25 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             <TabsContent value="presentation" className="space-y-8 mt-8">
               <div className="space-y-12">
                 
-                {/* Download PowerPoint Button */}
-                <div className="flex justify-end">
+                {/* Download Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-end">
                   <Button 
                     onClick={downloadKumiiPresentation} 
                     variant="default" 
                     size="lg"
                     className="gap-2"
                   >
-                    <FileDown className="w-5 h-5" />
+                    <Presentation className="w-5 h-5" />
                     Download PowerPoint Presentation
+                  </Button>
+                  <Button 
+                    onClick={downloadJourneyMaps} 
+                    variant="outline" 
+                    size="lg"
+                    className="gap-2"
+                  >
+                    <Map className="w-5 h-5" />
+                    Download Journey Maps PDF
                   </Button>
                 </div>
 

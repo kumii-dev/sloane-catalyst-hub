@@ -1,6 +1,6 @@
 # Disaster Recovery Plan
 
-## 22 On Sloane Platform - Business Continuity & Disaster Recovery
+## Kumii Platform - Business Continuity & Disaster Recovery
 
 **Document Version:** 1.0  
 **Last Updated:** 2025-11-03  
@@ -11,7 +11,7 @@
 
 ## 1. Executive Summary
 
-This Disaster Recovery Plan (DRP) outlines procedures to restore the 22 On Sloane platform following a disruption. The plan defines Recovery Time Objectives (RTO) and Recovery Point Objectives (RPO) for critical systems, assigns responsibilities, and provides step-by-step recovery procedures.
+This Disaster Recovery Plan (DRP) outlines procedures to restore the Kumii platform following a disruption. The plan defines Recovery Time Objectives (RTO) and Recovery Point Objectives (RPO) for critical systems, assigns responsibilities, and provides step-by-step recovery procedures.
 
 **Key Metrics:**
 - **Primary RTO**: 4 hours (for P0/P1 services)
@@ -559,7 +559,7 @@ for bucket in profile-pictures assessment-documents listing-images files; do
 done
 
 # Upload to external storage
-rclone sync ./backups/ remote:22onsloane-backups/
+rclone sync ./backups/ remote:kumii-backups/
 ```
 
 ### 5.3 Code Backups
@@ -630,7 +630,7 @@ tar -czf edge_functions_$(date +%Y%m%d).tar.gz supabase/functions/
 ### 6.2 External Communication
 
 **Users:**
-- **Status Page**: https://status.22onsloane.com (create with Statuspage.io or similar)
+- **Status Page**: https://status.kumii.com (create with Statuspage.io or similar)
 - **Email**: To all active users (if > 1 hour downtime)
 - **Social Media**: Twitter/LinkedIn updates
 - **In-App Banner**: When platform partially operational

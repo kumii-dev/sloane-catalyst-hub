@@ -18,6 +18,7 @@ import { generateJourneyMapsPDF } from "@/utils/journeyMapsPdfGenerator";
 import { generateJourneyMapsPowerPoint } from "@/utils/journeyMapsPowerPointGenerator";
 import { generateGovernancePDF } from "@/utils/governancePdfGenerator";
 import { generateAuditLoggingPDF } from "@/utils/auditLoggingPdfGenerator";
+import { generateDisasterRecoveryPDF } from "@/utils/disasterRecoveryPdfGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
@@ -319,6 +320,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadDisasterRecoveryPDF = () => {
+    try {
+      toast.loading("Generating Disaster Recovery Plan PDF...");
+      generateDisasterRecoveryPDF();
+      toast.dismiss();
+      toast.success("Disaster Recovery Plan PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate Disaster Recovery PDF");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -470,6 +484,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   >
                     <FileText className="w-5 h-5" />
                     Download Audit & Logging Strategy PDF
+                  </Button>
+                  <Button 
+                    onClick={downloadDisasterRecoveryPDF} 
+                    variant="default" 
+                    size="lg"
+                    className="gap-2 bg-primary/90 hover:bg-primary"
+                  >
+                    <Shield className="w-5 h-5" />
+                    Download Disaster Recovery Plan PDF
                   </Button>
                   <Button 
                     onClick={downloadJourneyMaps} 

@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -20,6 +20,7 @@ import { generateGovernancePDF } from "@/utils/governancePdfGenerator";
 import { generateAuditLoggingPDF } from "@/utils/auditLoggingPdfGenerator";
 import { generateDisasterRecoveryPDF } from "@/utils/disasterRecoveryPdfGenerator";
 import { generateVendorRiskPDF } from "@/utils/vendorRiskPdfGenerator";
+import { generateSecurityAwarenessPDF } from "@/utils/securityAwarenessPdfGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
@@ -347,6 +348,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadSecurityAwarenessPDF = () => {
+    try {
+      toast.loading("Generating Security Awareness Training PDF...");
+      generateSecurityAwarenessPDF();
+      toast.dismiss();
+      toast.success("Security Awareness Training PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate Security Awareness PDF");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -518,6 +532,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                     Download Vendor Risk Register PDF
                   </Button>
                   <Button 
+                    onClick={downloadSecurityAwarenessPDF} 
+                    variant="default" 
+                    size="lg"
+                    className="gap-2 bg-primary/90 hover:bg-primary"
+                  >
+                    <GraduationCap className="w-5 h-5" />
+                    Download Security Awareness Training PDF
+                  </Button>
+                  <Button
                     onClick={downloadJourneyMaps} 
                     variant="outline" 
                     size="lg"

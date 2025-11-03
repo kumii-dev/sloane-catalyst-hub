@@ -1,6 +1,6 @@
-# Security Awareness & Training Program
+# Kumii - Employee Security Awareness & Training Program
 
-## Employee Security Training for 22 On Sloane Platform
+## Employee Security Training for Kumii Platform
 
 **Document Version:** 1.0  
 **Last Updated:** 2025-11-03  
@@ -13,7 +13,7 @@
 ## 1. Program Overview
 
 ### 1.1 Purpose
-Ensure all 22 On Sloane employees understand their security responsibilities and can identify, prevent, and respond to security threats.
+Ensure all Kumii employees understand their security responsibilities and can identify, prevent, and respond to security threats.
 
 ### 1.2 Scope
 - **Mandatory for**: All employees, contractors, and vendors with system access
@@ -335,7 +335,7 @@ import DOMPurify from 'dompurify';
 
 **How to Report:**
 1. **Don't click** any links or download attachments
-2. **Forward suspicious email** to security@22onsloane.com
+2. **Forward suspicious email** to security@kumii.com
 3. **Delete original email** after reporting
 4. **Report via button**: (If integrated in email client)
 
@@ -466,11 +466,11 @@ describe('Credit Assessment RLS', () => {
 ### 5.2 How to Report an Incident
 
 **Immediate Reporting:**
-- **Email**: security@22onsloane.com
+- **Email**: security@kumii.com
 - **Phone**: +27-XXX-XXX-XXXX (CISO on-call)
 - **Slack**: #security-incidents (for urgent issues)
 
-**Incident Report Form**: https://forms.22onsloane.com/security-incident
+**Incident Report Form**: https://forms.kumii.com/security-incident
 
 **Information to Include:**
 - Date and time discovered
@@ -620,7 +620,7 @@ describe('Credit Assessment RLS', () => {
 
 ### 8.2 Security Resources Library
 
-**Internal Wiki**: https://wiki.22onsloane.com/security
+**Internal Wiki**: https://wiki.kumii.com/security
 
 **Contents:**
 - Security policies and procedures
@@ -641,13 +641,13 @@ describe('Credit Assessment RLS', () => {
 ### 8.3 Getting Help
 
 **Questions?**
-- **Email**: security@22onsloane.com
+- **Email**: security@kumii.com
 - **Slack**: #security-questions
 - **Office Hours**: Thursdays 2-3 PM (CISO available)
 
 **Report Security Concerns Anonymously:**
 - Whistleblower hotline: +27-XXX-XXX-XXXX
-- Anonymous form: https://forms.22onsloane.com/anonymous-report
+- Anonymous form: https://forms.kumii.com/anonymous-report
 
 ---
 

@@ -1,6 +1,6 @@
 # Vendor Risk Register
 
-## Third-Party Vendor Assessment for 22 On Sloane Platform
+## Third-Party Vendor Assessment for Kumii Platform
 
 **Document Version:** 1.0  
 **Last Updated:** 2025-11-03  
@@ -12,7 +12,7 @@
 
 ## 1. Executive Summary
 
-This Vendor Risk Register documents all third-party vendors processing data for the 22 On Sloane platform. Each vendor is assessed for security, compliance, and business continuity risks. Data Processing Agreements (DPAs) are tracked and vendor performance is monitored.
+This Vendor Risk Register documents all third-party vendors processing data for the Kumii platform. Each vendor is assessed for security, compliance, and business continuity risks. Data Processing Agreements (DPAs) are tracked and vendor performance is monitored.
 
 **Key Metrics:**
 - **Total Vendors**: 9 (7 active, 2 under evaluation)

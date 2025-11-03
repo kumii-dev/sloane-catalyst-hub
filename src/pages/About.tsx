@@ -19,6 +19,7 @@ import { generateJourneyMapsPowerPoint } from "@/utils/journeyMapsPowerPointGene
 import { generateGovernancePDF } from "@/utils/governancePdfGenerator";
 import { generateAuditLoggingPDF } from "@/utils/auditLoggingPdfGenerator";
 import { generateDisasterRecoveryPDF } from "@/utils/disasterRecoveryPdfGenerator";
+import { generateVendorRiskPDF } from "@/utils/vendorRiskPdfGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
@@ -333,6 +334,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadVendorRiskPDF = () => {
+    try {
+      toast.loading("Generating Vendor Risk Register PDF...");
+      generateVendorRiskPDF();
+      toast.dismiss();
+      toast.success("Vendor Risk Register PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate Vendor Risk PDF");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -493,6 +507,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   >
                     <Shield className="w-5 h-5" />
                     Download Disaster Recovery Plan PDF
+                  </Button>
+                  <Button 
+                    onClick={downloadVendorRiskPDF} 
+                    variant="default" 
+                    size="lg"
+                    className="gap-2 bg-primary/90 hover:bg-primary"
+                  >
+                    <Users className="w-5 h-5" />
+                    Download Vendor Risk Register PDF
                   </Button>
                   <Button 
                     onClick={downloadJourneyMaps} 

@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Upload, FileText, CheckCircle2, Download } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { AssessmentResults } from "@/components/assessment/AssessmentResults";
 import jsPDF from "jspdf";
 import logoImg from "@/assets/kumii-logo.png";
@@ -1118,14 +1119,18 @@ export const AssessmentForm = () => {
 
       {/* Results Popup */}
       <Dialog open={showResults} onOpenChange={setShowResults}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>Credit Assessment Results</DialogTitle>
           </DialogHeader>
           {assessmentResult ? (
-            <div className="space-y-4">
-              <AssessmentResults assessment={assessmentResult} />
-              <div className="flex justify-end gap-2 pt-2">
+            <>
+              <ScrollArea className="flex-1 pr-4">
+                <div className="space-y-4">
+                  <AssessmentResults assessment={assessmentResult} />
+                </div>
+              </ScrollArea>
+              <div className="flex justify-end gap-2 pt-4 border-t mt-4">
                 <Button
                   variant="outline"
                   onClick={() => downloadPDF(assessmentResult)}
@@ -1146,7 +1151,7 @@ export const AssessmentForm = () => {
                 )}
                 <Button onClick={() => setShowResults(false)}>Close</Button>
               </div>
-            </div>
+            </>
           ) : (
             <div className="text-sm text-muted-foreground">No results to display.</div>
           )}

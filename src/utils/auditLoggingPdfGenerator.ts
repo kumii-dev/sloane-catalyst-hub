@@ -223,7 +223,7 @@ export const generateAuditLoggingPDF = () => {
   
   doc.setFontSize(14);
   doc.setFont(TYPO.FONT, 'normal');
-  doc.text('22 On Sloane Platform', pageWidth / 2, yPos + 25, { align: 'center' });
+  doc.text('Kumii Platform', pageWidth / 2, yPos + 25, { align: 'center' });
   
   yPos = pageHeight - 60;
   doc.setFontSize(10);
@@ -271,7 +271,7 @@ export const generateAuditLoggingPDF = () => {
   addHeading('1. Overview and Principles', 1);
   
   addText(
-    'The 22 On Sloane Platform implements a comprehensive audit and logging strategy to ensure security, compliance, and operational excellence. This document outlines our approach to logging, monitoring, and auditing across all platform components.',
+    'The Kumii Platform implements a comprehensive audit and logging strategy to ensure security, compliance, and operational excellence. This document outlines our approach to logging, monitoring, and auditing across all platform components.',
     TYPO.BODY
   );
 
@@ -781,5 +781,5 @@ export const generateAuditLoggingPDF = () => {
   addPageNumber();
 
   // Save the PDF
-  doc.save('22OnSloane_Audit_Logging_Strategy.pdf');
+  doc.save('Kumii_Audit_Logging_Strategy.pdf');
 };

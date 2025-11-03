@@ -897,12 +897,44 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                               <p className="text-xs text-foreground/80">Row Level Security (RLS) policies, encrypted storage, HTTPS everywhere, and secure file handling</p>
                             </div>
                             <div className="bg-primary/5 p-4 rounded-lg">
-                              <h4 className="font-semibold text-sm text-foreground mb-2">📊 Monitoring & Performance</h4>
-                              <p className="text-xs text-foreground/80">Sentry for error tracking, performance monitoring, and real-time alerts for critical issues</p>
+                              <h4 className="font-semibold text-sm text-foreground mb-2">📋 Governance Framework</h4>
+                              <p className="text-xs text-foreground/80">ISO 27001-aligned policies for access control, data retention, change management, and business continuity</p>
                             </div>
                             <div className="bg-primary/5 p-4 rounded-lg">
-                              <h4 className="font-semibold text-sm text-foreground mb-2">🔄 Backup & Recovery</h4>
-                              <p className="text-xs text-foreground/80">Automated daily backups, point-in-time recovery, and disaster recovery procedures</p>
+                              <h4 className="font-semibold text-sm text-foreground mb-2">📝 Audit Logging</h4>
+                              <p className="text-xs text-foreground/80">Immutable security event logs with tamper detection, real-time monitoring, and comprehensive compliance reporting</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">🚨 Incident Response</h4>
+                              <p className="text-xs text-foreground/80">24/7 incident detection, documented response procedures, breach notification protocols, and post-incident reviews</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">🤝 Vendor Risk Management</h4>
+                              <p className="text-xs text-foreground/80">Comprehensive third-party risk assessments, security scorecards, DPA compliance, and quarterly vendor reviews</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">🎓 Security Awareness Training</h4>
+                              <p className="text-xs text-foreground/80">Mandatory employee training program covering phishing defense, data protection, OWASP Top 10, and compliance requirements</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">⚙️ Change Management</h4>
+                              <p className="text-xs text-foreground/80">Structured deployment processes with staged environments, automated testing, rollback procedures, and change documentation</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">🔄 Business Continuity & DR</h4>
+                              <p className="text-xs text-foreground/80">30-minute RTO for critical systems, automated backups, disaster recovery playbooks, and quarterly DR testing</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">📊 Monitoring & Performance</h4>
+                              <p className="text-xs text-foreground/80">Sentry error tracking, performance monitoring, real-time alerts, session replay, and comprehensive observability</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">✅ Compliance & Certifications</h4>
+                              <p className="text-xs text-foreground/80">POPIA, GDPR, ISO 27001, ISO 22301, and ISO 27701 compliance with regular audits and continuous monitoring</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">🧪 Security Testing</h4>
+                              <p className="text-xs text-foreground/80">Automated vulnerability scanning, penetration testing, code security reviews, and continuous security validation</p>
                             </div>
                           </div>
                         </div>

@@ -15,6 +15,7 @@ import { generateTestScriptsPDF } from "@/utils/testScriptsPdfGenerator";
 import { generateDatabaseDocumentationPDF } from "@/utils/databaseDocumentationPdfGenerator";
 import { generateKumiiPresentation } from "@/utils/kumiiPresentationGenerator";
 import { generateJourneyMapsPDF } from "@/utils/journeyMapsPdfGenerator";
+import { generateJourneyMapsPowerPoint } from "@/utils/journeyMapsPowerPointGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
@@ -277,6 +278,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadJourneyMapsPPT = () => {
+    try {
+      toast.loading("Generating Journey Maps PowerPoint...");
+      generateJourneyMapsPowerPoint();
+      toast.dismiss();
+      toast.success("Journey Maps PowerPoint downloaded!");
+    } catch (error) {
+      console.error('PowerPoint generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate Journey Maps PowerPoint");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -419,6 +433,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   >
                     <Map className="w-5 h-5" />
                     Download Journey Maps PDF
+                  </Button>
+                  <Button 
+                    onClick={downloadJourneyMapsPPT} 
+                    variant="outline" 
+                    size="lg"
+                    className="gap-2"
+                  >
+                    <Presentation className="w-5 h-5" />
+                    Download Journey Maps PowerPoint
                   </Button>
                 </div>
 

@@ -13,9 +13,11 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { generateTestScriptsPDF } from "@/utils/testScriptsPdfGenerator";
 import { generateDatabaseDocumentationPDF } from "@/utils/databaseDocumentationPdfGenerator";
+import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [isNarrating, setIsNarrating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -23,6 +25,10 @@ const About = () => {
   const [devMode, setDevMode] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const journeyMapsRef = useRef<HTMLDivElement | null>(null);
+
+  // Authorized emails for full access
+  const authorizedEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com'];
+  const hasFullAccess = user?.email && authorizedEmails.includes(user.email);
 
   // Extract all narration text from the script
   const scriptText = `Every day, thousands of brilliant entrepreneurs across Africa have game-changing ideas. But 70% of startups fail—not because they lack potential, but because they lack access. Access to funding. Access to markets. Access to the right guidance at the right time.
@@ -324,30 +330,40 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </p>
           </div>
 
-          <Tabs defaultValue="presentation" className="w-full">
-            <TabsList className={`grid w-full ${devMode ? 'grid-cols-5' : 'grid-cols-3'} max-w-4xl mx-auto`}>
-              <TabsTrigger value="presentation" className="gap-2">
-                <Presentation className="w-4 h-4" />
-                Presentation
-              </TabsTrigger>
-              <TabsTrigger value="script" className="gap-2">
-                <Video className="w-4 h-4" />
-                Video Script
-              </TabsTrigger>
-              <TabsTrigger value="database" className="gap-2">
-                <Database className="w-4 h-4" />
-                Database
-              </TabsTrigger>
-              {devMode && (
-                <>
-                  <TabsTrigger value="journeys" className="gap-2">
-                    <Map className="w-4 h-4" />
-                    Journey Maps
-                  </TabsTrigger>
-                  <TabsTrigger value="testing" className="gap-2">
-                    <FileCode className="w-4 h-4" />
-                    Load Testing
-                  </TabsTrigger>
+          {!hasFullAccess ? (
+            <Card>
+              <CardContent className="p-12 text-center">
+                <h2 className="text-2xl font-bold mb-4">Access Restricted</h2>
+                <p className="text-muted-foreground">
+                  This section is only available to authorized administrators.
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <Tabs defaultValue="presentation" className="w-full">
+              <TabsList className={`grid w-full ${devMode ? 'grid-cols-5' : 'grid-cols-3'} max-w-4xl mx-auto`}>
+                <TabsTrigger value="presentation" className="gap-2">
+                  <Presentation className="w-4 h-4" />
+                  Presentation
+                </TabsTrigger>
+                <TabsTrigger value="script" className="gap-2">
+                  <Video className="w-4 h-4" />
+                  Video Script
+                </TabsTrigger>
+                <TabsTrigger value="database" className="gap-2">
+                  <Database className="w-4 h-4" />
+                  Database
+                </TabsTrigger>
+                {devMode && (
+                  <>
+                    <TabsTrigger value="journeys" className="gap-2">
+                      <Map className="w-4 h-4" />
+                      Journey Maps
+                    </TabsTrigger>
+                    <TabsTrigger value="testing" className="gap-2">
+                      <FileCode className="w-4 h-4" />
+                      Load Testing
+                    </TabsTrigger>
                 </>
               )}
             </TabsList>
@@ -2028,6 +2044,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </TabsContent>
             )}
           </Tabs>
+          )}
         </div>
       </main>
 

@@ -37,7 +37,7 @@ Introducing the all-in-one ecosystem designed specifically for African SMMEs and
 
 Let's start with Access to Market—your gateway to growth.
 
-First, our Credit Score Check gives you a standardized assessment of your business readiness powered by Koomee. No more guessing where you stand. Get technical, financial, and market readiness scores that funders actually trust. And if your readiness score is low, don't worry—Koomee is your one-stop platform with comprehensive intervention programs, mentorship, resources, and tools designed to help boost your score and prepare you for funding success.
+First, our Credit Score Check gives you a standardized assessment of your business readiness powered by Kumii. No more guessing where you stand. Get technical, financial, and market readiness scores that funders actually trust. And if your readiness score is low, don't worry—Kumii is your one-stop platform with comprehensive intervention programs, mentorship, resources, and tools designed to help boost your score and prepare you for funding success.
 
 Need investor-ready documents? Our AI-powered Document Generator creates professional business plans, pitch decks, and financial reports in minutes—not weeks.
 
@@ -51,7 +51,7 @@ Browse hundreds of Funding Opportunities—from grants and loans to equity inves
 
 Our Funder Directory features verified banks, impact investors, venture funds, and sponsor programs—all actively looking for businesses like yours.
 
-This is what makes Koomee truly powerful—we're your one-stop platform for SMMEs and Startups. Everything you need to build, grow, and fund your business is right here. No more juggling multiple platforms or services.
+This is what makes Kumii truly powerful—we're your one-stop platform for SMMEs and Startups. Everything you need to build, grow, and fund your business is right here. No more juggling multiple platforms or services.
 
 Success isn't just about tools—it's about people. Connect with experienced mentors who've walked your path. Get guidance on strategy, fundraising, operations, and growth.
 
@@ -69,7 +69,7 @@ Your journey to growth starts today. Create your free account, complete your pro
 
 No hidden fees. No gatekeepers. Just the resources, connections, and support you need to turn your vision into reality—all in one place.
 
-Because when African entrepreneurs succeed, we all win. Welcome to the future of startup support. Koomee... Building Your Business. Welcome home.`;
+Because when African entrepreneurs succeed, we all win. Welcome to the future of startup support. Kumii... Building Your Business. Welcome home.`;
 
   const startNarration = async () => {
     try {
@@ -383,7 +383,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                     </div>
                     <div className="space-y-6 text-foreground/90 leading-relaxed">
                       <p className="text-lg">
-                        <strong className="text-primary">Koomee Platform</strong> is a comprehensive digital ecosystem designed to address the critical challenges facing African SMMEs and startups. By combining AI-powered tools, marketplace functionality, mentorship programs, and funding access, we've created a one-stop platform that increases startup success rates by providing the resources, connections, and support entrepreneurs need at every stage of their journey.
+                        <strong className="text-primary">Kumii Platform</strong> is a comprehensive digital ecosystem designed to address the critical challenges facing African SMMEs and startups. By combining AI-powered tools, marketplace functionality, mentorship programs, and funding access, we've created a one-stop platform that increases startup success rates by providing the resources, connections, and support entrepreneurs need at every stage of their journey.
                       </p>
                       <div className="grid md:grid-cols-3 gap-6 mt-8">
                         <div className="bg-background/60 backdrop-blur p-6 rounded-lg border border-primary/10">
@@ -693,7 +693,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                             </div>
                             <div className="bg-primary/5 p-4 rounded-lg">
                               <h4 className="font-semibold text-sm text-foreground mb-2">AI & Integrations</h4>
-                              <p className="text-xs text-foreground/80">OpenAI, ElevenLabs, Daily.co, Resend for advanced AI, voice, video, and communication features</p>
+                              <p className="text-xs text-foreground/80">OpenAI, ElevenLabs, Daily.co, Resend, Sharetribe for advanced AI, voice, video, communication, and marketplace features</p>
                             </div>
                           </div>
                         </div>
@@ -809,7 +809,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
                           <h3 className="font-bold text-lg text-primary mb-3">1. All-In-One Ecosystem</h3>
-                          <p className="text-sm text-foreground/80">Unlike competitors who focus on single verticals (e.g., only funding or only mentorship), Koomee provides end-to-end support from business planning to funding access in one integrated platform.</p>
+                          <p className="text-sm text-foreground/80">Unlike competitors who focus on single verticals (e.g., only funding or only mentorship), Kumii provides end-to-end support from business planning to funding access in one integrated platform.</p>
                         </div>
                         <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
                           <h3 className="font-bold text-lg text-primary mb-3">2. AI-First Approach</h3>
@@ -991,6 +991,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                               <div className="font-semibold text-foreground">Supabase</div>
                               <p className="text-foreground/70 text-xs">Backend infrastructure and database management</p>
                             </div>
+                            <div>
+                              <div className="font-semibold text-foreground">Journey Horizon</div>
+                              <p className="text-foreground/70 text-xs">Strategic technology partnership for platform development</p>
+                            </div>
                           </div>
                         </div>
                         <div className="bg-background/80 backdrop-blur p-6 rounded-lg border border-primary/20">
@@ -1020,7 +1024,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <CardContent className="p-8 text-center">
                     <h2 className="text-3xl font-bold text-foreground mb-4">Investment Opportunity</h2>
                     <p className="text-lg text-foreground/80 mb-6 max-w-3xl mx-auto">
-                      Koomee is positioned to become the leading platform for African startup success, addressing a $331B market opportunity with proven technology, strategic partnerships, and a clear path to profitability.
+                      Kumii is positioned to become the leading platform for African startup success, addressing a $331B market opportunity with proven technology, strategic partnerships, and a clear path to profitability.
                     </p>
                     <div className="grid md:grid-cols-4 gap-4 max-w-4xl mx-auto">
                       <div className="bg-background/60 backdrop-blur p-4 rounded-lg">
@@ -1106,8 +1110,8 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <p className="italic text-muted-foreground">[Visual: Credit Score interface]</p>
                   <p>
                     "First, our <strong>Credit Score Check</strong> gives you a standardized assessment of your business readiness powered by 
-                    Koomee. No more guessing where you stand. Get technical, financial, and market readiness scores that funders actually trust. 
-                    And if your readiness score is low, don't worry—Koomee is your one-stop platform with comprehensive intervention programs, 
+                    Kumii. No more guessing where you stand. Get technical, financial, and market readiness scores that funders actually trust. 
+                    And if your readiness score is low, don't worry—Kumii is your one-stop platform with comprehensive intervention programs, 
                     mentorship, resources, and tools designed to help boost your score and prepare you for funding success."
                   </p>
                   <p className="italic text-muted-foreground">[Visual: Document Generator creating a business plan]</p>
@@ -1154,7 +1158,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   </p>
                   <p className="italic text-muted-foreground">[Visual: Platform features coming together]</p>
                   <p>
-                    "This is what makes Koomee truly powerful—we're your one-stop platform for SMMEs and Startups. Everything you need to build, 
+                    "This is what makes Kumii truly powerful—we're your one-stop platform for SMMEs and Startups. Everything you need to build, 
                     grow, and fund your business is right here. No more juggling multiple platforms or services."
                   </p>
                 </div>
@@ -1214,7 +1218,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <span className="text-sm text-muted-foreground">[3:45 - 4:10]</span>
                 </div>
                 <div className="pl-6 space-y-2 text-foreground/90 leading-relaxed">
-                  <p className="italic text-muted-foreground">[Visual: Logos of Microsoft, 22 On Sloane, Koomee, etc.]</p>
+                  <p className="italic text-muted-foreground">[Visual: Logos of Microsoft, 22 On Sloane, Kumii, etc.]</p>
                   <p>
                     <strong>Narrator:</strong> "We're trusted by leading organizations across Africa. Microsoft for Startups, 
                     22 On Sloane, and many others partner with us because they believe in democratizing access to opportunity."
@@ -1261,7 +1265,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <p className="italic text-muted-foreground">[Visual: Logo with tagline and website URL]</p>
                   <p>
                     <strong>Narrator:</strong> "Because when African entrepreneurs succeed, we all win. Welcome to the future of startup 
-                    support. Koomee... Building Your Business. Welcome home."
+                    support. Kumii... Building Your Business. Welcome home."
                   </p>
                   <p className="italic text-muted-foreground">[Text on screen: "Get Started Today" + website URL]</p>
                   <p className="italic text-muted-foreground">[Uplifting music swells]</p>

@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -17,6 +17,7 @@ import { generateKumiiPresentation } from "@/utils/kumiiPresentationGenerator";
 import { generateJourneyMapsPDF } from "@/utils/journeyMapsPdfGenerator";
 import { generateJourneyMapsPowerPoint } from "@/utils/journeyMapsPowerPointGenerator";
 import { generateGovernancePDF } from "@/utils/governancePdfGenerator";
+import { generateAuditLoggingPDF } from "@/utils/auditLoggingPdfGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
@@ -305,6 +306,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadAuditLoggingPDF = () => {
+    try {
+      toast.loading("Generating Audit & Logging Strategy PDF...");
+      generateAuditLoggingPDF();
+      toast.dismiss();
+      toast.success("Audit & Logging Strategy PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate Audit Logging PDF");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -447,6 +461,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   >
                     <Shield className="w-5 h-5" />
                     Download ISO 27001 Governance PDF
+                  </Button>
+                  <Button 
+                    onClick={downloadAuditLoggingPDF} 
+                    variant="default" 
+                    size="lg"
+                    className="gap-2 bg-primary/90 hover:bg-primary"
+                  >
+                    <FileText className="w-5 h-5" />
+                    Download Audit & Logging Strategy PDF
                   </Button>
                   <Button 
                     onClick={downloadJourneyMaps} 

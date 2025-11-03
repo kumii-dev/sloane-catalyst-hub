@@ -429,7 +429,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               <div className="space-y-12">
                 
                 {/* Download Buttons */}
-                <div className="flex flex-wrap gap-4 justify-end">
+                <div className="flex flex-wrap gap-4 justify-center">
                   <Button 
                     onClick={downloadKumiiPresentation} 
                     variant="default" 
@@ -438,6 +438,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   >
                     <Presentation className="w-5 h-5" />
                     Download PowerPoint Presentation
+                  </Button>
+                  <Button 
+                    onClick={downloadGovernancePDF} 
+                    variant="default" 
+                    size="lg"
+                    className="gap-2 bg-primary/90 hover:bg-primary"
+                  >
+                    <Shield className="w-5 h-5" />
+                    Download ISO 27001 Governance PDF
                   </Button>
                   <Button 
                     onClick={downloadJourneyMaps} 
@@ -456,15 +465,6 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   >
                     <Presentation className="w-5 h-5" />
                     Download Journey Maps PowerPoint
-                  </Button>
-                  <Button 
-                    onClick={downloadGovernancePDF} 
-                    variant="outline" 
-                    size="lg"
-                    className="gap-2"
-                  >
-                    <Shield className="w-5 h-5" />
-                    Download ISO 27001 Governance PDF
                   </Button>
                 </div>
 

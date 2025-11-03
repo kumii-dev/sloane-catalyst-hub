@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -324,8 +324,12 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </p>
           </div>
 
-          <Tabs defaultValue="script" className="w-full">
-            <TabsList className={`grid w-full ${devMode ? 'grid-cols-4' : 'grid-cols-2'} max-w-3xl mx-auto`}>
+          <Tabs defaultValue="presentation" className="w-full">
+            <TabsList className={`grid w-full ${devMode ? 'grid-cols-5' : 'grid-cols-3'} max-w-4xl mx-auto`}>
+              <TabsTrigger value="presentation" className="gap-2">
+                <Presentation className="w-4 h-4" />
+                Presentation
+              </TabsTrigger>
               <TabsTrigger value="script" className="gap-2">
                 <Video className="w-4 h-4" />
                 Video Script
@@ -347,6 +351,684 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 </>
               )}
             </TabsList>
+
+            {/* Stakeholder Presentation Tab */}
+            <TabsContent value="presentation" className="space-y-8 mt-8">
+              <div className="space-y-12">
+                
+                {/* Executive Summary */}
+                <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary rounded-lg">
+                        <Target className="w-6 h-6 text-primary-foreground" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Executive Summary</h2>
+                    </div>
+                    <div className="space-y-6 text-foreground/90 leading-relaxed">
+                      <p className="text-lg">
+                        <strong className="text-primary">Koomee Platform</strong> is a comprehensive digital ecosystem designed to address the critical challenges facing African SMMEs and startups. By combining AI-powered tools, marketplace functionality, mentorship programs, and funding access, we've created a one-stop platform that increases startup success rates by providing the resources, connections, and support entrepreneurs need at every stage of their journey.
+                      </p>
+                      <div className="grid md:grid-cols-3 gap-6 mt-8">
+                        <div className="bg-background/60 backdrop-blur p-6 rounded-lg border border-primary/10">
+                          <div className="text-4xl font-bold text-primary mb-2">70%</div>
+                          <p className="text-sm text-muted-foreground">Startup Failure Rate We're Reducing</p>
+                        </div>
+                        <div className="bg-background/60 backdrop-blur p-6 rounded-lg border border-primary/10">
+                          <div className="text-4xl font-bold text-primary mb-2">4</div>
+                          <p className="text-sm text-muted-foreground">User Types Served (Startups, Funders, Mentors, Providers)</p>
+                        </div>
+                        <div className="bg-background/60 backdrop-blur p-6 rounded-lg border border-primary/10">
+                          <div className="text-4xl font-bold text-primary mb-2">All-In-One</div>
+                          <p className="text-sm text-muted-foreground">Ecosystem Approach</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Market Opportunity */}
+                <Card className="border-2">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary/20 rounded-lg">
+                        <TrendingUp className="w-6 h-6 text-primary" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Market Opportunity</h2>
+                    </div>
+                    <div className="space-y-6">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <h3 className="text-xl font-semibold text-primary">The Problem</h3>
+                          <ul className="space-y-3 text-foreground/90">
+                            <li className="flex gap-3">
+                              <span className="text-primary mt-1">•</span>
+                              <span><strong>70% of startups fail</strong> within the first 5 years, primarily due to lack of access to funding, markets, and mentorship</span>
+                            </li>
+                            <li className="flex gap-3">
+                              <span className="text-primary mt-1">•</span>
+                              <span><strong>Information asymmetry</strong> between funders and entrepreneurs creates friction in capital allocation</span>
+                            </li>
+                            <li className="flex gap-3">
+                              <span className="text-primary mt-1">•</span>
+                              <span><strong>Fragmented services</strong> force entrepreneurs to juggle multiple platforms and providers</span>
+                            </li>
+                            <li className="flex gap-3">
+                              <span className="text-primary mt-1">•</span>
+                              <span><strong>Limited investor-readiness</strong> prevents promising startups from accessing capital</span>
+                            </li>
+                            <li className="flex gap-3">
+                              <span className="text-primary mt-1">•</span>
+                              <span><strong>High cost of professional services</strong> (legal, accounting, consulting) blocks early-stage companies</span>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="space-y-4">
+                          <h3 className="text-xl font-semibold text-primary">The Solution</h3>
+                          <ul className="space-y-3 text-foreground/90">
+                            <li className="flex gap-3">
+                              <span className="text-primary mt-1">✓</span>
+                              <span><strong>Standardized credit scoring</strong> provides objective business readiness assessment</span>
+                            </li>
+                            <li className="flex gap-3">
+                              <span className="text-primary mt-1">✓</span>
+                              <span><strong>AI-powered tools</strong> democratize access to expensive professional services</span>
+                            </li>
+                            <li className="flex gap-3">
+                              <span className="text-primary mt-1">✓</span>
+                              <span><strong>Smart matching algorithms</strong> connect the right startups with the right funders</span>
+                            </li>
+                            <li className="flex gap-3">
+                              <span className="text-primary mt-1">✓</span>
+                              <span><strong>Integrated marketplace</strong> provides one-stop access to all necessary services</span>
+                            </li>
+                            <li className="flex gap-3">
+                              <span className="text-primary mt-1">✓</span>
+                              <span><strong>Structured mentorship</strong> provides guidance at critical decision points</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="bg-primary/5 p-6 rounded-lg border border-primary/20 mt-6">
+                        <h4 className="font-semibold text-lg text-primary mb-3">Market Size & Potential</h4>
+                        <div className="grid md:grid-cols-3 gap-4 text-sm text-foreground/90">
+                          <div>
+                            <div className="font-bold text-2xl text-primary mb-1">44M</div>
+                            <p>SMEs in Sub-Saharan Africa</p>
+                          </div>
+                          <div>
+                            <div className="font-bold text-2xl text-primary mb-1">$331B</div>
+                            <p>SMME Financing Gap in Africa</p>
+                          </div>
+                          <div>
+                            <div className="font-bold text-2xl text-primary mb-1">Fast Growing</div>
+                            <p>Startup Ecosystem Across Continent</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Platform Features & Capabilities */}
+                <Card className="border-2">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary/20 rounded-lg">
+                        <Zap className="w-6 h-6 text-primary" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Platform Features & Capabilities</h2>
+                    </div>
+                    <div className="space-y-8">
+                      
+                      {/* Access to Market */}
+                      <div className="border-l-4 border-primary pl-6">
+                        <h3 className="text-2xl font-bold text-primary mb-4">1. Access to Market</h3>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div className="space-y-3">
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">🎯 Credit Score Assessment</h4>
+                              <p className="text-sm text-foreground/80">Standardized business readiness evaluation powered by proven methodologies. Assesses technical, financial, and market readiness to provide objective scores that funders trust.</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">📄 AI Document Generator</h4>
+                              <p className="text-sm text-foreground/80">Creates investor-ready business plans, pitch decks, and financial reports in minutes using advanced AI. Saves weeks of work and thousands in consulting fees.</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">📊 Financial Model Builder</h4>
+                              <p className="text-sm text-foreground/80">Dynamic 3-statement financial modeling with IFRS and US GAAP support. Create professional-grade projections, scenario analysis, and investor presentations.</p>
+                            </div>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">💰 Universal Valuation Model</h4>
+                              <p className="text-sm text-foreground/80">Multi-methodology business valuation using DCF, comparable company analysis, and market multiples. Know your worth before negotiations.</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">🤝 Smart Matching Engine</h4>
+                              <p className="text-sm text-foreground/80">AI-powered matching connects startups with relevant funders, suppliers, and buyers based on industry, stage, location, and specific needs.</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">🏦 Funding Opportunities</h4>
+                              <p className="text-sm text-foreground/80">Comprehensive database of grants, loans, equity investments, and corporate programs. Filter by industry, amount, and stage. Apply directly through platform.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Mentorship & Learning */}
+                      <div className="border-l-4 border-primary/70 pl-6">
+                        <h3 className="text-2xl font-bold text-primary/90 mb-4">2. Mentorship & Learning</h3>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div className="space-y-3">
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">👨‍🏫 Expert Mentorship Matching</h4>
+                              <p className="text-sm text-foreground/80">Connect with experienced mentors based on industry, expertise, and specific challenges. Book sessions, track progress, and get actionable guidance.</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">📚 Resource Library</h4>
+                              <p className="text-sm text-foreground/80">Comprehensive collection of guides, templates, case studies, and training materials. Self-paced learning on fundraising, operations, marketing, and growth.</p>
+                            </div>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">🎥 Video Sessions & Recordings</h4>
+                              <p className="text-sm text-foreground/80">Integrated video calling powered by Daily.co for seamless mentorship sessions. Session recordings for review and knowledge retention.</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">⭐ Rating & Review System</h4>
+                              <p className="text-sm text-foreground/80">Transparent feedback system ensures quality mentorship and helps match entrepreneurs with the right advisors.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Services Marketplace */}
+                      <div className="border-l-4 border-primary/50 pl-6">
+                        <h3 className="text-2xl font-bold text-primary/80 mb-4">3. Services Marketplace</h3>
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div className="bg-primary/5 p-4 rounded-lg">
+                            <h4 className="font-semibold text-foreground mb-2">⚖️ Legal Services</h4>
+                            <p className="text-sm text-foreground/80">Company registration, contracts, IP protection, compliance support from vetted legal professionals.</p>
+                          </div>
+                          <div className="bg-primary/5 p-4 rounded-lg">
+                            <h4 className="font-semibold text-foreground mb-2">💼 Accounting & CFO</h4>
+                            <p className="text-sm text-foreground/80">Bookkeeping, tax compliance, financial planning, and CFO services for growing businesses.</p>
+                          </div>
+                          <div className="bg-primary/5 p-4 rounded-lg">
+                            <h4 className="font-semibold text-foreground mb-2">📱 Marketing & Tech</h4>
+                            <p className="text-sm text-foreground/80">Digital marketing, branding, web development, and technical consulting services.</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* AI Copilot */}
+                      <div className="border-l-4 border-primary/30 pl-6">
+                        <h3 className="text-2xl font-bold text-primary/70 mb-4">4. AI Business Copilot</h3>
+                        <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-6 rounded-lg">
+                          <p className="text-foreground/90 mb-4">24/7 AI assistant that helps entrepreneurs with strategic questions, document generation, financial analysis, market research, and business planning. Powered by advanced language models with deep knowledge of African business contexts.</p>
+                          <div className="grid md:grid-cols-2 gap-3 text-sm">
+                            <div className="flex items-start gap-2">
+                              <span className="text-primary">✓</span>
+                              <span>Strategic planning assistance</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <span className="text-primary">✓</span>
+                              <span>Market research & analysis</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <span className="text-primary">✓</span>
+                              <span>Financial modeling guidance</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <span className="text-primary">✓</span>
+                              <span>Pitch preparation support</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* User Ecosystem */}
+                <Card className="border-2">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary/20 rounded-lg">
+                        <Users className="w-6 h-6 text-primary" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Multi-Sided Ecosystem</h2>
+                    </div>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-6 rounded-lg border border-primary/20">
+                        <div className="text-4xl mb-3">🚀</div>
+                        <h3 className="font-bold text-lg text-foreground mb-2">Startups & SMMEs</h3>
+                        <p className="text-sm text-foreground/80 mb-3">Access tools, funding, mentorship, and services to accelerate growth and increase success rates.</p>
+                        <ul className="text-xs space-y-1 text-foreground/70">
+                          <li>• Credit scoring & readiness</li>
+                          <li>• AI business tools</li>
+                          <li>• Funding connections</li>
+                          <li>• Expert mentorship</li>
+                        </ul>
+                      </div>
+                      <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-6 rounded-lg border border-primary/20">
+                        <div className="text-4xl mb-3">💰</div>
+                        <h3 className="font-bold text-lg text-foreground mb-2">Funders & Investors</h3>
+                        <p className="text-sm text-foreground/80 mb-3">Discover vetted investment-ready businesses with standardized assessments and comprehensive data.</p>
+                        <ul className="text-xs space-y-1 text-foreground/70">
+                          <li>• Deal flow pipeline</li>
+                          <li>• Standardized scoring</li>
+                          <li>• Due diligence data</li>
+                          <li>• Portfolio tracking</li>
+                        </ul>
+                      </div>
+                      <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-6 rounded-lg border border-primary/20">
+                        <div className="text-4xl mb-3">🎓</div>
+                        <h3 className="font-bold text-lg text-foreground mb-2">Mentors & Advisors</h3>
+                        <p className="text-sm text-foreground/80 mb-3">Share expertise, build legacy, and monetize knowledge while supporting the next generation.</p>
+                        <ul className="text-xs space-y-1 text-foreground/70">
+                          <li>• Flexible scheduling</li>
+                          <li>• Session monetization</li>
+                          <li>• Impact tracking</li>
+                          <li>• Professional network</li>
+                        </ul>
+                      </div>
+                      <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-6 rounded-lg border border-primary/20">
+                        <div className="text-4xl mb-3">🛠️</div>
+                        <h3 className="font-bold text-lg text-foreground mb-2">Service Providers</h3>
+                        <p className="text-sm text-foreground/80 mb-3">Access high-quality startup clients and grow your business through the marketplace.</p>
+                        <ul className="text-xs space-y-1 text-foreground/70">
+                          <li>• Client acquisition</li>
+                          <li>• Listing & discovery</li>
+                          <li>• Payment processing</li>
+                          <li>• Rating & reputation</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Technical Architecture */}
+                <Card className="border-2">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary/20 rounded-lg">
+                        <Shield className="w-6 h-6 text-primary" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Technical Architecture & Security</h2>
+                    </div>
+                    <div className="space-y-6">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                          <h3 className="text-xl font-semibold text-primary mb-4">Technology Stack</h3>
+                          <div className="space-y-3">
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">Frontend</h4>
+                              <p className="text-xs text-foreground/80">React, TypeScript, Tailwind CSS, Vite for blazing-fast performance and modern user experience</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">Backend & Database</h4>
+                              <p className="text-xs text-foreground/80">Supabase (PostgreSQL) with Row Level Security (RLS), real-time capabilities, and automatic API generation</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">Serverless Functions</h4>
+                              <p className="text-xs text-foreground/80">Edge Functions (Deno) for scalable backend logic, AI processing, and integrations</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">AI & Integrations</h4>
+                              <p className="text-xs text-foreground/80">OpenAI, ElevenLabs, Daily.co, Resend for advanced AI, voice, video, and communication features</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold text-primary mb-4">Security & Compliance</h3>
+                          <div className="space-y-3">
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">🔐 Authentication & Authorization</h4>
+                              <p className="text-xs text-foreground/80">Supabase Auth with JWT tokens, multi-factor authentication, and role-based access control (RBAC)</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">🛡️ Data Protection</h4>
+                              <p className="text-xs text-foreground/80">Row Level Security (RLS) policies, encrypted storage, HTTPS everywhere, and secure file handling</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">📊 Monitoring & Performance</h4>
+                              <p className="text-xs text-foreground/80">Sentry for error tracking, performance monitoring, and real-time alerts for critical issues</p>
+                            </div>
+                            <div className="bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-semibold text-sm text-foreground mb-2">🔄 Backup & Recovery</h4>
+                              <p className="text-xs text-foreground/80">Automated daily backups, point-in-time recovery, and disaster recovery procedures</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Business Model & Revenue */}
+                <Card className="border-2">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary/20 rounded-lg">
+                        <DollarSign className="w-6 h-6 text-primary" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Business Model & Revenue Streams</h2>
+                    </div>
+                    <div className="space-y-6">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="bg-gradient-to-br from-primary/10 to-background p-6 rounded-lg border border-primary/20">
+                          <h3 className="text-xl font-bold text-primary mb-4">Revenue Streams</h3>
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="font-semibold text-foreground mb-2">1. Transaction Fees</h4>
+                              <p className="text-sm text-foreground/80">Commission on services marketplace transactions, mentorship bookings, and premium service provider listings</p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-foreground mb-2">2. Subscription Plans</h4>
+                              <p className="text-sm text-foreground/80">Tiered subscription for startups (freemium model), premium features for funders, and enhanced profiles for service providers</p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-foreground mb-2">3. Assessment Services</h4>
+                              <p className="text-sm text-foreground/80">Credit score assessments, in-depth business evaluations, and certification programs</p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-foreground mb-2">4. Enterprise Partnerships</h4>
+                              <p className="text-sm text-foreground/80">White-label solutions for corporate programs, accelerators, and government initiatives</p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-foreground mb-2">5. Data & Insights</h4>
+                              <p className="text-sm text-foreground/80">Aggregated market intelligence and trend reports for funders, policymakers, and researchers</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-gradient-to-br from-primary/10 to-background p-6 rounded-lg border border-primary/20">
+                          <h3 className="text-xl font-bold text-primary mb-4">Value Proposition</h3>
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="font-semibold text-foreground mb-2">For Startups</h4>
+                              <ul className="text-sm text-foreground/80 space-y-2">
+                                <li>• Free access to essential tools (freemium)</li>
+                                <li>• Save $10,000+ on professional services</li>
+                                <li>• Increase funding success rate by 3x</li>
+                                <li>• Reduce time to market by 40%</li>
+                              </ul>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-foreground mb-2">For Funders</h4>
+                              <ul className="text-sm text-foreground/80 space-y-2">
+                                <li>• Access vetted deal flow pipeline</li>
+                                <li>• Reduce due diligence time by 60%</li>
+                                <li>• Standardized assessment framework</li>
+                                <li>• Portfolio performance tracking</li>
+                              </ul>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-foreground mb-2">For Service Providers</h4>
+                              <ul className="text-sm text-foreground/80 space-y-2">
+                                <li>• Access to pre-qualified clients</li>
+                                <li>• Reduced customer acquisition cost</li>
+                                <li>• Automated payments & contracts</li>
+                                <li>• Build reputation & portfolio</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Competitive Advantages */}
+                <Card className="border-2">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary/20 rounded-lg">
+                        <Target className="w-6 h-6 text-primary" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Competitive Advantages & Differentiation</h2>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+                          <h3 className="font-bold text-lg text-primary mb-3">1. All-In-One Ecosystem</h3>
+                          <p className="text-sm text-foreground/80">Unlike competitors who focus on single verticals (e.g., only funding or only mentorship), Koomee provides end-to-end support from business planning to funding access in one integrated platform.</p>
+                        </div>
+                        <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+                          <h3 className="font-bold text-lg text-primary mb-3">2. AI-First Approach</h3>
+                          <p className="text-sm text-foreground/80">Deep integration of AI across all features—from document generation to smart matching—makes professional tools accessible at startup-friendly prices.</p>
+                        </div>
+                        <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+                          <h3 className="font-bold text-lg text-primary mb-3">3. Standardized Assessment</h3>
+                          <p className="text-sm text-foreground/80">Proprietary credit scoring methodology creates a common language between entrepreneurs and funders, reducing information asymmetry and accelerating funding decisions.</p>
+                        </div>
+                        <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+                          <h3 className="font-bold text-lg text-primary mb-3">4. African Context</h3>
+                          <p className="text-sm text-foreground/80">Built specifically for African market realities—local regulations, business contexts, cultural nuances, and ecosystem partnerships that global platforms miss.</p>
+                        </div>
+                        <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+                          <h3 className="font-bold text-lg text-primary mb-3">5. Network Effects</h3>
+                          <p className="text-sm text-foreground/80">Multi-sided marketplace creates powerful network effects—more startups attract more funders, which attracts more mentors and service providers, creating a virtuous cycle.</p>
+                        </div>
+                        <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+                          <h3 className="font-bold text-lg text-primary mb-3">6. Partnership Ecosystem</h3>
+                          <p className="text-sm text-foreground/80">Strategic partnerships with Microsoft, 22 On Sloane, and leading organizations provide credibility, distribution, and resources that would take years to build independently.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Growth Strategy & Roadmap */}
+                <Card className="border-2">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary/20 rounded-lg">
+                        <Rocket className="w-6 h-6 text-primary" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Growth Strategy & Roadmap</h2>
+                    </div>
+                    <div className="space-y-8">
+                      
+                      {/* Current Phase */}
+                      <div className="border-l-4 border-primary pl-6">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="px-3 py-1 bg-primary text-primary-foreground text-sm font-bold rounded">CURRENT</span>
+                          <h3 className="text-xl font-bold text-foreground">Phase 1: Foundation (Q4 2024 - Q1 2025)</h3>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="bg-primary/5 p-4 rounded">
+                            <h4 className="font-semibold text-foreground mb-2">Platform Development</h4>
+                            <ul className="text-sm text-foreground/80 space-y-1">
+                              <li>✅ Core platform architecture</li>
+                              <li>✅ User authentication & profiles</li>
+                              <li>✅ Credit score assessment system</li>
+                              <li>✅ Marketplace infrastructure</li>
+                              <li>✅ Mentorship booking system</li>
+                            </ul>
+                          </div>
+                          <div className="bg-primary/5 p-4 rounded">
+                            <h4 className="font-semibold text-foreground mb-2">Go-To-Market</h4>
+                            <ul className="text-sm text-foreground/80 space-y-1">
+                              <li>✅ Partnership with 22 On Sloane</li>
+                              <li>✅ Microsoft for Startups program</li>
+                              <li>🔄 Early adopter onboarding</li>
+                              <li>🔄 Initial mentor recruitment</li>
+                              <li>🔄 Service provider partnerships</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Phase 2 */}
+                      <div className="border-l-4 border-primary/70 pl-6">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="px-3 py-1 bg-primary/70 text-primary-foreground text-sm font-bold rounded">NEXT</span>
+                          <h3 className="text-xl font-bold text-foreground">Phase 2: Scale (Q2 - Q4 2025)</h3>
+                        </div>
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div className="bg-primary/5 p-4 rounded">
+                            <h4 className="font-semibold text-foreground mb-2">Product</h4>
+                            <ul className="text-sm text-foreground/80 space-y-1">
+                              <li>• Mobile app launch</li>
+                              <li>• Advanced AI features</li>
+                              <li>• White-label solutions</li>
+                              <li>• API for integrations</li>
+                            </ul>
+                          </div>
+                          <div className="bg-primary/5 p-4 rounded">
+                            <h4 className="font-semibold text-foreground mb-2">Market Expansion</h4>
+                            <ul className="text-sm text-foreground/80 space-y-1">
+                              <li>• Reach 5,000 startups</li>
+                              <li>• 200+ active mentors</li>
+                              <li>• 50+ verified funders</li>
+                              <li>• Geographic expansion</li>
+                            </ul>
+                          </div>
+                          <div className="bg-primary/5 p-4 rounded">
+                            <h4 className="font-semibold text-foreground mb-2">Revenue</h4>
+                            <ul className="text-sm text-foreground/80 space-y-1">
+                              <li>• Launch premium tiers</li>
+                              <li>• Enterprise partnerships</li>
+                              <li>• Marketplace revenue</li>
+                              <li>• Break-even milestone</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Phase 3 */}
+                      <div className="border-l-4 border-primary/40 pl-6">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="px-3 py-1 bg-primary/40 text-foreground text-sm font-bold rounded">FUTURE</span>
+                          <h3 className="text-xl font-bold text-foreground">Phase 3: Ecosystem (2026+)</h3>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="bg-primary/5 p-4 rounded">
+                            <h4 className="font-semibold text-foreground mb-2">Platform Evolution</h4>
+                            <ul className="text-sm text-foreground/80 space-y-1">
+                              <li>• Embedded financial services</li>
+                              <li>• Direct lending capabilities</li>
+                              <li>• Blockchain integration</li>
+                              <li>• Advanced analytics & insights</li>
+                              <li>• Virtual accelerator programs</li>
+                            </ul>
+                          </div>
+                          <div className="bg-primary/5 p-4 rounded">
+                            <h4 className="font-semibold text-foreground mb-2">Market Leadership</h4>
+                            <ul className="text-sm text-foreground/80 space-y-1">
+                              <li>• 50,000+ active startups</li>
+                              <li>• Pan-African presence</li>
+                              <li>• $100M+ in facilitated funding</li>
+                              <li>• Become de facto standard</li>
+                              <li>• International expansion</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Partnership Ecosystem */}
+                <Card className="border-2 bg-gradient-to-br from-primary/5 to-background">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary rounded-lg">
+                        <Users className="w-6 h-6 text-primary-foreground" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Partnership Ecosystem</h2>
+                    </div>
+                    <div className="space-y-6">
+                      <div className="grid md:grid-cols-3 gap-6">
+                        <div className="bg-background/80 backdrop-blur p-6 rounded-lg border border-primary/20">
+                          <h3 className="font-bold text-lg text-primary mb-3">Strategic Partners</h3>
+                          <div className="space-y-3 text-sm">
+                            <div>
+                              <div className="font-semibold text-foreground">22 On Sloane</div>
+                              <p className="text-foreground/70 text-xs">Flagship innovation hub partnership providing credibility and access to premium startups</p>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-foreground">Microsoft for Startups</div>
+                              <p className="text-foreground/70 text-xs">Technology partnership providing Azure credits, tools, and ecosystem access</p>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-foreground">Nedbank</div>
+                              <p className="text-foreground/70 text-xs">Financial services partner for embedded banking and funding access</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-background/80 backdrop-blur p-6 rounded-lg border border-primary/20">
+                          <h3 className="font-bold text-lg text-primary mb-3">Technology Partners</h3>
+                          <div className="space-y-3 text-sm">
+                            <div>
+                              <div className="font-semibold text-foreground">OpenAI</div>
+                              <p className="text-foreground/70 text-xs">AI capabilities for document generation and business copilot</p>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-foreground">Daily.co</div>
+                              <p className="text-foreground/70 text-xs">Video infrastructure for mentorship sessions</p>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-foreground">Supabase</div>
+                              <p className="text-foreground/70 text-xs">Backend infrastructure and database management</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-background/80 backdrop-blur p-6 rounded-lg border border-primary/20">
+                          <h3 className="font-bold text-lg text-primary mb-3">Ecosystem Partners</h3>
+                          <div className="space-y-3 text-sm">
+                            <div>
+                              <div className="font-semibold text-foreground">Accelerators</div>
+                              <p className="text-foreground/70 text-xs">White-label platform for cohort management</p>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-foreground">Universities</div>
+                              <p className="text-foreground/70 text-xs">Student entrepreneur programs and research</p>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-foreground">Corporates</div>
+                              <p className="text-foreground/70 text-xs">Enterprise supplier diversity programs</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Call to Action */}
+                <Card className="border-2 border-primary bg-gradient-to-br from-primary/10 via-primary/5 to-background">
+                  <CardContent className="p-8 text-center">
+                    <h2 className="text-3xl font-bold text-foreground mb-4">Investment Opportunity</h2>
+                    <p className="text-lg text-foreground/80 mb-6 max-w-3xl mx-auto">
+                      Koomee is positioned to become the leading platform for African startup success, addressing a $331B market opportunity with proven technology, strategic partnerships, and a clear path to profitability.
+                    </p>
+                    <div className="grid md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                      <div className="bg-background/60 backdrop-blur p-4 rounded-lg">
+                        <div className="text-3xl font-bold text-primary mb-1">$331B</div>
+                        <p className="text-sm text-foreground/70">Market Opportunity</p>
+                      </div>
+                      <div className="bg-background/60 backdrop-blur p-4 rounded-lg">
+                        <div className="text-3xl font-bold text-primary mb-1">44M</div>
+                        <p className="text-sm text-foreground/70">Target SMEs</p>
+                      </div>
+                      <div className="bg-background/60 backdrop-blur p-4 rounded-lg">
+                        <div className="text-3xl font-bold text-primary mb-1">5</div>
+                        <p className="text-sm text-foreground/70">Revenue Streams</p>
+                      </div>
+                      <div className="bg-background/60 backdrop-blur p-4 rounded-lg">
+                        <div className="text-3xl font-bold text-primary mb-1">All-In-One</div>
+                        <p className="text-sm text-foreground/70">Unique Positioning</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+              </div>
+            </TabsContent>
 
             <TabsContent value="script" className="space-y-8 mt-8">
 

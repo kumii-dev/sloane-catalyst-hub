@@ -13,6 +13,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { generateTestScriptsPDF } from "@/utils/testScriptsPdfGenerator";
 import { generateDatabaseDocumentationPDF } from "@/utils/databaseDocumentationPdfGenerator";
+import { generateKumiiPresentation } from "@/utils/kumiiPresentationGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
@@ -249,6 +250,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadKumiiPresentation = () => {
+    try {
+      toast.loading("Generating PowerPoint presentation...");
+      generateKumiiPresentation();
+      toast.dismiss();
+      toast.success("Kumii presentation downloaded!");
+    } catch (error) {
+      console.error('PowerPoint generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate presentation");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -372,6 +386,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             <TabsContent value="presentation" className="space-y-8 mt-8">
               <div className="space-y-12">
                 
+                {/* Download PowerPoint Button */}
+                <div className="flex justify-end">
+                  <Button 
+                    onClick={downloadKumiiPresentation} 
+                    variant="default" 
+                    size="lg"
+                    className="gap-2"
+                  >
+                    <FileDown className="w-5 h-5" />
+                    Download PowerPoint Presentation
+                  </Button>
+                </div>
+
                 {/* Executive Summary */}
                 <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
                   <CardContent className="p-8">

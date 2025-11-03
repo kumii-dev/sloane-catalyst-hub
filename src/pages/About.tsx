@@ -16,6 +16,7 @@ import { generateDatabaseDocumentationPDF } from "@/utils/databaseDocumentationP
 import { generateKumiiPresentation } from "@/utils/kumiiPresentationGenerator";
 import { generateJourneyMapsPDF } from "@/utils/journeyMapsPdfGenerator";
 import { generateJourneyMapsPowerPoint } from "@/utils/journeyMapsPowerPointGenerator";
+import { generateGovernancePDF } from "@/utils/governancePdfGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
@@ -291,6 +292,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadGovernancePDF = () => {
+    try {
+      toast.loading("Generating ISO 27001 Governance PDF...");
+      generateGovernancePDF();
+      toast.dismiss();
+      toast.success("ISO 27001 Governance PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate Governance PDF");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -415,7 +429,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               <div className="space-y-12">
                 
                 {/* Download Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-end">
+                <div className="flex flex-wrap gap-4 justify-end">
                   <Button 
                     onClick={downloadKumiiPresentation} 
                     variant="default" 
@@ -442,6 +456,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   >
                     <Presentation className="w-5 h-5" />
                     Download Journey Maps PowerPoint
+                  </Button>
+                  <Button 
+                    onClick={downloadGovernancePDF} 
+                    variant="outline" 
+                    size="lg"
+                    className="gap-2"
+                  >
+                    <Shield className="w-5 h-5" />
+                    Download ISO 27001 Governance PDF
                   </Button>
                 </div>
 

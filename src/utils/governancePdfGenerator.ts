@@ -12,11 +12,44 @@ export const generateGovernancePDF = () => {
   // Kumii brand colors (forest green)
   const kumiiGreen = { r: 76, g: 130, b: 88 }; // Forest green matching brand
 
-  // Spacing and layout helpers
+  // Typography and spacing
+  const TYPO = {
+    FONT: 'helvetica',
+    BODY: 11,
+    H1: 16,
+    H2: 14,
+    H3: 12,
+    TABLE: 10,
+    LINE_HEIGHT_FACTOR: 1.4,
+    BULLET_RADIUS: 1.5,
+    BULLET_GAP: 4,
+  };
   const getLineHeight = (fs: number) => Number((fs * 0.60).toFixed(1));
   const paragraphSpacing = 3; // uniform extra space after paragraphs
   const TABLE_HEADER_HEIGHT = 10;
   const TABLE_ROW_HEIGHT = 8;
+
+  // Sanitize text to avoid unsupported glyphs that cause odd spacing in PDFs
+  const sanitizeText = (raw: string) => raw
+    .replace(/[“”]/g, '"')
+    .replace(/[‘’]/g, "'")
+    .replace(/[–—]/g, '-')
+    .replace(/→/g, '->')
+    .replace(/☐/g, '[ ]')
+    .replace(/✓|✔/g, '[x]')
+    .replace(/•/g, '-') // we draw the bullet graphically
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  // Apply consistent typography for body text
+  const applyBodyTypography = (bold: boolean = false, size: number = TYPO.BODY) => {
+    doc.setFont(TYPO.FONT, bold ? 'bold' : 'normal');
+    doc.setFontSize(size);
+    // Ensure consistent line height and zero character spacing across sections
+    if ((doc as any).setLineHeightFactor) (doc as any).setLineHeightFactor(TYPO.LINE_HEIGHT_FACTOR);
+    if ((doc as any).setCharSpace) (doc as any).setCharSpace(0);
+    doc.setTextColor(0, 0, 0);
+  };
 
   // Helper to add page numbers
   const addPageNumber = () => {
@@ -43,14 +76,13 @@ export const generateGovernancePDF = () => {
   };
 
   // Helper function to add text with consistent formatting
-  const addText = (text: string, fontSize: number = 11, isBold: boolean = false, indent: number = 0) => {
-    doc.setFontSize(fontSize);
-    doc.setFont('helvetica', isBold ? 'bold' : 'normal');
-    doc.setTextColor(0, 0, 0);
-    const lines = doc.splitTextToSize(text, maxWidth - indent);
+  const addText = (text: string, fontSize: number = TYPO.BODY, isBold: boolean = false, indent: number = 0) => {
+    applyBodyTypography(isBold, fontSize);
+    const safe = sanitizeText(text);
+    const lines = doc.splitTextToSize(safe, maxWidth - indent);
 
     const lh = getLineHeight(fontSize);
-    lines.forEach((line: string, idx: number) => {
+    lines.forEach((line: string) => {
       checkAddPage(lh);
       doc.text(line, margin + indent, yPos);
       yPos += lh;
@@ -85,17 +117,24 @@ export const generateGovernancePDF = () => {
   // Helper for bullet points
   const addBullet = (text: string, level: number = 0) => {
     const indent = level * 10;
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(0, 0, 0);
+    applyBodyTypography(false, TYPO.BODY);
 
-    const lh = getLineHeight(11);
+    const lh = getLineHeight(TYPO.BODY);
     checkAddPage(lh);
-    doc.text('•', margin + indent, yPos);
-    const lines = doc.splitTextToSize(text, maxWidth - indent - 8);
+
+    // Draw a vector bullet to avoid unsupported glyph issues
+    const bulletX = margin + indent + TYPO.BULLET_RADIUS;
+    const bulletY = yPos - (TYPO.BULLET_RADIUS / 2);
+    doc.setFillColor(0, 0, 0);
+    doc.circle(bulletX, bulletY, TYPO.BULLET_RADIUS, 'F');
+
+    const startX = margin + indent + (TYPO.BULLET_RADIUS * 2) + TYPO.BULLET_GAP;
+    const safe = sanitizeText(text);
+    const availableWidth = pageWidth - margin - startX;
+    const lines = doc.splitTextToSize(safe, availableWidth);
     lines.forEach((line: string, index: number) => {
       if (index > 0) checkAddPage(lh);
-      doc.text(line, margin + indent + 8, yPos);
+      doc.text(line, startX, yPos);
       yPos += lh;
     });
     yPos += 2; // small gap after bullet group
@@ -111,12 +150,13 @@ export const generateGovernancePDF = () => {
     doc.setFillColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
     doc.rect(margin, yPos - (headerH - 4), maxWidth, headerH, 'F');
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(TYPO.TABLE);
+    doc.setFont(TYPO.FONT, 'bold');
 
     const colWidth = maxWidth / columns.length;
     columns.forEach((col, index) => {
-      doc.text(col, margin + (index * colWidth) + 3, yPos);
+      const title = sanitizeText(col);
+      doc.text(title, margin + (index * colWidth) + 3, yPos);
     });
     doc.setTextColor(0, 0, 0);
     yPos += Math.max(6, headerH - 2);
@@ -136,12 +176,13 @@ export const generateGovernancePDF = () => {
       doc.setFillColor(245, 245, 245);
       doc.rect(margin, yPos - (rowH - 2), maxWidth, rowH, 'F');
     }
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(TYPO.TABLE);
+    doc.setFont(TYPO.FONT, 'normal');
 
     const colWidth = maxWidth / columns.length;
     columns.forEach((col, index) => {
-      const lines = doc.splitTextToSize(col, colWidth - 4);
+      const safe = sanitizeText(col);
+      const lines = doc.splitTextToSize(safe, colWidth - 4);
       doc.text(lines[0], margin + (index * colWidth) + 3, yPos);
     });
     yPos += rowH;

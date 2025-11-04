@@ -5,6 +5,7 @@ import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, F
 import { StartupJourneyMap } from "@/components/StartupJourneyMap";
 import { MentorJourneyMap } from "@/components/MentorJourneyMap";
 import { ServiceProviderJourneyMap } from "@/components/ServiceProviderJourneyMap";
+import { FunderJourneyMap } from "@/components/FunderJourneyMap";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -479,7 +480,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 </TabsTrigger>
                 <TabsTrigger value="mentor-journey-3" className="gap-2">
                   <MapPin className="w-4 h-4" />
-                  Mentor Journey 3
+                  Funder Journey
                 </TabsTrigger>
                 <TabsTrigger value="database" className="gap-2">
                   <Database className="w-4 h-4" />
@@ -1304,9 +1305,9 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               <ServiceProviderJourneyMap />
             </TabsContent>
 
-            {/* Mentor Journey Map Tab 3 */}
+            {/* Funder Journey Map Tab */}
             <TabsContent value="mentor-journey-3" className="space-y-8 mt-8">
-              <MentorJourneyMap />
+              <FunderJourneyMap />
             </TabsContent>
 
             <TabsContent value="script" className="space-y-8 mt-8">

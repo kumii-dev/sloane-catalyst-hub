@@ -6,7 +6,7 @@ import { Check, Clock, Rocket, Users, Building2, Briefcase, TrendingUp } from "l
 
 interface Feature {
   name: string;
-  status: 'implemented' | 'coming-soon' | 'planned';
+  status: 'implemented' | 'coming-soon' | 'planned' | 'partial';
   description: string;
   benefits: string[];
   availableFor?: string[];
@@ -483,10 +483,21 @@ const funderFeatures: Feature[] = [
       "File sharing",
       "Communication history"
     ]
+  },
+  {
+    name: "Cohort Manager",
+    status: "partial",
+    description: "Create and manage cohorts with bulk subscription capabilities and email-based auto-assignment for organized startup grouping.",
+    benefits: [
+      "Create and manage multiple cohorts",
+      "Bulk assign listings to cohorts",
+      "Email-based auto-assignment",
+      "Track cohort members and status"
+    ]
   }
 ];
 
-const StatusBadge = ({ status }: { status: 'implemented' | 'coming-soon' | 'planned' }) => {
+const StatusBadge = ({ status }: { status: 'implemented' | 'coming-soon' | 'planned' | 'partial' }) => {
   const config = {
     implemented: {
       icon: Check,
@@ -505,6 +516,12 @@ const StatusBadge = ({ status }: { status: 'implemented' | 'coming-soon' | 'plan
       label: "Planned",
       variant: "outline" as const,
       className: "border-primary text-primary"
+    },
+    partial: {
+      icon: Clock,
+      label: "Partially Available",
+      variant: "secondary" as const,
+      className: "bg-blue-500 hover:bg-blue-600 text-white"
     }
   };
 
@@ -576,7 +593,7 @@ const FeatureDocumentation = () => {
                   <Check className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">32</div>
+                  <div className="text-2xl font-bold">33</div>
                   <div className="text-sm text-muted-foreground">Available Now</div>
                 </div>
               </div>
@@ -716,7 +733,7 @@ const FeatureDocumentation = () => {
         <Card className="bg-muted/50">
           <CardContent className="pt-6">
             <h3 className="font-semibold mb-4 text-center">Feature Status Legend</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="flex items-center gap-3">
                 <StatusBadge status="implemented" />
                 <p className="text-sm text-muted-foreground">
@@ -733,6 +750,12 @@ const FeatureDocumentation = () => {
                 <StatusBadge status="planned" />
                 <p className="text-sm text-muted-foreground">
                   Feature is on our roadmap for future development
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <StatusBadge status="partial" />
+                <p className="text-sm text-muted-foreground">
+                  Feature is partially implemented with core functionality available
                 </p>
               </div>
             </div>

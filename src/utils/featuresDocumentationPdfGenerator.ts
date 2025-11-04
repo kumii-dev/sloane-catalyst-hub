@@ -13,6 +13,7 @@ export const generateFeaturesDocumentationPDF = () => {
   const implementedColor = { r: 34, g: 197, b: 94 };
   const comingSoonColor = { r: 251, g: 191, b: 36 };
   const plannedColor = { r: 148, g: 163, b: 184 };
+  const partialColor = { r: 59, g: 130, b: 246 };
   
   const addNewPage = () => {
     doc.addPage();
@@ -91,10 +92,11 @@ export const generateFeaturesDocumentationPDF = () => {
     },
     { 
       persona: 'Funder Features', 
-      total: 12, 
+      total: 13, 
       implemented: 6, 
       comingSoon: 6, 
       planned: 0,
+      partial: 1,
       icon: '💰'
     }
   ];
@@ -743,6 +745,17 @@ export const generateFeaturesDocumentationPDF = () => {
             'Collaboration opportunities',
             'Ecosystem building'
           ]
+        },
+        {
+          name: 'Cohort Manager',
+          status: 'Partially Available',
+          description: 'Create and manage cohorts with bulk subscription capabilities and email-based auto-assignment for organized startup grouping.',
+          benefits: [
+            'Create and manage multiple cohorts',
+            'Bulk assign listings to cohorts',
+            'Email-based auto-assignment',
+            'Track cohort members and status'
+          ]
         }
       ]
     }
@@ -787,7 +800,8 @@ export const generateFeaturesDocumentationPDF = () => {
       const statusColors = {
         'Implemented': implementedColor,
         'Coming Soon': comingSoonColor,
-        'Planned': plannedColor
+        'Planned': plannedColor,
+        'Partially Available': partialColor
       };
       const statusColor = statusColors[feature.status as keyof typeof statusColors];
       

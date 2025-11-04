@@ -65,13 +65,9 @@ const journeyStages: JourneyStage[] = [
   }
 ];
 
-const SectionContent = ({ title, items }: { title: string; items: string[] | string }) => (
+const SectionContent = ({ title, items, color }: { title: string; items: string[] | string; color: string }) => (
   <div className="mb-4">
-    <h4 className={`font-semibold mb-2 ${
-      title === "Pain Points" ? "text-destructive" : 
-      title === "Opportunities" ? "text-primary" : 
-      "text-muted-foreground"
-    }`}>
+    <h4 className={`font-semibold mb-2 ${color}`}>
       {title}:
     </h4>
     {Array.isArray(items) ? (
@@ -111,11 +107,11 @@ const ServiceProviderJourneyMap = () => {
                   <CardTitle className="text-center text-xl">{stage.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6 space-y-4">
-                  <SectionContent title="Touchpoints" items={stage.touchpoints} />
-                  <SectionContent title="Actions" items={stage.actions} />
-                  <SectionContent title="Emotions" items={stage.emotions} />
-                  <SectionContent title="Pain Points" items={stage.painPoints} />
-                  <SectionContent title="Opportunities" items={stage.opportunities} />
+                  <SectionContent title="Touchpoints" items={stage.touchpoints} color="text-blue-600" />
+                  <SectionContent title="Actions" items={stage.actions} color="text-amber-600" />
+                  <SectionContent title="Emotions" items={stage.emotions} color="text-pink-600" />
+                  <SectionContent title="Pain Points" items={stage.painPoints} color="text-destructive" />
+                  <SectionContent title="Opportunities" items={stage.opportunities} color="text-emerald-600" />
                 </CardContent>
               </Card>
               {index < journeyStages.length - 1 && (
@@ -139,11 +135,11 @@ const ServiceProviderJourneyMap = () => {
                   <CardTitle className="text-center text-xl">{stage.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6 space-y-4">
-                  <SectionContent title="Touchpoints" items={stage.touchpoints} />
-                  <SectionContent title="Actions" items={stage.actions} />
-                  <SectionContent title="Emotions" items={stage.emotions} />
-                  <SectionContent title="Pain Points" items={stage.painPoints} />
-                  <SectionContent title="Opportunities" items={stage.opportunities} />
+                  <SectionContent title="Touchpoints" items={stage.touchpoints} color="text-blue-600" />
+                  <SectionContent title="Actions" items={stage.actions} color="text-amber-600" />
+                  <SectionContent title="Emotions" items={stage.emotions} color="text-pink-600" />
+                  <SectionContent title="Pain Points" items={stage.painPoints} color="text-destructive" />
+                  <SectionContent title="Opportunities" items={stage.opportunities} color="text-emerald-600" />
                 </CardContent>
               </Card>
               {index < journeyStages.length - 1 && (

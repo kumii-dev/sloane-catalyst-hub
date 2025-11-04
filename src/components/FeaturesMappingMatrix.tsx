@@ -1,9 +1,10 @@
-import { Check } from 'lucide-react';
+import { Check, Clock } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface FeatureMapping {
   feature: string;
+  notImplemented?: boolean;
   stages: {
     [key: string]: boolean;
   };
@@ -83,6 +84,7 @@ const mentorFeatures: FeatureMapping[] = [
   },
   {
     feature: "Revenue & Payment System",
+    notImplemented: true,
     stages: { "Awareness": false, "Registration": false, "Matching": false, "Mentoring": true, "Growth": true }
   },
   {
@@ -91,6 +93,7 @@ const mentorFeatures: FeatureMapping[] = [
   },
   {
     feature: "Community Forums",
+    notImplemented: true,
     stages: { "Awareness": true, "Registration": false, "Matching": false, "Mentoring": false, "Growth": true }
   }
 ];
@@ -206,14 +209,25 @@ const MatrixTable = ({ features, stages }: MatrixTableProps) => {
           {features.map((feature, index) => (
             <tr key={feature.feature} className={index % 2 === 0 ? 'bg-muted/30' : ''}>
               <td className="p-4 font-medium sticky left-0 bg-background z-10">
-                {feature.feature}
+                <div className="flex items-center gap-2">
+                  {feature.feature}
+                  {feature.notImplemented && (
+                    <span className="text-xs text-muted-foreground italic">(Coming Soon)</span>
+                  )}
+                </div>
               </td>
               {stages.map((stage) => (
                 <td key={stage} className="text-center p-4">
                   {feature.stages[stage] && (
-                    <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary/20">
-                      <Check className="w-4 h-4 text-primary" />
-                    </div>
+                    feature.notImplemented ? (
+                      <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-muted">
+                        <Clock className="w-4 h-4 text-muted-foreground" />
+                      </div>
+                    ) : (
+                      <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary/20">
+                        <Check className="w-4 h-4 text-primary" />
+                      </div>
+                    )
                   )}
                 </td>
               ))}
@@ -312,10 +326,21 @@ const FeaturesMappingMatrix = () => {
         </TabsContent>
       </Tabs>
 
-      <div className="text-center mt-12">
-        <p className="text-sm text-muted-foreground italic">
-          ✓ indicates the platform feature actively supports this journey stage
-        </p>
+      <div className="text-center mt-12 space-y-2">
+        <div className="flex items-center justify-center gap-6 text-sm">
+          <div className="flex items-center gap-2">
+            <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary/20">
+              <Check className="w-4 h-4 text-primary" />
+            </div>
+            <span className="text-muted-foreground">Feature actively supports this stage</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-muted">
+              <Clock className="w-4 h-4 text-muted-foreground" />
+            </div>
+            <span className="text-muted-foreground">Planned feature (coming soon)</span>
+          </div>
+        </div>
       </div>
     </div>
   );

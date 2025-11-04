@@ -455,7 +455,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </Card>
           ) : (
             <Tabs defaultValue="presentation" className="w-full">
-              <TabsList className={`grid w-full ${devMode ? 'grid-cols-7' : 'grid-cols-5'} max-w-5xl mx-auto`}>
+              <TabsList className={`grid w-full ${devMode ? 'grid-cols-9' : 'grid-cols-7'} max-w-6xl mx-auto`}>
                 <TabsTrigger value="presentation" className="gap-2">
                   <Presentation className="w-4 h-4" />
                   Presentation
@@ -470,7 +470,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 </TabsTrigger>
                 <TabsTrigger value="mentor-journey" className="gap-2">
                   <MapPin className="w-4 h-4" />
-                  Mentor Journey
+                  Mentor Journey 1
+                </TabsTrigger>
+                <TabsTrigger value="mentor-journey-2" className="gap-2">
+                  <MapPin className="w-4 h-4" />
+                  Mentor Journey 2
+                </TabsTrigger>
+                <TabsTrigger value="mentor-journey-3" className="gap-2">
+                  <MapPin className="w-4 h-4" />
+                  Mentor Journey 3
                 </TabsTrigger>
                 <TabsTrigger value="database" className="gap-2">
                   <Database className="w-4 h-4" />
@@ -1287,6 +1295,16 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
 
             {/* Mentor Journey Map Tab */}
             <TabsContent value="mentor-journey" className="space-y-8 mt-8">
+              <MentorJourneyMap />
+            </TabsContent>
+
+            {/* Mentor Journey Map Tab 2 */}
+            <TabsContent value="mentor-journey-2" className="space-y-8 mt-8">
+              <MentorJourneyMap />
+            </TabsContent>
+
+            {/* Mentor Journey Map Tab 3 */}
+            <TabsContent value="mentor-journey-3" className="space-y-8 mt-8">
               <MentorJourneyMap />
             </TabsContent>
 

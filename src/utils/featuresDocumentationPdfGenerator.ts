@@ -749,12 +749,13 @@ export const generateFeaturesDocumentationPDF = () => {
         {
           name: 'Cohort Manager',
           status: 'Partially Available',
-          description: 'Create and manage cohorts with bulk subscription capabilities and email-based auto-assignment for organized startup grouping.',
+          description: 'Create and manage cohorts with bulk subscription capabilities and email-based auto-assignment. Core functionality is available; linking individual mentees to active programmes is coming soon.',
           benefits: [
-            'Create and manage multiple cohorts',
-            'Bulk assign listings to cohorts',
-            'Email-based auto-assignment',
-            'Track cohort members and status'
+            'Create and manage multiple cohorts (Available)',
+            'Bulk assign listings to cohorts (Available)',
+            'Email-based auto-assignment (Available)',
+            'Track cohort status and members (Available)',
+            'Link individual mentees to programmes (Coming Soon)'
           ]
         }
       ]

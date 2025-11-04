@@ -487,12 +487,13 @@ const funderFeatures: Feature[] = [
   {
     name: "Cohort Manager",
     status: "partial",
-    description: "Create and manage cohorts with bulk subscription capabilities and email-based auto-assignment for organized startup grouping.",
+    description: "Create and manage cohorts with bulk subscription capabilities and email-based auto-assignment. Core functionality is available; linking individual mentees to active programmes is coming soon.",
     benefits: [
-      "Create and manage multiple cohorts",
-      "Bulk assign listings to cohorts",
-      "Email-based auto-assignment",
-      "Track cohort members and status"
+      "Create and manage multiple cohorts ✓",
+      "Bulk assign listings to cohorts ✓",
+      "Email-based auto-assignment ✓",
+      "Track cohort status and members ✓",
+      "Link individual mentees to programmes (coming soon)"
     ]
   }
 ];

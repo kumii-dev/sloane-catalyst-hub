@@ -6,6 +6,7 @@ import { StartupJourneyMap } from "@/components/StartupJourneyMap";
 import { MentorJourneyMap } from "@/components/MentorJourneyMap";
 import { ServiceProviderJourneyMap } from "@/components/ServiceProviderJourneyMap";
 import { FunderJourneyMap } from "@/components/FunderJourneyMap";
+import FeaturesMappingMatrix from "@/components/FeaturesMappingMatrix";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -481,6 +482,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 <TabsTrigger value="mentor-journey-3" className="gap-2">
                   <MapPin className="w-4 h-4" />
                   Funder Journey
+                </TabsTrigger>
+                <TabsTrigger value="features-matrix" className="gap-2">
+                  <Table className="w-4 h-4" />
+                  Features Matrix
                 </TabsTrigger>
                 <TabsTrigger value="database" className="gap-2">
                   <Database className="w-4 h-4" />
@@ -1308,6 +1313,11 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             {/* Funder Journey Map Tab */}
             <TabsContent value="mentor-journey-3" className="space-y-8 mt-8">
               <FunderJourneyMap />
+            </TabsContent>
+
+            {/* Features Mapping Matrix Tab */}
+            <TabsContent value="features-matrix" className="space-y-8 mt-8">
+              <FeaturesMappingMatrix />
             </TabsContent>
 
             <TabsContent value="script" className="space-y-8 mt-8">

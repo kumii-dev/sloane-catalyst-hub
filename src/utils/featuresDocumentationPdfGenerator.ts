@@ -93,8 +93,8 @@ export const generateFeaturesDocumentationPDF = () => {
     { 
       persona: 'Funder Features', 
       total: 13, 
-      implemented: 6, 
-      comingSoon: 6, 
+      implemented: 7, 
+      comingSoon: 5, 
       planned: 0,
       partial: 1,
       icon: '💰'
@@ -689,6 +689,17 @@ export const generateFeaturesDocumentationPDF = () => {
             'Match score algorithm',
             'Investment criteria alignment',
             'Opportunity alerts'
+          ]
+        },
+        {
+          name: 'Advanced Search & Filters',
+          status: 'Available',
+          description: 'Powerful search and filtering tools to discover startups by sector, stage, location, and more.',
+          benefits: [
+            'Multi-criteria search with 10+ filter options',
+            'Save and load frequently used searches',
+            'Custom filters for industry, stage, location, metrics',
+            'Export search results functionality'
           ]
         },
         {

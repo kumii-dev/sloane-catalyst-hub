@@ -2971,6 +2971,41 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_searches: {
+        Row: {
+          created_at: string
+          funder_id: string
+          id: string
+          name: string
+          search_criteria: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          funder_id: string
+          id?: string
+          name: string
+          search_criteria: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          funder_id?: string
+          id?: string
+          name?: string
+          search_criteria?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_searches_funder_id_fkey"
+            columns: ["funder_id"]
+            isOneToOne: false
+            referencedRelation: "funders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       score_sharing: {
         Row: {
           access_level: string

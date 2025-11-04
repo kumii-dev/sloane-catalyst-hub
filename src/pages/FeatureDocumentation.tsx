@@ -398,13 +398,13 @@ const funderFeatures: Feature[] = [
   },
   {
     name: "Advanced Search & Filters",
-    status: "coming-soon",
+    status: "implemented",
     description: "Powerful search and filtering tools to discover startups by sector, stage, location, and more.",
     benefits: [
-      "Multi-criteria search",
-      "Saved searches",
-      "Custom filters",
-      "Export capabilities"
+      "Multi-criteria search with 10+ filter options",
+      "Save and load frequently used searches",
+      "Custom filters for industry, stage, location, and metrics",
+      "Export search results functionality"
     ]
   },
   {
@@ -599,12 +599,12 @@ const FeatureDocumentation = () => {
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-2">Implemented</div>
-                  <div className="text-4xl font-bold text-green-600">30</div>
-                  <div className="text-xs text-muted-foreground mt-1">70%</div>
+                  <div className="text-4xl font-bold text-green-600">31</div>
+                  <div className="text-xs text-muted-foreground mt-1">72%</div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-2">Coming Soon</div>
-                  <div className="text-4xl font-bold text-orange-500">10</div>
+                  <div className="text-4xl font-bold text-orange-500">9</div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-2">Planned</div>

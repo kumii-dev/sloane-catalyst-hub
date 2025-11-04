@@ -85,8 +85,8 @@ export const generateFeaturesDocumentationPDF = () => {
     { 
       persona: 'Service Provider Features', 
       total: 10, 
-      implemented: 6, 
-      comingSoon: 2, 
+      implemented: 7, 
+      comingSoon: 1, 
       planned: 2,
       icon: '💼'
     },
@@ -577,13 +577,15 @@ export const generateFeaturesDocumentationPDF = () => {
         },
         {
           name: 'Analytics Dashboard',
-          status: 'Coming Soon',
-          description: 'Track your service performance and business metrics.',
+          status: 'Implemented',
+          description: 'Comprehensive analytics dashboard with detailed metrics, charts, and insights on service performance.',
           benefits: [
-            'Revenue analytics',
-            'Client acquisition metrics',
-            'Service performance',
-            'Growth insights'
+            'Real-time performance metrics with trend analysis',
+            'Interactive charts for views, bookings, and revenue',
+            'Conversion funnel visualization and optimization',
+            'Service-level performance comparison',
+            'Exportable analytics reports',
+            'Time-based filtering (7d, 30d, 90d, 1y)'
           ]
         },
         {

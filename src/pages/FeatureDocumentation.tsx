@@ -328,14 +328,16 @@ const providerFeatures: Feature[] = [
     ]
   },
   {
-    name: "Performance Analytics",
+    name: "Analytics Dashboard",
     status: "implemented",
-    description: "Track your service performance with detailed analytics on views, bookings, and revenue.",
+    description: "Comprehensive analytics dashboard with detailed metrics, charts, and insights on service performance.",
     benefits: [
-      "View and engagement metrics",
-      "Booking conversion rates",
-      "Revenue tracking",
-      "Client feedback analysis"
+      "Real-time performance metrics with trend analysis",
+      "Interactive charts for views, bookings, and revenue",
+      "Conversion funnel visualization and optimization",
+      "Service-level performance comparison",
+      "Exportable analytics reports",
+      "Time-based filtering (7d, 30d, 90d, 1y)"
     ]
   },
   {
@@ -599,12 +601,12 @@ const FeatureDocumentation = () => {
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-2">Implemented</div>
-                  <div className="text-4xl font-bold text-green-600">31</div>
-                  <div className="text-xs text-muted-foreground mt-1">72%</div>
+                  <div className="text-4xl font-bold text-green-600">32</div>
+                  <div className="text-xs text-muted-foreground mt-1">74%</div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-2">Coming Soon</div>
-                  <div className="text-4xl font-bold text-orange-500">9</div>
+                  <div className="text-4xl font-bold text-orange-500">8</div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-2">Planned</div>

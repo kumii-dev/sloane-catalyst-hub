@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import ProfileOptimization from '@/components/profile/ProfileOptimization';
+import ProviderAnalyticsDashboard from '@/components/provider/ProviderAnalyticsDashboard';
 import { 
   Loader2, 
   Plus, 
@@ -229,13 +230,21 @@ const ProviderDashboard = () => {
           </Button>
         </div>
 
-        {/* Profile Optimization */}
-        <div className="mb-8">
-          <ProfileOptimization provider={provider} categories={[]} />
-        </div>
+        {/* Tabs for Dashboard Sections */}
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="listings">Manage Listings</TabsTrigger>
+          </TabsList>
 
-        {/* Stats Cards */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
+          {/* Overview Tab */}
+          <TabsContent value="overview" className="space-y-6">
+            {/* Profile Optimization */}
+            <ProfileOptimization provider={provider} categories={[]} />
+
+            {/* Stats Cards */}
+            <div className="grid md:grid-cols-4 gap-6">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -283,10 +292,17 @@ const ProviderDashboard = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
+            </div>
+          </TabsContent>
 
-        {/* Listings Management */}
-        <Card>
+          {/* Analytics Tab */}
+          <TabsContent value="analytics">
+            <ProviderAnalyticsDashboard providerId={user?.id || ''} listings={listings} />
+          </TabsContent>
+
+          {/* Listings Management Tab */}
+          <TabsContent value="listings">
+            <Card>
           <CardHeader>
             <CardTitle>Your Listings</CardTitle>
             <CardDescription>Manage your software service listings</CardDescription>
@@ -367,6 +383,8 @@ const ProviderDashboard = () => {
             </Tabs>
           </CardContent>
         </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </Layout>
   );

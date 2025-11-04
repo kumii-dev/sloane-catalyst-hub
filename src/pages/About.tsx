@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText, GraduationCap, MapPin } from "lucide-react";
 import { StartupJourneyMap } from "@/components/StartupJourneyMap";
 import { MentorJourneyMap } from "@/components/MentorJourneyMap";
+import { ServiceProviderJourneyMap } from "@/components/ServiceProviderJourneyMap";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -474,7 +475,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 </TabsTrigger>
                 <TabsTrigger value="mentor-journey-2" className="gap-2">
                   <MapPin className="w-4 h-4" />
-                  Mentor Journey 2
+                  Provider Journey
                 </TabsTrigger>
                 <TabsTrigger value="mentor-journey-3" className="gap-2">
                   <MapPin className="w-4 h-4" />
@@ -1298,9 +1299,9 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               <MentorJourneyMap />
             </TabsContent>
 
-            {/* Mentor Journey Map Tab 2 */}
+            {/* Service Provider Journey Map Tab */}
             <TabsContent value="mentor-journey-2" className="space-y-8 mt-8">
-              <MentorJourneyMap />
+              <ServiceProviderJourneyMap />
             </TabsContent>
 
             {/* Mentor Journey Map Tab 3 */}

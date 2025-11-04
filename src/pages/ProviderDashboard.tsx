@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import ProfileOptimization from '@/components/profile/ProfileOptimization';
 import { 
   Loader2, 
   Plus, 
@@ -226,6 +227,11 @@ const ProviderDashboard = () => {
               Create New Listing
             </Link>
           </Button>
+        </div>
+
+        {/* Profile Optimization */}
+        <div className="mb-8">
+          <ProfileOptimization provider={provider} categories={[]} />
         </div>
 
         {/* Stats Cards */}

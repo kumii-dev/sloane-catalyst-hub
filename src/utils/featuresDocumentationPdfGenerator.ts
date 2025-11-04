@@ -85,8 +85,8 @@ export const generateFeaturesDocumentationPDF = () => {
     { 
       persona: 'Service Provider Features', 
       total: 10, 
-      implemented: 5, 
-      comingSoon: 3, 
+      implemented: 6, 
+      comingSoon: 2, 
       planned: 2,
       icon: '💼'
     },
@@ -562,6 +562,17 @@ export const generateFeaturesDocumentationPDF = () => {
             'Public rating display',
             'Review management',
             'Reputation building'
+          ]
+        },
+        {
+          name: 'Profile Optimization Tools',
+          status: 'Available',
+          description: 'Tools and guidance to optimize your provider profile for maximum visibility.',
+          benefits: [
+            'Profile completeness percentage tracker',
+            'Interactive checklist with required and recommended items',
+            'Real-time optimization tips',
+            'Visual progress tracking'
           ]
         },
         {

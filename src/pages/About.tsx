@@ -26,6 +26,7 @@ import { generateAuditLoggingPDF } from "@/utils/auditLoggingPdfGenerator";
 import { generateDisasterRecoveryPDF } from "@/utils/disasterRecoveryPdfGenerator";
 import { generateVendorRiskPDF } from "@/utils/vendorRiskPdfGenerator";
 import { generateSecurityAwarenessPDF } from "@/utils/securityAwarenessPdfGenerator";
+import { generateFeaturesDocumentationPDF } from "@/utils/featuresDocumentationPdfGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
@@ -366,6 +367,19 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadFeaturesDocumentationPDF = () => {
+    try {
+      toast.loading("Generating Features Documentation PDF...");
+      generateFeaturesDocumentationPDF();
+      toast.dismiss();
+      toast.success("Features Documentation PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate Features Documentation PDF");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -564,6 +578,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   >
                     <GraduationCap className="w-5 h-5" />
                     Download Security Awareness Training PDF
+                  </Button>
+                  <Button 
+                    onClick={downloadFeaturesDocumentationPDF} 
+                    variant="default" 
+                    size="lg"
+                    className="gap-2 bg-primary hover:bg-primary/90"
+                  >
+                    <FileDown className="w-5 h-5" />
+                    Download Features Documentation PDF
                   </Button>
                   <Button
                     onClick={downloadJourneyMaps} 

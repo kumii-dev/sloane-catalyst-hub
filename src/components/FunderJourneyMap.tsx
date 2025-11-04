@@ -106,9 +106,9 @@ export const FunderJourneyMap = () => {
       </div>
 
       {/* Journey Stages - Horizontal Flow */}
-      <div className="relative">
+      <div className="relative overflow-visible">
         {/* Desktop View - Horizontal */}
-        <div className="hidden lg:flex items-start justify-center gap-4 relative overflow-x-auto pb-4">
+        <div className="hidden lg:flex items-start justify-start gap-4 relative pb-4">
           {journeyStages.map((stage, index) => (
             <div key={stage.title} className="flex items-start flex-shrink-0">
               {/* Stage Card */}

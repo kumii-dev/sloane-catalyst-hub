@@ -566,7 +566,7 @@ export const generateFeaturesDocumentationPDF = () => {
         },
         {
           name: 'Profile Optimization Tools',
-          status: 'Available',
+          status: 'Implemented',
           description: 'Tools and guidance to optimize your provider profile for maximum visibility.',
           benefits: [
             'Profile completeness percentage tracker',
@@ -697,7 +697,7 @@ export const generateFeaturesDocumentationPDF = () => {
         },
         {
           name: 'Advanced Search & Filters',
-          status: 'Available',
+          status: 'Implemented',
           description: 'Powerful search and filtering tools to discover startups by sector, stage, location, and more.',
           benefits: [
             'Multi-criteria search with 10+ filter options',

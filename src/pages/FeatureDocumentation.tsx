@@ -586,42 +586,30 @@ const FeatureDocumentation = () => {
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
+        <div className="space-y-6">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-primary">Feature Implementation Status</h2>
+          </div>
+          
+          <Card className="bg-muted/30">
             <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-green-500/20 flex items-center justify-center">
-                  <Check className="h-6 w-6 text-green-600" />
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-2">Total Features</div>
+                  <div className="text-4xl font-bold text-primary">43</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold">33</div>
-                  <div className="text-sm text-muted-foreground">Available Now</div>
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-2">Implemented</div>
+                  <div className="text-4xl font-bold text-green-600">29</div>
+                  <div className="text-xs text-muted-foreground mt-1">67%</div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-orange-500/20 flex items-center justify-center">
-                  <Clock className="h-6 w-6 text-orange-600" />
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-2">Coming Soon</div>
+                  <div className="text-4xl font-bold text-orange-500">11</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold">9</div>
-                  <div className="text-sm text-muted-foreground">Coming Soon</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Rocket className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold">1</div>
-                  <div className="text-sm text-muted-foreground">In Planning</div>
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-2">Planned</div>
+                  <div className="text-4xl font-bold text-slate-400">2</div>
                 </div>
               </div>
             </CardContent>

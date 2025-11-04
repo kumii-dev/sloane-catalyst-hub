@@ -85,16 +85,16 @@ export const generateFeaturesDocumentationPDF = () => {
     { 
       persona: 'Service Provider Features', 
       total: 10, 
-      implemented: 7, 
-      comingSoon: 1, 
+      implemented: 6, 
+      comingSoon: 2, 
       planned: 2,
       icon: '💼'
     },
     { 
       persona: 'Funder Features', 
       total: 13, 
-      implemented: 8, 
-      comingSoon: 4, 
+      implemented: 9, 
+      comingSoon: 3, 
       planned: 0,
       partial: 1,
       icon: '💰'

@@ -143,8 +143,17 @@ const providerFeatures: FeatureMapping[] = [
 
 const funderFeatures: FeatureMapping[] = [
   {
-    feature: "Deal Flow Dashboard",
+    feature: "Funding Opportunities Management",
     stages: { "Awareness": true, "Registration": false, "Discovery": true, "Evaluation": true, "Investment": false, "Portfolio": false }
+  },
+  {
+    feature: "Application Management",
+    stages: { "Awareness": false, "Registration": false, "Discovery": true, "Evaluation": true, "Investment": false, "Portfolio": false }
+  },
+  {
+    feature: "Pipeline Visualization & Workflow",
+    notImplemented: true,
+    stages: { "Awareness": false, "Registration": false, "Discovery": true, "Evaluation": true, "Investment": true, "Portfolio": false }
   },
   {
     feature: "Smart Startup Matching",
@@ -152,10 +161,12 @@ const funderFeatures: FeatureMapping[] = [
   },
   {
     feature: "Advanced Search & Filters",
+    notImplemented: true,
     stages: { "Awareness": false, "Registration": false, "Discovery": true, "Evaluation": false, "Investment": false, "Portfolio": false }
   },
   {
     feature: "Due Diligence Tools",
+    notImplemented: true,
     stages: { "Awareness": false, "Registration": false, "Discovery": false, "Evaluation": true, "Investment": false, "Portfolio": false }
   },
   {
@@ -172,10 +183,12 @@ const funderFeatures: FeatureMapping[] = [
   },
   {
     feature: "Investment Management",
+    notImplemented: true,
     stages: { "Awareness": false, "Registration": false, "Discovery": false, "Evaluation": false, "Investment": true, "Portfolio": true }
   },
   {
     feature: "Portfolio Tracking",
+    notImplemented: true,
     stages: { "Awareness": false, "Registration": false, "Discovery": false, "Evaluation": false, "Investment": false, "Portfolio": true }
   },
   {

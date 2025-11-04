@@ -296,7 +296,7 @@ const providerFeatures: Feature[] = [
   },
   {
     name: "Payment Processing",
-    status: "implemented",
+    status: "planned",
     description: "Secure payment processing for service transactions with multiple payment methods.",
     benefits: [
       "Credit card processing",

@@ -85,9 +85,9 @@ export const generateFeaturesDocumentationPDF = () => {
     { 
       persona: 'Service Provider Features', 
       total: 10, 
-      implemented: 6, 
+      implemented: 5, 
       comingSoon: 3, 
-      planned: 1,
+      planned: 2,
       icon: '💼'
     },
     { 
@@ -533,7 +533,7 @@ export const generateFeaturesDocumentationPDF = () => {
         },
         {
           name: 'Payment Processing',
-          status: 'Implemented',
+          status: 'Planned',
           description: 'Secure payment collection for your services.',
           benefits: [
             'Multiple payment methods',

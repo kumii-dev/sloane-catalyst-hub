@@ -67,6 +67,7 @@ import SessionReview from "./pages/SessionReview";
 import InstallPWA from "./pages/InstallPWA";
 import MatchingDashboard from "./pages/MatchingDashboard";
 import PerformanceDashboard from "./pages/PerformanceDashboard";
+import FeatureDocumentation from "./pages/FeatureDocumentation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -140,6 +141,7 @@ const App = () => (
           <Route path="/files" element={<Files />} />
           <Route path="/copilot" element={<Copilot />} />
             <Route path="/about" element={<About />} />
+            <Route path="/features" element={<FeatureDocumentation />} />
             <Route path="/review/:sessionId" element={<SessionReview />} />
             <Route path="/video-creator" element={<VideoCreator />} />
             <Route path="/install" element={<InstallPWA />} />

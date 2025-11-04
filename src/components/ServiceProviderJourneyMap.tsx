@@ -73,11 +73,11 @@ const SectionContent = ({ title, items, color }: { title: string; items: string[
     {Array.isArray(items) ? (
       <ul className="space-y-1">
         {items.map((item, idx) => (
-          <li key={idx} className="text-sm">• {item}</li>
+          <li key={idx} className="text-sm leading-relaxed">• {item}</li>
         ))}
       </ul>
     ) : (
-      <p className="text-sm italic">{items}</p>
+      <p className="text-sm italic leading-relaxed">{items}</p>
     )}
   </div>
 );
@@ -85,7 +85,7 @@ const SectionContent = ({ title, items, color }: { title: string; items: string[
 const ServiceProviderJourneyMap = () => {
   return (
     <div className="w-full py-8 px-4">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1600px] mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">
             🎯 Service Provider Journey Map
@@ -96,17 +96,17 @@ const ServiceProviderJourneyMap = () => {
         </div>
 
         {/* Desktop: Horizontal Layout */}
-        <div className="hidden lg:flex items-start justify-between gap-4 mb-8">
+        <div className="hidden lg:flex items-start justify-between gap-6 mb-8">
           {journeyStages.map((stage, index) => (
-            <div key={stage.title} className="flex items-start flex-1">
+            <div key={stage.title} className="flex items-start flex-1 min-w-0">
               <Card className="w-full shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className={`bg-gradient-to-br ${stage.gradient} text-white rounded-t-2xl`}>
+                <CardHeader className={`bg-gradient-to-br ${stage.gradient} text-white rounded-t-2xl p-6`}>
                   <div className="flex items-center justify-center mb-3">
                     {stage.icon}
                   </div>
                   <CardTitle className="text-center text-xl">{stage.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="pt-6 space-y-4">
+                <CardContent className="pt-6 pb-6 px-5 space-y-4">
                   <SectionContent title="Touchpoints" items={stage.touchpoints} color="text-blue-600" />
                   <SectionContent title="Actions" items={stage.actions} color="text-amber-600" />
                   <SectionContent title="Emotions" items={stage.emotions} color="text-pink-600" />
@@ -115,7 +115,7 @@ const ServiceProviderJourneyMap = () => {
                 </CardContent>
               </Card>
               {index < journeyStages.length - 1 && (
-                <div className="flex items-center justify-center mx-2 mt-20">
+                <div className="flex items-center justify-center mx-3 mt-24 flex-shrink-0">
                   <span className="text-4xl text-primary animate-pulse">→</span>
                 </div>
               )}

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocation } from "react-router-dom";
+import { FloatingAIChat } from "@/components/FloatingAIChat";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -101,6 +102,7 @@ export function Layout({ children, showSidebar = true, hideSecondarySidebar = fa
         <main className="pt-16">
           {children}
         </main>
+        <FloatingAIChat />
       </div>
     );
   }
@@ -150,6 +152,7 @@ export function Layout({ children, showSidebar = true, hideSecondarySidebar = fa
           </div>
         </main>
       </div>
+      <FloatingAIChat />
     </div>
   );
 }

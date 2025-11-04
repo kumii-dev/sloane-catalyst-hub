@@ -9,6 +9,10 @@ export const generateFeaturesDocumentationPDF = () => {
   let yPos = margin;
 
   const kumiiGreen = { r: 76, g: 130, b: 88 };
+  const kumiiGold = { r: 218, g: 165, b: 32 };
+  const implementedColor = { r: 34, g: 197, b: 94 };
+  const comingSoonColor = { r: 251, g: 191, b: 36 };
+  const plannedColor = { r: 148, g: 163, b: 184 };
   
   const addNewPage = () => {
     doc.addPage();
@@ -21,24 +25,238 @@ export const generateFeaturesDocumentationPDF = () => {
     }
   };
 
-  // Title Page
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(24);
-  doc.setTextColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
-  doc.text('Kumii Platform', pageWidth / 2, yPos, { align: 'center' });
+  // ========== ENHANCED TITLE PAGE WITH DASHBOARD ==========
   
-  yPos += 15;
-  doc.setFontSize(18);
+  // Main Title
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(32);
+  doc.setTextColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
+  doc.text('Kumii Platform', pageWidth / 2, yPos + 15, { align: 'center' });
+  
+  // Subtitle
+  yPos += 25;
+  doc.setFontSize(20);
+  doc.setTextColor(kumiiGold.r, kumiiGold.g, kumiiGold.b);
   doc.text('Feature Documentation', pageWidth / 2, yPos, { align: 'center' });
   
-  yPos += 15;
-  doc.setFontSize(12);
+  // Tagline
+  yPos += 12;
+  doc.setFontSize(11);
   doc.setTextColor(100, 100, 100);
-  doc.text('Complete Platform Capabilities', pageWidth / 2, yPos, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.text('Empowering African Startups Through Innovation', pageWidth / 2, yPos, { align: 'center' });
   
+  // Date
+  yPos += 8;
+  doc.setFontSize(9);
+  doc.setTextColor(120, 120, 120);
+  doc.text(`Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, pageWidth / 2, yPos, { align: 'center' });
+  
+  // ========== IMPLEMENTATION DASHBOARD ==========
   yPos += 20;
+  
+  // Dashboard Title
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
+  doc.text('Feature Implementation Status', pageWidth / 2, yPos, { align: 'center' });
+  
+  yPos += 8;
+  
+  // Dashboard stats
+  const dashboardStats = [
+    { 
+      persona: 'Startup Features', 
+      total: 10, 
+      implemented: 10, 
+      comingSoon: 0, 
+      planned: 0,
+      icon: '🚀'
+    },
+    { 
+      persona: 'Mentor Features', 
+      total: 10, 
+      implemented: 8, 
+      comingSoon: 2, 
+      planned: 0,
+      icon: '👥'
+    },
+    { 
+      persona: 'Service Provider Features', 
+      total: 10, 
+      implemented: 6, 
+      comingSoon: 3, 
+      planned: 1,
+      icon: '💼'
+    },
+    { 
+      persona: 'Funder Features', 
+      total: 12, 
+      implemented: 6, 
+      comingSoon: 6, 
+      planned: 0,
+      icon: '💰'
+    }
+  ];
+  
+  // Calculate totals
+  const totals = dashboardStats.reduce((acc, stat) => ({
+    total: acc.total + stat.total,
+    implemented: acc.implemented + stat.implemented,
+    comingSoon: acc.comingSoon + stat.comingSoon,
+    planned: acc.planned + stat.planned
+  }), { total: 0, implemented: 0, comingSoon: 0, planned: 0 });
+  
+  // Overall Summary Box
+  yPos += 5;
+  const summaryBoxHeight = 28;
+  doc.setFillColor(245, 245, 245);
+  doc.roundedRect(margin, yPos, maxWidth, summaryBoxHeight, 3, 3, 'F');
+  
+  // Summary stats in one line
+  const summaryY = yPos + 8;
+  const columnWidth = maxWidth / 4;
+  
   doc.setFontSize(10);
-  doc.text(`Generated: ${new Date().toLocaleDateString()}`, pageWidth / 2, yPos, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(80, 80, 80);
+  doc.text('Total Features', margin + (columnWidth * 0) + columnWidth / 2, summaryY, { align: 'center' });
+  doc.text('Implemented', margin + (columnWidth * 1) + columnWidth / 2, summaryY, { align: 'center' });
+  doc.text('Coming Soon', margin + (columnWidth * 2) + columnWidth / 2, summaryY, { align: 'center' });
+  doc.text('Planned', margin + (columnWidth * 3) + columnWidth / 2, summaryY, { align: 'center' });
+  
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
+  doc.text(totals.total.toString(), margin + (columnWidth * 0) + columnWidth / 2, summaryY + 10, { align: 'center' });
+  
+  doc.setTextColor(implementedColor.r, implementedColor.g, implementedColor.b);
+  doc.text(totals.implemented.toString(), margin + (columnWidth * 1) + columnWidth / 2, summaryY + 10, { align: 'center' });
+  
+  doc.setTextColor(comingSoonColor.r, comingSoonColor.g, comingSoonColor.b);
+  doc.text(totals.comingSoon.toString(), margin + (columnWidth * 2) + columnWidth / 2, summaryY + 10, { align: 'center' });
+  
+  doc.setTextColor(plannedColor.r, plannedColor.g, plannedColor.b);
+  doc.text(totals.planned.toString(), margin + (columnWidth * 3) + columnWidth / 2, summaryY + 10, { align: 'center' });
+  
+  yPos += summaryBoxHeight + 10;
+  
+  // Persona Breakdown
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
+  doc.text('Breakdown by User Type', pageWidth / 2, yPos, { align: 'center' });
+  
+  yPos += 8;
+  
+  // Draw persona stats
+  dashboardStats.forEach((stat) => {
+    const boxHeight = 30;
+    const percentage = (stat.implemented / stat.total * 100).toFixed(0);
+    
+    // Box background
+    doc.setFillColor(250, 250, 250);
+    doc.roundedRect(margin, yPos, maxWidth, boxHeight, 2, 2, 'F');
+    
+    // Border based on completion
+    if (stat.implemented === stat.total) {
+      doc.setDrawColor(implementedColor.r, implementedColor.g, implementedColor.b);
+    } else if (stat.implemented > stat.total / 2) {
+      doc.setDrawColor(comingSoonColor.r, comingSoonColor.g, comingSoonColor.b);
+    } else {
+      doc.setDrawColor(plannedColor.r, plannedColor.g, plannedColor.b);
+    }
+    doc.setLineWidth(0.5);
+    doc.roundedRect(margin, yPos, maxWidth, boxHeight, 2, 2, 'S');
+    
+    // Persona name
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(40, 40, 40);
+    doc.text(stat.persona, margin + 5, yPos + 8);
+    
+    // Stats on right side
+    const statsX = pageWidth - margin - 5;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(80, 80, 80);
+    
+    // Percentage circle/badge
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    if (stat.implemented === stat.total) {
+      doc.setTextColor(implementedColor.r, implementedColor.g, implementedColor.b);
+    } else {
+      doc.setTextColor(comingSoonColor.r, comingSoonColor.g, comingSoonColor.b);
+    }
+    doc.text(`${percentage}%`, statsX, yPos + 8, { align: 'right' });
+    
+    // Progress bar
+    const barY = yPos + 14;
+    const barWidth = maxWidth - 10;
+    const barHeight = 4;
+    const progressWidth = (barWidth * stat.implemented) / stat.total;
+    
+    // Background bar
+    doc.setFillColor(220, 220, 220);
+    doc.roundedRect(margin + 5, barY, barWidth, barHeight, 1, 1, 'F');
+    
+    // Progress bar
+    if (stat.implemented === stat.total) {
+      doc.setFillColor(implementedColor.r, implementedColor.g, implementedColor.b);
+    } else {
+      doc.setFillColor(comingSoonColor.r, comingSoonColor.g, comingSoonColor.b);
+    }
+    doc.roundedRect(margin + 5, barY, progressWidth, barHeight, 1, 1, 'F');
+    
+    // Status breakdown text
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    const statusY = yPos + 23;
+    
+    doc.setTextColor(implementedColor.r, implementedColor.g, implementedColor.b);
+    doc.text(`${stat.implemented} Implemented`, margin + 5, statusY);
+    
+    if (stat.comingSoon > 0) {
+      doc.setTextColor(comingSoonColor.r, comingSoonColor.g, comingSoonColor.b);
+      doc.text(`${stat.comingSoon} Coming Soon`, margin + 50, statusY);
+    }
+    
+    if (stat.planned > 0) {
+      doc.setTextColor(plannedColor.r, plannedColor.g, plannedColor.b);
+      doc.text(`${stat.planned} Planned`, margin + 95, statusY);
+    }
+    
+    yPos += boxHeight + 4;
+  });
+  
+  // Legend at bottom of first page
+  yPos += 6;
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(60, 60, 60);
+  doc.text('Status Legend:', margin, yPos);
+  
+  yPos += 6;
+  const legendX = margin + 5;
+  
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  
+  doc.setFillColor(implementedColor.r, implementedColor.g, implementedColor.b);
+  doc.circle(legendX, yPos - 1.5, 2, 'F');
+  doc.setTextColor(60, 60, 60);
+  doc.text('Implemented - Feature is live and available', legendX + 5, yPos);
+  
+  yPos += 5;
+  doc.setFillColor(comingSoonColor.r, comingSoonColor.g, comingSoonColor.b);
+  doc.circle(legendX, yPos - 1.5, 2, 'F');
+  doc.text('Coming Soon - In active development', legendX + 5, yPos);
+  
+  yPos += 5;
+  doc.setFillColor(plannedColor.r, plannedColor.g, plannedColor.b);
+  doc.circle(legendX, yPos - 1.5, 2, 'F');
+  doc.text('Planned - Scheduled for future release', legendX + 5, yPos);
 
   // All features data
   const featureSections = [
@@ -530,127 +748,161 @@ export const generateFeaturesDocumentationPDF = () => {
     }
   ];
 
-  // Add features sections
+  // ========== FEATURE SECTIONS ==========
   featureSections.forEach((section, sectionIndex) => {
-    if (sectionIndex > 0) addNewPage();
+    addNewPage();
     
-    // Section header
-    yPos = margin + 10;
-    doc.setFontSize(20);
+    // Section header with background
+    yPos = margin;
+    const headerHeight = 20;
+    doc.setFillColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
+    doc.rect(0, yPos, pageWidth, headerHeight, 'F');
+    
+    doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
-    doc.text(section.title, margin, yPos);
+    doc.setTextColor(255, 255, 255);
+    doc.text(section.title, pageWidth / 2, yPos + 13, { align: 'center' });
     
-    yPos += 15;
+    yPos += headerHeight + 12;
     
     // Features
-    section.features.forEach((feature) => {
-      checkPageBreak(60);
+    section.features.forEach((feature, featureIndex) => {
+      checkPageBreak(70);
       
-      // Feature name
-      doc.setFontSize(14);
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(0, 0, 0);
-      doc.text(feature.name, margin, yPos);
-      
-      // Status badge
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      const statusColors = {
-        'Implemented': { r: 34, g: 197, b: 94 },
-        'Coming Soon': { r: 251, g: 191, b: 36 },
-        'Planned': { r: 148, g: 163, b: 184 }
-      };
-      const statusColor = statusColors[feature.status as keyof typeof statusColors];
-      doc.setTextColor(statusColor.r, statusColor.g, statusColor.b);
-      doc.text(`[${feature.status}]`, margin + 100, yPos);
+      // Feature card background
+      const cardStartY = yPos;
+      const estimatedHeight = 55;
+      doc.setFillColor(248, 250, 252);
+      doc.roundedRect(margin, yPos, maxWidth, estimatedHeight, 2, 2, 'F');
       
       yPos += 8;
+      
+      // Feature name and status on same line
+      doc.setFontSize(13);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(30, 30, 30);
+      doc.text(feature.name, margin + 5, yPos);
+      
+      // Status badge with background
+      const statusColors = {
+        'Implemented': implementedColor,
+        'Coming Soon': comingSoonColor,
+        'Planned': plannedColor
+      };
+      const statusColor = statusColors[feature.status as keyof typeof statusColors];
+      
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      const statusText = feature.status.toUpperCase();
+      const statusWidth = doc.getTextWidth(statusText) + 6;
+      const statusX = pageWidth - margin - statusWidth - 5;
+      
+      doc.setFillColor(statusColor.r, statusColor.g, statusColor.b);
+      doc.roundedRect(statusX, yPos - 4, statusWidth, 6, 1, 1, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.text(statusText, statusX + 3, yPos);
+      
+      yPos += 7;
       
       // Description
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
-      doc.setTextColor(60, 60, 60);
-      const descLines = doc.splitTextToSize(feature.description, maxWidth);
-      doc.text(descLines, margin, yPos);
-      yPos += descLines.length * 5;
+      doc.setTextColor(70, 70, 70);
+      const descLines = doc.splitTextToSize(feature.description, maxWidth - 10);
+      doc.text(descLines, margin + 5, yPos);
+      yPos += descLines.length * 5 + 4;
       
-      yPos += 3;
-      
-      // Benefits
+      // Benefits header
       doc.setFontSize(9);
       doc.setFont('helvetica', 'bold');
-      doc.setTextColor(0, 0, 0);
-      doc.text('Key Benefits:', margin, yPos);
+      doc.setTextColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
+      doc.text('KEY BENEFITS', margin + 5, yPos);
       yPos += 5;
       
+      // Benefits list
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(80, 80, 80);
-      feature.benefits.forEach((benefit) => {
+      doc.setFontSize(9);
+      
+      feature.benefits.forEach((benefit, benefitIndex) => {
         checkPageBreak(10);
-        doc.circle(margin + 2, yPos - 1, 0.8, 'F');
-        const benefitLines = doc.splitTextToSize(benefit, maxWidth - 8);
-        doc.text(benefitLines, margin + 6, yPos);
-        yPos += benefitLines.length * 4 + 1;
+        
+        // Checkmark bullet
+        doc.setTextColor(implementedColor.r, implementedColor.g, implementedColor.b);
+        doc.text('✓', margin + 7, yPos);
+        
+        doc.setTextColor(80, 80, 80);
+        const benefitLines = doc.splitTextToSize(benefit, maxWidth - 20);
+        doc.text(benefitLines, margin + 12, yPos);
+        yPos += benefitLines.length * 4 + 2;
       });
       
-      yPos += 8;
-      
-      // Separator line
-      doc.setDrawColor(200, 200, 200);
-      doc.line(margin, yPos, pageWidth - margin, yPos);
-      yPos += 8;
+      yPos += 6;
     });
   });
 
-  // Summary page
+
+  // ========== CLOSING PAGE ==========
   addNewPage();
-  yPos = margin + 10;
+  yPos = margin + 30;
   
-  doc.setFontSize(18);
+  // Closing statement
+  doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
-  doc.text('Implementation Summary', margin, yPos);
+  doc.text('Powering African Innovation', pageWidth / 2, yPos, { align: 'center' });
   
   yPos += 15;
   
-  const stats = [
-    { label: 'Total Startup Features', value: '10/10 Implemented', color: { r: 34, g: 197, b: 94 } },
-    { label: 'Total Mentor Features', value: '8/10 Implemented', color: { r: 34, g: 197, b: 94 } },
-    { label: 'Total Service Provider Features', value: '6/10 Implemented', color: { r: 251, g: 191, b: 36 } },
-    { label: 'Total Funder Features', value: '6/12 Implemented', color: { r: 251, g: 191, b: 36 } }
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(70, 70, 70);
+  
+  const closingText = [
+    'The Kumii Platform is continuously evolving to better serve the African startup ecosystem.',
+    '',
+    'All implemented features are fully functional and available to users today, providing',
+    'immediate value to startups, mentors, service providers, and funders across the continent.',
+    '',
+    'Features marked as "Coming Soon" are in active development and will be released in',
+    'upcoming updates as we continue to enhance the platform based on user feedback and',
+    'emerging needs in the ecosystem.',
+    '',
+    'Our commitment is to build Africa\'s most comprehensive startup support platform,',
+    'democratizing access to resources, funding, mentorship, and services that help',
+    'entrepreneurs succeed.'
   ];
   
-  stats.forEach((stat) => {
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(0, 0, 0);
-    doc.text(stat.label, margin, yPos);
-    
-    doc.setTextColor(stat.color.r, stat.color.g, stat.color.b);
-    doc.text(stat.value, pageWidth - margin, yPos, { align: 'right' });
-    
-    yPos += 12;
+  closingText.forEach((line) => {
+    if (line === '') {
+      yPos += 6;
+    } else {
+      doc.text(line, pageWidth / 2, yPos, { align: 'center' });
+      yPos += 6;
+    }
   });
   
-  yPos += 10;
+  yPos += 15;
   
+  // Contact info box
+  const contactBoxHeight = 35;
+  doc.setFillColor(kumiiGreen.r, kumiiGreen.g, kumiiGreen.b);
+  doc.roundedRect(margin + 20, yPos, maxWidth - 40, contactBoxHeight, 3, 3, 'F');
+  
+  yPos += 12;
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(255, 255, 255);
+  doc.text('Get Started Today', pageWidth / 2, yPos, { align: 'center' });
+  
+  yPos += 8;
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100, 100, 100);
-  const footerText = [
-    'The Kumii Platform is continuously evolving to better serve the African startup ecosystem.',
-    'All implemented features are fully functional and available to users today.',
-    'Coming Soon features are in active development and will be released in upcoming updates.',
-    '',
-    'For more information, visit our platform or contact support.'
-  ];
+  doc.text('Visit our platform to explore all features and join the ecosystem', pageWidth / 2, yPos, { align: 'center' });
   
-  footerText.forEach((line) => {
-    const lines = doc.splitTextToSize(line, maxWidth);
-    doc.text(lines, margin, yPos);
-    yPos += lines.length * 5 + 2;
-  });
+  yPos += 6;
+  doc.setFont('helvetica', 'bold');
+  doc.text('support@kumii.africa', pageWidth / 2, yPos, { align: 'center' });
 
   // Save PDF
   doc.save('kumii-features-documentation.pdf');

@@ -466,13 +466,15 @@ const funderFeatures: Feature[] = [
   },
   {
     name: "Portfolio Tracking",
-    status: "coming-soon",
-    description: "Monitor and track all your portfolio companies with performance metrics and updates.",
+    status: "implemented",
+    description: "Monitor and track all your portfolio companies with performance metrics, visualizations, and key investment data.",
     benefits: [
-      "Portfolio dashboard",
-      "Performance metrics",
-      "Company updates",
-      "ROI tracking"
+      "Dashboard view of all funded startups",
+      "Key metrics: total funded, portfolio size, average deal size",
+      "Industry and stage distribution charts",
+      "Detailed company information with funding history",
+      "Filter portfolio by industry and other criteria",
+      "Export portfolio reports"
     ]
   },
   {
@@ -601,12 +603,12 @@ const FeatureDocumentation = () => {
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-2">Implemented</div>
-                  <div className="text-4xl font-bold text-green-600">32</div>
-                  <div className="text-xs text-muted-foreground mt-1">74%</div>
+                  <div className="text-4xl font-bold text-green-600">33</div>
+                  <div className="text-xs text-muted-foreground mt-1">77%</div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-2">Coming Soon</div>
-                  <div className="text-4xl font-bold text-orange-500">8</div>
+                  <div className="text-4xl font-bold text-orange-500">7</div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-2">Planned</div>

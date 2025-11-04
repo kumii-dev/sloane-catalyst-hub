@@ -93,8 +93,8 @@ export const generateFeaturesDocumentationPDF = () => {
     { 
       persona: 'Funder Features', 
       total: 13, 
-      implemented: 7, 
-      comingSoon: 5, 
+      implemented: 8, 
+      comingSoon: 4, 
       planned: 0,
       partial: 1,
       icon: '💰'
@@ -674,12 +674,14 @@ export const generateFeaturesDocumentationPDF = () => {
         {
           name: 'Portfolio Tracking',
           status: 'Implemented',
-          description: 'Track and monitor your funded startups.',
+          description: 'Monitor and track all your portfolio companies with performance metrics, visualizations, and key investment data.',
           benefits: [
-            'Portfolio dashboard',
-            'Performance metrics',
-            'Milestone tracking',
-            'Risk monitoring'
+            'Dashboard view of all funded startups',
+            'Key metrics: total funded, portfolio size, average deal size',
+            'Industry and stage distribution charts',
+            'Detailed company information with funding history',
+            'Filter portfolio by industry and other criteria',
+            'Export portfolio reports'
           ]
         },
         {

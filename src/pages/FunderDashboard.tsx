@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { PortfolioTracking } from "@/components/funding/PortfolioTracking";
 import { 
   Building, 
   Plus, 
@@ -614,7 +615,7 @@ const FunderDashboard = () => {
                 </Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
             <TabsTrigger value="profile">Profile</TabsTrigger>
           </TabsList>
 
@@ -770,15 +771,8 @@ const FunderDashboard = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="text-center py-12">
-              <BarChart3 className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Analytics Dashboard</h3>
-              <p className="text-muted-foreground mb-6">
-                Detailed analytics and reporting for your funding programs
-              </p>
-              <Button disabled>Coming Soon</Button>
-            </div>
+          <TabsContent value="portfolio" className="space-y-6">
+            {funderProfile && <PortfolioTracking funderId={funderProfile.id} />}
           </TabsContent>
 
           <TabsContent value="profile" className="space-y-6">

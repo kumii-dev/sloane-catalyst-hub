@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
 import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText, GraduationCap, MapPin } from "lucide-react";
 import { StartupJourneyMap } from "@/components/StartupJourneyMap";
+import { MentorJourneyMap } from "@/components/MentorJourneyMap";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -454,7 +455,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </Card>
           ) : (
             <Tabs defaultValue="presentation" className="w-full">
-              <TabsList className={`grid w-full ${devMode ? 'grid-cols-6' : 'grid-cols-4'} max-w-5xl mx-auto`}>
+              <TabsList className={`grid w-full ${devMode ? 'grid-cols-7' : 'grid-cols-5'} max-w-5xl mx-auto`}>
                 <TabsTrigger value="presentation" className="gap-2">
                   <Presentation className="w-4 h-4" />
                   Presentation
@@ -466,6 +467,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 <TabsTrigger value="startup-journey" className="gap-2">
                   <MapPin className="w-4 h-4" />
                   Startup Journey
+                </TabsTrigger>
+                <TabsTrigger value="mentor-journey" className="gap-2">
+                  <MapPin className="w-4 h-4" />
+                  Mentor Journey
                 </TabsTrigger>
                 <TabsTrigger value="database" className="gap-2">
                   <Database className="w-4 h-4" />
@@ -1278,6 +1283,11 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             {/* Startup Journey Map Tab */}
             <TabsContent value="startup-journey" className="space-y-8 mt-8">
               <StartupJourneyMap />
+            </TabsContent>
+
+            {/* Mentor Journey Map Tab */}
+            <TabsContent value="mentor-journey" className="space-y-8 mt-8">
+              <MentorJourneyMap />
             </TabsContent>
 
             <TabsContent value="script" className="space-y-8 mt-8">

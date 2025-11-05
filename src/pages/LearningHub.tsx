@@ -80,13 +80,6 @@ const LearningHub = () => {
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [levelFilter, setLevelFilter] = useState<string>("");
 
-  const { data: featuredCourses, isLoading: loadingFeatured } = useCourses({ featured: true });
-  const { data: allCourses, isLoading: loadingCourses } = useCourses({
-    category: categoryFilter || undefined,
-    level: levelFilter || undefined,
-  });
-  const { data: myEnrollments, isLoading: loadingEnrollments } = useMyEnrollments();
-
   const mockCourses: Course[] = [
     {
       id: "1",

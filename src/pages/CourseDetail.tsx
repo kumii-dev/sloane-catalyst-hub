@@ -55,7 +55,7 @@ const CourseDetail = () => {
         id: "ai-cert-1",
         title: "Artificial Intelligence International Certification",
         slug: "artificial-intelligence-certification",
-        description: "Master Artificial Intelligence with this comprehensive 24-week certification program. Learn machine learning, neural networks, natural language processing, and computer vision. IITPSA accredited with live instructor-led classes and hands-on projects.",
+        description: "Artificial Intelligence (AI) is transforming industries by enabling machines to replicate human intelligence. This Certification Course in Artificial Intelligence covers key AI concepts, including machine learning, neural networks, natural language processing and computer vision. With hands-on training and real-world case studies, you'll gain practical skills to apply AI effectively. Whether you're starting out or upskilling, this course provides a strong foundation for success in the digital era.",
         provider: "Digital Regenesys",
         instructor_name: "Dr. AI Expert Faculty",
         instructor_title: "Senior AI Research Scientist",
@@ -70,95 +70,107 @@ const CourseDetail = () => {
         category: "Technology",
         delivery_mode: "Live",
         whatYouLearn: [
-          "Programming Foundations for AI using Python",
-          "Applied Programming for AI Applications",
-          "Predictive Modeling with Regression Techniques",
-          "Classification & Clustering Algorithms",
-          "Deep Learning & Neural Network Architectures",
-          "Natural Language Processing (NLP)",
-          "Computer Vision and Image Recognition",
-          "Real-world AI Project Implementation"
+          "Set up an AI development environment and build a strong programming foundation",
+          "Develop proficiency in Programming for AI-driven tasks with modular programming and automation",
+          "Master AI model development for regression tasks with advanced feature engineering",
+          "Gain hands-on experience in supervised and unsupervised learning with model evaluation",
+          "Design and implement neural networks using CNNs for vision and RNNs for sequential data",
+          "Develop AI models for Natural Language Processing and Computer Vision with real-world applications",
+          "Apply AI tools: Python, TensorFlow, Keras, OpenCV, NLTK, Scikit-Learn",
+          "Complete hands-on projects with industry-standard tools and real-world case studies"
         ],
         prerequisites: [
-          "No prior programming experience required - we start from basics",
-          "Basic mathematics understanding (high school level)",
-          "Laptop with minimum 8GB RAM (required for software)"
+          "Open to students, fresh graduates, tech & non-tech professionals, managers, and researchers",
+          "No prior programming experience required - comprehensive training from basics",
+          "Basic understanding of mathematics (high school level)",
+          "Computer/laptop with minimum 8GB RAM for AI development tools",
+          "Commitment to complete 24-week program with live virtual sessions"
         ],
         curriculum: [
           {
             module: 1,
-            title: "Introductory AI - Programming Foundations",
-            duration: "4 weeks",
+            title: "Programming Foundations for AI",
+            duration: "4 weeks (16 hours)",
             lessons: [
-              { title: "Introduction to Python Programming", type: "video", duration: "2 hours", isCompleted: false, isLocked: false },
-              { title: "Data Structures & Algorithms", type: "video", duration: "3 hours", isCompleted: false, isLocked: false },
-              { title: "NumPy & Pandas Basics", type: "video", duration: "2 hours", isCompleted: false, isLocked: false },
-              { title: "Project: Data Analysis with Python", type: "assignment", duration: "5 hours", isCompleted: false, isLocked: false }
+              { title: "Setting Up AI Development Environment", type: "video", duration: "2 hours", isCompleted: false, isLocked: false },
+              { title: "Python Fundamentals & Computational Logic", type: "video", duration: "3 hours", isCompleted: false, isLocked: false },
+              { title: "Data Structures for AI Applications", type: "video", duration: "3 hours", isCompleted: false, isLocked: false },
+              { title: "NumPy for Mathematical Operations", type: "video", duration: "2 hours", isCompleted: false, isLocked: false },
+              { title: "Introduction to Jupyter Notebook & Anaconda", type: "video", duration: "2 hours", isCompleted: false, isLocked: false },
+              { title: "Project: Building Your First AI Program", type: "assignment", duration: "4 hours", isCompleted: false, isLocked: false }
             ]
           },
           {
             module: 2,
             title: "Applied Programming for AI",
-            duration: "4 weeks",
+            duration: "4 weeks (16 hours)",
             lessons: [
-              { title: "Advanced Python for AI", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
-              { title: "Data Visualization with Matplotlib & Seaborn", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
-              { title: "Introduction to Machine Learning", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
-              { title: "Project: Build Your First ML Model", type: "assignment", duration: "6 hours", isCompleted: false, isLocked: true }
+              { title: "Modular Programming for AI Tasks", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Automating Processes with Python", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Data Handling with Pandas", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Data Visualization with Seaborn", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Efficient Data Processing Techniques", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Project: Data Analysis & Automation", type: "assignment", duration: "4 hours", isCompleted: false, isLocked: true }
             ]
           },
           {
             module: 3,
-            title: "Intermediate AI - Predictive Modeling",
-            duration: "4 weeks",
+            title: "Predictive Modeling with Regression",
+            duration: "4 weeks (16 hours)",
             lessons: [
-              { title: "Linear & Logistic Regression", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
-              { title: "Model Evaluation & Validation", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
-              { title: "Classification Algorithms", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
-              { title: "Clustering Techniques", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
-              { title: "Project: Predictive Analytics Application", type: "assignment", duration: "8 hours", isCompleted: false, isLocked: true }
+              { title: "AI-Based Regression Techniques", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Feature Engineering for AI", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Data Transformation & Preprocessing", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Model Evaluation Metrics", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Advanced Analytics with NumPy & Pandas", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Project: Predictive Regression Model", type: "assignment", duration: "4 hours", isCompleted: false, isLocked: true }
             ]
           },
           {
             module: 4,
-            title: "Advanced AI - Deep Learning & Neural Networks",
-            duration: "6 weeks",
+            title: "Classification & Clustering Techniques",
+            duration: "4 weeks (16 hours)",
             lessons: [
-              { title: "Introduction to Neural Networks", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
-              { title: "TensorFlow & Keras Frameworks", type: "video", duration: "4 hours", isCompleted: false, isLocked: true },
-              { title: "Convolutional Neural Networks (CNN)", type: "video", duration: "4 hours", isCompleted: false, isLocked: true },
-              { title: "Recurrent Neural Networks (RNN)", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
-              { title: "Project: Image Classification System", type: "assignment", duration: "10 hours", isCompleted: false, isLocked: true }
+              { title: "Supervised Learning Methods", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Unsupervised Learning & Clustering", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Classification Algorithms with Scikit-Learn", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Model Optimization Techniques", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Deploying AI Solutions for Decision-Making", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Project: Build Classification System", type: "assignment", duration: "3 hours", isCompleted: false, isLocked: true }
             ]
           },
           {
             module: 5,
-            title: "Natural Language Processing",
-            duration: "3 weeks",
+            title: "Deep Learning & Neural Architectures",
+            duration: "4 weeks (16 hours)",
             lessons: [
-              { title: "Text Processing & Tokenization", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
-              { title: "Sentiment Analysis", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
-              { title: "Language Models & Transformers", type: "video", duration: "4 hours", isCompleted: false, isLocked: true },
-              { title: "Project: Build a Chatbot", type: "assignment", duration: "8 hours", isCompleted: false, isLocked: true }
+              { title: "Introduction to Neural Networks", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "TensorFlow & Keras Frameworks", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Convolutional Neural Networks (CNNs)", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Recurrent Neural Networks (RNNs)", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Computer Vision Applications", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Project: Image Recognition System", type: "assignment", duration: "2 hours", isCompleted: false, isLocked: true }
             ]
           },
           {
             module: 6,
-            title: "Computer Vision",
-            duration: "3 weeks",
+            title: "Natural Language Processing & Computer Vision",
+            duration: "4 weeks (16 hours)",
             lessons: [
-              { title: "Image Processing with OpenCV", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
-              { title: "Object Detection & Recognition", type: "video", duration: "4 hours", isCompleted: false, isLocked: true },
-              { title: "Face Recognition Systems", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
-              { title: "Capstone Project: AI Vision Application", type: "assignment", duration: "12 hours", isCompleted: false, isLocked: true }
+              { title: "Text Preprocessing with NLTK", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "NLP Model Development", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Sentiment Analysis & Text Classification", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Image Preprocessing with OpenCV", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Real-World AI Applications", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Capstone Project: End-to-End AI Solution", type: "assignment", duration: "3 hours", isCompleted: false, isLocked: true }
             ]
           }
         ],
-        totalHours: "240+ hours",
+        totalHours: "96+ hours live sessions (plus self-paced modules)",
         providerLogo: "/avatars/mafika-profile.png",
-        instructor: "Dr. AI Expert Faculty",
-        instructorTitle: "Senior AI Research Scientist",
-        instructorBio: "Leading AI researcher with 15+ years of experience in machine learning, deep learning, and neural networks.",
+        instructor: "Doctoral Level AI Facilitators",
+        instructorTitle: "Digital Regenesys Faculty Team",
+        instructorBio: "Expert faculty team with doctoral-level qualifications and extensive industry experience in AI, machine learning, and deep learning. Our instructors bring real-world expertise from leading tech companies and research institutions.",
         reviewsList: [
           {
             id: "1",
@@ -585,6 +597,80 @@ const course = getCourseData(id || "1");
                     </ul>
                   </CardContent>
                 </Card>
+
+                {id === "ai-cert-1" && (
+                  <>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Trophy className="w-5 h-5 text-primary" />
+                          Key Highlights
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="flex items-start gap-3 p-3 rounded-lg bg-accent/5">
+                            <Code className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                            <div>
+                              <h4 className="font-semibold text-sm mb-1">Industry Standard Tools</h4>
+                              <p className="text-xs text-muted-foreground">Hands-on experience with Python, TensorFlow, Keras, OpenCV, NLTK, Scikit-Learn</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3 p-3 rounded-lg bg-accent/5">
+                            <Target className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                            <div>
+                              <h4 className="font-semibold text-sm mb-1">Practical Assignments</h4>
+                              <p className="text-xs text-muted-foreground">Real-world projects and case studies throughout the course</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3 p-3 rounded-lg bg-accent/5">
+                            <Users className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                            <div>
+                              <h4 className="font-semibold text-sm mb-1">Expert-Led Training</h4>
+                              <p className="text-xs text-muted-foreground">Live interactive sessions with doctoral level facilitators</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3 p-3 rounded-lg bg-accent/5">
+                            <Award className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                            <div>
+                              <h4 className="font-semibold text-sm mb-1">IITPSA Accredited</h4>
+                              <p className="text-xs text-muted-foreground">Recognised certification with CPD points upon completion</p>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <BarChart3 className="w-5 h-5 text-primary" />
+                          Career Opportunities
+                        </CardTitle>
+                        <CardDescription>
+                          Explore exciting AI career paths after completing this course
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid md:grid-cols-3 gap-3">
+                          {[
+                            "Machine Learning Engineer",
+                            "Computer Vision Engineer",
+                            "AI Research Scientist",
+                            "AI Product Manager",
+                            "AI Engineer",
+                            "AI Consultant"
+                          ].map((career, idx) => (
+                            <div key={idx} className="flex items-center gap-2 p-3 rounded-lg border border-border/50 hover:border-primary/50 transition-colors">
+                              <TrendingUp className="w-4 h-4 text-primary flex-shrink-0" />
+                              <span className="text-sm font-medium">{career}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </>
+                )}
               </TabsContent>
 
               {/* Curriculum Tab */}

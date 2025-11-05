@@ -81,57 +81,98 @@ const MyLearning = () => {
   }
 
   return (
-    <div className="container mx-auto max-w-7xl px-4 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">My Learning</h1>
-        <p className="text-muted-foreground">Track your progress and continue your learning journey</p>
+    <div className="min-h-screen bg-background">
+      {/* Enhanced Header */}
+      <div className="bg-gradient-to-br from-primary/20 via-accent/10 to-background py-12 px-4">
+        <div className="container mx-auto max-w-7xl">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="p-4 bg-primary/10 rounded-xl">
+              <BookOpen className="h-12 w-12 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-5xl font-bold mb-2">My Learning Journey</h1>
+              <p className="text-xl text-muted-foreground">Track progress, earn badges, and achieve your goals</p>
+            </div>
+          </div>
+
+          {/* Enhanced Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <Card className="bg-card/80 backdrop-blur shadow-medium hover:shadow-strong transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Enrolled Courses</CardTitle>
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-primary">{enrollments?.length || 0}</div>
+                <p className="text-xs text-muted-foreground mt-1">Total courses</p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/80 backdrop-blur shadow-medium hover:shadow-strong transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+                <div className="p-2 bg-accent/10 rounded-lg">
+                  <TrendingUp className="h-5 w-5 text-accent-dark" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-accent-dark">{inProgress.length}</div>
+                <p className="text-xs text-muted-foreground mt-1">Keep learning!</p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/80 backdrop-blur shadow-medium hover:shadow-strong transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Completed</CardTitle>
+                <div className="p-2 bg-success/10 rounded-lg">
+                  <CheckCircle2 className="h-5 w-5 text-success" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-success">{completed.length}</div>
+                <p className="text-xs text-muted-foreground mt-1">Well done!</p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/80 backdrop-blur shadow-medium hover:shadow-strong transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Badges Earned</CardTitle>
+                <div className="p-2 bg-rating/10 rounded-lg">
+                  <Award className="h-5 w-5 text-rating" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-rating">{badges?.length || 0}</div>
+                <p className="text-xs text-muted-foreground mt-1">Achievements</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Overall Progress Bar */}
+          {enrollments && enrollments.length > 0 && (
+            <Card className="mt-6 bg-card/80 backdrop-blur shadow-medium">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <h3 className="font-semibold text-lg">Overall Progress</h3>
+                    <p className="text-sm text-muted-foreground">Average completion across all courses</p>
+                  </div>
+                  <div className="text-3xl font-bold text-primary">{avgProgress}%</div>
+                </div>
+                <Progress value={avgProgress} className="h-3" />
+                <p className="text-xs text-muted-foreground mt-2">
+                  You're {avgProgress >= 80 ? 'crushing it!' : avgProgress >= 50 ? 'making great progress!' : 'just getting started!'}
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Enrolled Courses</CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{enrollments?.length || 0}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{inProgress.length}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Completed</CardTitle>
-            <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{completed.length}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Badges Earned</CardTitle>
-            <Award className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{badges?.length || 0}</div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs defaultValue="in-progress" className="space-y-6">
+      <div className="container mx-auto max-w-7xl px-4 py-8">
+        <Tabs defaultValue="in-progress" className="space-y-6">
         <TabsList>
           <TabsTrigger value="in-progress">In Progress ({inProgress.length})</TabsTrigger>
           <TabsTrigger value="completed">Completed ({completed.length})</TabsTrigger>
@@ -141,48 +182,66 @@ const MyLearning = () => {
 
         <TabsContent value="in-progress" className="space-y-4">
           {inProgress.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {inProgress.map(enrollment => (
-                <Card key={enrollment.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        {enrollment.courses.learning_providers?.logo_url && (
-                          <Avatar className="h-10 w-10">
-                            <AvatarImage src={enrollment.courses.learning_providers.logo_url} />
-                            <AvatarFallback>
-                              {enrollment.courses.learning_providers.organization_name[0]}
-                            </AvatarFallback>
-                          </Avatar>
-                        )}
-                        <div>
-                          <CardTitle className="line-clamp-2">{enrollment.courses.title}</CardTitle>
-                          <CardDescription className="text-xs">
-                            {enrollment.courses.learning_providers?.organization_name}
-                          </CardDescription>
-                        </div>
+                <Card key={enrollment.id} className="hover:shadow-strong transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="relative">
+                    {enrollment.courses.thumbnail_url ? (
+                      <div className="h-40 w-full overflow-hidden rounded-t-lg">
+                        <img 
+                          src={enrollment.courses.thumbnail_url}
+                          alt={enrollment.courses.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
                       </div>
+                    ) : (
+                      <div className="h-40 w-full bg-gradient-to-br from-primary/20 to-accent/20 rounded-t-lg" />
+                    )}
+                    <div className="absolute top-3 right-3">
+                      <div className="bg-background/90 backdrop-blur px-3 py-1 rounded-full">
+                        <span className="text-sm font-bold text-primary">{enrollment.progress_percentage}%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <CardHeader>
+                    <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
+                      {enrollment.courses.title}
+                    </CardTitle>
+                    <div className="flex items-center gap-2 mt-2">
+                      {enrollment.courses.learning_providers?.logo_url && (
+                        <Avatar className="h-6 w-6">
+                          <AvatarImage src={enrollment.courses.learning_providers.logo_url} />
+                          <AvatarFallback className="text-xs">
+                            {enrollment.courses.learning_providers.organization_name[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                      )}
+                      <CardDescription className="text-xs">
+                        {enrollment.courses.learning_providers?.organization_name}
+                      </CardDescription>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Progress</span>
-                        <span className="font-medium">{enrollment.progress_percentage}%</span>
-                      </div>
-                      <Progress value={enrollment.progress_percentage} />
+                      <Progress value={enrollment.progress_percentage} className="h-2" />
+                      <p className="text-xs text-muted-foreground">
+                        {enrollment.progress_percentage < 25 ? 'Just getting started' :
+                         enrollment.progress_percentage < 50 ? 'Making progress' :
+                         enrollment.progress_percentage < 75 ? 'More than halfway there!' :
+                         'Almost done!'}
+                      </p>
                     </div>
                     
                     {enrollment.last_accessed_at && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Clock className="h-4 w-4" />
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
                         <span>Last accessed {new Date(enrollment.last_accessed_at).toLocaleDateString()}</span>
                       </div>
                     )}
                     
                     <Link to={`/learning/player/${enrollment.courses.slug}`}>
-                      <Button className="w-full">
-                        <PlayCircle className="mr-2 h-5 w-5" />
+                      <Button className="w-full gap-2">
+                        <PlayCircle className="h-4 w-4" />
                         Continue Learning
                       </Button>
                     </Link>
@@ -202,34 +261,47 @@ const MyLearning = () => {
 
         <TabsContent value="completed" className="space-y-4">
           {completed.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {completed.map(enrollment => (
-                <Card key={enrollment.id}>
-                  <CardHeader>
-                    <Badge className="w-fit mb-2 bg-green-600">
+                <Card key={enrollment.id} className="hover:shadow-medium transition-shadow">
+                  <div className="relative">
+                    {enrollment.courses.thumbnail_url ? (
+                      <div className="h-32 w-full overflow-hidden rounded-t-lg">
+                        <img 
+                          src={enrollment.courses.thumbnail_url}
+                          alt={enrollment.courses.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="h-32 w-full bg-gradient-to-br from-success/20 to-primary/20 rounded-t-lg" />
+                    )}
+                    <Badge className="absolute top-2 right-2 bg-success shadow-lg">
                       <CheckCircle2 className="mr-1 h-3 w-3" />
                       Completed
                     </Badge>
-                    <CardTitle className="line-clamp-2">{enrollment.courses.title}</CardTitle>
-                    <CardDescription>
+                  </div>
+                  <CardHeader>
+                    <CardTitle className="line-clamp-2 text-base">{enrollment.courses.title}</CardTitle>
+                    <CardDescription className="text-xs">
                       {enrollment.courses.learning_providers?.organization_name}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="text-sm text-muted-foreground">
-                      Completed on {new Date(enrollment.completed_at!).toLocaleDateString()}
+                  <CardContent className="space-y-3">
+                    <div className="text-xs text-muted-foreground">
+                      ✓ Completed {new Date(enrollment.completed_at!).toLocaleDateString()}
                     </div>
                     
                     {enrollment.certificate_issued_at && (
-                      <Button variant="outline" className="w-full">
-                        <Award className="mr-2 h-4 w-4" />
-                        View Certificate
+                      <Button variant="outline" size="sm" className="w-full gap-2">
+                        <Award className="h-3 w-3" />
+                        Certificate
                       </Button>
                     )}
                     
                     <Link to={`/learning/courses/${enrollment.courses.slug}`}>
-                      <Button variant="ghost" className="w-full">
-                        View Course
+                      <Button variant="ghost" size="sm" className="w-full">
+                        Review Course
                       </Button>
                     </Link>
                   </CardContent>
@@ -332,6 +404,7 @@ const MyLearning = () => {
           )}
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 };

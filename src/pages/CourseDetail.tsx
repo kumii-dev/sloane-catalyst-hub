@@ -235,10 +235,26 @@ const CourseDetail = () => {
                               {completedLessons} of {totalLessons} lessons completed
                             </div>
                           </div>
-                          <Button className="w-full gap-2" size="lg">
-                            <PlayCircle className="w-5 h-5" />
-                            Continue Learning
-                          </Button>
+                           <Button 
+                             className="w-full gap-2" 
+                             size="lg"
+                             onClick={() => {
+                               const curriculumTab = document.querySelector('[value="curriculum"]');
+                               if (curriculumTab) {
+                                 (curriculumTab as HTMLElement).click();
+                                 setTimeout(() => {
+                                   const firstLesson = document.querySelector('.hover\\:bg-accent\\/10');
+                                   if (firstLesson) {
+                                     firstLesson.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                   }
+                                 }, 100);
+                               }
+                               toast.success("Opening course content...");
+                             }}
+                           >
+                             <PlayCircle className="w-5 h-5" />
+                             Continue Learning
+                           </Button>
                         </>
                       ) : (
                         <Button 

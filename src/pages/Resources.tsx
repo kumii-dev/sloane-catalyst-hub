@@ -164,7 +164,7 @@ const Resources = () => {
               return (
                 <Link
                   key={category.id}
-                  to={`/resources/category/${category.slug}`}
+                  to="/learning"
                   className="group"
                 >
                   <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-border/50 hover:border-primary/20">

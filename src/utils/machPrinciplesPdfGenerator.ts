@@ -33,7 +33,7 @@ export const generateMACHPrinciplesPDF = () => {
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(32);
   doc.setFont('helvetica', 'bold');
-  doc.text('22 On Sloane', pageWidth / 2, 60, { align: 'center' });
+  doc.text('Kumii', pageWidth / 2, 60, { align: 'center' });
   
   doc.setFontSize(20);
   doc.setFont('helvetica', 'normal');
@@ -78,7 +78,7 @@ export const generateMACHPrinciplesPDF = () => {
   // Footer
   doc.setFontSize(8);
   doc.setTextColor(lightGray[0], lightGray[1], lightGray[2]);
-  doc.text('© 2025 22 On Sloane. All rights reserved.', pageWidth / 2, pageHeight - 15, { align: 'center' });
+  doc.text('© 2025 Kumii. All rights reserved.', pageWidth / 2, pageHeight - 15, { align: 'center' });
 
   // Executive Summary
   addNewPage();
@@ -93,7 +93,7 @@ export const generateMACHPrinciplesPDF = () => {
   doc.setFont('helvetica', 'normal');
   
   const execSummary = [
-    '22 On Sloane is architected according to MACH principles - Microservices, API-first,',
+    'Kumii is architected according to MACH principles - Microservices, API-first,',
     'Cloud-native, and Headless - representing the modern standard for enterprise software',
     'architecture. This approach delivers unparalleled flexibility, scalability, and maintainability.',
     '',
@@ -118,12 +118,15 @@ export const generateMACHPrinciplesPDF = () => {
   execSummary.forEach(line => {
     checkPageBreak(8);
     if (line.startsWith('✓')) {
-      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'normal');
       doc.setTextColor(successColor[0], successColor[1], successColor[2]);
     } else if (line.endsWith(':')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -233,7 +236,7 @@ export const generateMACHPrinciplesPDF = () => {
   doc.setFont('helvetica', 'normal');
 
   const whyMach = [
-    '1.2 Why MACH Matters for 22 On Sloane',
+    '1.2 Why MACH Matters for Kumii',
     '',
     'Traditional Monolithic Architecture Problems:',
     '• Tight coupling between components makes changes risky',
@@ -265,14 +268,17 @@ export const generateMACHPrinciplesPDF = () => {
   whyMach.forEach(line => {
     checkPageBreak(8);
     if (line.startsWith('1.2') || line.endsWith(':')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       if (line.endsWith('Problems:') || line.endsWith('Solutions:') || line.endsWith('Impact:') || line.endsWith('Readiness:')) {
         doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
       }
     } else if (line.startsWith('• ✓')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(successColor[0], successColor[1], successColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -452,7 +458,7 @@ export const generateMACHPrinciplesPDF = () => {
   const apiFirst = [
     '3.1 Comprehensive API Layer',
     '',
-    'Every feature in 22 On Sloane is accessible via APIs, enabling true omnichannel',
+    'Every feature in Kumii is accessible via APIs, enabling true omnichannel',
     'experiences and third-party integrations.',
     '',
     'Database API (Supabase Auto-Generated):',
@@ -591,6 +597,7 @@ export const generateMACHPrinciplesPDF = () => {
   apiFirst2.forEach(line => {
     checkPageBreak(8);
     if (line.startsWith('3.') || line.endsWith(':')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       if (line.endsWith(':') && !line.startsWith('•')) {
         doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
@@ -598,9 +605,11 @@ export const generateMACHPrinciplesPDF = () => {
         doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
       }
     } else if (line.startsWith('✓')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(successColor[0], successColor[1], successColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -698,12 +707,15 @@ export const generateMACHPrinciplesPDF = () => {
   cloudNative.forEach(line => {
     checkPageBreak(8);
     if (line.startsWith('4.') || (line.endsWith(':') && !line.startsWith('•') && !line.startsWith('✓'))) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     } else if (line.startsWith('✓')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(successColor[0], successColor[1], successColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -767,12 +779,15 @@ export const generateMACHPrinciplesPDF = () => {
   cloudNative2.forEach(line => {
     checkPageBreak(8);
     if (line.startsWith('4.') || (line.endsWith(':') && !line.startsWith('•') && !line.startsWith('✓'))) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     } else if (line.startsWith('✓')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(successColor[0], successColor[1], successColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -873,12 +888,15 @@ export const generateMACHPrinciplesPDF = () => {
   headless.forEach(line => {
     checkPageBreak(8);
     if (line.startsWith('5.') || (line.endsWith(':') && !line.startsWith('•') && !line.startsWith('✓'))) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     } else if (line.startsWith('✓')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(successColor[0], successColor[1], successColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -1043,15 +1061,19 @@ export const generateMACHPrinciplesPDF = () => {
   techStack.forEach(line => {
     checkPageBreak(8);
     if (line.startsWith('6.') || (line.endsWith(':') && !line.startsWith('•') && !line.startsWith('✓') && !line.includes('MACH'))) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     } else if (line.includes('MACH Alignment:')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]);
     } else if (line.startsWith('✓')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(successColor[0], successColor[1], successColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -1157,12 +1179,15 @@ export const generateMACHPrinciplesPDF = () => {
   benefits.forEach(line => {
     checkPageBreak(8);
     if (line.startsWith('7.') || (line.endsWith(':') && !line.startsWith('•') && !line.startsWith('✓'))) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     } else if (line.startsWith('✓')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(successColor[0], successColor[1], successColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -1239,12 +1264,15 @@ export const generateMACHPrinciplesPDF = () => {
   competitive.forEach(line => {
     checkPageBreak(8);
     if (line.startsWith('8.') || (line.endsWith(':') && !line.startsWith('•') && !line.startsWith('✓'))) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     } else if (line.startsWith('✓')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(successColor[0], successColor[1], successColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -1354,9 +1382,11 @@ export const generateMACHPrinciplesPDF = () => {
   roadmap.forEach(line => {
     checkPageBreak(8);
     if (line.startsWith('9.') || (line.endsWith(':') && !line.startsWith('•'))) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -1379,7 +1409,7 @@ export const generateMACHPrinciplesPDF = () => {
   doc.setFont('helvetica', 'normal');
 
   const conclusion = [
-    '22 On Sloane has been built from the ground up following MACH principles,',
+    'Kumii has been built from the ground up following MACH principles,',
     'positioning us as a modern, enterprise-ready platform for the digital age.',
     '',
     'MACH IMPLEMENTATION SUMMARY:',
@@ -1452,15 +1482,19 @@ export const generateMACHPrinciplesPDF = () => {
   conclusion.forEach(line => {
     checkPageBreak(8);
     if (line.endsWith(':') && line === line.toUpperCase()) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     } else if (line.endsWith(':')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     } else if (line.startsWith('✓')) {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(successColor[0], successColor[1], successColor[2]);
     } else {
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     }
@@ -1480,13 +1514,13 @@ export const generateMACHPrinciplesPDF = () => {
   
   doc.setFontSize(11);
   doc.setFont('helvetica', 'normal');
-  doc.text('22 On Sloane', pageWidth / 2, pageHeight - 60, { align: 'center' });
+  doc.text('Kumii', pageWidth / 2, pageHeight - 60, { align: 'center' });
   doc.text('MACH Architecture Team', pageWidth / 2, pageHeight - 50, { align: 'center' });
-  doc.text('www.22onsloane.co.za', pageWidth / 2, pageHeight - 40, { align: 'center' });
+  doc.text('www.kumii.co.za', pageWidth / 2, pageHeight - 40, { align: 'center' });
   
   doc.setFontSize(9);
   doc.text('For technical inquiries and architecture discussions:', pageWidth / 2, pageHeight - 25, { align: 'center' });
 
   // Save the PDF
-  doc.save('22-on-sloane-mach-principles.pdf');
+  doc.save('kumii-mach-principles.pdf');
 };

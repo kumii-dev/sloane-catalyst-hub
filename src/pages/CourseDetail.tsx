@@ -61,7 +61,7 @@ const CourseDetail = () => {
         instructor_title: "Senior AI Research Scientist",
         instructor_bio: "Leading AI researcher with 15+ years of experience in machine learning, deep learning, and neural networks. Published author and industry expert.",
         instructor_avatar: "/avatars/mafika-profile.png",
-        price: 15999,
+        price: 52000,
         duration: "24 weeks",
         level: "Advanced",
         rating: 4.7,

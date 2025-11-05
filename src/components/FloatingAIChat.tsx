@@ -176,10 +176,10 @@ export const FloatingAIChat = () => {
             </Button>
           </CardHeader>
 
-          <CardContent className="flex-1 flex flex-col p-0">
+          <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
             {/* Messages */}
-            <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-              <div className="space-y-4">
+            <ScrollArea className="flex-1 p-4">
+              <div className="space-y-4 pb-2">
                 {messages.map((message, index) => (
                   <div
                     key={index}
@@ -192,7 +192,7 @@ export const FloatingAIChat = () => {
                           : 'bg-muted'
                       }`}
                     >
-                      <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                      <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
                     </div>
                   </div>
                 ))}

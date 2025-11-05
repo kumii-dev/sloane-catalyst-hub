@@ -101,7 +101,38 @@ const CourseDetail = () => {
         helpful: 24
       }
     ],
-    liveSessions: []
+    liveSessions: [
+      {
+        id: "1",
+        title: "Q&A Session: Financial Modeling Best Practices",
+        date: "2025-12-15T18:00:00",
+        time: "6:00 PM - 7:30 PM SAST",
+        duration: "90 minutes",
+        description: "Join us for an interactive Q&A session where we'll discuss financial modeling best practices and answer your questions.",
+        registered: 45,
+        maxCapacity: 100
+      },
+      {
+        id: "2",
+        title: "Live Workshop: Building Your First Revenue Model",
+        date: "2025-12-20T15:00:00",
+        time: "3:00 PM - 5:00 PM SAST",
+        duration: "120 minutes",
+        description: "Hands-on workshop where we'll build a complete revenue projection model together.",
+        registered: 62,
+        maxCapacity: 80
+      },
+      {
+        id: "3",
+        title: "Guest Speaker: Fundraising & Financial Modeling",
+        date: "2026-01-10T17:00:00",
+        time: "5:00 PM - 6:30 PM SAST",
+        duration: "90 minutes",
+        description: "Special session with a successful VC-backed founder sharing insights on financial modeling for fundraising.",
+        registered: 28,
+        maxCapacity: 100
+      }
+    ]
   };
 
   const enrollment = isEnrolled ? { progress: 45 } : null;
@@ -565,41 +596,100 @@ const CourseDetail = () => {
                       Join interactive sessions with the instructor and fellow learners
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                </Card>
+
+                {course.liveSessions.length > 0 ? (
+                  <div className="space-y-4">
                     {course.liveSessions.map((session, idx) => (
-                      <Card key={idx} className="border-accent/20">
-                        <CardContent className="p-4">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                              <div className="flex flex-col items-center justify-center bg-primary/10 rounded-lg p-3 min-w-[70px]">
-                                <div className="text-2xl font-bold text-primary">
-                                  {new Date(session.date).getDate()}
-                                </div>
-                                <div className="text-xs text-muted-foreground">
-                                  {new Date(session.date).toLocaleDateString('en-US', { month: 'short' })}
-                                </div>
+                      <Card key={idx} className="border-accent/20 hover:border-primary/30 transition-colors">
+                        <CardContent className="p-6">
+                          <div className="flex flex-col md:flex-row gap-6">
+                            {/* Date Badge */}
+                            <div className="flex flex-col items-center justify-center bg-primary/10 rounded-lg p-4 min-w-[90px] h-fit">
+                              <div className="text-3xl font-bold text-primary">
+                                {new Date(session.date).getDate()}
                               </div>
-                              <div>
-                                <h3 className="font-semibold mb-1">{session.title}</h3>
-                                <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                                  <div className="flex items-center gap-1">
-                                    <Clock className="w-4 h-4" />
-                                    {session.time}
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <Globe className="w-4 h-4" />
-                                    Online
-                                  </div>
-                                </div>
+                              <div className="text-sm font-medium text-muted-foreground">
+                                {new Date(session.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                               </div>
                             </div>
-                            <Button>Add to Calendar</Button>
+
+                            {/* Session Details */}
+                            <div className="flex-1 space-y-3">
+                              <div>
+                                <h3 className="font-semibold text-lg mb-2">{session.title}</h3>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                  {session.description}
+                                </p>
+                              </div>
+
+                              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                                <div className="flex items-center gap-1.5">
+                                  <Clock className="w-4 h-4" />
+                                  {session.time}
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <Video className="w-4 h-4" />
+                                  {session.duration}
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <Globe className="w-4 h-4" />
+                                  Online
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <Users className="w-4 h-4" />
+                                  {session.registered}/{session.maxCapacity} registered
+                                </div>
+                              </div>
+
+                              {/* Action Buttons */}
+                              <div className="flex gap-2 pt-2">
+                                {isEnrolled ? (
+                                  <>
+                                    <Button 
+                                      className="gap-2"
+                                      onClick={() => {
+                                        toast.success("Session added to your calendar!");
+                                      }}
+                                    >
+                                      <Calendar className="w-4 h-4" />
+                                      Add to Calendar
+                                    </Button>
+                                    <Button 
+                                      variant="outline"
+                                      onClick={() => {
+                                        toast.info("You'll receive session details via email closer to the date.");
+                                      }}
+                                    >
+                                      Register
+                                    </Button>
+                                  </>
+                                ) : (
+                                  <Button 
+                                    variant="outline"
+                                    disabled
+                                  >
+                                    Enroll to Register
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </CardContent>
                       </Card>
                     ))}
-                  </CardContent>
-                </Card>
+                  </div>
+                ) : (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="font-semibold mb-2">No Upcoming Sessions</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Check back later for new live sessions
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
               </TabsContent>
             </Tabs>
           </div>

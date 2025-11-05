@@ -74,6 +74,10 @@ import CourseDetail from "./pages/CourseDetail";
 import MyLearning from "./pages/MyLearning";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import HelpCenter from "./pages/HelpCenter";
+import ContactUs from "./pages/ContactUs";
+import APIDocumentation from "./pages/APIDocumentation";
+import SystemStatus from "./pages/SystemStatus";
 
 const queryClient = new QueryClient();
 
@@ -155,6 +159,10 @@ const App = () => (
             <Route path="/my-learning" element={<MyLearning />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="/help-center" element={<HelpCenter />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/api-documentation" element={<APIDocumentation />} />
+            <Route path="/system-status" element={<SystemStatus />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

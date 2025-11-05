@@ -26,10 +26,10 @@ const Footer = () => {
     {
       title: "Support",
       links: [
-        { name: "Help Center", href: "#help" },
-        { name: "Contact Us", href: "#contact" },
-        { name: "API Documentation", href: "#api" },
-        { name: "System Status", href: "#status" }
+        { name: "Help Center", href: "/help-center" },
+        { name: "Contact Us", href: "/contact-us" },
+        { name: "API Documentation", href: "/api-documentation" },
+        { name: "System Status", href: "/system-status" }
       ]
     },
     {

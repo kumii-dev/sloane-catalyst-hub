@@ -43,6 +43,7 @@ const CourseDetail = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [activeTab, setActiveTab] = useState<"overview" | "curriculum" | "instructor" | "reviews" | "live">("overview");
   
   // Mock data until database types regenerate
   const isLoading = false;
@@ -453,16 +454,10 @@ const course = getCourseData(id || "1");
                              className="w-full gap-2" 
                              size="lg"
                              onClick={() => {
-                               const curriculumTab = document.querySelector('[value="curriculum"]');
-                               if (curriculumTab) {
-                                 (curriculumTab as HTMLElement).click();
-                                 setTimeout(() => {
-                                   const firstLesson = document.querySelector('.hover\\:bg-accent\\/10');
-                                   if (firstLesson) {
-                                     firstLesson.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                   }
-                                 }, 100);
-                               }
+                               setActiveTab("curriculum");
+                               setTimeout(() => {
+                                 document.getElementById("curriculum-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                               }, 100);
                                toast.success("Opening course content...");
                              }}
                            >
@@ -534,7 +529,7 @@ const course = getCourseData(id || "1");
         {/* Main Content */}
         <div className="container py-8 px-4">
           <div className="max-w-5xl mx-auto">
-            <Tabs defaultValue="overview" className="space-y-6">
+            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="space-y-6">
               <TabsList className="grid w-full grid-cols-5 bg-card shadow-sm">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
@@ -593,7 +588,7 @@ const course = getCourseData(id || "1");
               </TabsContent>
 
               {/* Curriculum Tab */}
-              <TabsContent value="curriculum" className="space-y-4">
+              <TabsContent value="curriculum" className="space-y-4" id="curriculum-section">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">

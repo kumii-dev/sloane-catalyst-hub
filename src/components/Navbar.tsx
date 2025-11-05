@@ -16,6 +16,7 @@ const Navbar = () => {
     { name: "Access to Market", href: "/access-to-market" },
     { name: "Advisors", href: "/find-advisor", hasDropdown: true },
     { name: "Funding", href: "/funding" },
+    { name: "Learning Hub", href: "/learning" },
     { name: "Mentorship", href: "/mentorship" },
     { name: "Resources", href: "/resources", hasDropdown: true },
     { name: "About", href: "#about" }

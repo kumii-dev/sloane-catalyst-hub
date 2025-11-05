@@ -68,9 +68,6 @@ import InstallPWA from "./pages/InstallPWA";
 import MatchingDashboard from "./pages/MatchingDashboard";
 import PerformanceDashboard from "./pages/PerformanceDashboard";
 import FeatureDocumentation from "./pages/FeatureDocumentation";
-import LearningHub from "./pages/LearningHub";
-import CourseDetail from "./pages/CourseDetail";
-import MyLearning from "./pages/MyLearning";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -148,9 +145,6 @@ const App = () => (
             <Route path="/review/:sessionId" element={<SessionReview />} />
             <Route path="/video-creator" element={<VideoCreator />} />
             <Route path="/install" element={<InstallPWA />} />
-            <Route path="/learning" element={<LearningHub />} />
-            <Route path="/learning/courses/:slug" element={<CourseDetail />} />
-            <Route path="/my-learning" element={<MyLearning />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

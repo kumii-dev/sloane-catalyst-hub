@@ -316,45 +316,47 @@ const LearningHub = () => {
                 <CardContent>
                   <div className="grid md:grid-cols-3 gap-4">
                     {mockCourses.filter(c => c.aiRecommended).map((course) => (
-                      <Card key={course.id} className="group hover:shadow-lg transition-all duration-300 border-primary/10 hover:border-primary/30">
-                        <div className="relative overflow-hidden rounded-t-lg">
-                          <img src={course.thumbnail} alt={course.title} className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
-                          <div className="absolute top-2 right-2">
-                            <Badge className="bg-primary/90 backdrop-blur-sm">
-                              <Sparkles className="w-3 h-3 mr-1" />
-                              AI Pick
-                            </Badge>
-                          </div>
-                          {course.progress !== undefined && (
-                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-2">
-                              <Progress value={course.progress} className="h-1.5" />
+                      <Link to={`/learning/course/${course.id}`} key={course.id}>
+                        <Card className="group hover:shadow-lg transition-all duration-300 border-primary/10 hover:border-primary/30">
+                          <div className="relative overflow-hidden rounded-t-lg">
+                            <img src={course.thumbnail} alt={course.title} className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <div className="absolute top-2 right-2">
+                              <Badge className="bg-primary/90 backdrop-blur-sm">
+                                <Sparkles className="w-3 h-3 mr-1" />
+                                AI Pick
+                              </Badge>
                             </div>
-                          )}
-                        </div>
-                        <CardContent className="p-4">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Avatar className="w-6 h-6">
-                              <AvatarImage src={course.providerLogo} />
-                              <AvatarFallback>{course.provider[0]}</AvatarFallback>
-                            </Avatar>
-                            <span className="text-xs text-muted-foreground">{course.provider}</span>
+                            {course.progress !== undefined && (
+                              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-2">
+                                <Progress value={course.progress} className="h-1.5" />
+                              </div>
+                            )}
                           </div>
-                          <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                            {course.title}
-                          </h3>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                            <Star className="w-4 h-4 fill-rating text-rating" />
-                            <span className="font-medium text-foreground">{course.rating}</span>
-                            <span>({course.reviews})</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Badge variant="secondary">{course.level}</Badge>
-                            <span className="text-lg font-bold text-primary">
-                              {course.isFree ? "Free" : `R${course.price}`}
-                            </span>
-                          </div>
-                        </CardContent>
-                      </Card>
+                          <CardContent className="p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Avatar className="w-6 h-6">
+                                <AvatarImage src={course.providerLogo} />
+                                <AvatarFallback>{course.provider[0]}</AvatarFallback>
+                              </Avatar>
+                              <span className="text-xs text-muted-foreground">{course.provider}</span>
+                            </div>
+                            <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                              {course.title}
+                            </h3>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                              <Star className="w-4 h-4 fill-rating text-rating" />
+                              <span className="font-medium text-foreground">{course.rating}</span>
+                              <span>({course.reviews})</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <Badge variant="secondary">{course.level}</Badge>
+                              <span className="text-lg font-bold text-primary">
+                                {course.isFree ? "Free" : `R${course.price}`}
+                              </span>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Link>
                     ))}
                   </div>
                 </CardContent>

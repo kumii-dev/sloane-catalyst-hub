@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { useCourse, useEnrollment, useEnrollInCourse, useCourseSessions } from "@/hooks/useCourses";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -38,124 +40,61 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 
 const CourseDetail = () => {
   const { id } = useParams();
-  const [isEnrolled, setIsEnrolled] = useState(false);
+  const { user } = useAuth();
+  const { data: course, isLoading } = useCourse(id || "");
+  const { data: enrollment } = useEnrollment(course?.id || "");
+  const { data: sessions } = useCourseSessions(course?.id || "");
+  const enrollMutation = useEnrollInCourse();
 
-  const course = {
-    id: "1",
-    title: "Financial Modeling for Startups",
-    subtitle: "Master financial projections, valuation models, and fundraising metrics",
-    provider: "22 On Sloane",
-    providerLogo: "/avatars/mafika-profile.png",
-    instructor: "Mafika Mkwanazi",
-    instructorTitle: "CEO & Founder",
-    instructorBio: "Serial entrepreneur with 15+ years of experience in startup ecosystems",
-    thumbnail: "/services/credit-scoring-banner.jpg",
-    level: "Intermediate",
-    duration: "8 weeks",
-    totalHours: "24 hours",
-    enrolled: 1240,
-    rating: 4.8,
-    reviews: 342,
-    price: 1299,
-    isFree: false,
-    category: "Finance",
-    tags: ["Financial Planning", "Excel", "Projections", "Valuation", "Fundraising"],
-    deliveryMode: "Hybrid",
-    language: "English",
-    lastUpdated: "October 2025",
-    certificateIncluded: true,
-    description: `
-      This comprehensive course teaches you how to build professional financial models that attract investors and guide strategic decisions. 
-      You'll learn industry-standard techniques used by top consulting firms and venture capital analysts.
-    `,
-    whatYouLearn: [
-      "Build 3-statement financial models (P&L, Balance Sheet, Cash Flow)",
-      "Create realistic revenue projections and growth scenarios",
-      "Develop startup valuation models (DCF, Comparable Analysis)",
-      "Master key fundraising metrics (CAC, LTV, Burn Rate, Runway)",
-      "Build investor-grade pitch deck financial slides",
-      "Understand cap tables and dilution modeling"
-    ],
-    prerequisites: [
-      "Basic understanding of business finance",
-      "Familiarity with Microsoft Excel or Google Sheets",
-      "No advanced accounting knowledge required"
-    ],
-    curriculum: [
-      {
-        module: 1,
-        title: "Financial Modeling Fundamentals",
-        duration: "3 hours",
-        lessons: [
-          { title: "Introduction to Financial Modeling", type: "video", duration: "15 min", isCompleted: true },
-          { title: "Setting Up Your Model Structure", type: "video", duration: "25 min", isCompleted: true },
-          { title: "Best Practices & Common Pitfalls", type: "video", duration: "20 min", isCompleted: false },
-          { title: "Module 1 Quiz", type: "quiz", duration: "10 min", isCompleted: false }
-        ]
-      },
-      {
-        module: 2,
-        title: "Revenue Modeling & Projections",
-        duration: "4 hours",
-        lessons: [
-          { title: "Revenue Stream Analysis", type: "video", duration: "30 min", isCompleted: false },
-          { title: "Building Growth Assumptions", type: "video", duration: "35 min", isCompleted: false },
-          { title: "Market Sizing & TAM/SAM/SOM", type: "video", duration: "25 min", isCompleted: false },
-          { title: "Hands-on Exercise: Revenue Model", type: "assignment", duration: "45 min", isCompleted: false },
-          { title: "Module 2 Quiz", type: "quiz", duration: "15 min", isCompleted: false }
-        ]
-      },
-      {
-        module: 3,
-        title: "Cost Structure & P&L Statement",
-        duration: "4 hours",
-        lessons: [
-          { title: "Fixed vs Variable Costs", type: "video", duration: "20 min", isCompleted: false, isLocked: true },
-          { title: "COGS and Operating Expenses", type: "video", duration: "30 min", isCompleted: false, isLocked: true },
-          { title: "Building Your P&L Model", type: "video", duration: "40 min", isCompleted: false, isLocked: true },
-          { title: "P&L Analysis & Scenarios", type: "video", duration: "25 min", isCompleted: false, isLocked: true }
-        ]
-      },
-      {
-        module: 4,
-        title: "Cash Flow & Working Capital",
-        duration: "5 hours",
-        lessons: [
-          { title: "Cash Flow Statement Basics", type: "video", duration: "25 min", isCompleted: false, isLocked: true },
-          { title: "Working Capital Management", type: "video", duration: "30 min", isCompleted: false, isLocked: true },
-          { title: "Burn Rate & Runway Analysis", type: "video", duration: "35 min", isCompleted: false, isLocked: true },
-          { title: "Cash Flow Forecasting", type: "video", duration: "40 min", isCompleted: false, isLocked: true }
-        ]
-      },
-      {
-        module: 5,
-        title: "Valuation Models",
-        duration: "5 hours",
-        lessons: [
-          { title: "Valuation Methods Overview", type: "video", duration: "30 min", isCompleted: false, isLocked: true },
-          { title: "DCF Valuation Model", type: "video", duration: "45 min", isCompleted: false, isLocked: true },
-          { title: "Comparable Company Analysis", type: "video", duration: "40 min", isCompleted: false, isLocked: true },
-          { title: "Cap Table & Dilution Modeling", type: "video", duration: "35 min", isCompleted: false, isLocked: true }
-        ]
-      },
-      {
-        module: 6,
-        title: "Investor Metrics & Pitch Deck Financials",
-        duration: "3 hours",
-        lessons: [
-          { title: "Key SaaS Metrics (MRR, ARR, Churn)", type: "video", duration: "25 min", isCompleted: false, isLocked: true },
-          { title: "Unit Economics (CAC, LTV)", type: "video", duration: "30 min", isCompleted: false, isLocked: true },
-          { title: "Creating Pitch Deck Financial Slides", type: "video", duration: "35 min", isCompleted: false, isLocked: true },
-          { title: "Final Project: Complete Financial Model", type: "assignment", duration: "90 min", isCompleted: false, isLocked: true }
-        ]
-      }
-    ],
-    liveSessions: [
-      { date: "2025-11-08", time: "14:00 - 16:00", title: "Office Hours & Model Review" },
-      { date: "2025-11-15", time: "14:00 - 16:00", title: "Advanced Q&A Session" },
-      { date: "2025-11-22", time: "14:00 - 16:00", title: "Investor Pitch Practice" }
-    ]
-  };
+  const isEnrolled = !!enrollment;
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+            <p className="text-muted-foreground">Loading course...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!course) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-2">Course Not Found</h2>
+            <p className="text-muted-foreground mb-4">The course you're looking for doesn't exist.</p>
+            <Link to="/learning">
+              <Button>Back to Learning Hub</Button>
+            </Link>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  const mockCurriculum = [
+    {
+      module: 1,
+      title: "Introduction",
+      duration: "3 hours",
+      lessons: [
+        { title: "Getting Started", type: "video", duration: "15 min", isCompleted: enrollment ? true : false },
+        { title: "Core Concepts", type: "video", duration: "25 min", isCompleted: enrollment ? true : false },
+      ]
+    }
+  ];
+
+  const totalLessons = mockCurriculum.reduce((acc, module) => acc + module.lessons.length, 0);
+  const completedLessons = mockCurriculum.reduce(
+    (acc, module) => acc + module.lessons.filter((l: any) => l.isCompleted).length,
+    0
+  );
+  const progressPercent = enrollment?.progress || 0;
 
   const getLessonIcon = (type: string) => {
     switch (type) {
@@ -193,54 +132,52 @@ const CourseDetail = () => {
                   <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
                     {course.title}
                   </h1>
-                  <p className="text-xl opacity-90">{course.subtitle}</p>
+                  <p className="text-xl opacity-90">{course.description}</p>
 
                   <div className="flex flex-wrap items-center gap-4 text-sm">
                     <div className="flex items-center gap-2">
                       <Avatar className="w-8 h-8 border-2 border-white/30">
-                        <AvatarImage src={course.providerLogo} />
+                        <AvatarImage src={course.instructor_avatar || undefined} />
                         <AvatarFallback>{course.provider[0]}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="font-medium">{course.instructor}</div>
-                        <div className="text-xs opacity-75">{course.instructorTitle}</div>
+                        <div className="font-medium">{course.instructor_name || course.provider}</div>
+                        <div className="text-xs opacity-75">{course.instructor_title || "Instructor"}</div>
                       </div>
                     </div>
                     <Separator orientation="vertical" className="h-8 bg-white/30" />
                     <div className="flex items-center gap-1">
                       <Star className="w-5 h-5 fill-rating text-rating" />
                       <span className="font-bold">{course.rating}</span>
-                      <span className="opacity-75">({course.reviews} reviews)</span>
+                      <span className="opacity-75">(reviews)</span>
                     </div>
                     <Separator orientation="vertical" className="h-8 bg-white/30" />
                     <div className="flex items-center gap-1">
                       <Users className="w-4 h-4" />
-                      <span>{course.enrolled.toLocaleString()} enrolled</span>
+                      <span>{course.students.toLocaleString()} enrolled</span>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    {course.tags.map((tag, idx) => (
-                      <Badge key={idx} variant="secondary" className="bg-white/10 backdrop-blur-sm border-white/20">
-                        {tag}
-                      </Badge>
-                    ))}
+                    <Badge variant="secondary" className="bg-white/10 backdrop-blur-sm border-white/20">
+                      {course.category}
+                    </Badge>
                   </div>
                 </div>
 
                 <div className="md:col-span-1">
                   <Card className="sticky top-4 bg-background/95 backdrop-blur-sm shadow-xl">
                     <img 
-                      src={course.thumbnail} 
+                      src={course.thumbnail_url || "/services/credit-scoring-banner.jpg"} 
                       alt={course.title}
                       className="w-full h-48 object-cover rounded-t-lg"
                     />
                     <CardContent className="p-6 space-y-4">
                       <div className="text-center">
                         <div className="text-3xl font-bold text-primary mb-1">
-                          {course.isFree ? "Free" : `R${course.price}`}
+                          {course.price === 0 ? "Free" : `R${course.price}`}
                         </div>
-                        {!course.isFree && (
+                        {course.price > 0 && (
                           <div className="text-sm text-muted-foreground">One-time payment</div>
                         )}
                       </div>
@@ -266,10 +203,17 @@ const CourseDetail = () => {
                         <Button 
                           className="w-full gap-2" 
                           size="lg"
-                          onClick={() => setIsEnrolled(true)}
+                          onClick={() => {
+                            if (!user) {
+                              toast.error("Please log in to enroll");
+                              return;
+                            }
+                            enrollMutation.mutate(course.id);
+                          }}
+                          disabled={enrollMutation.isPending}
                         >
                           <Award className="w-5 h-5" />
-                          Enroll Now
+                          {enrollMutation.isPending ? "Enrolling..." : "Enroll Now"}
                         </Button>
                       )}
 
@@ -297,11 +241,11 @@ const CourseDetail = () => {
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-muted-foreground">Delivery Mode</span>
-                          <span className="font-medium">{course.deliveryMode}</span>
+                          <span className="font-medium">{course.delivery_mode}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-muted-foreground">Language</span>
-                          <span className="font-medium">{course.language}</span>
+                          <span className="font-medium">English</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-muted-foreground">Certificate</span>

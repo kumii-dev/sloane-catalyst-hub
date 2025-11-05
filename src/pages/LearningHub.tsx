@@ -77,6 +77,15 @@ interface LearningPath {
 const LearningHub = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [activeTab, setActiveTab] = useState("discover");
+  const [categoryFilter, setCategoryFilter] = useState<string>("");
+  const [levelFilter, setLevelFilter] = useState<string>("");
+
+  const { data: featuredCourses, isLoading: loadingFeatured } = useCourses({ featured: true });
+  const { data: allCourses, isLoading: loadingCourses } = useCourses({
+    category: categoryFilter || undefined,
+    level: levelFilter || undefined,
+  });
+  const { data: myEnrollments, isLoading: loadingEnrollments } = useMyEnrollments();
 
   const mockCourses: Course[] = [
     {

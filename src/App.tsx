@@ -72,6 +72,8 @@ import NotFound from "./pages/NotFound";
 import LearningHub from "./pages/LearningHub";
 import CourseDetail from "./pages/CourseDetail";
 import MyLearning from "./pages/MyLearning";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 const queryClient = new QueryClient();
 
@@ -151,6 +153,8 @@ const App = () => (
             <Route path="/learning" element={<LearningHub />} />
             <Route path="/learning/course/:id" element={<CourseDetail />} />
             <Route path="/my-learning" element={<MyLearning />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

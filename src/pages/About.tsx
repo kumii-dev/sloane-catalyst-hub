@@ -27,6 +27,8 @@ import { generateDisasterRecoveryPDF } from "@/utils/disasterRecoveryPdfGenerato
 import { generateVendorRiskPDF } from "@/utils/vendorRiskPdfGenerator";
 import { generateSecurityAwarenessPDF } from "@/utils/securityAwarenessPdfGenerator";
 import { generateFeaturesDocumentationPDF } from "@/utils/featuresDocumentationPdfGenerator";
+import { generateArchitectureDocumentPDF } from "@/utils/architectureDocumentPdfGenerator";
+import { generateMACHPrinciplesPDF } from "@/utils/machPrinciplesPdfGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const About = () => {
@@ -380,6 +382,32 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadArchitectureDocumentPDF = () => {
+    try {
+      toast.loading("Generating Architecture Document PDF...");
+      generateArchitectureDocumentPDF();
+      toast.dismiss();
+      toast.success("Architecture Document PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate Architecture Document PDF");
+    }
+  };
+
+  const downloadMACHPrinciplesPDF = () => {
+    try {
+      toast.loading("Generating MACH Principles PDF...");
+      generateMACHPrinciplesPDF();
+      toast.dismiss();
+      toast.success("MACH Principles PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate MACH Principles PDF");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -587,6 +615,24 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   >
                     <FileDown className="w-5 h-5" />
                     Download Features Documentation PDF
+                  </Button>
+                  <Button 
+                    onClick={downloadArchitectureDocumentPDF} 
+                    variant="default" 
+                    size="lg"
+                    className="gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+                  >
+                    <FileText className="w-5 h-5" />
+                    Download Enterprise Architecture Document
+                  </Button>
+                  <Button 
+                    onClick={downloadMACHPrinciplesPDF} 
+                    variant="default" 
+                    size="lg"
+                    className="gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white"
+                  >
+                    <Rocket className="w-5 h-5" />
+                    Download MACH Principles Document
                   </Button>
                   <Button
                     onClick={downloadJourneyMaps} 

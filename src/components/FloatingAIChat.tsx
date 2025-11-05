@@ -31,6 +31,83 @@ export const FloatingAIChat = () => {
     }
   }, [messages]);
 
+  const streamChat = async (userMessages: Message[]) => {
+    const CHAT_URL = `https://qypazgkngxhazgkuevwq.supabase.co/functions/v1/copilot-chat`;
+    
+    const resp = await fetch(CHAT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5cGF6Z2tuZ3hoYXpna3VldndxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNTY4NjUsImV4cCI6MjA3NDYzMjg2NX0.3NgO6VJFYn143_qgl_UncfWpTDmA4hVV85zXneOeMxo`,
+      },
+      body: JSON.stringify({ messages: userMessages }),
+    });
+
+    if (!resp.ok) {
+      if (resp.status === 429) {
+        throw new Error("Rate limit exceeded. Please try again in a moment.");
+      }
+      if (resp.status === 402) {
+        throw new Error("AI credits depleted. Please add funds to continue.");
+      }
+      throw new Error("Failed to get response from AI");
+    }
+
+    if (!resp.body) throw new Error("No response body");
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let textBuffer = "";
+    let streamDone = false;
+    let assistantContent = "";
+
+    while (!streamDone) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      textBuffer += decoder.decode(value, { stream: true });
+
+      let newlineIndex: number;
+      while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+        let line = textBuffer.slice(0, newlineIndex);
+        textBuffer = textBuffer.slice(newlineIndex + 1);
+
+        if (line.endsWith("\r")) line = line.slice(0, -1);
+        if (line.startsWith(":") || line.trim() === "") continue;
+        if (!line.startsWith("data: ")) continue;
+
+        const jsonStr = line.slice(6).trim();
+        if (jsonStr === "[DONE]") {
+          streamDone = true;
+          break;
+        }
+
+        try {
+          const parsed = JSON.parse(jsonStr);
+          const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+          if (content) {
+            assistantContent += content;
+            setMessages(prev => {
+              const newMessages = [...prev];
+              const lastMsg = newMessages[newMessages.length - 1];
+              if (lastMsg?.role === "assistant") {
+                newMessages[newMessages.length - 1] = {
+                  ...lastMsg,
+                  content: assistantContent
+                };
+              } else {
+                newMessages.push({ role: "assistant", content: assistantContent });
+              }
+              return newMessages;
+            });
+          }
+        } catch {
+          textBuffer = line + "\n" + textBuffer;
+          break;
+        }
+      }
+    }
+  };
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
@@ -42,32 +119,15 @@ export const FloatingAIChat = () => {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('copilot-chat', {
-        body: { 
-          messages: newMessages.map(msg => ({
-            role: msg.role,
-            content: msg.content
-          }))
-        }
-      });
-
-      if (error) throw error;
-
-      setMessages([...newMessages, { 
-        role: 'assistant', 
-        content: data.response || 'Sorry, I encountered an error. Please try again.' 
-      }]);
+      await streamChat(newMessages);
     } catch (error: any) {
       console.error('Chat error:', error);
       toast({
         title: "Error",
-        description: "Failed to get response. Please try again.",
+        description: error.message || "Failed to get response. Please try again.",
         variant: "destructive"
       });
-      setMessages([...newMessages, { 
-        role: 'assistant', 
-        content: 'Sorry, I encountered an error. Please try again.' 
-      }]);
+      setMessages(prev => prev.filter(m => m.role === "user" || m.content.trim() !== ""));
     } finally {
       setIsLoading(false);
     }

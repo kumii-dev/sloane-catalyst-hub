@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, Star, Users, Zap, Award, ArrowLeft, Plus, List, Coins, BarChart3, Gift, Briefcase, ShoppingCart, Code, Shield, Brain, Cloud, FolderKanban, Scale, Building, Rocket, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, Filter, Star, Users, Zap, Award, ArrowLeft, Plus, List, Coins, BarChart3, Gift, Briefcase, ShoppingCart, Code, Shield, Brain, Cloud, FolderKanban, Scale, Building, Rocket, ChevronDown, ChevronUp, LayoutDashboard } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -340,6 +340,16 @@ const ServiceCategory = () => {
               >
                 <List className="h-4 w-4 mr-2" />
                 <span className="font-semibold">My Listings</span>
+              </Button>
+            </Link>
+            <Link to="/provider-dashboard">
+              <Button 
+                variant="secondary" 
+                size="default"
+                className="rounded-full px-6 py-3 bg-[hsl(200,50%,60%)] hover:bg-[hsl(200,50%,55%)] text-white shadow-md hover:shadow-lg transition-all"
+              >
+                <LayoutDashboard className="h-4 w-4 mr-2" />
+                <span className="font-semibold">Provider Dashboard</span>
               </Button>
             </Link>
           </div>

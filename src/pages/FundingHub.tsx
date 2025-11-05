@@ -124,7 +124,7 @@ const FundingHub = () => {
                   Browse Opportunities
                 </Button>
               </Link>
-              <Link to="/funder-dashboard">
+              <Link to="/funding/funder-dashboard">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   <LayoutDashboard className="w-5 h-5 mr-2" />
                   Funder Dashboard

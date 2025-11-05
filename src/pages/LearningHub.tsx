@@ -82,6 +82,26 @@ const LearningHub = () => {
 
   const mockCourses: Course[] = [
     {
+      id: "ai-cert-1",
+      title: "Artificial Intelligence International Certification",
+      provider: "Digital Regenesys",
+      providerLogo: "/avatars/mafika-profile.png",
+      thumbnail: "/services/credit-scoring-banner.jpg",
+      category: "Technology",
+      level: "Advanced",
+      duration: "24 weeks",
+      enrolled: 500000,
+      rating: 4.7,
+      reviews: 55,
+      price: 15999,
+      isFree: false,
+      tags: ["AI", "Machine Learning", "Deep Learning", "NLP", "Computer Vision", "Python"],
+      deliveryMode: "Live",
+      nextSession: "2025-11-15",
+      aiRecommended: true,
+      trending: true
+    },
+    {
       id: "1",
       title: "Financial Modeling for Startups",
       provider: "22 On Sloane",

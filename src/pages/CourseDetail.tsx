@@ -45,62 +45,241 @@ const CourseDetail = () => {
   
   // Mock data until database types regenerate
   const isLoading = false;
-  const course = {
-    id: id || "1",
-    title: "Financial Modeling for Startups",
-    slug: id || "financial-modeling",
-    description: "Learn how to build comprehensive financial models for your startup, including revenue projections, expense tracking, and investor presentations.",
-    provider: "22 On Sloane",
-    instructor_name: "John Smith",
-    instructor_title: "CFO & Financial Advisor",
-    instructor_bio: "20+ years of experience in startup finance and investment banking.",
-    instructor_avatar: "/avatars/mafika-profile.png",
-    price: 1299,
-    duration: "8 weeks",
-    level: "Intermediate",
-    rating: 4.8,
-    students: 1240,
-    thumbnail_url: "/services/credit-scoring-banner.jpg",
-    category: "Finance",
-    delivery_mode: "Hybrid",
-    whatYouLearn: [
-      "Build a complete 3-statement financial model",
-      "Create revenue and expense projections",
-      "Understand key financial metrics",
-      "Prepare investor-ready financials"
-    ],
-    prerequisites: [
-      "Basic understanding of business finance",
-      "Familiarity with spreadsheets (Excel/Google Sheets)"
-    ],
-    curriculum: [
-      {
-        module: 1,
-        title: "Introduction to Financial Modeling",
-        duration: "2 hours",
-        lessons: [
-          { title: "Getting Started", type: "video", duration: "15 min", isCompleted: false, isLocked: false },
-          { title: "Core Concepts", type: "video", duration: "25 min", isCompleted: false, isLocked: false },
-          { title: "Exercise: Build Your First Model", type: "assignment", duration: "45 min", isCompleted: false, isLocked: false }
+  
+  // Course data based on ID
+  const getCourseData = (courseId: string) => {
+    if (courseId === "ai-cert-1") {
+      return {
+        id: "ai-cert-1",
+        title: "Artificial Intelligence International Certification",
+        slug: "artificial-intelligence-certification",
+        description: "Master Artificial Intelligence with this comprehensive 24-week certification program. Learn machine learning, neural networks, natural language processing, and computer vision. IITPSA accredited with live instructor-led classes and hands-on projects.",
+        provider: "Digital Regenesys",
+        instructor_name: "Dr. AI Expert Faculty",
+        instructor_title: "Senior AI Research Scientist",
+        instructor_bio: "Leading AI researcher with 15+ years of experience in machine learning, deep learning, and neural networks. Published author and industry expert.",
+        instructor_avatar: "/avatars/mafika-profile.png",
+        price: 15999,
+        duration: "24 weeks",
+        level: "Advanced",
+        rating: 4.7,
+        students: 500000,
+        thumbnail_url: "/services/credit-scoring-banner.jpg",
+        category: "Technology",
+        delivery_mode: "Live",
+        whatYouLearn: [
+          "Programming Foundations for AI using Python",
+          "Applied Programming for AI Applications",
+          "Predictive Modeling with Regression Techniques",
+          "Classification & Clustering Algorithms",
+          "Deep Learning & Neural Network Architectures",
+          "Natural Language Processing (NLP)",
+          "Computer Vision and Image Recognition",
+          "Real-world AI Project Implementation"
+        ],
+        prerequisites: [
+          "No prior programming experience required - we start from basics",
+          "Basic mathematics understanding (high school level)",
+          "Laptop with minimum 8GB RAM (required for software)"
+        ],
+        curriculum: [
+          {
+            module: 1,
+            title: "Introductory AI - Programming Foundations",
+            duration: "4 weeks",
+            lessons: [
+              { title: "Introduction to Python Programming", type: "video", duration: "2 hours", isCompleted: false, isLocked: false },
+              { title: "Data Structures & Algorithms", type: "video", duration: "3 hours", isCompleted: false, isLocked: false },
+              { title: "NumPy & Pandas Basics", type: "video", duration: "2 hours", isCompleted: false, isLocked: false },
+              { title: "Project: Data Analysis with Python", type: "assignment", duration: "5 hours", isCompleted: false, isLocked: false }
+            ]
+          },
+          {
+            module: 2,
+            title: "Applied Programming for AI",
+            duration: "4 weeks",
+            lessons: [
+              { title: "Advanced Python for AI", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Data Visualization with Matplotlib & Seaborn", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Introduction to Machine Learning", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Project: Build Your First ML Model", type: "assignment", duration: "6 hours", isCompleted: false, isLocked: true }
+            ]
+          },
+          {
+            module: 3,
+            title: "Intermediate AI - Predictive Modeling",
+            duration: "4 weeks",
+            lessons: [
+              { title: "Linear & Logistic Regression", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Model Evaluation & Validation", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Classification Algorithms", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Clustering Techniques", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Project: Predictive Analytics Application", type: "assignment", duration: "8 hours", isCompleted: false, isLocked: true }
+            ]
+          },
+          {
+            module: 4,
+            title: "Advanced AI - Deep Learning & Neural Networks",
+            duration: "6 weeks",
+            lessons: [
+              { title: "Introduction to Neural Networks", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "TensorFlow & Keras Frameworks", type: "video", duration: "4 hours", isCompleted: false, isLocked: true },
+              { title: "Convolutional Neural Networks (CNN)", type: "video", duration: "4 hours", isCompleted: false, isLocked: true },
+              { title: "Recurrent Neural Networks (RNN)", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Project: Image Classification System", type: "assignment", duration: "10 hours", isCompleted: false, isLocked: true }
+            ]
+          },
+          {
+            module: 5,
+            title: "Natural Language Processing",
+            duration: "3 weeks",
+            lessons: [
+              { title: "Text Processing & Tokenization", type: "video", duration: "2 hours", isCompleted: false, isLocked: true },
+              { title: "Sentiment Analysis", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Language Models & Transformers", type: "video", duration: "4 hours", isCompleted: false, isLocked: true },
+              { title: "Project: Build a Chatbot", type: "assignment", duration: "8 hours", isCompleted: false, isLocked: true }
+            ]
+          },
+          {
+            module: 6,
+            title: "Computer Vision",
+            duration: "3 weeks",
+            lessons: [
+              { title: "Image Processing with OpenCV", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Object Detection & Recognition", type: "video", duration: "4 hours", isCompleted: false, isLocked: true },
+              { title: "Face Recognition Systems", type: "video", duration: "3 hours", isCompleted: false, isLocked: true },
+              { title: "Capstone Project: AI Vision Application", type: "assignment", duration: "12 hours", isCompleted: false, isLocked: true }
+            ]
+          }
+        ],
+        totalHours: "240+ hours",
+        providerLogo: "/avatars/mafika-profile.png",
+        instructor: "Dr. AI Expert Faculty",
+        instructorTitle: "Senior AI Research Scientist",
+        instructorBio: "Leading AI researcher with 15+ years of experience in machine learning, deep learning, and neural networks.",
+        reviewsList: [
+          {
+            id: "1",
+            user: "Thabo Mokoena",
+            avatar: "/avatars/mafika-profile.png",
+            rating: 5,
+            date: "2025-10-20",
+            comment: "This course transformed my career! The practical projects and industry expert faculty made all the difference. Highly recommend!",
+            helpful: 45
+          },
+          {
+            id: "2",
+            user: "Lerato Dlamini",
+            avatar: "/avatars/mafika-profile.png",
+            rating: 5,
+            date: "2025-10-15",
+            comment: "Excellent curriculum covering everything from basics to advanced AI. The live classes and hands-on approach are outstanding.",
+            helpful: 32
+          },
+          {
+            id: "3",
+            user: "John Ndlovu",
+            avatar: "/avatars/mafika-profile.png",
+            rating: 4,
+            date: "2025-10-10",
+            comment: "Great course with comprehensive coverage. The 24-week format allows for deep learning. IITPSA accreditation adds credibility.",
+            helpful: 28
+          }
+        ],
+        reviews: 55,
+        liveSessions: [
+          {
+            id: "1",
+            title: "Introduction to AI & Machine Learning",
+            date: "2025-11-15",
+            time: "18:00 - 20:00 CAT",
+            instructor: "Dr. AI Expert Faculty",
+            description: "Join us for an introductory live session covering the fundamentals of AI and machine learning. Perfect for understanding the course structure and expectations.",
+            registered: 245,
+            maxCapacity: 500
+          },
+          {
+            id: "2",
+            title: "Deep Learning Workshop",
+            date: "2025-11-22",
+            time: "18:00 - 21:00 CAT",
+            instructor: "Dr. AI Expert Faculty",
+            description: "Hands-on workshop building your first neural network. Bring your laptop and code along with the instructor.",
+            registered: 189,
+            maxCapacity: 500
+          },
+          {
+            id: "3",
+            title: "NLP & Computer Vision Masterclass",
+            date: "2025-11-29",
+            time: "17:00 - 20:00 CAT",
+            instructor: "Industry Expert Panel",
+            description: "Learn advanced techniques in natural language processing and computer vision from industry experts working at top tech companies.",
+            registered: 312,
+            maxCapacity: 500
+          }
         ]
-      }
-    ],
-    totalHours: "24 hours",
-    providerLogo: "/avatars/mafika-profile.png",
-    instructor: "John Smith",
-    instructorTitle: "CFO & Financial Advisor",
-    instructorBio: "20+ years of experience in startup finance and investment banking.",
-    reviewsList: [
-      {
-        id: "1",
-        user: "Sarah Johnson",
-        avatar: "/avatars/mafika-profile.png",
-        rating: 5,
-        date: "2025-10-15",
-        comment: "Excellent course! Very practical and hands-on.",
+      };
+    }
+    
+    // Default course (Financial Modeling)
+    return {
+      id: id || "1",
+      title: "Financial Modeling for Startups",
+      slug: id || "financial-modeling",
+      description: "Learn how to build comprehensive financial models for your startup, including revenue projections, expense tracking, and investor presentations.",
+      provider: "22 On Sloane",
+      instructor_name: "John Smith",
+      instructor_title: "CFO & Financial Advisor",
+      instructor_bio: "20+ years of experience in startup finance and investment banking.",
+      instructor_avatar: "/avatars/mafika-profile.png",
+      price: 1299,
+      duration: "8 weeks",
+      level: "Intermediate",
+      rating: 4.8,
+      students: 1240,
+      thumbnail_url: "/services/credit-scoring-banner.jpg",
+      category: "Finance",
+      delivery_mode: "Hybrid",
+      whatYouLearn: [
+        "Build a complete 3-statement financial model",
+        "Create revenue and expense projections",
+        "Understand key financial metrics",
+        "Prepare investor-ready financials"
+      ],
+      prerequisites: [
+        "Basic understanding of business finance",
+        "Familiarity with spreadsheets (Excel/Google Sheets)"
+      ],
+      curriculum: [
+        {
+          module: 1,
+          title: "Introduction to Financial Modeling",
+          duration: "2 hours",
+          lessons: [
+            { title: "Getting Started", type: "video", duration: "15 min", isCompleted: false, isLocked: false },
+            { title: "Core Concepts", type: "video", duration: "25 min", isCompleted: false, isLocked: false },
+            { title: "Exercise: Build Your First Model", type: "assignment", duration: "45 min", isCompleted: false, isLocked: false }
+          ]
+        }
+      ],
+      totalHours: "24 hours",
+      providerLogo: "/avatars/mafika-profile.png",
+      instructor: "John Smith",
+      instructorTitle: "CFO & Financial Advisor",
+      instructorBio: "20+ years of experience in startup finance and investment banking.",
+      reviewsList: [
+        {
+          id: "1",
+          user: "Sarah Johnson",
+          avatar: "/avatars/mafika-profile.png",
+          rating: 5,
+          date: "2025-10-15",
+          comment: "Excellent course! Very practical and hands-on.",
         helpful: 24
       }
     ],
+    reviews: 342,
     liveSessions: [
       {
         id: "1",
@@ -134,6 +313,9 @@ const CourseDetail = () => {
       }
     ]
   };
+};
+
+const course = getCourseData(id || "1");
 
   const enrollment = isEnrolled ? { progress: 45 } : null;
 

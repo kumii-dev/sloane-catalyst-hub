@@ -40,6 +40,7 @@ import {
   Flame
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import aiCertBanner from "@/assets/ai-cert-banner.png";
 
 interface Course {
   id: string;
@@ -86,7 +87,7 @@ const LearningHub = () => {
       title: "Artificial Intelligence International Certification",
       provider: "Digital Regenesys",
       providerLogo: "/avatars/mafika-profile.png",
-      thumbnail: "/services/credit-scoring-banner.jpg",
+      thumbnail: aiCertBanner,
       category: "Technology",
       level: "Advanced",
       duration: "24 weeks",

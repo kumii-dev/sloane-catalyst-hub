@@ -37,6 +37,7 @@ import {
   Lightbulb
 } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import aiCertBanner from "@/assets/ai-cert-banner.png";
 
 const CourseDetail = () => {
   const { id } = useParams();
@@ -64,7 +65,7 @@ const CourseDetail = () => {
         level: "Advanced",
         rating: 4.7,
         students: 500000,
-        thumbnail_url: "/services/credit-scoring-banner.jpg",
+        thumbnail_url: aiCertBanner,
         category: "Technology",
         delivery_mode: "Live",
         whatYouLearn: [

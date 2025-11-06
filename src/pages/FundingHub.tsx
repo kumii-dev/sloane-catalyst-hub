@@ -130,6 +130,12 @@ const FundingHub = () => {
                   Funder Dashboard
                 </Button>
               </Link>
+              <Link to="/become-funder">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  <Users className="w-5 h-5 mr-2" />
+                  Become a Funder
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

@@ -20,6 +20,7 @@ import EditProfile from "./pages/EditProfile";
 import BecomeMentor from "./pages/BecomeMentor";
 import BecomeAdvisor from "./pages/BecomeAdvisor";
 import BecomeProvider from "./pages/BecomeProvider";
+import BecomeFunder from "./pages/BecomeFunder";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import MenteeDashboard from "./pages/MenteeDashboard";
 import MentorDashboard from "./pages/MentorDashboard";
@@ -109,6 +110,7 @@ const App = () => (
             <Route path="/become-mentor" element={<BecomeMentor />} />
             <Route path="/become-advisor" element={<BecomeAdvisor />} />
             <Route path="/become-provider" element={<BecomeProvider />} />
+            <Route path="/become-funder" element={<BecomeFunder />} />
             <Route path="/provider-dashboard" element={<ProviderDashboard />} />
             <Route path="/funding" element={<FundingHub />} />
             <Route path="/funding/browse" element={<BrowseFunding />} />

@@ -1,12 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText, GraduationCap, MapPin } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText, GraduationCap, MapPin, CreditCard } from "lucide-react";
 import { StartupJourneyMap } from "@/components/StartupJourneyMap";
 import { MentorJourneyMap } from "@/components/MentorJourneyMap";
 import { ServiceProviderJourneyMap } from "@/components/ServiceProviderJourneyMap";
 import { FunderJourneyMap } from "@/components/FunderJourneyMap";
 import FeaturesMappingMatrix from "@/components/FeaturesMappingMatrix";
+import { BusinessCard } from "@/components/BusinessCard";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -500,10 +501,14 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </Card>
           ) : (
             <Tabs defaultValue="presentation" className="w-full">
-              <TabsList className={`grid w-full ${devMode ? 'grid-cols-9' : 'grid-cols-7'} max-w-6xl mx-auto`}>
+              <TabsList className={`grid w-full ${devMode ? 'grid-cols-10' : 'grid-cols-8'} max-w-6xl mx-auto`}>
                 <TabsTrigger value="presentation" className="gap-2">
                   <Presentation className="w-4 h-4" />
                   Presentation
+                </TabsTrigger>
+                <TabsTrigger value="business-card" className="gap-2">
+                  <CreditCard className="w-4 h-4" />
+                  Business Card
                 </TabsTrigger>
                 <TabsTrigger value="script" className="gap-2">
                   <Video className="w-4 h-4" />
@@ -1387,6 +1392,34 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             {/* Features Mapping Matrix Tab */}
             <TabsContent value="features-matrix" className="space-y-8 mt-8">
               <FeaturesMappingMatrix />
+            </TabsContent>
+
+            {/* Business Card Tab */}
+            <TabsContent value="business-card" className="space-y-8 mt-8">
+              <div className="space-y-6">
+                <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary rounded-lg">
+                        <CreditCard className="w-6 h-6 text-primary-foreground" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Team Business Cards</h2>
+                    </div>
+                    <p className="text-muted-foreground mb-8">
+                      Official business cards for Kumii team members. Scan the QR code to visit our platform.
+                    </p>
+                    
+                    <div className="flex justify-center">
+                      <BusinessCard
+                        name="Noma Ngubane"
+                        title="Product Manager"
+                        email="noma@kumii.co.za"
+                        phone="+27 78 234 6098"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </TabsContent>
 
             <TabsContent value="script" className="space-y-8 mt-8">

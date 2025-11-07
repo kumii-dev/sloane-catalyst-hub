@@ -5,7 +5,7 @@ import { Mail, Phone, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { useRef, useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import kumiiLogo from '@/assets/kumii-logo-white-tagline.png';
+import kumiiLogo from '@/assets/kumii-logo.png';
 
 interface BusinessCardProps {
   name: string;

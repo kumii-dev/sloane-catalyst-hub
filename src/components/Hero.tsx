@@ -56,7 +56,8 @@ const Hero = () => {
               }}>
                   <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-base sm:text-lg">Funding Hub</span>
+                <span className="text-white font-semibold text-base sm:text-lg">
+              </span>
               </div>
             </Link>
             <Link to="/credit-score" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">

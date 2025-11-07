@@ -16,6 +16,10 @@ interface TopNavbarProps {
 const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
   const { user, signOut } = useAuth();
 
+  // Authorized emails for system documentation access
+  const authorizedEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com'];
+  const hasSystemAccess = user?.email && authorizedEmails.includes(user.email);
+
   return (
     <header className="h-16 bg-gradient-to-r from-white via-white via-30% via-primary-light via-60% to-primary border-b border-primary-dark/20 px-4 flex items-center justify-between w-full shadow-medium sticky top-0 z-50">
       {/* Hamburger Menu - Mobile/Tablet */}
@@ -49,6 +53,9 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
             <ThemeToggle />
             <AdminRoleSwitcher />
             <Link to="/about" className="text-sm sm:text-base text-foreground font-medium hidden md:inline hover:text-foreground/80 transition-colors">About</Link>
+            {hasSystemAccess && (
+              <Link to="/system-documentation" className="text-sm sm:text-base text-foreground font-medium hidden md:inline hover:text-foreground/80 transition-colors">System</Link>
+            )}
             <div className="text-foreground">
               <NotificationBell />
             </div>
@@ -95,6 +102,9 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
           <div className="flex items-center gap-2 sm:gap-3">
             <ThemeToggle />
             <Link to="/about" className="text-sm sm:text-base text-foreground font-medium hidden md:inline hover:text-foreground/80 transition-colors">About</Link>
+            {hasSystemAccess && (
+              <Link to="/system-documentation" className="text-sm sm:text-base text-foreground font-medium hidden md:inline hover:text-foreground/80 transition-colors">System</Link>
+            )}
             <Link to="/auth">
               <Button variant="ghost" size="sm" className="text-sm sm:text-base hover:bg-foreground/10 hidden sm:flex">
                 Sign In

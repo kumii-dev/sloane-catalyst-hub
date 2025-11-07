@@ -150,7 +150,7 @@ export const BusinessCard = ({
 
             {/* Tagline */}
             <div>
-              <p className="text-xs text-white/90 font-medium italic">
+              <p className="text-xs text-white font-semibold italic drop-shadow-sm">
                 All-In-One Platform for Your Business
               </p>
             </div>

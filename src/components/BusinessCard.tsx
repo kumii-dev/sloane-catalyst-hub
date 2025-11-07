@@ -1,7 +1,11 @@
 import { QRCodeSVG } from 'qrcode.react';
 import { Card, CardContent } from "@/components/ui/card";
-import { Mail, Phone } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Mail, Phone, Download } from 'lucide-react';
 import kumiiLogo from '@/assets/kumii-logo.png';
+import html2canvas from 'html2canvas';
+import { useRef } from 'react';
+import { toast } from 'sonner';
 
 interface BusinessCardProps {
   name: string;
@@ -18,19 +22,45 @@ export const BusinessCard = ({
   phone,
   platformUrl = window.location.origin 
 }: BusinessCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = async () => {
+    if (!cardRef.current) return;
+    
+    try {
+      const canvas = await html2canvas(cardRef.current, {
+        scale: 3,
+        backgroundColor: null,
+        logging: false,
+      });
+      
+      const link = document.createElement('a');
+      link.download = `${name.replace(/\s+/g, '-')}-business-card.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
+      toast.success('Business card downloaded successfully!');
+    } catch (error) {
+      console.error('Error downloading card:', error);
+      toast.error('Failed to download business card');
+    }
+  };
+
   return (
-    <Card className="w-full max-w-[540px] mx-auto overflow-hidden shadow-elegant">
+    <div className="space-y-4">
+      <Card ref={cardRef} className="w-full max-w-[540px] mx-auto overflow-hidden shadow-elegant">
       <CardContent className="p-0">
         {/* Bank card dimensions: aspect ratio 1.586:1 (85.6mm x 53.98mm) */}
         <div className="relative bg-gradient-to-t from-[hsl(82,13%,36%)] via-[hsl(82,13%,46%)] to-[hsl(82,54%,85%)] p-8 aspect-[1.586/1] flex flex-col justify-between">
           {/* Top Section: Logo and QR Code */}
           <div className="flex items-start justify-between">
-            <img 
-              src={kumiiLogo} 
-              alt="Kumii Logo" 
-              className="h-12 w-auto drop-shadow-md mix-blend-multiply opacity-90"
-              style={{ filter: 'brightness(1.1)' }}
-            />
+            <div className="bg-white/95 p-2 rounded-lg shadow-soft">
+              <img 
+                src={kumiiLogo} 
+                alt="Kumii Logo" 
+                className="h-10 w-auto"
+              />
+            </div>
             <div className="bg-white/95 p-2.5 rounded-lg shadow-medium">
               <QRCodeSVG 
                 value={platformUrl}
@@ -74,6 +104,18 @@ export const BusinessCard = ({
           </div>
         </div>
       </CardContent>
-    </Card>
+      </Card>
+      
+      <div className="flex justify-center">
+        <Button 
+          onClick={handleDownload}
+          variant="outline"
+          className="gap-2"
+        >
+          <Download className="w-4 h-4" />
+          Download Business Card
+        </Button>
+      </div>
+    </div>
   );
 };

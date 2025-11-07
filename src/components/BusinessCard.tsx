@@ -1,6 +1,10 @@
 import { QRCodeSVG } from 'qrcode.react';
 import { Card, CardContent } from "@/components/ui/card";
-import { Mail, Phone } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Mail, Phone, Download } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import { useRef } from 'react';
+import { toast } from 'sonner';
 import kumiiLogo from '@/assets/kumii-logo.png';
 
 interface BusinessCardProps {
@@ -18,8 +22,34 @@ export const BusinessCard = ({
   phone,
   platformUrl = window.location.origin 
 }: BusinessCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = async () => {
+    if (!cardRef.current) return;
+    
+    try {
+      const canvas = await html2canvas(cardRef.current, {
+        scale: 3, // High quality for printing (3x resolution)
+        useCORS: true,
+        backgroundColor: null,
+        logging: false,
+      });
+      
+      const link = document.createElement('a');
+      link.download = `${name.replace(/\s+/g, '-')}-business-card.png`;
+      link.href = canvas.toDataURL('image/png', 1.0);
+      link.click();
+      
+      toast.success('Business card downloaded successfully!');
+    } catch (error) {
+      console.error('Error downloading card:', error);
+      toast.error('Failed to download business card');
+    }
+  };
+
   return (
-    <Card className="w-full max-w-[540px] mx-auto overflow-hidden shadow-elegant">
+    <div className="space-y-4">
+      <Card ref={cardRef} className="w-full max-w-[540px] mx-auto overflow-hidden shadow-elegant">
       <CardContent className="p-0">
         {/* Bank card dimensions: aspect ratio 1.586:1 (85.6mm x 53.98mm) */}
         <div className="relative bg-gradient-to-t from-[hsl(82,13%,36%)] via-[hsl(82,13%,46%)] to-[hsl(82,54%,85%)] p-8 aspect-[1.586/1] flex flex-col justify-between">
@@ -75,5 +105,13 @@ export const BusinessCard = ({
         </div>
       </CardContent>
     </Card>
+    
+    <div className="flex justify-center">
+      <Button onClick={handleDownload} className="gap-2">
+        <Download className="w-4 h-4" />
+        Download Card
+      </Button>
+    </div>
+    </div>
   );
 };

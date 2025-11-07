@@ -101,7 +101,7 @@ const Features = () => {
               <Button variant="hero" size="lg">
                 Get Started Today
               </Button>
-              <Button variant="outline" size="lg" className="text-white border-white/30 hover:bg-white/10">
+              <Button variant="hero-outline" size="lg">
                 Schedule Demo
               </Button>
             </div>

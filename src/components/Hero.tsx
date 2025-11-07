@@ -4,17 +4,11 @@ import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 import microsoftLogo from "@/assets/microsoft-logo.png";
 import nedbankLogo from "@/assets/nedbank-logo.png";
-
 const Hero = () => {
-  return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+  return <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={heroBg} 
-          alt="Modern business district representing startup success" 
-          className="w-full h-full object-cover"
-        />
+        <img src={heroBg} alt="Modern business district representing startup success" className="w-full h-full object-cover" />
         <div className="absolute inset-0 hero-gradient opacity-90" />
       </div>
 
@@ -30,7 +24,9 @@ const Hero = () => {
           {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-up text-white">
             Transform Your Business<br />
-            <span className="font-bold drop-shadow-lg" style={{ color: 'hsl(15 80% 70%)' }}>
+            <span className="font-bold drop-shadow-lg" style={{
+            color: 'hsl(15 80% 70%)'
+          }}>
               Journey Into Success
             </span>
           </h1>
@@ -45,7 +41,9 @@ const Hero = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 animate-fade-up px-2">
             <Link to="/access-to-market" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
+                backgroundColor: 'hsl(15 80% 70%)'
+              }}>
                   <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-base sm:text-lg">Market Access</span>
@@ -53,7 +51,9 @@ const Hero = () => {
             </Link>
             <Link to="/funding" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
+                backgroundColor: 'hsl(15 80% 70%)'
+              }}>
                   <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-base sm:text-lg">Funding Hub</span>
@@ -61,7 +61,9 @@ const Hero = () => {
             </Link>
             <Link to="/credit-score" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
+                backgroundColor: 'hsl(15 80% 70%)'
+              }}>
                   <FileCheck className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-base sm:text-lg">Credit Scoring</span>
@@ -69,7 +71,9 @@ const Hero = () => {
             </Link>
             <Link to="/mentorship" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
+                backgroundColor: 'hsl(15 80% 70%)'
+              }}>
                   <Users className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-base sm:text-lg">Expert Mentorship</span>
@@ -77,15 +81,19 @@ const Hero = () => {
             </Link>
             <Link to="/find-advisor" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
+                backgroundColor: 'hsl(15 80% 70%)'
+              }}>
                   <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-base sm:text-lg">Pro Services</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Professional Services</span>
               </div>
             </Link>
             <Link to="/resources" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
+                backgroundColor: 'hsl(15 80% 70%)'
+              }}>
                   <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-base sm:text-lg">Resources Hub</span>
@@ -131,9 +139,9 @@ const Hero = () => {
 
       {/* Floating Elements */}
       <div className="absolute top-20 left-10 w-20 h-20 bg-accent/20 rounded-full animate-float" />
-      <div className="absolute bottom-20 right-10 w-32 h-32 bg-white/10 rounded-full animate-float" style={{ animationDelay: '2s' }} />
-    </section>
-  );
+      <div className="absolute bottom-20 right-10 w-32 h-32 bg-white/10 rounded-full animate-float" style={{
+      animationDelay: '2s'
+    }} />
+    </section>;
 };
-
 export default Hero;

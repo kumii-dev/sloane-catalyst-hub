@@ -8,10 +8,10 @@ const Footer = () => {
     {
       title: "Platform",
       links: [
-        { name: "Services Marketplace", href: "#services" },
-        { name: "Funding Connect", href: "#funding" },
-        { name: "Mentorship Network", href: "#mentorship" },
-        { name: "Investor Readiness", href: "#readiness" }
+        { name: "Access to Capital", href: "/funding" },
+        { name: "Market Access", href: "/access-to-market" },
+        { name: "Expert Advisory", href: "/find-advisor" },
+        { name: "Mentorship & Learning", href: "/mentorship" }
       ]
     },
     {

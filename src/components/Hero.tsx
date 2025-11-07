@@ -88,7 +88,7 @@ const Hero = () => {
                 <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{ backgroundColor: 'hsl(15 80% 70%)' }}>
                   <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-base sm:text-lg">Resources</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Resources Hub</span>
               </div>
             </Link>
           </div>

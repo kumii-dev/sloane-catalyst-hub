@@ -22,7 +22,7 @@ export const BusinessCard = ({
     <Card className="w-full max-w-[540px] mx-auto overflow-hidden shadow-elegant">
       <CardContent className="p-0">
         {/* Bank card dimensions: aspect ratio 1.586:1 (85.6mm x 53.98mm) */}
-        <div className="relative bg-gradient-to-br from-[hsl(142,45%,88%)] via-[hsl(142,48%,78%)] to-[hsl(160,42%,72%)] p-8 aspect-[1.586/1] flex flex-col justify-between">
+        <div className="relative bg-gradient-to-t from-[hsl(82,13%,36%)] via-[hsl(82,13%,46%)] to-[hsl(82,54%,85%)] p-8 aspect-[1.586/1] flex flex-col justify-between">
           {/* Top Section: Logo and QR Code */}
           <div className="flex items-start justify-between">
             <img 
@@ -37,29 +37,29 @@ export const BusinessCard = ({
                 size={72}
                 level="H"
                 bgColor="transparent"
-                fgColor="hsl(142, 65%, 25%)"
+                fgColor="hsl(82, 13%, 36%)"
               />
             </div>
           </div>
 
           {/* Middle Section: Name and Title */}
           <div className="space-y-1 -mt-2">
-            <h3 className="text-2xl font-bold text-[hsl(142,70%,20%)] tracking-tight">
+            <h3 className="text-2xl font-bold text-[hsl(82,13%,15%)] tracking-tight">
               {name}
             </h3>
-            <p className="text-base text-[hsl(142,55%,30%)] font-semibold">
+            <p className="text-base text-[hsl(82,13%,25%)] font-semibold">
               {title}
             </p>
           </div>
 
           {/* Bottom Section: Contact and Tagline */}
           <div className="space-y-3">
-            <div className="space-y-2 pb-3 border-t border-[hsl(142,45%,40%)]/30 pt-3">
-              <div className="flex items-center gap-2.5 text-[hsl(142,60%,25%)]">
+            <div className="space-y-2 pb-3 border-t border-white/30 pt-3">
+              <div className="flex items-center gap-2.5 text-white">
                 <Mail className="w-4 h-4 flex-shrink-0" />
                 <span className="text-sm font-medium">{email}</span>
               </div>
-              <div className="flex items-center gap-2.5 text-[hsl(142,60%,25%)]">
+              <div className="flex items-center gap-2.5 text-white">
                 <Phone className="w-4 h-4 flex-shrink-0" />
                 <span className="text-sm font-medium">{phone}</span>
               </div>
@@ -67,7 +67,7 @@ export const BusinessCard = ({
 
             {/* Tagline */}
             <div>
-              <p className="text-xs text-[hsl(142,50%,35%)] font-medium italic">
+              <p className="text-xs text-white/90 font-medium italic">
                 All-In-One Platform for Your Business
               </p>
             </div>

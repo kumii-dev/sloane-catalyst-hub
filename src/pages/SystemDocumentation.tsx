@@ -1,13 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText, GraduationCap, MapPin, CreditCard } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText, GraduationCap, MapPin, CreditCard, Building2 } from "lucide-react";
 import { StartupJourneyMap } from "@/components/StartupJourneyMap";
 import { MentorJourneyMap } from "@/components/MentorJourneyMap";
 import { ServiceProviderJourneyMap } from "@/components/ServiceProviderJourneyMap";
 import { FunderJourneyMap } from "@/components/FunderJourneyMap";
 import FeaturesMappingMatrix from "@/components/FeaturesMappingMatrix";
 import { BusinessCard } from "@/components/BusinessCard";
+import { KumiiProfile } from "@/components/KumiiProfile";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -30,6 +31,7 @@ import { generateSecurityAwarenessPDF } from "@/utils/securityAwarenessPdfGenera
 import { generateFeaturesDocumentationPDF } from "@/utils/featuresDocumentationPdfGenerator";
 import { generateArchitectureDocumentPDF } from "@/utils/architectureDocumentPdfGenerator";
 import { generateMACHPrinciplesPDF } from "@/utils/machPrinciplesPdfGenerator";
+import { generateKumiiProfilePDF } from "@/utils/kumiiProfilePdfGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const SystemDocumentation = () => {
@@ -409,6 +411,20 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
     }
   };
 
+  const downloadKumiiProfilePDF = async () => {
+    try {
+      toast.loading("Generating Kumii Profile PDF...");
+      const pdf = await generateKumiiProfilePDF();
+      pdf.save("Kumii_Profile.pdf");
+      toast.dismiss();
+      toast.success("Kumii Profile PDF downloaded!");
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.dismiss();
+      toast.error("Failed to generate Kumii Profile PDF");
+    }
+  };
+
   // Check for dev mode on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -501,10 +517,14 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </Card>
           ) : (
             <Tabs defaultValue="presentation" className="w-full">
-              <TabsList className={`grid w-full ${devMode ? 'grid-cols-10' : 'grid-cols-8'} max-w-6xl mx-auto`}>
+              <TabsList className={`grid w-full ${devMode ? 'grid-cols-11' : 'grid-cols-9'} max-w-6xl mx-auto`}>
                 <TabsTrigger value="presentation" className="gap-2">
                   <Presentation className="w-4 h-4" />
                   Presentation
+                </TabsTrigger>
+                <TabsTrigger value="kumii-profile" className="gap-2">
+                  <Building2 className="w-4 h-4" />
+                  Kumii Profile
                 </TabsTrigger>
                 <TabsTrigger value="business-card" className="gap-2">
                   <CreditCard className="w-4 h-4" />
@@ -1392,6 +1412,39 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             {/* Features Mapping Matrix Tab */}
             <TabsContent value="features-matrix" className="space-y-8 mt-8">
               <FeaturesMappingMatrix />
+            </TabsContent>
+
+            {/* Kumii Profile Tab */}
+            <TabsContent value="kumii-profile" className="space-y-8 mt-8">
+              <div className="space-y-6">
+                <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary rounded-lg">
+                        <Building2 className="w-6 h-6 text-primary-foreground" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Kumii Marketing Profile</h2>
+                    </div>
+                    <p className="text-muted-foreground mb-8">
+                      Comprehensive marketing profile for Kumii. Perfect for sharing with potential clients, partners, funders, and stakeholders.
+                    </p>
+                    
+                    <div className="flex gap-4 mb-8">
+                      <Button 
+                        onClick={downloadKumiiProfilePDF} 
+                        variant="default" 
+                        size="lg"
+                        className="gap-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download PDF
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <KumiiProfile />
+              </div>
             </TabsContent>
 
             {/* Business Card Tab */}

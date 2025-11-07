@@ -28,7 +28,7 @@ export const BusinessCard = ({
             <img 
               src={kumiiLogo} 
               alt="Kumii Logo" 
-              className="h-12 w-auto drop-shadow-md mix-blend-multiply opacity-90"
+              className="h-16 w-auto drop-shadow-md mix-blend-multiply opacity-90"
               style={{ filter: 'brightness(1.1)' }}
             />
             <div className="bg-white/95 p-2.5 rounded-lg shadow-medium">

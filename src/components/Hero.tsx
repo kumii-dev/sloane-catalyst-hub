@@ -1,4 +1,4 @@
-import { ArrowRight, TrendingUp, Shield, DollarSign, FileCheck, Users, Briefcase, BookOpen } from "lucide-react";
+import { ArrowRight, TrendingUp, Shield, DollarSign, Users, Briefcase, BookOpen, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -39,6 +39,16 @@ const Hero = () => {
 
           {/* Platform Services */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 animate-fade-up px-2">
+            <Link to="/funding" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
+                backgroundColor: 'hsl(15 80% 70%)'
+              }}>
+                  <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                </div>
+                <span className="text-white font-semibold text-base sm:text-lg">Access to Capital</span>
+              </div>
+            </Link>
             <Link to="/access-to-market" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
@@ -49,24 +59,14 @@ const Hero = () => {
                 <span className="text-white font-semibold text-base sm:text-lg">Market Access</span>
               </div>
             </Link>
-            <Link to="/funding" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+            <Link to="/find-advisor" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
                 backgroundColor: 'hsl(15 80% 70%)'
               }}>
-                  <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                  <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-base sm:text-lg">Access To Capital</span>
-              </div>
-            </Link>
-            <Link to="/credit-score" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
-                backgroundColor: 'hsl(15 80% 70%)'
-              }}>
-                  <FileCheck className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                </div>
-                <span className="text-white font-semibold text-base sm:text-lg">Credit Scoring</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Expert Advisory</span>
               </div>
             </Link>
             <Link to="/mentorship" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
@@ -76,17 +76,17 @@ const Hero = () => {
               }}>
                   <Users className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-base sm:text-lg">Expert Mentorship</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Mentorship & Learning</span>
               </div>
             </Link>
-            <Link to="/find-advisor" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+            <Link to="/copilot" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
                 backgroundColor: 'hsl(15 80% 70%)'
               }}>
-                  <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                  <Wrench className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-white font-semibold text-base sm:text-lg">Professional Services</span>
+                <span className="text-white font-semibold text-base sm:text-lg">Business Tools</span>
               </div>
             </Link>
             <Link to="/resources" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">

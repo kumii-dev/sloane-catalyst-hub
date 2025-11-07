@@ -58,7 +58,7 @@ export const BusinessCard = ({
               <img 
                 src={kumiiLogo} 
                 alt="Kumii Logo" 
-                className="h-10 w-auto"
+                className="h-14 w-auto"
               />
             </div>
             <div className="bg-white/95 p-2.5 rounded-lg shadow-medium">

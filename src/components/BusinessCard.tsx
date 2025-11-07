@@ -49,10 +49,10 @@ export const BusinessCard = ({
 
   return (
     <>
-      <Card className="w-full max-w-[540px] mx-auto overflow-hidden shadow-elegant" ref={cardRef}>
+      <Card className="w-full max-w-[540px] mx-auto overflow-hidden shadow-elegant">
       <CardContent className="p-0">
         {/* Bank card dimensions: aspect ratio 1.586:1 (85.6mm x 53.98mm) */}
-        <div className="relative bg-gradient-to-t from-[hsl(82,13%,36%)] via-[hsl(82,13%,46%)] to-[hsl(82,54%,85%)] p-8 aspect-[1.586/1] flex flex-col justify-between">
+        <div ref={cardRef} className="relative bg-gradient-to-t from-[hsl(82,13%,36%)] via-[hsl(82,13%,46%)] to-[hsl(82,54%,85%)] p-8 aspect-[1.586/1] flex flex-col justify-between">
           {/* Top Section: Logo and QR Code */}
           <div className="flex items-start justify-between">
             <img 

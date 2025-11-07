@@ -48,8 +48,8 @@ export const BusinessCard = ({
   };
 
   return (
-    <div className="space-y-4">
-      <Card ref={cardRef} className="w-full max-w-[540px] mx-auto overflow-hidden shadow-elegant">
+    <>
+      <Card className="w-full max-w-[540px] mx-auto overflow-hidden shadow-elegant" ref={cardRef}>
       <CardContent className="p-0">
         {/* Bank card dimensions: aspect ratio 1.586:1 (85.6mm x 53.98mm) */}
         <div className="relative bg-gradient-to-t from-[hsl(82,13%,36%)] via-[hsl(82,13%,46%)] to-[hsl(82,54%,85%)] p-8 aspect-[1.586/1] flex flex-col justify-between">
@@ -106,12 +106,12 @@ export const BusinessCard = ({
       </CardContent>
     </Card>
     
-    <div className="flex justify-center">
+    <div className="flex justify-center mt-4">
       <Button onClick={handleDownload} className="gap-2">
         <Download className="w-4 h-4" />
         Download Card
       </Button>
     </div>
-    </div>
+    </>
   );
 };

@@ -154,6 +154,7 @@ export const generateRACIMatrixPDF = () => {
     // Table headers
     doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
+    doc.setTextColor(0, 0, 0); // Ensure text is black
     const colWidth = (pageWidth - 2 * margin - 50) / allRoles.length;
     
     doc.setFillColor(220, 220, 220);
@@ -164,7 +165,6 @@ export const generateRACIMatrixPDF = () => {
       const x = margin + 50 + idx * colWidth;
       doc.rect(x, yPosition - 4, colWidth, 7, 'F');
       const roleName = formatRoleName(role);
-      const textWidth = doc.getTextWidth(roleName);
       doc.text(roleName, x + colWidth / 2, yPosition, { align: 'center' });
     });
 
@@ -172,6 +172,7 @@ export const generateRACIMatrixPDF = () => {
 
     // Table rows
     doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0, 0, 0); // Ensure text is black for task names
     tasks.forEach((task) => {
       checkAndAddPage(10);
 

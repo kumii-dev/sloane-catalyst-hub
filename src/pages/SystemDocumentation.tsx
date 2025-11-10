@@ -45,22 +45,34 @@ const SystemDocumentation = () => {
   const [devMode, setDevMode] = useState(false);
   const [authorizedEmails, setAuthorizedEmails] = useState<string[]>([]);
   const [newEmail, setNewEmail] = useState("");
+  const [isLoadingEmails, setIsLoadingEmails] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const journeyMapsRef = useRef<HTMLDivElement | null>(null);
 
-  const hasFullAccess = user?.email && authorizedEmails.includes(user.email);
+  const hasFullAccess = user?.email && authorizedEmails.some(email => email.toLowerCase() === user.email.toLowerCase());
 
   // Load authorized emails from localStorage on mount
   useEffect(() => {
+    // Default emails (always in lowercase)
+    const defaultEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com', 'chris.22onsloane@gmail.com'];
+    
     const storedEmails = localStorage.getItem('authorizedEmails');
     if (storedEmails) {
-      setAuthorizedEmails(JSON.parse(storedEmails));
+      try {
+        const parsed = JSON.parse(storedEmails);
+        // Ensure all emails are lowercase for consistent comparison
+        const normalizedEmails = parsed.map((email: string) => email.toLowerCase());
+        setAuthorizedEmails(normalizedEmails);
+      } catch (error) {
+        console.error('Error parsing stored emails:', error);
+        setAuthorizedEmails(defaultEmails);
+        localStorage.setItem('authorizedEmails', JSON.stringify(defaultEmails));
+      }
     } else {
-      // Default emails
-      const defaultEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com', 'chris.22onsloane@gmail.com'];
       setAuthorizedEmails(defaultEmails);
       localStorage.setItem('authorizedEmails', JSON.stringify(defaultEmails));
     }
+    setIsLoadingEmails(false);
   }, []);
 
   const addEmail = () => {
@@ -552,7 +564,13 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </p>
           </div>
 
-          {!hasFullAccess ? (
+          {isLoadingEmails ? (
+            <Card>
+              <CardContent className="p-12 text-center">
+                <p className="text-muted-foreground">Loading...</p>
+              </CardContent>
+            </Card>
+          ) : !hasFullAccess ? (
             <Card>
               <CardContent className="p-12 text-center">
                 <h2 className="text-2xl font-bold mb-4">Access Restricted</h2>

@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText, GraduationCap, MapPin, CreditCard, Building2 } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText, GraduationCap, MapPin, CreditCard, Building2, UserPlus, Trash2, Mail } from "lucide-react";
 import { StartupJourneyMap } from "@/components/StartupJourneyMap";
 import { MentorJourneyMap } from "@/components/MentorJourneyMap";
 import { ServiceProviderJourneyMap } from "@/components/ServiceProviderJourneyMap";
@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { generateTestScriptsPDF } from "@/utils/testScriptsPdfGenerator";
@@ -42,12 +43,57 @@ const SystemDocumentation = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [selectedVoice, setSelectedVoice] = useState<string>("TTY70JqFvDxeExufZ1za");
   const [devMode, setDevMode] = useState(false);
+  const [authorizedEmails, setAuthorizedEmails] = useState<string[]>([]);
+  const [newEmail, setNewEmail] = useState("");
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const journeyMapsRef = useRef<HTMLDivElement | null>(null);
 
-  // Authorized emails for full access
-  const authorizedEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com', 'chris.22onsloane@gmail.com'];
   const hasFullAccess = user?.email && authorizedEmails.includes(user.email);
+
+  // Load authorized emails from localStorage on mount
+  useEffect(() => {
+    const storedEmails = localStorage.getItem('authorizedEmails');
+    if (storedEmails) {
+      setAuthorizedEmails(JSON.parse(storedEmails));
+    } else {
+      // Default emails
+      const defaultEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com', 'chris.22onsloane@gmail.com'];
+      setAuthorizedEmails(defaultEmails);
+      localStorage.setItem('authorizedEmails', JSON.stringify(defaultEmails));
+    }
+  }, []);
+
+  const addEmail = () => {
+    if (!newEmail.trim()) {
+      toast.error("Please enter an email address");
+      return;
+    }
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newEmail)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    if (authorizedEmails.includes(newEmail.toLowerCase())) {
+      toast.error("Email already exists in the list");
+      return;
+    }
+
+    const updatedEmails = [...authorizedEmails, newEmail.toLowerCase()];
+    setAuthorizedEmails(updatedEmails);
+    localStorage.setItem('authorizedEmails', JSON.stringify(updatedEmails));
+    setNewEmail("");
+    toast.success("Email added successfully");
+  };
+
+  const deleteEmail = (emailToDelete: string) => {
+    const updatedEmails = authorizedEmails.filter(email => email !== emailToDelete);
+    setAuthorizedEmails(updatedEmails);
+    localStorage.setItem('authorizedEmails', JSON.stringify(updatedEmails));
+    toast.success("Email removed successfully");
+  };
 
   // Extract all narration text from the script
   const scriptText = `Every day, thousands of brilliant entrepreneurs across Africa have game-changing ideas. But 70% of startups fail—not because they lack potential, but because they lack access. Access to funding. Access to markets. Access to the right guidance at the right time.
@@ -517,7 +563,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </Card>
           ) : (
             <Tabs defaultValue="presentation" className="w-full">
-              <TabsList className={`grid w-full ${devMode ? 'grid-cols-11' : 'grid-cols-9'} max-w-6xl mx-auto`}>
+              <TabsList className={`grid w-full ${devMode ? 'grid-cols-12' : 'grid-cols-10'} max-w-6xl mx-auto`}>
                 <TabsTrigger value="presentation" className="gap-2">
                   <Presentation className="w-4 h-4" />
                   Presentation
@@ -553,6 +599,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 <TabsTrigger value="features-matrix" className="gap-2">
                   <Table className="w-4 h-4" />
                   Features Matrix
+                </TabsTrigger>
+                <TabsTrigger value="access" className="gap-2">
+                  <Mail className="w-4 h-4" />
+                  Access
                 </TabsTrigger>
                 <TabsTrigger value="database" className="gap-2">
                   <Database className="w-4 h-4" />
@@ -1786,6 +1836,75 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               Download Script
             </Button>
           </div>
+            </TabsContent>
+
+            <TabsContent value="access" className="space-y-8 mt-8">
+              <Card className="border-2">
+                <CardContent className="p-8 space-y-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Mail className="w-8 h-8 text-primary" />
+                    <div>
+                      <h2 className="text-2xl font-bold">Access Management</h2>
+                      <p className="text-muted-foreground">Manage authorized emails for system documentation access</p>
+                    </div>
+                  </div>
+
+                  {/* Add New Email */}
+                  <div className="space-y-4 p-6 bg-muted/50 rounded-lg">
+                    <h3 className="text-lg font-semibold flex items-center gap-2">
+                      <UserPlus className="w-5 h-5" />
+                      Add New Authorized Email
+                    </h3>
+                    <div className="flex gap-3">
+                      <Input
+                        type="email"
+                        placeholder="email@example.com"
+                        value={newEmail}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && addEmail()}
+                        className="flex-1"
+                      />
+                      <Button onClick={addEmail}>
+                        <UserPlus className="w-4 h-4 mr-2" />
+                        Add Email
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Authorized Emails List */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">Authorized Emails ({authorizedEmails.length})</h3>
+                    <div className="space-y-2">
+                      {authorizedEmails.length === 0 ? (
+                        <p className="text-muted-foreground text-center py-8">No authorized emails yet. Add one above.</p>
+                      ) : (
+                        authorizedEmails.map((email) => (
+                          <div
+                            key={email}
+                            className="flex items-center justify-between p-4 bg-card border rounded-lg hover:bg-muted/50 transition-colors"
+                          >
+                            <div className="flex items-center gap-3">
+                              <Mail className="w-5 h-5 text-muted-foreground" />
+                              <span className="font-medium">{email}</span>
+                              {user?.email === email && (
+                                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">You</span>
+                              )}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => deleteEmail(email)}
+                              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
 
             <TabsContent value="database" className="space-y-8 mt-8">

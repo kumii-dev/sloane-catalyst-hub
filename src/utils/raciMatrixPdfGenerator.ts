@@ -157,13 +157,17 @@ export const generateRACIMatrixPDF = () => {
     doc.setTextColor(0, 0, 0); // Ensure text is black
     const colWidth = (pageWidth - 2 * margin - 50) / allRoles.length;
     
+    // Draw Task header
     doc.setFillColor(220, 220, 220);
     doc.rect(margin, yPosition - 4, 50, 7, 'F');
     doc.text('Task', margin + 2, yPosition);
     
+    // Draw role headers
     allRoles.forEach((role, idx) => {
       const x = margin + 50 + idx * colWidth;
+      doc.setFillColor(220, 220, 220); // Reset gray fill for each header
       doc.rect(x, yPosition - 4, colWidth, 7, 'F');
+      doc.setTextColor(0, 0, 0); // Ensure text is black
       const roleName = formatRoleName(role);
       doc.text(roleName, x + colWidth / 2, yPosition, { align: 'center' });
     });

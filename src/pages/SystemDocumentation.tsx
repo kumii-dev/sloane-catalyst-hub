@@ -54,25 +54,28 @@ const SystemDocumentation = () => {
 
   // Load authorized emails from localStorage on mount
   useEffect(() => {
-    // Default emails (always in lowercase)
+    // Default emails (always in lowercase) - these are always included
     const defaultEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com', 'chris.22onsloane@gmail.com', '22onsloanedigitalteam@gmail.com'];
     
     const storedEmails = localStorage.getItem('authorizedEmails');
+    let additionalEmails: string[] = [];
+    
     if (storedEmails) {
       try {
         const parsed = JSON.parse(storedEmails);
-        // Ensure all emails are lowercase for consistent comparison
-        const normalizedEmails = parsed.map((email: string) => email.toLowerCase());
-        setAuthorizedEmails(normalizedEmails);
+        // Get additional emails that aren't in defaults
+        additionalEmails = parsed.filter((email: string) => 
+          !defaultEmails.includes(email.toLowerCase())
+        ).map((email: string) => email.toLowerCase());
       } catch (error) {
         console.error('Error parsing stored emails:', error);
-        setAuthorizedEmails(defaultEmails);
-        localStorage.setItem('authorizedEmails', JSON.stringify(defaultEmails));
       }
-    } else {
-      setAuthorizedEmails(defaultEmails);
-      localStorage.setItem('authorizedEmails', JSON.stringify(defaultEmails));
     }
+    
+    // Always combine default emails with additional ones
+    const allEmails = [...defaultEmails, ...additionalEmails];
+    setAuthorizedEmails(allEmails);
+    localStorage.setItem('authorizedEmails', JSON.stringify(allEmails));
     setIsLoadingEmails(false);
   }, []);
 

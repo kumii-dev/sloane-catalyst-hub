@@ -55,7 +55,7 @@ const SystemDocumentation = () => {
   // Load authorized emails from localStorage on mount
   useEffect(() => {
     // Default emails (always in lowercase)
-    const defaultEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com', 'chris.22onsloane@gmail.com'];
+    const defaultEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com', 'chris.22onsloane@gmail.com', '22onsloanedigitalteam@gmail.com'];
     
     const storedEmails = localStorage.getItem('authorizedEmails');
     if (storedEmails) {

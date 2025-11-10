@@ -17,13 +17,13 @@ export const generateKumiiProfilePDF = async () => {
 
   // Capture the profile content as canvas
   const canvas = await html2canvas(profileElement, {
-    scale: 2,
+    scale: 1,
     useCORS: true,
     logging: false,
     backgroundColor: '#ffffff',
   });
 
-  const imgData = canvas.toDataURL('image/png');
+  const imgData = canvas.toDataURL('image/jpeg', 0.85);
   const imgWidth = contentWidth;
   const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
@@ -31,14 +31,14 @@ export const generateKumiiProfilePDF = async () => {
   let position = margin;
 
   // Add first page
-  pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+  pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
   heightLeft -= (pageHeight - 2 * margin);
 
   // Add additional pages if content is longer than one page
   while (heightLeft > 0) {
     position = heightLeft - imgHeight + margin;
     pdf.addPage();
-    pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+    pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
     heightLeft -= (pageHeight - 2 * margin);
   }
 

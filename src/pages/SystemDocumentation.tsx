@@ -46,7 +46,7 @@ const SystemDocumentation = () => {
   const journeyMapsRef = useRef<HTMLDivElement | null>(null);
 
   // Authorized emails for full access
-  const authorizedEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com'];
+  const authorizedEmails = ['nkambumw@gmail.com', 'nkambumw@protonmail.com', 'chris.22onsloane@gmail.com'];
   const hasFullAccess = user?.email && authorizedEmails.includes(user.email);
 
   // Extract all narration text from the script

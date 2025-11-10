@@ -225,24 +225,44 @@ export const RACIMatrix = () => {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="min-w-[200px]">Task</TableHead>
-                      {Object.keys(tasks[0] || {}).filter(k => k !== 'task').map((role) => (
-                        <TableHead key={role} className="min-w-[120px] text-center capitalize">
-                          {role.replace(/([A-Z])/g, ' $1').trim()}
-                        </TableHead>
-                      ))}
+                      {(() => {
+                        // Collect all unique roles from all tasks
+                        const allRoles = Array.from(
+                          new Set(
+                            tasks.flatMap(task => 
+                              Object.keys(task).filter(k => k !== 'task')
+                            )
+                          )
+                        );
+                        return allRoles.map((role) => (
+                          <TableHead key={role} className="min-w-[120px] text-center capitalize">
+                            {role.replace(/([A-Z])/g, ' $1').trim()}
+                          </TableHead>
+                        ));
+                      })()}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {tasks.map((task, idx) => (
-                      <TableRow key={idx}>
-                        <TableCell className="font-medium">{task.task}</TableCell>
-                        {Object.entries(task).filter(([k]) => k !== 'task').map(([role, value]) => (
-                          <TableCell key={role} className="text-center">
-                            {value && getRaciBadge(value as string)}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
+                    {tasks.map((task, idx) => {
+                      // Get all unique roles for consistent column rendering
+                      const allRoles = Array.from(
+                        new Set(
+                          tasks.flatMap(t => 
+                            Object.keys(t).filter(k => k !== 'task')
+                          )
+                        )
+                      );
+                      return (
+                        <TableRow key={idx}>
+                          <TableCell className="font-medium">{task.task}</TableCell>
+                          {allRoles.map((role) => (
+                            <TableCell key={role} className="text-center">
+                              {task[role as keyof typeof task] && getRaciBadge(task[role as keyof typeof task] as string)}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </div>

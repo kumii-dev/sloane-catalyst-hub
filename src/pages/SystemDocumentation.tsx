@@ -9,6 +9,7 @@ import { FunderJourneyMap } from "@/components/FunderJourneyMap";
 import FeaturesMappingMatrix from "@/components/FeaturesMappingMatrix";
 import { BusinessCard } from "@/components/BusinessCard";
 import { KumiiProfile } from "@/components/KumiiProfile";
+import { RACIMatrix } from "@/components/RACIMatrix";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -581,7 +582,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </Card>
           ) : (
             <Tabs defaultValue="presentation" className="w-full">
-              <TabsList className={`grid w-full ${devMode ? 'grid-cols-12' : 'grid-cols-10'} max-w-6xl mx-auto`}>
+              <TabsList className={`grid w-full ${devMode ? 'grid-cols-13' : 'grid-cols-11'} max-w-6xl mx-auto`}>
                 <TabsTrigger value="presentation" className="gap-2">
                   <Presentation className="w-4 h-4" />
                   Presentation
@@ -617,6 +618,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 <TabsTrigger value="features-matrix" className="gap-2">
                   <Table className="w-4 h-4" />
                   Features Matrix
+                </TabsTrigger>
+                <TabsTrigger value="raci" className="gap-2">
+                  <Users className="w-4 h-4" />
+                  RACI
                 </TabsTrigger>
                 <TabsTrigger value="access" className="gap-2">
                   <Mail className="w-4 h-4" />
@@ -1856,6 +1861,12 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
           </div>
             </TabsContent>
 
+            {/* RACI Matrix Tab */}
+            <TabsContent value="raci" className="space-y-8 mt-8">
+              <RACIMatrix />
+            </TabsContent>
+
+            {/* Access Management Tab */}
             <TabsContent value="access" className="space-y-8 mt-8">
               <Card className="border-2">
                 <CardContent className="p-8 space-y-6">

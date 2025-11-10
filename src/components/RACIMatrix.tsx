@@ -1,8 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, Shield, Headphones, Building2, Lightbulb, DollarSign, GraduationCap, Store } from "lucide-react";
+import { Users, Shield, Headphones, Building2, Lightbulb, DollarSign, GraduationCap, Store, Download } from "lucide-react";
+import { generateRACIMatrixPDF } from "@/utils/raciMatrixPdfGenerator";
+import { toast } from "sonner";
 
 export const RACIMatrix = () => {
   const roles = [
@@ -132,8 +135,26 @@ export const RACIMatrix = () => {
     return badges;
   };
 
+  const handleDownloadPDF = () => {
+    try {
+      generateRACIMatrixPDF();
+      toast.success("RACI Matrix PDF downloaded successfully!");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast.error("Failed to generate PDF. Please try again.");
+    }
+  };
+
   return (
     <div className="space-y-8">
+      {/* Download Button */}
+      <div className="flex justify-end">
+        <Button onClick={handleDownloadPDF} className="gap-2">
+          <Download className="w-4 h-4" />
+          Download RACI Matrix PDF
+        </Button>
+      </div>
+
       {/* RACI Legend */}
       <Card>
         <CardHeader>

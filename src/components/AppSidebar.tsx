@@ -91,7 +91,6 @@ const secondaryContent = {
       { title: "Access To Capital", url: "/funding" },
       { title: "Access To Market", url: "/access-to-market" },
       { title: "Expert Advisory", url: "/find-advisor" },
-      { title: "Credit Scoring", url: "/credit-score" },
       { title: "Mentorship", url: "/mentorship" },
       { title: "Software Services", url: "/services/category/software-services" },
       { title: "Resources", url: "/resources" },

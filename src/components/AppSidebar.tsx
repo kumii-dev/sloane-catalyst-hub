@@ -92,7 +92,7 @@ const secondaryContent = {
       { title: "Access To Market", url: "/access-to-market" },
       { title: "Expert Advisory", url: "/find-advisor" },
       { title: "Mentorship", url: "/mentorship" },
-      { title: "Software Services", url: "/services/category/software-services" },
+      { title: "Business Tools", url: "/services/category/software-services" },
       { title: "Resources", url: "/resources" },
     ]
   },
@@ -160,7 +160,7 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
     { title: "Community & Networking", url: "/resources?section=community" },
     { title: "Support & Help Center", url: "/resources?section=support" },
   ],
-  "Software Services": [
+  "Business Tools": [
     { title: "Business Operations & Productivity", url: "/services/category/sw-business-operations-productivity" },
     { title: "Customer Relationship & Sales", url: "/services/category/sw-customer-relationship-sales" },
     { title: "Accounting & Finance", url: "/services/category/sw-accounting-finance" },

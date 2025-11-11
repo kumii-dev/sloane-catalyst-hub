@@ -35,6 +35,7 @@ import { generateFeaturesDocumentationPDF } from "@/utils/featuresDocumentationP
 import { generateArchitectureDocumentPDF } from "@/utils/architectureDocumentPdfGenerator";
 import { generateMACHPrinciplesPDF } from "@/utils/machPrinciplesPdfGenerator";
 import { generateKumiiProfilePDF } from "@/utils/kumiiProfilePdfGenerator";
+import { generateMafikaProfileWord } from "@/utils/mafikaProfileWordGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const SystemDocumentation = () => {
@@ -1544,7 +1545,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                       Currently serving as Digital Lead for 22 On Sloane and Kumii Marketplace, alongside his role as Director & Head of ICT Services at Tshwane University of Technology.
                     </p>
                     
-                    <div className="flex gap-4 mb-8">
+                    <div className="flex flex-wrap gap-4 mb-8">
                       <Button 
                         onClick={() => {
                           toast.promise(
@@ -1593,7 +1594,26 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                         className="gap-2"
                       >
                         <Download className="w-4 h-4" />
-                        Download PDF Profile
+                        Download PDF
+                      </Button>
+                      
+                      <Button 
+                        onClick={() => {
+                          toast.promise(
+                            generateMafikaProfileWord(),
+                            {
+                              loading: 'Generating Word document...',
+                              success: 'Word document downloaded successfully',
+                              error: 'Failed to generate Word document',
+                            }
+                          );
+                        }}
+                        variant="outline"
+                        size="lg"
+                        className="gap-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download Word
                       </Button>
                     </div>
                   </CardContent>

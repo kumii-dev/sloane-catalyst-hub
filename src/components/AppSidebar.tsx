@@ -88,12 +88,11 @@ const secondaryContent = {
   apps: {
     title: "Apps", 
     items: [
-      { title: "Access To Market", url: "/access-to-market" },
-      { title: "Access To Capital", url: "/funding" },
+      { title: "Services Marketplace", url: "/services" },
+      { title: "Funding Connect", url: "/funding" },
+      { title: "Mentorship Network", url: "/mentorship" },
+      { title: "Investor Readiness", url: "/access-to-market" },
       { title: "Credit Scoring", url: "/credit-score" },
-      { title: "Mentorship", url: "/mentorship" },
-      { title: "Professional Services", url: "/find-advisor" },
-      { title: "Software Services", url: "/services/category/software-services" },
       { title: "Resources", url: "/resources" },
     ]
   },
@@ -110,73 +109,54 @@ const secondaryContent = {
 
 // Dynamic subcategory mapping for each main app
 const appSubcategories: Record<string, Array<{ title: string; url: string }>> = {
-  "Access To Market": [
-    { title: "Credit Score Check", url: "/credit-score" },
-    { title: "Document Generator", url: "/access-to-market/document-generator" },
-    { title: "Financial Model Builder", url: "/access-to-market/financial-model" },
-    { title: "Universal Valuation Model", url: "/access-to-market/valuation" },
-    { title: "Smart Matching", url: "/smart-matching" },
-    { title: "Funding Opportunities", url: "/funding/browse" },
-    { title: "Funder Directory", url: "/funding/funder-dashboard" },
-  ],
-  "Access To Capital": [
-    { title: "Opportunities", url: "/funding/browse" },
-    { title: "Funders", url: "/funding/funder-dashboard" },
-    { title: "Insights", url: "/funding" },
-  ],
-  "Credit Scoring": [
-    { title: "360° Credit Scoring", url: "/credit-score" },
-    { title: "Alternative Data Sources", url: "/credit-score?section=data-sources" },
-    { title: "Funder-Grade Reports", url: "/credit-score?section=reports" },
-    { title: "Trusted by Funders", url: "/credit-score?section=funders" },
-  ],
-  "Mentorship": [
-    { title: "My Sessions (Mentee)", url: "/mentee-dashboard" },
-    { title: "Mentor Dashboard", url: "/mentor-dashboard" },
-    { title: "Find a Mentor", url: "/find-mentor" },
-    { title: "Become a Mentor", url: "/become-mentor" },
-    { title: "Browse Categories", url: "/mentorship" },
-  ],
-  "Professional Services": [
-    { title: "Business Operations & Productivity", url: "/find-advisor?category=business-operations" },
+  "Services Marketplace": [
+    { title: "Professional Services", url: "/find-advisor" },
+    { title: "Software Services", url: "/services" },
+    { title: "Business Operations", url: "/find-advisor?category=business-operations" },
     { title: "Customer Relationship & Sales", url: "/find-advisor?category=customer-sales" },
-    { title: "Professional & Ancillary Services", url: "/find-advisor?category=professional-services" },
-    { title: "Growth and Development Services", url: "/find-advisor?category=growth-development" },
+    { title: "Accounting & Finance", url: "/services/category/sw-accounting-finance" },
+    { title: "Marketing & Branding", url: "/services/category/sw-marketing-branding-analytics" },
     { title: "eCommerce & Retail", url: "/find-advisor?category=ecommerce" },
     { title: "Cybersecurity & Compliance", url: "/find-advisor?category=cybersecurity" },
     { title: "Data, AI & Analytics", url: "/find-advisor?category=data-ai" },
-    { title: "Cloud, Hosting & Infrastructure", url: "/find-advisor?category=cloud-hosting" },
-    { title: "Project Management & Collaboration", url: "/find-advisor?category=project-management" },
+    { title: "Cloud & Infrastructure", url: "/find-advisor?category=cloud-hosting" },
     { title: "HR & People Development", url: "/find-advisor?category=hr-people" },
     { title: "Legal, Risk & Governance", url: "/find-advisor?category=legal-risk" },
-    { title: "Industry-Specific Solutions", url: "/find-advisor?category=industry-solutions" },
-    { title: "Developer & Tech Tools", url: "/find-advisor?category=developer-tools" },
-    { title: "Integration & Automation", url: "/find-advisor?category=integration" },
-    { title: "Startup Support & Advisory", url: "/find-advisor?category=startup-support" },
+  ],
+  "Funding Connect": [
+    { title: "Browse Opportunities", url: "/funding/browse" },
+    { title: "Funder Directory", url: "/funding/funder-dashboard" },
+    { title: "Insights & Analytics", url: "/funding" },
+    { title: "My Applications", url: "/startup-dashboard" },
+  ],
+  "Mentorship Network": [
+    { title: "Find a Mentor", url: "/find-mentor" },
+    { title: "My Sessions (Mentee)", url: "/mentee-dashboard" },
+    { title: "Mentor Dashboard", url: "/mentor-dashboard" },
+    { title: "Become a Mentor", url: "/become-mentor" },
+    { title: "Browse Categories", url: "/mentorship" },
+  ],
+  "Investor Readiness": [
+    { title: "Credit Score Check", url: "/credit-score" },
+    { title: "Document Generator", url: "/access-to-market/document-generator" },
+    { title: "Financial Model Builder", url: "/access-to-market/financial-model" },
+    { title: "Valuation Model", url: "/access-to-market/valuation" },
+    { title: "Smart Matching", url: "/smart-matching" },
+    { title: "Access To Market Hub", url: "/access-to-market" },
+  ],
+  "Credit Scoring": [
+    { title: "360° Credit Assessment", url: "/credit-score" },
+    { title: "Start Assessment", url: "/credit-score-assessment" },
+    { title: "View Results", url: "/credit-score-results" },
+    { title: "Alternative Data Sources", url: "/credit-score?section=data-sources" },
+    { title: "Funder-Grade Reports", url: "/credit-score?section=reports" },
   ],
   "Resources": [
     { title: "Learning Hub", url: "/resources" },
     { title: "Knowledge Library", url: "/resources?section=library" },
     { title: "Tools & Downloads", url: "/resources?section=tools" },
     { title: "Community & Networking", url: "/resources?section=community" },
-    { title: "Support & Help Center", url: "/resources?section=support" },
-  ],
-  "Software Services": [
-    { title: "Business Operations & Productivity", url: "/services/category/sw-business-operations-productivity" },
-    { title: "Customer Relationship & Sales", url: "/services/category/sw-customer-relationship-sales" },
-    { title: "Accounting & Finance", url: "/services/category/sw-accounting-finance" },
-    { title: "Marketing, Branding & Analytics", url: "/services/category/sw-marketing-branding-analytics" },
-    { title: "eCommerce & Retail", url: "/services/category/sw-ecommerce-retail" },
-    { title: "Cybersecurity & Compliance", url: "/services/category/sw-cybersecurity-compliance" },
-    { title: "Data, AI & Analytics", url: "/services/category/sw-data-ai-analytics" },
-    { title: "Cloud, Hosting & Infrastructure", url: "/services/category/sw-cloud-hosting-infrastructure" },
-    { title: "Project Management & Collaboration", url: "/services/category/sw-project-management-collaboration" },
-    { title: "HR & People Development", url: "/services/category/sw-hr-people-development" },
-    { title: "Legal, Risk & Governance", url: "/services/category/sw-legal-risk-governance" },
-    { title: "Industry-Specific Solutions", url: "/services/category/sw-industry-specific-solutions" },
-    { title: "Developer & Tech Tools", url: "/services/category/sw-developer-tech-tools" },
-    { title: "Integration & Automation", url: "/services/category/sw-integration-automation" },
-    { title: "Startup Support & Advisory", url: "/services/category/sw-startup-support-advisory" },
+    { title: "Support & Help Center", url: "/help" },
   ],
 };
 
@@ -232,7 +212,13 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
   const currentPath = location.pathname;
   let selectedApp = selectedContent?.items.find(item => isActive(item.url))?.title || null;
   if (!selectedApp) {
-    if (currentPath.startsWith('/services/category/')) selectedApp = 'Software Services';
+    if (currentPath.startsWith('/services')) selectedApp = 'Services Marketplace';
+    if (currentPath.startsWith('/find-advisor')) selectedApp = 'Services Marketplace';
+    if (currentPath.startsWith('/funding')) selectedApp = 'Funding Connect';
+    if (currentPath.startsWith('/mentorship') || currentPath.startsWith('/mentor') || currentPath.startsWith('/mentee') || currentPath.startsWith('/find-mentor')) selectedApp = 'Mentorship Network';
+    if (currentPath.startsWith('/access-to-market') || currentPath.startsWith('/smart-matching')) selectedApp = 'Investor Readiness';
+    if (currentPath.startsWith('/credit-score')) selectedApp = 'Credit Scoring';
+    if (currentPath.startsWith('/resources')) selectedApp = 'Resources';
   }
   
   // Get subcategories for the selected app
@@ -325,7 +311,7 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
             {selectedPrimary === 'apps' ? (
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-medium text-sm text-muted-foreground mb-3">Growth Gateway</h3>
+                  <h3 className="font-medium text-sm text-muted-foreground mb-3">Platform Features</h3>
                   <div className="space-y-1">
                     {selectedContent.items.map((item) => (
                       <Link

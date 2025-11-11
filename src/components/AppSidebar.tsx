@@ -120,8 +120,8 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
     { title: "Funder Directory", url: "/funding" },
   ],
   "Access To Capital": [
-    { title: "Opportunities", url: "/funding" },
-    { title: "Funders", url: "/funding" },
+    { title: "Opportunities", url: "/funding/browse" },
+    { title: "Funders", url: "/funding/funder-dashboard" },
     { title: "Insights", url: "/funding" },
   ],
   "Credit Scoring": [
@@ -215,7 +215,12 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
     fetchUserProfile();
   }, [user]);
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    // Remove query parameters for comparison
+    const currentPathWithoutQuery = location.pathname;
+    const targetPath = path.split('?')[0];
+    return currentPathWithoutQuery === targetPath;
+  };
   
   const selectedContent = secondaryContent[selectedPrimary as keyof typeof secondaryContent];
   
@@ -326,11 +331,8 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
                           setShowAllSubcategories(false);
                           onNavigate?.();
                         }}
-                        className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                          isActive(item.url)
-                            ? 'bg-accent text-accent-foreground' 
-                            : 'hover:bg-muted text-foreground'
-                        }`}
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors hover:bg-muted text-foreground data-[active=true]:bg-accent data-[active=true]:text-accent-foreground"
+                        data-active={isActive(item.url)}
                       >
                         <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
                           <TrendingUp className="h-3 w-3 text-primary-foreground" />
@@ -351,11 +353,8 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
                           key={subcat.title}
                           to={subcat.url}
                           onClick={onNavigate}
-                          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                            isActive(subcat.url) 
-                              ? 'bg-accent text-accent-foreground' 
-                              : 'hover:bg-muted text-foreground'
-                          }`}
+                          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors hover:bg-muted text-foreground data-[active=true]:bg-accent data-[active=true]:text-accent-foreground"
+                          data-active={isActive(subcat.url)}
                         >
                           {subcat.title}
                         </Link>
@@ -387,11 +386,8 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
                     key={item.url}
                     to={item.url}
                     onClick={onNavigate}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                      isActive(item.url) 
-                        ? 'bg-accent text-accent-foreground' 
-                        : 'hover:bg-muted text-foreground'
-                    }`}
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors hover:bg-muted text-foreground data-[active=true]:bg-accent data-[active=true]:text-accent-foreground"
+                    data-active={isActive(item.url)}
                   >
                     {item.title}
                   </Link>

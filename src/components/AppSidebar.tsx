@@ -90,9 +90,9 @@ const secondaryContent = {
     items: [
       { title: "Access To Market", url: "/access-to-market" },
       { title: "Access To Capital", url: "/funding" },
+      { title: "Expert Advisory", url: "/find-advisor" },
       { title: "Credit Scoring", url: "/credit-score" },
       { title: "Mentorship", url: "/mentorship" },
-      { title: "Expert Advisory", url: "/find-advisor" },
       { title: "Software Services", url: "/services/category/software-services" },
       { title: "Resources", url: "/resources" },
     ]

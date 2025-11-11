@@ -108,11 +108,11 @@ export function Layout({ children, showSidebar = true, hideSecondarySidebar = fa
   }
 
   return (
-    <div className="min-h-screen flex w-full flex-col">
+    <div className="h-screen flex flex-col w-full overflow-hidden">
       {/* Top Navigation - Full Width */}
       <TopNavbar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
       
-      <div className="flex-1 flex relative">
+      <div className="flex-1 flex relative overflow-hidden">
         {/* Mobile Overlay */}
         {sidebarOpen && (isMobile || isTablet) && (
           <div 
@@ -121,14 +121,17 @@ export function Layout({ children, showSidebar = true, hideSecondarySidebar = fa
           />
         )}
         
-        {/* Sidebar - Collapsible on mobile */}
+        {/* Sidebar - Fixed height, always visible */}
         <div className={`
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
           md:translate-x-0
-          fixed md:relative
+          fixed md:static
+          top-14 md:top-0
+          left-0
+          h-[calc(100vh-3.5rem)] md:h-full
           z-40 md:z-auto
-          h-full
           transition-transform duration-300 ease-in-out
+          flex-shrink-0
         `}>
           <AppSidebar 
             selectedPrimary={selectedPrimary}
@@ -142,11 +145,8 @@ export function Layout({ children, showSidebar = true, hideSecondarySidebar = fa
           />
         </div>
         
-        <main
-          className={`flex-1 overflow-y-auto overflow-x-hidden main-gradient-light w-full transition-[margin] duration-300 ${
-            sidebarOpen && (isMobile || isTablet) ? 'ml-[314px] sm:ml-[344px]' : ''
-          }`}
-        >
+        {/* Main Content - Independent scroll */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden main-gradient-light">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 w-full">
             {children}
           </div>

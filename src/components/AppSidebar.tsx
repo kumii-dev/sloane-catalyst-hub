@@ -232,7 +232,7 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
   const hasMoreSubcategories = subcategories.length > 5;
 
   return (
-    <div className="flex h-screen bg-background shadow-lg lg:shadow-none">
+    <div className="flex h-full bg-background shadow-lg lg:shadow-none">
       {/* Primary Navigation Bar */}
       <div className="w-16 bg-primary flex flex-col items-center py-4 border-r border-border flex-shrink-0">
         {/* Home Button */}

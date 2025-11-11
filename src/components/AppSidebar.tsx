@@ -116,8 +116,8 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
     { title: "Financial Model Builder", url: "/access-to-market/financial-model" },
     { title: "Universal Valuation Model", url: "/access-to-market/valuation" },
     { title: "Smart Matching", url: "/smart-matching" },
-    { title: "Funding Opportunities", url: "/funding" },
-    { title: "Funder Directory", url: "/funding" },
+    { title: "Funding Opportunities", url: "/funding/browse" },
+    { title: "Funder Directory", url: "/funding/funder-dashboard" },
   ],
   "Access To Capital": [
     { title: "Opportunities", url: "/funding/browse" },
@@ -126,9 +126,9 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
   ],
   "Credit Scoring": [
     { title: "360° Credit Scoring", url: "/credit-score" },
-    { title: "Alternative Data Sources", url: "/credit-score" },
-    { title: "Funder-Grade Reports", url: "/credit-score" },
-    { title: "Trusted by Funders", url: "/credit-score" },
+    { title: "Alternative Data Sources", url: "/credit-score?section=data-sources" },
+    { title: "Funder-Grade Reports", url: "/credit-score?section=reports" },
+    { title: "Trusted by Funders", url: "/credit-score?section=funders" },
   ],
   "Mentorship": [
     { title: "My Sessions (Mentee)", url: "/mentee-dashboard" },
@@ -138,28 +138,28 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
     { title: "Browse Categories", url: "/mentorship" },
   ],
   "Professional Services": [
-    { title: "Business Operations & Productivity", url: "/find-advisor" },
-    { title: "Customer Relationship & Sales", url: "/find-advisor" },
-    { title: "Professional & Ancillary Services", url: "/find-advisor" },
-    { title: "Growth and Development Services", url: "/find-advisor" },
-    { title: "eCommerce & Retail", url: "/find-advisor" },
-    { title: "Cybersecurity & Compliance", url: "/find-advisor" },
-    { title: "Data, AI & Analytics", url: "/find-advisor" },
-    { title: "Cloud, Hosting & Infrastructure", url: "/find-advisor" },
-    { title: "Project Management & Collaboration", url: "/find-advisor" },
-    { title: "HR & People Development", url: "/find-advisor" },
-    { title: "Legal, Risk & Governance", url: "/find-advisor" },
-    { title: "Industry-Specific Solutions", url: "/find-advisor" },
-    { title: "Developer & Tech Tools", url: "/find-advisor" },
-    { title: "Integration & Automation", url: "/find-advisor" },
-    { title: "Startup Support & Advisory", url: "/find-advisor" },
+    { title: "Business Operations & Productivity", url: "/find-advisor?category=business-operations" },
+    { title: "Customer Relationship & Sales", url: "/find-advisor?category=customer-sales" },
+    { title: "Professional & Ancillary Services", url: "/find-advisor?category=professional-services" },
+    { title: "Growth and Development Services", url: "/find-advisor?category=growth-development" },
+    { title: "eCommerce & Retail", url: "/find-advisor?category=ecommerce" },
+    { title: "Cybersecurity & Compliance", url: "/find-advisor?category=cybersecurity" },
+    { title: "Data, AI & Analytics", url: "/find-advisor?category=data-ai" },
+    { title: "Cloud, Hosting & Infrastructure", url: "/find-advisor?category=cloud-hosting" },
+    { title: "Project Management & Collaboration", url: "/find-advisor?category=project-management" },
+    { title: "HR & People Development", url: "/find-advisor?category=hr-people" },
+    { title: "Legal, Risk & Governance", url: "/find-advisor?category=legal-risk" },
+    { title: "Industry-Specific Solutions", url: "/find-advisor?category=industry-solutions" },
+    { title: "Developer & Tech Tools", url: "/find-advisor?category=developer-tools" },
+    { title: "Integration & Automation", url: "/find-advisor?category=integration" },
+    { title: "Startup Support & Advisory", url: "/find-advisor?category=startup-support" },
   ],
   "Resources": [
     { title: "Learning Hub", url: "/resources" },
-    { title: "Knowledge Library", url: "/resources" },
-    { title: "Tools & Downloads", url: "/resources" },
-    { title: "Community & Networking", url: "/resources" },
-    { title: "Support & Help Center", url: "/resources" },
+    { title: "Knowledge Library", url: "/resources?section=library" },
+    { title: "Tools & Downloads", url: "/resources?section=tools" },
+    { title: "Community & Networking", url: "/resources?section=community" },
+    { title: "Support & Help Center", url: "/resources?section=support" },
   ],
   "Software Services": [
     { title: "Business Operations & Productivity", url: "/services/category/sw-business-operations-productivity" },
@@ -218,8 +218,12 @@ export function AppSidebar({ selectedPrimary, onPrimarySelect, showSecondary, on
   const isActive = (path: string) => {
     // Remove query parameters for comparison
     const currentPathWithoutQuery = location.pathname;
+    const currentSearch = location.search;
     const targetPath = path.split('?')[0];
-    return currentPathWithoutQuery === targetPath;
+    const targetSearch = path.includes('?') ? '?' + path.split('?')[1] : '';
+    
+    // Full match including query params if present
+    return currentPathWithoutQuery === targetPath && (!targetSearch || currentSearch === targetSearch);
   };
   
   const selectedContent = secondaryContent[selectedPrimary as keyof typeof secondaryContent];

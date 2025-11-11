@@ -93,7 +93,7 @@ const secondaryContent = {
       { title: "Expert Advisory", url: "/find-advisor" },
       { title: "Mentorship", url: "/mentorship" },
       { title: "Business Tools", url: "/services/category/software-services" },
-      { title: "Resources", url: "/resources" },
+      { title: "Resources Hub", url: "/resources" },
     ]
   },
   more: {
@@ -153,7 +153,7 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
     { title: "Integration & Automation", url: "/find-advisor?category=integration" },
     { title: "Startup Support & Advisory", url: "/find-advisor?category=startup-support" },
   ],
-  "Resources": [
+  "Resources Hub": [
     { title: "Learning Hub", url: "/resources" },
     { title: "Knowledge Library", url: "/resources?section=library" },
     { title: "Tools & Downloads", url: "/resources?section=tools" },

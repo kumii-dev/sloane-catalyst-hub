@@ -9,6 +9,7 @@ import { FunderJourneyMap } from "@/components/FunderJourneyMap";
 import FeaturesMappingMatrix from "@/components/FeaturesMappingMatrix";
 import { BusinessCard } from "@/components/BusinessCard";
 import { KumiiProfile } from "@/components/KumiiProfile";
+import { MafikaProfile } from "@/components/MafikaProfile";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
@@ -585,7 +586,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </Card>
           ) : (
             <Tabs defaultValue="presentation" className="w-full">
-              <TabsList className={`grid w-full ${devMode ? 'grid-cols-13' : 'grid-cols-11'} max-w-6xl mx-auto`}>
+              <TabsList className={`grid w-full ${devMode ? 'grid-cols-14' : 'grid-cols-12'} max-w-6xl mx-auto`}>
                 <TabsTrigger value="presentation" className="gap-2">
                   <Presentation className="w-4 h-4" />
                   Presentation
@@ -593,6 +594,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 <TabsTrigger value="kumii-profile" className="gap-2">
                   <Building2 className="w-4 h-4" />
                   Kumii Profile
+                </TabsTrigger>
+                <TabsTrigger value="mafika-profile" className="gap-2">
+                  <UserPlus className="w-4 h-4" />
+                  Mafika Profile
                 </TabsTrigger>
                 <TabsTrigger value="business-card" className="gap-2">
                   <CreditCard className="w-4 h-4" />
@@ -1520,6 +1525,81 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 </Card>
 
                 <KumiiProfile />
+              </div>
+            </TabsContent>
+
+            {/* Mafika Profile Tab */}
+            <TabsContent value="mafika-profile" className="space-y-8 mt-8">
+              <div className="space-y-6">
+                <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-primary rounded-lg">
+                        <UserPlus className="w-6 h-6 text-primary-foreground" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-foreground">Mafika William Nkambule - Professional Profile</h2>
+                    </div>
+                    <p className="text-muted-foreground mb-8">
+                      Comprehensive professional profile showcasing leadership in IT strategy, digital transformation, and enterprise architecture. 
+                      Currently serving as Digital Lead for 22 On Sloane and Kumii Marketplace, alongside his role as Director & Head of ICT Services at Tshwane University of Technology.
+                    </p>
+                    
+                    <div className="flex gap-4 mb-8">
+                      <Button 
+                        onClick={() => {
+                          toast.promise(
+                            (async () => {
+                              const element = document.getElementById('mafika-profile');
+                              if (!element) throw new Error('Profile element not found');
+                              
+                              const canvas = await html2canvas(element, {
+                                scale: 2,
+                                useCORS: true,
+                                logging: false,
+                                backgroundColor: '#ffffff',
+                              });
+                              
+                              const pdf = new jsPDF('p', 'mm', 'a4');
+                              const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                              const pdfWidth = pdf.internal.pageSize.getWidth();
+                              const pdfHeight = pdf.internal.pageSize.getHeight();
+                              const imgWidth = pdfWidth - 20;
+                              const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                              
+                              let heightLeft = imgHeight;
+                              let position = 10;
+                              
+                              pdf.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
+                              heightLeft -= (pdfHeight - 20);
+                              
+                              while (heightLeft > 0) {
+                                position = heightLeft - imgHeight + 10;
+                                pdf.addPage();
+                                pdf.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
+                                heightLeft -= (pdfHeight - 20);
+                              }
+                              
+                              pdf.save('Mafika_Nkambule_Professional_Profile.pdf');
+                            })(),
+                            {
+                              loading: 'Generating PDF...',
+                              success: 'PDF downloaded successfully',
+                              error: 'Failed to generate PDF',
+                            }
+                          );
+                        }}
+                        variant="default" 
+                        size="lg"
+                        className="gap-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download PDF Profile
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <MafikaProfile />
               </div>
             </TabsContent>
 

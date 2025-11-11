@@ -63,28 +63,7 @@ export const MafikaProfile = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="p-6 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl space-y-3">
-              <Building2 className="h-10 w-10 text-primary" />
-              <h3 className="text-xl font-semibold">Tshwane University of Technology</h3>
-              <p className="text-sm text-muted-foreground font-medium">Director & Head of ICT Services</p>
-              <p className="text-xs text-muted-foreground">February 2017 - Present</p>
-              <ul className="text-sm space-y-1 mt-4">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Leading ICT strategy and digital transformation</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Major cybersecurity overhaul post-ransomware attack</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Enterprise architecture aligned with COBIT & ITIL</span>
-                </li>
-              </ul>
-            </div>
-
+          <div className="grid md:grid-cols-2 gap-6">
             <div className="p-6 bg-gradient-to-br from-accent/10 to-primary/10 rounded-xl space-y-3">
               <Zap className="h-10 w-10 text-primary" />
               <h3 className="text-xl font-semibold">22 On Sloane</h3>
@@ -227,6 +206,28 @@ export const MafikaProfile = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">
+            <div className="border-l-4 border-primary pl-4 py-2">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-lg font-semibold">Tshwane University of Technology</h3>
+                <span className="text-sm text-muted-foreground">2017-2025</span>
+              </div>
+              <p className="text-sm text-muted-foreground mb-2">Director & Head of ICT Services</p>
+              <ul className="text-sm space-y-1">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Led ICT strategy and digital transformation initiatives</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Executed major cybersecurity overhaul post-ransomware attack</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Implemented enterprise architecture aligned with COBIT & ITIL frameworks</span>
+                </li>
+              </ul>
+            </div>
+
             <div className="border-l-4 border-primary pl-4 py-2">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-lg font-semibold">National Health Laboratory Service</h3>

@@ -2,10 +2,10 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 export const generateKumiiProfilePDF = async () => {
-  const profileElement = document.getElementById('kumii-profile');
+  const profileElement = document.getElementById('mafika-profile');
   
   if (!profileElement) {
-    throw new Error('Kumii profile element not found');
+    throw new Error('Mafika profile element not found');
   }
 
   // Create a new jsPDF instance
@@ -14,32 +14,68 @@ export const generateKumiiProfilePDF = async () => {
   const pageHeight = pdf.internal.pageSize.getHeight();
   const margin = 10;
   const contentWidth = pageWidth - (2 * margin);
+  const contentHeight = pageHeight - (2 * margin);
 
-  // Capture the profile content as canvas
-  const canvas = await html2canvas(profileElement, {
-    scale: 1,
-    useCORS: true,
-    logging: false,
-    backgroundColor: '#ffffff',
-  });
+  // Get all sections (Cards) within the profile
+  const sections = profileElement.querySelectorAll('.space-y-8 > *');
+  
+  let currentY = margin;
+  let pageNumber = 1;
 
-  const imgData = canvas.toDataURL('image/jpeg', 0.85);
-  const imgWidth = contentWidth;
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  for (let i = 0; i < sections.length; i++) {
+    const section = sections[i] as HTMLElement;
+    
+    // Capture each section as canvas
+    const canvas = await html2canvas(section, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff',
+      windowWidth: section.scrollWidth,
+      windowHeight: section.scrollHeight,
+    });
 
-  let heightLeft = imgHeight;
-  let position = margin;
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+    const imgWidth = contentWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-  // Add first page
-  pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
-  heightLeft -= (pageHeight - 2 * margin);
+    // Check if section fits on current page
+    if (currentY + imgHeight > pageHeight - margin) {
+      // Add new page if section doesn't fit
+      if (pageNumber > 1 || currentY > margin) {
+        pdf.addPage();
+        pageNumber++;
+        currentY = margin;
+      }
+    }
 
-  // Add additional pages if content is longer than one page
-  while (heightLeft > 0) {
-    position = heightLeft - imgHeight + margin;
-    pdf.addPage();
-    pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
-    heightLeft -= (pageHeight - 2 * margin);
+    // If section is taller than a page, split it across multiple pages
+    if (imgHeight > contentHeight) {
+      let heightLeft = imgHeight;
+      let position = currentY;
+
+      while (heightLeft > 0) {
+        const availableHeight = pageHeight - position;
+        const addHeight = Math.min(availableHeight, heightLeft);
+        
+        pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
+        
+        heightLeft -= availableHeight;
+
+        if (heightLeft > 0) {
+          pdf.addPage();
+          pageNumber++;
+          position = margin - (imgHeight - heightLeft);
+          currentY = margin;
+        } else {
+          currentY = position + addHeight + 5;
+        }
+      }
+    } else {
+      // Add the section to current page
+      pdf.addImage(imgData, 'JPEG', margin, currentY, imgWidth, imgHeight);
+      currentY += imgHeight + 5; // Add small gap between sections
+    }
   }
 
   // Add footer with page numbers
@@ -49,7 +85,7 @@ export const generateKumiiProfilePDF = async () => {
     pdf.setFontSize(8);
     pdf.setTextColor(150);
     pdf.text(
-      `Kumii Profile - Page ${i} of ${totalPages}`,
+      `Mafika William Nkambule - Professional Profile - Page ${i} of ${totalPages}`,
       pageWidth / 2,
       pageHeight - 5,
       { align: 'center' }

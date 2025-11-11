@@ -25,6 +25,9 @@ export const generateKumiiProfilePDF = async () => {
   for (let i = 0; i < sections.length; i++) {
     const section = sections[i] as HTMLElement;
     
+    // Check if this is the Board Participation section
+    const isBoardSection = section.textContent?.includes('Board Participation');
+    
     // Capture each section as canvas
     const canvas = await html2canvas(section, {
       scale: 2,
@@ -38,6 +41,13 @@ export const generateKumiiProfilePDF = async () => {
     const imgData = canvas.toDataURL('image/jpeg', 0.95);
     const imgWidth = contentWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    // Force Board Participation section to start on a new page if not already at the top
+    if (isBoardSection && currentY > margin + 10) {
+      pdf.addPage();
+      pageNumber++;
+      currentY = margin;
+    }
 
     // Check if section fits on current page
     if (currentY + imgHeight > pageHeight - margin) {

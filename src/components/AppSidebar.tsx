@@ -92,7 +92,7 @@ const secondaryContent = {
       { title: "Access To Capital", url: "/funding" },
       { title: "Credit Scoring", url: "/credit-score" },
       { title: "Mentorship", url: "/mentorship" },
-      { title: "Professional Services", url: "/find-advisor" },
+      { title: "Expert Advisory", url: "/find-advisor" },
       { title: "Software Services", url: "/services/category/software-services" },
       { title: "Resources", url: "/resources" },
     ]
@@ -137,7 +137,7 @@ const appSubcategories: Record<string, Array<{ title: string; url: string }>> = 
     { title: "Become a Mentor", url: "/become-mentor" },
     { title: "Browse Categories", url: "/mentorship" },
   ],
-  "Professional Services": [
+  "Expert Advisory": [
     { title: "Business Operations & Productivity", url: "/find-advisor?category=business-operations" },
     { title: "Customer Relationship & Sales", url: "/find-advisor?category=customer-sales" },
     { title: "Professional & Ancillary Services", url: "/find-advisor?category=professional-services" },

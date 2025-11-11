@@ -149,10 +149,6 @@ export const MafikaProfile = () => {
                   <span className="text-primary mt-1">•</span>
                   <span><strong>Business Process Automation</strong> and Optimization</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">•</span>
-                  <span><strong>Strategic Planning and Leadership</strong></span>
-                </li>
               </ul>
             </div>
 

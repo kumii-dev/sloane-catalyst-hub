@@ -1608,7 +1608,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                             }
                           );
                         }}
-                        variant="outline"
+                        variant="default"
                         size="lg"
                         className="gap-2"
                       >

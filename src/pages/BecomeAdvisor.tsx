@@ -61,7 +61,7 @@ const BecomeAdvisor = () => {
     {
       icon: DollarSign,
       title: "Monetize Expertise",
-      description: "Earn income by offering professional advisory and coaching services."
+      description: "Earn income by offering expert advisory and coaching services."
     },
     {
       icon: Briefcase,

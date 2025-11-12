@@ -36,12 +36,11 @@ const TopNavbar = ({ onMenuToggle }: TopNavbarProps) => {
       
       {/* Left - Brand */}
       <div className="flex items-center">
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center py-2">
           <img 
             src={logo} 
             alt="Kumii" 
-            className="h-16 sm:h-20 w-auto object-cover object-top"
-            style={{ clipPath: 'inset(0 0 15% 0)' }}
+            className="h-12 sm:h-14 w-auto object-contain"
           />
         </Link>
       </div>

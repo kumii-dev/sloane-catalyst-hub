@@ -1,7 +1,7 @@
 # Testing Guide
 
 ## Overview
-This guide covers testing strategies, tools, and best practices for the 22 On Sloane platform.
+This guide covers testing strategies, tools, and best practices for the Kumii platform.
 
 ## Testing Stack
 

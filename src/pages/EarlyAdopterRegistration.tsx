@@ -381,7 +381,7 @@ const EarlyAdopterRegistration = () => {
             <Label htmlFor="consent" className="text-sm font-normal cursor-pointer">
               I confirm that:
               <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
-                <li>• I agree to participate in the Kumii pilot testing initiative led by 22 on Sloane</li>
+                <li>• I agree to participate in the Kumii pilot testing initiative</li>
                 <li>• I understand my participation involves being onboarded onto the Kumii platform</li>
                 <li>• I consent to the collection and use of my information for pilot purposes</li>
               </ul>

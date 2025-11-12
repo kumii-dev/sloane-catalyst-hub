@@ -144,7 +144,7 @@ And when you need expert help, our Services Marketplace connects you with vetted
 
 The platform works for everyone in the ecosystem. If you're a startup, get the tools and connections you need to grow. Funders, discover and evaluate high-potential businesses efficiently. Mentors, share your expertise and build your legacy. Service providers, reach clients actively building the future.
 
-We're trusted by leading organizations across Africa. Microsoft for Startups, 22 On Sloane, and many others partner with us because they believe in democratizing access to opportunity.
+We're trusted by leading organizations across Africa. Microsoft for Startups, Kumii Innovation Hub, and many others partner with us because they believe in democratizing access to opportunity.
 
 Join thousands of entrepreneurs who are already building their future on our platform. Together, we've facilitated millions in funding connections and countless success stories.
 
@@ -1250,7 +1250,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                         </div>
                         <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
                           <h3 className="font-bold text-lg text-primary mb-3">6. Partnership Ecosystem</h3>
-                          <p className="text-sm text-foreground/80">Strategic partnerships with Microsoft, 22 On Sloane, and leading organizations provide credibility, distribution, and resources that would take years to build independently.</p>
+                          <p className="text-sm text-foreground/80">Strategic partnerships with Microsoft, Kumii Innovation Hub, and leading organizations provide credibility, distribution, and resources that would take years to build independently.</p>
                         </div>
                       </div>
                     </div>
@@ -1288,7 +1288,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                           <div className="bg-primary/5 p-4 rounded">
                             <h4 className="font-semibold text-foreground mb-2">Go-To-Market</h4>
                             <ul className="text-sm text-foreground/80 space-y-1">
-                              <li>✅ Partnership with 22 On Sloane</li>
+                              <li>✅ Partnership with Kumii Innovation Hub</li>
                               <li>✅ Microsoft for Startups program</li>
                               <li>🔄 Early adopter onboarding</li>
                               <li>🔄 Initial mentor recruitment</li>
@@ -1384,7 +1384,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                           <h3 className="font-bold text-lg text-primary mb-3">Strategic Partners</h3>
                           <div className="space-y-3 text-sm">
                             <div>
-                              <div className="font-semibold text-foreground">22 On Sloane</div>
+                              <div className="font-semibold text-foreground">Kumii Innovation Hub</div>
                               <p className="text-foreground/70 text-xs">Flagship innovation hub partnership providing credibility and access to premium startups</p>
                             </div>
                             <div>
@@ -1542,7 +1542,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                     </div>
                     <p className="text-muted-foreground mb-8">
                       Comprehensive professional profile showcasing leadership in IT strategy, digital transformation, and enterprise architecture. 
-                      Currently serving as Digital Lead for 22 On Sloane and Kumii Marketplace, alongside his role as Director & Head of ICT Services at Tshwane University of Technology.
+                      Currently serving as Digital Lead for Kumii Marketplace, alongside his role as Director & Head of ICT Services at Tshwane University of Technology.
                     </p>
                     
                     <div className="flex flex-wrap gap-4 mb-8">
@@ -1819,10 +1819,10 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <span className="text-sm text-muted-foreground">[3:45 - 4:10]</span>
                 </div>
                 <div className="pl-6 space-y-2 text-foreground/90 leading-relaxed">
-                  <p className="italic text-muted-foreground">[Visual: Logos of Microsoft, 22 On Sloane, Kumii, etc.]</p>
+                  <p className="italic text-muted-foreground">[Visual: Logos of Microsoft, Kumii Innovation Hub, etc.]</p>
                   <p>
                     <strong>Narrator:</strong> "We're trusted by leading organizations across Africa. Microsoft for Startups, 
-                    22 On Sloane, and many others partner with us because they believe in democratizing access to opportunity."
+                    Kumii Innovation Hub, and many others partner with us because they believe in democratizing access to opportunity."
                   </p>
                   <p className="italic text-muted-foreground">[Visual: Statistics and success metrics]</p>
                   <p>

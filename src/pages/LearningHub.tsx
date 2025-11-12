@@ -105,7 +105,7 @@ const LearningHub = () => {
     {
       id: "1",
       title: "Financial Modeling for Startups",
-      provider: "22 On Sloane",
+      provider: "Kumii",
       providerLogo: "/avatars/mafika-profile.png",
       thumbnail: "/services/credit-scoring-banner.jpg",
       category: "Finance",

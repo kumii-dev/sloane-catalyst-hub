@@ -92,7 +92,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (type === "booking_created") {
       // Email to mentor about new booking request
       const mentorEmailResponse = await resend.emails.send({
-        from: "22 on Sloane <noreply@kumii-test.com>",
+        from: "Kumii <noreply@kumii-test.com>",
         to: [mentorEmail],
         bcc: ["nkambumw@gmail.com", "ruth@22onsloane.co"],
         subject: "New Mentoring Session Booking Request",
@@ -120,7 +120,7 @@ const handler = async (req: Request): Promise<Response> => {
             
             <p style="color: #666; font-size: 14px; margin-top: 30px;">
               Best regards,<br>
-              The 22 on Sloane Team
+              The Kumii Team
             </p>
           </div>
         `,
@@ -170,7 +170,7 @@ const handler = async (req: Request): Promise<Response> => {
     } else if (type === "booking_accepted") {
       // Email to mentee about accepted booking
       const menteeEmailResponse = await resend.emails.send({
-        from: "22 on Sloane <noreply@kumii-test.com>",
+        from: "Kumii <noreply@kumii-test.com>",
         to: [menteeEmail],
         bcc: ["nkambumw@gmail.com", "ruth@22onsloane.co"],
         subject: "Your Mentoring Session Has Been Confirmed!",
@@ -198,7 +198,7 @@ const handler = async (req: Request): Promise<Response> => {
             
             <p style="color: #666; font-size: 14px; margin-top: 30px;">
               Best regards,<br>
-              The 22 on Sloane Team
+              The Kumii Team
             </p>
           </div>
         `,

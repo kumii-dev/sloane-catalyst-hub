@@ -666,7 +666,7 @@ Upon completing each training module, employees receive:
 
 **All employees must sign annually:**
 
-> I, [Employee Name], acknowledge that I have completed the 22 On Sloane Security Awareness Training. I understand my responsibilities regarding:
+> I, [Employee Name], acknowledge that I have completed the Kumii Security Awareness Training. I understand my responsibilities regarding:
 > - Protecting company and customer data
 > - Identifying and reporting security threats
 > - Following secure development practices

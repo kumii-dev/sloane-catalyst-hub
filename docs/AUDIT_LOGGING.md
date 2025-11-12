@@ -1,6 +1,6 @@
 # Audit & Logging Strategy
 
-## Comprehensive Logging Framework for 22 On Sloane Platform
+## Comprehensive Logging Framework for Kumii Platform
 
 **Document Version:** 1.0  
 **Last Updated:** 2025-11-03  
@@ -33,7 +33,7 @@ Establish comprehensive audit logging across all platform components to support:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     22 On Sloane Platform                    │
+│                        Kumii Platform                         │
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │

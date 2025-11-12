@@ -305,7 +305,7 @@ export const KumiiProfile = () => {
             </div>
             <div className="text-center space-y-2">
               <div className="h-20 flex items-center justify-center bg-muted/50 rounded-lg">
-                <span className="text-lg font-semibold">22 On Sloane</span>
+                <span className="text-lg font-semibold">Kumii Innovation Hub</span>
               </div>
               <p className="text-sm text-muted-foreground">Innovation Hub Partner</p>
             </div>

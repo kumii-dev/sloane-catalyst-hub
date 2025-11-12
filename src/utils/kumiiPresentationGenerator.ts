@@ -588,7 +588,7 @@ export const generateKumiiPresentation = () => {
   const partnerships = [
     { name: "Nedbank", role: "Financial Services Partner" },
     { name: "Microsoft", role: "Technology & Cloud Partner" },
-    { name: "22 On Sloane", role: "Innovation Hub Partner" },
+    { name: "Kumii Innovation Hub", role: "Innovation Hub Partner" },
     { name: "Journey Horizon", role: "Strategic Technology Partner" }
   ];
 

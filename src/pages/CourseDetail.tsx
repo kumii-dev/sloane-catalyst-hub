@@ -242,7 +242,7 @@ const CourseDetail = () => {
       title: "Financial Modeling for Startups",
       slug: id || "financial-modeling",
       description: "Learn how to build comprehensive financial models for your startup, including revenue projections, expense tracking, and investor presentations.",
-      provider: "22 On Sloane",
+      provider: "Kumii",
       instructor_name: "John Smith",
       instructor_title: "CFO & Financial Advisor",
       instructor_bio: "20+ years of experience in startup finance and investment banking.",

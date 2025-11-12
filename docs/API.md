@@ -1,7 +1,7 @@
 # API Documentation
 
 ## Overview
-This document describes the API endpoints, database schema, and integration points for the 22 On Sloane platform.
+This document describes the API endpoints, database schema, and integration points for the Kumii platform.
 
 ## Supabase REST API
 

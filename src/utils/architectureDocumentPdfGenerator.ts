@@ -32,7 +32,7 @@ export const generateArchitectureDocumentPDF = () => {
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(32);
   doc.setFont('helvetica', 'bold');
-  doc.text('22 On Sloane', pageWidth / 2, 60, { align: 'center' });
+  doc.text('Kumii', pageWidth / 2, 60, { align: 'center' });
   
   doc.setFontSize(18);
   doc.setFont('helvetica', 'normal');
@@ -56,7 +56,7 @@ export const generateArchitectureDocumentPDF = () => {
   // Footer
   doc.setFontSize(8);
   doc.setTextColor(lightGray[0], lightGray[1], lightGray[2]);
-  doc.text('© 2025 22 On Sloane. All rights reserved.', pageWidth / 2, pageHeight - 15, { align: 'center' });
+  doc.text('© 2025 Kumii. All rights reserved.', pageWidth / 2, pageHeight - 15, { align: 'center' });
 
   // Executive Summary
   addNewPage();
@@ -71,7 +71,7 @@ export const generateArchitectureDocumentPDF = () => {
   doc.setFont('helvetica', 'normal');
   
   const execSummary = [
-    '22 On Sloane is an enterprise-grade digital ecosystem designed to democratize access to business',
+    'Kumii is an enterprise-grade digital ecosystem designed to democratize access to business',
     'support services, funding opportunities, and mentorship for Small, Medium, and Micro Enterprises',
     '(SMMEs) and startups across South Africa.',
     '',
@@ -1014,7 +1014,7 @@ export const generateArchitectureDocumentPDF = () => {
   doc.setFont('helvetica', 'normal');
 
   const conclusion = [
-    'The 22 On Sloane platform represents a comprehensive, enterprise-grade solution designed',
+    'The Kumii platform represents a comprehensive, enterprise-grade solution designed',
     'with security, scalability, and usability at its core. Our architecture demonstrates:',
     '',
     'Security Excellence:',
@@ -1075,10 +1075,10 @@ export const generateArchitectureDocumentPDF = () => {
   
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text('22 On Sloane', pageWidth / 2, pageHeight - 48, { align: 'center' });
+  doc.text('Kumii', pageWidth / 2, pageHeight - 48, { align: 'center' });
   doc.text('Enterprise Architecture Team', pageWidth / 2, pageHeight - 40, { align: 'center' });
-  doc.text('www.22onsloane.co.za', pageWidth / 2, pageHeight - 32, { align: 'center' });
+  doc.text('www.kumii.africa', pageWidth / 2, pageHeight - 32, { align: 'center' });
 
   // Save the PDF
-  doc.save('22-on-sloane-architecture-document.pdf');
+  doc.save('kumii-architecture-document.pdf');
 };

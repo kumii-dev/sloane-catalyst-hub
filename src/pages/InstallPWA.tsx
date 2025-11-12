@@ -65,7 +65,7 @@ const InstallPWA = () => {
         </div>
 
         <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold">Install 22 On Sloane</h1>
+          <h1 className="text-3xl font-bold">Install Kumii</h1>
           <p className="text-muted-foreground text-lg">
             Get instant access to our platform from your home screen. Works offline and loads instantly!
           </p>

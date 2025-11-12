@@ -124,7 +124,7 @@ const MyLearning = () => {
                               <div className="flex items-start justify-between mb-2">
                                 <div>
                                   <h3 className="font-semibold mb-1">Financial Modeling for Startups</h3>
-                                  <p className="text-sm text-muted-foreground">22 On Sloane</p>
+                                  <p className="text-sm text-muted-foreground">Kumii</p>
                                 </div>
                                 <Badge>Intermediate</Badge>
                               </div>
@@ -173,7 +173,7 @@ const MyLearning = () => {
                             <div className="flex items-center gap-3 text-sm text-muted-foreground">
                               <span>14:00 - 16:00</span>
                               <span>•</span>
-                              <span>22 On Sloane</span>
+                              <span>Kumii</span>
                             </div>
                           </div>
                         </div>

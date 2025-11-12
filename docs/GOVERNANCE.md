@@ -1,6 +1,6 @@
 # Governance Framework
 
-## ISO 27001 Aligned Policies for 22 On Sloane Platform
+## ISO 27001 Aligned Policies for Kumii Platform
 
 **Document Version:** 1.0  
 **Last Updated:** 2025-11-03  
@@ -15,7 +15,7 @@
 Ensure authorized access to platform resources while preventing unauthorized access.
 
 ### 1.2 Scope
-All users, systems, applications, and data within the 22 On Sloane ecosystem.
+All users, systems, applications, and data within the Kumii ecosystem.
 
 ### 1.3 Policy Statements
 
@@ -490,4 +490,4 @@ All policy violations and exceptions logged in audit system with:
 
 ---
 
-*This document is confidential and proprietary to 22 On Sloane. Unauthorized distribution is prohibited.*
+*This document is confidential and proprietary to Kumii. Unauthorized distribution is prohibited.*

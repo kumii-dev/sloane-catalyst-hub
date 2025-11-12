@@ -1,7 +1,7 @@
 # System Architecture
 
 ## Overview
-This document describes the technical architecture of the 22 On Sloane platform.
+This document describes the technical architecture of the Kumii platform.
 
 ## Technology Stack
 

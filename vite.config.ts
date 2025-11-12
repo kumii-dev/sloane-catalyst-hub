@@ -17,8 +17,8 @@ export default defineConfig(({ mode }) => ({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'avatars/*.png', 'assets/*.png', 'assets/*.jpg'],
       manifest: {
-        name: '22 On Sloane - Digital Marketplace',
-        short_name: '22 On Sloane',
+        name: 'Kumii - Digital Marketplace',
+        short_name: 'Kumii',
         description: 'Comprehensive marketplace connecting SMMEs and startups with essential services, funding opportunities, expert mentorship, and investor readiness programs.',
         theme_color: '#7E69AB',
         background_color: '#0F1629',

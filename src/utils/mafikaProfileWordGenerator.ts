@@ -49,7 +49,7 @@ export const generateMafikaProfileWord = async () => {
           spacing: { before: 200, after: 200 },
         }),
         new Paragraph({
-          text: "22 On Sloane - Digital Lead",
+          text: "Kumii - Digital Lead",
           heading: HeadingLevel.HEADING_3,
           spacing: { after: 100 },
         }),

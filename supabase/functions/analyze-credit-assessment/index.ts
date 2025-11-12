@@ -43,7 +43,7 @@ serve(async (req) => {
     console.log('Starting credit assessment analysis for user:', userId);
 
     // Build the prompt for AI analysis
-    const systemPrompt = `You are a Credit Scoring Assistant for the 22 On Sloane Capital Marketplace in South Africa. You evaluate the creditworthiness of SMMEs and Tech Startups using a 10-domain framework.
+    const systemPrompt = `You are a Credit Scoring Assistant for the Kumii Capital Marketplace in South Africa. You evaluate the creditworthiness of SMMEs and Tech Startups using a 10-domain framework.
 
 Each domain is scored out of 100 points (10% weight each):
 1. Business Profile & Age

@@ -66,7 +66,7 @@ export const MafikaProfile = () => {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="p-6 bg-gradient-to-br from-accent/10 to-primary/10 rounded-xl space-y-3">
               <Zap className="h-10 w-10 text-primary" />
-              <h3 className="text-xl font-semibold">22 On Sloane</h3>
+              <h3 className="text-xl font-semibold">Kumii</h3>
               <p className="text-sm text-muted-foreground font-medium">Digital Lead</p>
               <p className="text-xs text-muted-foreground">Innovation Hub Partnership</p>
               <ul className="text-sm space-y-1 mt-4">

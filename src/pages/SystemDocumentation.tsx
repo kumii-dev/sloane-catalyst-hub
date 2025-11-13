@@ -862,7 +862,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                             <p>SMEs in Sub-Saharan Africa</p>
                           </div>
                           <div>
-                            <div className="font-bold text-2xl text-primary mb-1">$331B</div>
+                            <div className="font-bold text-2xl text-primary mb-1">R331B</div>
                             <p>SMME Financing Gap in Africa</p>
                           </div>
                           <div>

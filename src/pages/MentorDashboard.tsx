@@ -9,7 +9,6 @@ import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, A
 import { 
   Calendar, 
   Clock, 
-  DollarSign, 
   MessageSquare, 
   TrendingUp,
   CheckCircle2,
@@ -22,6 +21,7 @@ import {
   Settings,
   Video
 } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { format, isFuture, isPast } from "date-fns";
@@ -499,7 +499,7 @@ const MentorDashboard = () => {
                     <p className="text-sm font-medium text-muted-foreground">Total Earnings</p>
                     <p className="text-3xl font-bold">${stats.totalEarnings}</p>
                   </div>
-                  <DollarSign className="w-10 h-10 text-emerald-600" />
+                  <CurrencyIcon className="w-10 h-10 text-emerald-600" />
                 </div>
               </CardContent>
             </Card>

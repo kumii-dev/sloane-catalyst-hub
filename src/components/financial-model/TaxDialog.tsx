@@ -80,11 +80,11 @@ export function TaxDialog({ open, onOpenChange }: TaxDialogProps) {
             <div className="text-sm space-y-1 font-mono">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Earnings Before Tax (EBT):</span>
-                <span>$100,000</span>
+                <span>R100,000</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Less: NOL Carryforward:</span>
-                <span>-${tax.NOL.toLocaleString()}</span>
+                <span>-R{tax.NOL.toLocaleString()}</span>
               </div>
               <div className="flex justify-between border-t pt-1 mt-1">
                 <span className="text-muted-foreground">Taxable Income:</span>

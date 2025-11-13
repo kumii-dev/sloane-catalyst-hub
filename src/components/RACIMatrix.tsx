@@ -3,7 +3,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, Shield, Headphones, Building2, Lightbulb, DollarSign, GraduationCap, Store, Download } from "lucide-react";
+import { Users, Shield, Headphones, Building2, Lightbulb, GraduationCap, Store, Download } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { generateRACIMatrixPDF } from "@/utils/raciMatrixPdfGenerator";
 import { toast } from "sonner";
 
@@ -233,7 +234,7 @@ export const RACIMatrix = () => {
               <CardTitle className="flex items-center gap-2">
                 {module === "Marketplace Operations" && <Store className="w-5 h-5" />}
                 {module === "Mentorship Program" && <GraduationCap className="w-5 h-5" />}
-                {module === "Funding Operations" && <DollarSign className="w-5 h-5" />}
+                {module === "Funding Operations" && <CurrencyIcon className="w-5 h-5" />}
                 {module === "Content & Learning" && <Lightbulb className="w-5 h-5" />}
                 {module === "Technical Operations" && <Headphones className="w-5 h-5" />}
                 {module === "Compliance & Security" && <Shield className="w-5 h-5" />}

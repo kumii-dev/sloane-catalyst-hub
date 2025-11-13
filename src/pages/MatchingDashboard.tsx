@@ -14,11 +14,11 @@ import {
   Target, 
   Users, 
   Package, 
-  DollarSign, 
   TrendingUp,
   Sparkles,
   RefreshCw
 } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { Link } from "react-router-dom";
 
 interface MentorMatch {
@@ -513,7 +513,7 @@ const MatchingDashboard = () => {
                 {fundingMatches.length > 0 && (
                   <div>
                     <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                      <DollarSign className="w-5 h-5" />
+                      <CurrencyIcon className="w-5 h-5" />
                       Funding Matches
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -620,7 +620,7 @@ const MatchingDashboard = () => {
             {fundingMatches.length === 0 ? (
               <Card>
                 <CardContent className="py-12 text-center">
-                  <DollarSign className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                  <CurrencyIcon className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-xl font-semibold mb-2">No funding matches yet</h3>
                   <p className="text-muted-foreground mb-6">
                     {!startupProfile

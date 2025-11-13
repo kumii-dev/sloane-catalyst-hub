@@ -7,7 +7,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
-import { Calendar, Users, DollarSign, BookOpen, TrendingUp, MessageSquare } from "lucide-react";
+import { Calendar, Users, BookOpen, TrendingUp, MessageSquare } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 
 interface ActivityItem {
   id: string;
@@ -160,7 +161,7 @@ const Activity = () => {
       case "session":
         return <Calendar className="h-5 w-5 text-primary" />;
       case "funding":
-        return <DollarSign className="h-5 w-5 text-success" />;
+        return <CurrencyIcon className="h-5 w-5 text-success" />;
       case "listing":
         return <TrendingUp className="h-5 w-5 text-warning" />;
       case "resource":

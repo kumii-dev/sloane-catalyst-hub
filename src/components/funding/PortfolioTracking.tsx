@@ -7,13 +7,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   TrendingUp, 
-  DollarSign, 
   Building, 
   Calendar,
   BarChart3,
   ExternalLink,
   FileText
 } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 
 interface PortfolioCompany {
   id: string;
@@ -152,7 +152,7 @@ export const PortfolioTracking = ({ funderId }: PortfolioTrackingProps) => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Funded</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CurrencyIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">{formatAmount(totalFunded)}</div>

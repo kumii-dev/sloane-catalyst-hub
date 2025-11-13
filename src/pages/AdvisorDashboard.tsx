@@ -9,7 +9,6 @@ import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, A
 import { 
   Calendar, 
   Clock, 
-  DollarSign, 
   TrendingUp,
   CheckCircle2,
   XCircle,
@@ -20,6 +19,7 @@ import {
   Settings,
   Video
 } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
@@ -403,7 +403,7 @@ const AdvisorDashboard = () => {
                     <p className="text-sm font-medium text-muted-foreground">Earnings</p>
                     <p className="text-3xl font-bold">R{stats.totalEarnings.toFixed(0)}</p>
                   </div>
-                  <DollarSign className="w-10 h-10 text-emerald-600" />
+                  <CurrencyIcon className="w-10 h-10 text-emerald-600" />
                 </div>
               </CardContent>
             </Card>
@@ -590,7 +590,7 @@ const AdvisorDashboard = () => {
                               {format(new Date(session.scheduled_at), 'MMM d, yyyy')}
                             </div>
                             <div className="flex items-center gap-2">
-                              <DollarSign className="w-4 h-4" />
+                              <CurrencyIcon className="w-4 h-4" />
                               R{parseFloat(session.amount_paid || 0).toFixed(0)}
                             </div>
                           </div>

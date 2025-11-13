@@ -24,13 +24,13 @@ import {
   TrendingDown, 
   Eye, 
   Users, 
-  DollarSign, 
   Calendar,
   Download,
   ArrowUpRight,
   ArrowDownRight,
   Activity
 } from 'lucide-react';
+import { CurrencyIcon } from '@/components/ui/currency-icon';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -231,7 +231,7 @@ const ProviderAnalyticsDashboard = ({ providerId, listings }: ProviderAnalyticsD
           title="Total Revenue"
           value={metrics.totalRevenue}
           change={metrics.revenueChange}
-          icon={DollarSign}
+          icon={CurrencyIcon}
           prefix="R"
         />
       </div>

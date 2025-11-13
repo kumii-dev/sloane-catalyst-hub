@@ -1,4 +1,5 @@
-import { ArrowRight, TrendingUp, Shield, DollarSign, Users, Briefcase, BookOpen, Wrench } from "lucide-react";
+import { ArrowRight, TrendingUp, Shield, Users, Briefcase, BookOpen, Wrench } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -44,7 +45,7 @@ const Hero = () => {
                 <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
                 backgroundColor: 'hsl(15 80% 70%)'
               }}>
-                  <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                  <CurrencyIcon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
                 <span className="text-white font-semibold text-base sm:text-lg">Access to Capital</span>
               </div>

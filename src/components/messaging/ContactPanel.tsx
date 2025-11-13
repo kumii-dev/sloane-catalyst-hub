@@ -5,8 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { 
   MapPin, Briefcase, Star, Users, FileText, 
-  Calendar, DollarSign, ExternalLink, Mail, Phone 
+  Calendar, ExternalLink, Mail, Phone 
 } from 'lucide-react';
+import { CurrencyIcon } from '@/components/ui/currency-icon';
 import { supabase } from '@/integrations/supabase/client';
 
 interface ContactPanelProps {
@@ -141,7 +142,7 @@ export const ContactPanel: React.FC<ContactPanelProps> = ({ conversationId }) =>
             Schedule
           </Button>
           <Button size="sm" variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors">
-            <DollarSign className="h-4 w-4 mr-1.5" />
+            <CurrencyIcon className="h-4 w-4 mr-1.5" />
             Pay
           </Button>
         </div>

@@ -8,7 +8,6 @@ import {
   TrendingUp, 
   Users, 
   Target, 
-  DollarSign, 
   Award, 
   ArrowRight, 
   CheckCircle, 
@@ -21,6 +20,7 @@ import {
   LineChart,
   UserCheck
 } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -183,7 +183,7 @@ const AccessToMarket = () => {
       action: "Find Matches"
     },
     {
-      icon: DollarSign,
+      icon: CurrencyIcon,
       title: "Funding Opportunities",
       description: "Discover grants, loans, and investment opportunities",
       href: "/funding/browse",
@@ -210,7 +210,7 @@ const AccessToMarket = () => {
 
   const stats = [
     { label: "Active Funders", value: "50+", icon: Building2 },
-    { label: "Funding Allocated", value: "R2.5B+", icon: DollarSign },
+    { label: "Funding Allocated", value: "R2.5B+", icon: CurrencyIcon },
     { label: "Startups Funded", value: "1,200+", icon: TrendingUp },
     { label: "Success Rate", value: "85%", icon: Award }
   ];

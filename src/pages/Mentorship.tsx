@@ -12,7 +12,7 @@ import {
   Calendar, 
   Code, 
   Briefcase, 
-  Palette, 
+  Palette,
   TrendingUp, 
   User, 
   DollarSign,

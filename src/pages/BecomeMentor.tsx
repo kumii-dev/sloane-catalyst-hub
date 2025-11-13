@@ -11,12 +11,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { 
   Users, 
   Star, 
-  DollarSign, 
   Clock, 
   Award, 
   CheckCircle,
   Loader2
 } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -46,7 +46,7 @@ const BecomeMentor = () => {
       description: "Guide the next generation of professionals and make a lasting difference in their careers."
     },
     {
-      icon: DollarSign,
+      icon: CurrencyIcon,
       title: "Earn Extra Income",
       description: "Monetize your expertise with flexible pricing for premium mentoring sessions."
     },
@@ -287,7 +287,7 @@ const BecomeMentor = () => {
                   <div className="space-y-2">
                     <Label htmlFor="rate">Hourly Rate (USD)</Label>
                     <div className="relative">
-                      <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      <CurrencyIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                       <Input
                         id="rate"
                         type="number"

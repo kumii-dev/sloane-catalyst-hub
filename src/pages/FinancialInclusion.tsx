@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   UserCheck, 
   Shield, 
-  DollarSign, 
   Smartphone, 
   CheckCircle, 
   ArrowRight,
@@ -52,7 +52,7 @@ const FinancialInclusion = () => {
       description: "Get scored without traditional banking history using business activity, mobile money, and operational data"
     },
     {
-      icon: DollarSign,
+      icon: CurrencyIcon,
       title: "Access to Funding",
       description: "Unlock funding opportunities typically reserved for businesses with banking relationships"
     },

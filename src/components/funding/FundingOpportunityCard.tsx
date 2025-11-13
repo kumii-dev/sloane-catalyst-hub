@@ -9,10 +9,10 @@ import {
   Building,
   Target,
   Star,
-  DollarSign,
   Calendar,
   Lightbulb
 } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 
 interface FundingOpportunityCardProps {
   id: string;

@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Users, TrendingUp, Target, Shield, Zap, Globe, Award, DollarSign, GraduationCap, Network, FileCheck } from "lucide-react";
+import { Building2, Users, TrendingUp, Target, Shield, Zap, Globe, Award, GraduationCap, Network, FileCheck } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import kumiiLogo from '@/assets/kumii-logo.png';
 
 export const KumiiProfile = () => {

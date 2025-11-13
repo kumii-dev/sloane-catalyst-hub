@@ -19,7 +19,6 @@ import {
   Plus, 
   Settings, 
   TrendingUp,
-  DollarSign,
   Users,
   FileText,
   BarChart3,
@@ -31,6 +30,7 @@ import {
   Eye,
   ArrowRight
 } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 
 interface FunderProfile {
   id: string;
@@ -571,7 +571,7 @@ const FunderDashboard = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center">
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                <CurrencyIcon className="h-4 w-4 text-muted-foreground" />
                 <span className="ml-2 text-sm font-medium">Total Funded</span>
               </div>
               <div className="text-2xl font-bold">

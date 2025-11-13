@@ -8,7 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { CheckCircle, XCircle, Eye, Package, Users, Activity, Shield, DollarSign, UserPlus, BarChart3 } from "lucide-react";
+import { CheckCircle, XCircle, Eye, Package, Users, Activity, Shield, UserPlus, BarChart3 } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 
 export default function AdminDashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -137,7 +138,7 @@ export default function AdminDashboard() {
               Users
             </TabsTrigger>
             <TabsTrigger value="financial" className="flex items-center gap-2">
-              <DollarSign className="w-4 h-4" />
+              <CurrencyIcon className="w-4 h-4" />
               Financial
             </TabsTrigger>
             <TabsTrigger value="cohorts" className="flex items-center gap-2">
@@ -211,7 +212,7 @@ export default function AdminDashboard() {
                 </Button>
                 <Button onClick={() => navigate("/admin/financial")} className="h-20">
                   <div className="flex flex-col items-center gap-2">
-                    <DollarSign className="w-6 h-6" />
+                    <CurrencyIcon className="w-6 h-6" />
                     <span>Financial Overview</span>
                   </div>
                 </Button>

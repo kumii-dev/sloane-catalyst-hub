@@ -1,7 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, DollarSign, Rocket, FileText, GraduationCap, MapPin, CreditCard, Building2, UserPlus, Trash2, Mail } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, Rocket, FileText, GraduationCap, MapPin, CreditCard, Building2, UserPlus, Trash2, Mail } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { StartupJourneyMap } from "@/components/StartupJourneyMap";
 import { MentorJourneyMap } from "@/components/MentorJourneyMap";
 import { ServiceProviderJourneyMap } from "@/components/ServiceProviderJourneyMap";
@@ -1149,7 +1150,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                   <CardContent className="p-8">
                     <div className="flex items-center gap-3 mb-6">
                       <div className="p-3 bg-primary/20 rounded-lg">
-                        <DollarSign className="w-6 h-6 text-primary" />
+                        <CurrencyIcon className="w-6 h-6 text-primary" />
                       </div>
                       <h2 className="text-3xl font-bold text-foreground">Business Model & Revenue Streams</h2>
                     </div>
@@ -1187,7 +1188,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                               <h4 className="font-semibold text-foreground mb-2">For Startups</h4>
                               <ul className="text-sm text-foreground/80 space-y-2">
                                 <li>• Free access to essential tools (freemium)</li>
-                                <li>• Save $10,000+ on professional services</li>
+                                <li>• Save ZAR 10,000+ on professional services</li>
                                 <li>• Increase funding success rate by 3x</li>
                                 <li>• Reduce time to market by 40%</li>
                               </ul>

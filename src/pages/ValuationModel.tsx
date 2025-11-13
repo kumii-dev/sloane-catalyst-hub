@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { LineChart, FileText, TrendingUp, Award, Users, DollarSign } from "lucide-react";
+import { LineChart, FileText, TrendingUp, Award, Users } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 
 const ValuationModel = () => {
   const methodologies = [
@@ -137,7 +138,7 @@ const ValuationModel = () => {
                 <CardContent>
                   <div className="space-y-6">
                     <div className="text-center py-12">
-                      <DollarSign className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+                      <CurrencyIcon className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
                       <h3 className="text-lg font-semibold mb-2">Start Your Valuation</h3>
                       <p className="text-muted-foreground mb-6">
                         Complete a comprehensive assessment to receive your business valuation

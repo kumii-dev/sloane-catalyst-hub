@@ -8,11 +8,11 @@ export const CurrencyIcon = ({ className }: CurrencyIconProps) => {
   return (
     <div
       className={cn(
-        "flex items-center justify-center font-bold",
+        "flex items-center justify-center font-semibold text-xs",
         className
       )}
     >
-      R
+      ZAR
     </div>
   );
 };

@@ -369,7 +369,7 @@ const BecomeAdvisor = () => {
 
                 {formData.isPremium && (
                   <div className="space-y-2">
-                    <Label htmlFor="rate">Hourly Rate (USD)</Label>
+                    <Label htmlFor="rate">Hourly Rate (ZAR)</Label>
                     <div className="relative">
                       <CurrencyIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                       <Input

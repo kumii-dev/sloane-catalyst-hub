@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Star, Users, Zap, Award, Code, Briefcase, TrendingUp, Headphones, GraduationCap, Building2, Palette, Megaphone, Scale, DollarSign, UserCheck, Sparkles } from "lucide-react";
+import { Search, Filter, Star, Users, Zap, Award, Code, Briefcase, TrendingUp, Headphones, GraduationCap, Building2, Palette, Megaphone, Scale, UserCheck, Sparkles } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { Layout } from "@/components/Layout";
 import { ListServiceButton } from "@/components/ListServiceButton";
 interface ServiceCategory {
@@ -72,7 +73,6 @@ const Services = () => {
       'Palette': Palette,
       'Megaphone': Megaphone,
       'Scale': Scale,
-      'DollarSign': DollarSign,
       'UserCheck': UserCheck,
       'Sparkles': Sparkles
     };

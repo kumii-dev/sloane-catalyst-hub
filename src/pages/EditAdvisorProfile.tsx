@@ -341,7 +341,7 @@ const EditAdvisorProfile = () => {
 
                     {formData.isPremium && (
                       <div>
-                        <Label htmlFor="rate">Hourly Rate (USD)</Label>
+                        <Label htmlFor="rate">Hourly Rate (ZAR)</Label>
                         <Input
                           id="rate"
                           type="number"

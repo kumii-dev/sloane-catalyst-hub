@@ -8,7 +8,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { DollarSign, TrendingUp, Users, Coins, ArrowLeft } from 'lucide-react';
+import { TrendingUp, Users, Coins, ArrowLeft } from 'lucide-react';
+import { CurrencyIcon } from '@/components/ui/currency-icon';
 
 export default function FinancialOverview() {
   const { user, loading: authLoading } = useAuth();
@@ -139,7 +140,7 @@ export default function FinancialOverview() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Credits Earned</CardTitle>
-              <DollarSign className="h-4 w-4 text-green-600" />
+              <CurrencyIcon className="h-4 w-4 text-green-600" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">{stats.creditsEarned.toLocaleString()}</div>
@@ -148,7 +149,7 @@ export default function FinancialOverview() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Credits Spent</CardTitle>
-              <DollarSign className="h-4 w-4 text-red-600" />
+              <CurrencyIcon className="h-4 w-4 text-red-600" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-red-600">{stats.creditsSpent.toLocaleString()}</div>

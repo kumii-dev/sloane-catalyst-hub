@@ -497,7 +497,7 @@ const MentorDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Total Earnings</p>
-                    <p className="text-3xl font-bold">${stats.totalEarnings}</p>
+                    <p className="text-3xl font-bold">ZAR {stats.totalEarnings}</p>
                   </div>
                   <CurrencyIcon className="w-10 h-10 text-emerald-600" />
                 </div>

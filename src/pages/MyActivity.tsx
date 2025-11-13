@@ -7,7 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { format } from "date-fns";
-import { Calendar, DollarSign, ShoppingBag, MessageSquare, Award } from "lucide-react";
+import { Calendar, ShoppingBag, MessageSquare, Award } from "lucide-react";
+import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { useNavigate } from "react-router-dom";
 
 interface MyActivityItem {
@@ -130,7 +131,7 @@ const MyActivity = () => {
       case "session":
         return <Calendar className="h-5 w-5 text-primary" />;
       case "application":
-        return <DollarSign className="h-5 w-5 text-success" />;
+        return <CurrencyIcon className="h-5 w-5 text-success" />;
       case "listing":
         return <ShoppingBag className="h-5 w-5 text-warning" />;
       case "subscription":

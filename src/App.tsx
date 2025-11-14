@@ -80,6 +80,7 @@ import HelpCenter from "./pages/HelpCenter";
 import ContactUs from "./pages/ContactUs";
 import APIDocumentation from "./pages/APIDocumentation";
 import SystemStatus from "./pages/SystemStatus";
+import ApplicationPortfolio from "./pages/ApplicationPortfolio";
 
 const queryClient = new QueryClient();
 
@@ -167,6 +168,7 @@ const App = () => (
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/api-documentation" element={<APIDocumentation />} />
             <Route path="/system-status" element={<SystemStatus />} />
+            <Route path="/application-portfolio" element={<ApplicationPortfolio />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

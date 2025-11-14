@@ -220,13 +220,13 @@ const OrganizationStructure = () => {
                       <div className="space-y-2">
                         <div className="flex items-center gap-3">
                           <h3 className="text-lg font-semibold text-foreground">{position.title}</h3>
-                          <span className="text-xs font-semibold text-foreground">({position.count} {position.count === 1 ? 'Person' : 'People'})</span>
+                          <span className="text-xs font-bold bg-yellow-300 text-gray-900 px-2 py-0.5 rounded">({position.count} {position.count === 1 ? "Person" : "People"})</span>
                         </div>
                         
                         {position.secondary && (
                           <div className="flex flex-wrap gap-2">
                             {position.secondary.map((sec, sidx) => (
-                              <span key={sidx} className="text-xs font-semibold text-foreground">({sec})</span>
+                              <span key={sidx} className="text-xs font-bold bg-yellow-300 text-gray-900 px-2 py-0.5 rounded">({sec})</span>
                             ))}
                           </div>
                         )}
@@ -234,7 +234,7 @@ const OrganizationStructure = () => {
                         {position.modules && (
                           <div className="flex flex-wrap gap-2">
                             {position.modules.map((mod, midx) => (
-                              <span key={midx} className="text-xs font-semibold text-foreground">({mod})</span>
+                              <span key={midx} className="text-xs font-bold bg-yellow-300 text-gray-900 px-2 py-0.5 rounded">({mod})</span>
                             ))}
                           </div>
                         )}
@@ -278,7 +278,7 @@ const OrganizationStructure = () => {
                 <CardHeader>
                   <CardTitle className="text-lg">{committee.name}</CardTitle>
                   <CardDescription className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-foreground">({committee.frequency})</span>
+                    <span className="text-xs font-bold bg-yellow-300 text-gray-900 px-2 py-0.5 rounded">({committee.frequency})</span>
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">

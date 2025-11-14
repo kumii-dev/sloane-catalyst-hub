@@ -81,6 +81,7 @@ import ContactUs from "./pages/ContactUs";
 import APIDocumentation from "./pages/APIDocumentation";
 import SystemStatus from "./pages/SystemStatus";
 import ApplicationPortfolio from "./pages/ApplicationPortfolio";
+import OrganizationStructure from "./pages/OrganizationStructure";
 
 const queryClient = new QueryClient();
 
@@ -169,6 +170,7 @@ const App = () => (
             <Route path="/api-documentation" element={<APIDocumentation />} />
             <Route path="/system-status" element={<SystemStatus />} />
             <Route path="/application-portfolio" element={<ApplicationPortfolio />} />
+            <Route path="/organization-structure" element={<OrganizationStructure />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

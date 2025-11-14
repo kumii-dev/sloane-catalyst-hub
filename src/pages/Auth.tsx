@@ -52,6 +52,7 @@ const Auth = () => {
   const [newPassword, setNewPassword] = useState('');
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [showSignupSuccess, setShowSignupSuccess] = useState(false);
+  const [signupEmail, setSignupEmail] = useState('');
   const navigate = useNavigate();
 
   const checkAndRedirect = async (userId: string) => {
@@ -148,6 +149,7 @@ const Auth = () => {
       });
       setLoading(false);
     } else {
+      setSignupEmail(email);
       setShowSignupSuccess(true);
       setLoading(false);
       // Clear form
@@ -188,8 +190,8 @@ const Auth = () => {
     } else if (data.session) {
       console.log("Sign in successful, session:", data.session);
       toast({
-        title: "Success!",
-        description: "Signed in successfully",
+        title: "Welcome back! 🎉",
+        description: "You've signed in successfully. Redirecting you to your dashboard...",
       });
       await checkAndRedirect(data.session.user.id);
     }
@@ -407,33 +409,40 @@ const Auth = () => {
           </CardHeader>
           
           <CardContent className="space-y-6">
-            <Alert variant="friendly" className="border-primary/20">
+            <Alert variant="friendly" className="border-primary/20 bg-primary/5">
               <CheckCircle2 className="h-6 w-6 text-primary" />
-              <AlertTitle className="text-primary">Success!</AlertTitle>
-              <AlertDescription className="space-y-3">
-                <p className="text-foreground">
-                  Your account has been created successfully. Welcome to Kumii!
+              <AlertTitle className="text-primary text-xl">Welcome to Kumii! 🎉</AlertTitle>
+              <AlertDescription className="space-y-4 mt-3">
+                <p className="text-foreground leading-relaxed">
+                  Your account has been created successfully! We're excited to have you join our community of startups, mentors, funders, and service providers across Africa.
                 </p>
-                <p className="text-muted-foreground">
-                  We've sent a confirmation email to verify your account. Please check your inbox and click the confirmation link to activate your account.
-                </p>
-                <p className="text-sm text-muted-foreground font-medium">
-                  After confirming your email, you'll be automatically redirected to sign in.
+                <div className="bg-background/80 border border-border rounded-lg p-4 space-y-2">
+                  <p className="text-foreground font-medium flex items-start gap-2">
+                    <Mail className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <span>Check your email inbox</span>
+                  </p>
+                  <p className="text-muted-foreground text-sm ml-7">
+                    We've sent a confirmation link to <strong className="text-foreground">{signupEmail}</strong>. Please click the link to verify your account and get started.
+                  </p>
+                </div>
+                <p className="text-sm text-muted-foreground italic">
+                  💡 Tip: Can't find the email? Check your spam or junk folder.
                 </p>
               </AlertDescription>
             </Alert>
             
-            <div className="text-center space-y-4">
-              <p className="text-sm text-muted-foreground">
-                Didn't receive the email? Check your spam folder.
-              </p>
+            <div className="text-center space-y-3">
               <Button 
                 variant="default" 
+                size="lg"
                 onClick={() => setShowSignupSuccess(false)}
                 className="w-full"
               >
                 Back to Sign In
               </Button>
+              <p className="text-xs text-muted-foreground">
+                After confirming your email, return here to sign in
+              </p>
             </div>
           </CardContent>
           

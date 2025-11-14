@@ -220,7 +220,7 @@ const OrganizationStructure = () => {
                       <div className="space-y-2">
                         <div className="flex items-center gap-3">
                           <h3 className="text-lg font-semibold text-foreground">{position.title}</h3>
-                          <Badge variant="secondary">{position.count} {position.count === 1 ? 'Person' : 'People'}</Badge>
+                          <span className="text-xs font-semibold text-foreground">({position.count} {position.count === 1 ? 'Person' : 'People'})</span>
                         </div>
                         
                         {position.secondary && (

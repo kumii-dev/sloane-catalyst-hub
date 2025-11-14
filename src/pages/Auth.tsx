@@ -22,6 +22,14 @@ const isInIframe = () => {
 
 // Get proper redirect URL for iframe/preview scenarios
 const getRedirectUrl = (path: string = '/onboarding') => {
+  // Always use kumii.africa for production domains
+  const currentOrigin = window.location.origin;
+  const isProduction = currentOrigin.includes('kumii.africa') || currentOrigin.includes('kumii-test.com');
+  
+  if (isProduction) {
+    return `https://kumii.africa${path}`;
+  }
+  
   if (isInIframe()) {
     try {
       return `${window.top!.location.origin}${path}`;

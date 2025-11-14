@@ -8,8 +8,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
-import { Github, Mail } from 'lucide-react';
+import { Github, Mail, CheckCircle2 } from 'lucide-react';
 import logo from '@/assets/kumii-logo.png';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 // Helper to detect iframe (Preview environment)
 const isInIframe = () => {
@@ -50,6 +51,7 @@ const Auth = () => {
   const [resetEmail, setResetEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [showSignupSuccess, setShowSignupSuccess] = useState(false);
   const navigate = useNavigate();
 
   const checkAndRedirect = async (userId: string) => {
@@ -144,13 +146,16 @@ const Auth = () => {
         description: error.message,
         variant: "destructive",
       });
+      setLoading(false);
     } else {
-      toast({
-        title: "Success!",
-        description: "Account created successfully. Welcome to Kumii!",
-      });
+      setShowSignupSuccess(true);
+      setLoading(false);
+      // Clear form
+      setEmail('');
+      setPassword('');
+      setFirstName('');
+      setLastName('');
     }
-    setLoading(false);
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -393,6 +398,56 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center main-gradient-light p-4">
+      {showSignupSuccess ? (
+        <Card className="w-full max-w-md shadow-strong">
+          <CardHeader className="text-center space-y-4">
+            <div className="flex justify-center">
+              <img src={logo} alt="Kumii" className="h-16 w-auto" />
+            </div>
+          </CardHeader>
+          
+          <CardContent className="space-y-6">
+            <Alert variant="friendly" className="border-primary/20">
+              <CheckCircle2 className="h-6 w-6 text-primary" />
+              <AlertTitle className="text-primary">Success!</AlertTitle>
+              <AlertDescription className="space-y-3">
+                <p className="text-foreground">
+                  Your account has been created successfully. Welcome to Kumii!
+                </p>
+                <p className="text-muted-foreground">
+                  We've sent a confirmation email to verify your account. Please check your inbox and click the confirmation link to activate your account.
+                </p>
+                <p className="text-sm text-muted-foreground font-medium">
+                  After confirming your email, you'll be automatically redirected to sign in.
+                </p>
+              </AlertDescription>
+            </Alert>
+            
+            <div className="text-center space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Didn't receive the email? Check your spam folder.
+              </p>
+              <Button 
+                variant="default" 
+                onClick={() => setShowSignupSuccess(false)}
+                className="w-full"
+              >
+                Back to Sign In
+              </Button>
+            </div>
+          </CardContent>
+          
+          <CardFooter className="text-center">
+            <Button 
+              variant="link" 
+              onClick={() => navigate('/')}
+              className="text-sm mx-auto"
+            >
+              Back to home
+            </Button>
+          </CardFooter>
+        </Card>
+      ) : (
       <Card className="w-full max-w-md shadow-strong">
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">
@@ -580,6 +635,7 @@ const Auth = () => {
           </Button>
         </CardFooter>
       </Card>
+      )}
     </div>
   );
 };

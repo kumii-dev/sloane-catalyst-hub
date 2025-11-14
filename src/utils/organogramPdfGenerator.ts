@@ -325,8 +325,9 @@ export const generateOrganogramPdf = async () => {
   ];
 
   principles.forEach((principle) => {
-    const lines = pdf.splitTextToSize(principle, pageWidth - 2 * margin - 6);
+    const lines = pdf.splitTextToSize(principle, pageWidth - 2 * margin - 15);
     lines.forEach((line: string) => {
+      checkAndAddPage(5);
       pdf.text(line, margin + 3, yPos);
       yPos += 4;
     });

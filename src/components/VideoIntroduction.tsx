@@ -27,7 +27,7 @@ const VideoIntroduction = () => {
             <AspectRatio ratio={16 / 9}>
               <iframe
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/Ah7E6HUbAuU?si=As5bRSjTYB2Wkjvz"
+                src="https://www.youtube.com/embed/Ah7E6HUbAuU?si=As5bRSjTYB2Wkjvz&controls=0&modestbranding=1&rel=0&showinfo=0"
                 title="YouTube video player"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
@@ -37,26 +37,6 @@ const VideoIntroduction = () => {
           </div>
         </div>
 
-        {/* Call to action */}
-        <div className="text-center mt-12 animate-fade-up" style={{ animationDelay: '0.2s' }}>
-          <p className="text-muted-foreground mb-4">
-            Ready to transform your business journey?
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/auth"
-              className="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-primary-foreground bg-primary rounded-lg hover:bg-primary/90 transition-all shadow-medium hover:shadow-elegant hover:scale-105"
-            >
-              Get Started
-            </a>
-            <a
-              href="/about"
-              className="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-foreground bg-secondary rounded-lg hover:bg-secondary/80 transition-all"
-            >
-              Learn More
-            </a>
-          </div>
-        </div>
       </div>
     </section>
   );

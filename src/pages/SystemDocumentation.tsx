@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Layout } from "@/components/Layout";
 import Footer from "@/components/Footer";
-import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, Rocket, FileText, GraduationCap, MapPin, CreditCard, Building2, UserPlus, Trash2, Mail } from "lucide-react";
+import { Video, Download, Play, Pause, Square, Database, Table, Map, FileDown, FileCode, Presentation, TrendingUp, Users, Target, Shield, Zap, Rocket, FileText, GraduationCap, MapPin, CreditCard, Building2, UserPlus, Trash2, Mail, Layers, ExternalLink } from "lucide-react";
 import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { StartupJourneyMap } from "@/components/StartupJourneyMap";
 import { MentorJourneyMap } from "@/components/MentorJourneyMap";
@@ -570,6 +570,29 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
               Platform overview, database structure, and technical documentation
             </p>
           </div>
+
+          {/* Application Portfolio Card - Always visible */}
+          <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4 flex-1">
+                  <div className="p-3 bg-primary text-primary-foreground rounded-lg">
+                    <Layers className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-1">Application Portfolio</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Complete overview of all 25 integrated systems with detailed functionalities and features
+                    </p>
+                  </div>
+                </div>
+                <Button onClick={() => navigate('/application-portfolio')} size="lg">
+                  <ExternalLink className="mr-2 h-5 w-5" />
+                  View Portfolio
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
           {isLoadingEmails ? (
             <Card>

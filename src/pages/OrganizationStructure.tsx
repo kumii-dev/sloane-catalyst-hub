@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Separator } from "@/components/ui/separator";
-import { Download, Users, Shield, Code, Briefcase } from "lucide-react";
+import { Download, Users, Shield, Code, Briefcase, FileText, Presentation } from "lucide-react";
 import { generateOrganogramPdf } from "@/utils/organogramPdfGenerator";
+import { generateOrganogramPowerPoint } from "@/utils/organogramPowerPointGenerator";
 import { toast } from "sonner";
 
 const OrganizationStructure = () => {
@@ -14,6 +15,16 @@ const OrganizationStructure = () => {
     } catch (error) {
       console.error("Error generating PDF:", error);
       toast.error("Failed to generate PDF");
+    }
+  };
+
+  const handleDownloadPowerPoint = () => {
+    try {
+      generateOrganogramPowerPoint();
+      toast.success("Organogram PowerPoint downloaded successfully");
+    } catch (error) {
+      console.error("Error generating PowerPoint:", error);
+      toast.error("Failed to generate PowerPoint");
     }
   };
 
@@ -171,10 +182,16 @@ const OrganizationStructure = () => {
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             22 On Sloane Capital (trading as Kumii) - ISO 27001 Compliant Structure
           </p>
-          <Button onClick={handleDownloadPdf} size="lg" className="gap-2">
-            <Download className="h-5 w-5" />
-            Download Organogram PDF
-          </Button>
+          <div className="flex gap-3 justify-center">
+            <Button onClick={handleDownloadPdf} size="lg" className="gap-2">
+              <FileText className="h-5 w-5" />
+              Download PDF
+            </Button>
+            <Button onClick={handleDownloadPowerPoint} size="lg" variant="secondary" className="gap-2">
+              <Presentation className="h-5 w-5" />
+              Download PowerPoint
+            </Button>
+          </div>
         </div>
 
         {/* Company Overview */}

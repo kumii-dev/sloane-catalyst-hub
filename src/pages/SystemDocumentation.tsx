@@ -594,6 +594,29 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
             </CardContent>
           </Card>
 
+          {/* Organization Structure Card - Always visible */}
+          <Card className="border-2 border-accent/20 bg-gradient-to-br from-accent/5 to-background">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4 flex-1">
+                  <div className="p-3 bg-accent text-accent-foreground rounded-lg">
+                    <Users className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-1">Organization Structure</h3>
+                    <p className="text-sm text-muted-foreground">
+                      ISO 27001 compliant organogram with 8-person team structure, roles, and governance committees
+                    </p>
+                  </div>
+                </div>
+                <Button onClick={() => navigate('/organization-structure')} size="lg" variant="outline">
+                  <ExternalLink className="mr-2 h-5 w-5" />
+                  View Organogram
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
           {isLoadingEmails ? (
             <Card>
               <CardContent className="p-12 text-center">

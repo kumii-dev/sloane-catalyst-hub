@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+
 import { Separator } from "@/components/ui/separator";
-import { Download, Users, Shield, Code, Briefcase, GraduationCap } from "lucide-react";
+import { Download, Users, Shield, Code, Briefcase } from "lucide-react";
 import { generateOrganogramPdf } from "@/utils/organogramPdfGenerator";
 import { toast } from "sonner";
 
@@ -226,9 +226,7 @@ const OrganizationStructure = () => {
                         {position.secondary && (
                           <div className="flex flex-wrap gap-2">
                             {position.secondary.map((sec, sidx) => (
-                              <Badge key={sidx} variant="outline" className="text-xs">
-                                {sec}
-                              </Badge>
+                              <span key={sidx} className="text-xs font-semibold text-foreground">({sec})</span>
                             ))}
                           </div>
                         )}
@@ -236,10 +234,7 @@ const OrganizationStructure = () => {
                         {position.modules && (
                           <div className="flex flex-wrap gap-2">
                             {position.modules.map((mod, midx) => (
-                              <Badge key={midx} variant="outline" className="text-xs bg-primary/5">
-                                <GraduationCap className="h-3 w-3 mr-1" />
-                                {mod}
-                              </Badge>
+                              <span key={midx} className="text-xs font-semibold text-foreground">({mod})</span>
                             ))}
                           </div>
                         )}
@@ -283,7 +278,7 @@ const OrganizationStructure = () => {
                 <CardHeader>
                   <CardTitle className="text-lg">{committee.name}</CardTitle>
                   <CardDescription className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">{committee.frequency}</Badge>
+                    <span className="text-xs font-semibold text-foreground">({committee.frequency})</span>
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">

@@ -1,4 +1,5 @@
 import pptxgen from "pptxgenjs";
+import kumiiLogoPath from '@/assets/kumii-logo.png';
 
 export const generatePhase1ResponsePresentation = () => {
   const pptx = new pptxgen();
@@ -6,27 +7,68 @@ export const generatePhase1ResponsePresentation = () => {
   // Helper to convert string arrays to table rows
   const toTableRows = (data: string[][]): any[] => data.map(row => row.map(cell => ({ text: cell })));
   
-  // Kumii brand colors
+  // Helper to add Kumii branded header to slides
+  const addBrandedHeader = (slide: any, title: string) => {
+    // Add logo
+    slide.addImage({
+      path: kumiiLogoPath,
+      x: 8.5,
+      y: 0.2,
+      w: 1.2,
+      h: 0.48
+    });
+    
+    // Add title
+    slide.addText(title, {
+      x: 0.5,
+      y: 0.3,
+      w: 7.5,
+      h: 0.6,
+      fontSize: 28,
+      bold: true,
+      color: colors.primary
+    });
+    
+    // Add separator line
+    slide.addShape(pptx.ShapeType.rect, {
+      x: 0.5,
+      y: 0.95,
+      w: 9,
+      h: 0.03,
+      fill: { color: colors.primary }
+    });
+  };
+  
+  // Kumii Official Brand Colors
   const colors = {
-    primary: "1a1a2e",
-    secondary: "16213e",
-    accent: "0f3460",
-    highlight: "e94560",
-    lightGray: "f5f5f5",
-    white: "ffffff",
-    darkText: "2d3748",
-    success: "10b981",
-    warning: "f59e0b",
-    info: "3b82f6"
+    primary: "7A8566",      // Sage Green (Primary Brand Color)
+    secondary: "444345",    // Dark Charcoal
+    accent: "C5DF94",       // Light Green
+    highlight: "F5A623",    // Golden Yellow (for emphasis)
+    lightGray: "CDCDCE",    // Light Gray
+    white: "FFFFFF",
+    darkText: "444345",
+    success: "C5DF94",
+    warning: "F5A623",
+    info: "7A8566"
   };
 
-  // Title Slide
+  // Title Slide with Kumii Branding
   const titleSlide = pptx.addSlide();
-  titleSlide.background = { color: colors.primary };
+  titleSlide.background = { color: colors.secondary };
+  
+  // Add Kumii Logo
+  titleSlide.addImage({
+    path: kumiiLogoPath,
+    x: 4.0,
+    y: 0.5,
+    w: 2.0,
+    h: 0.8
+  });
   
   titleSlide.addText("Kumii Phase 1 Assessment", {
     x: 0.5,
-    y: 1.5,
+    y: 2.0,
     w: 9,
     h: 1,
     fontSize: 44,
@@ -37,12 +79,21 @@ export const generatePhase1ResponsePresentation = () => {
   
   titleSlide.addText("Response & Remediation Roadmap", {
     x: 0.5,
-    y: 2.7,
+    y: 3.0,
     w: 9,
     h: 0.6,
     fontSize: 28,
-    color: colors.highlight,
+    color: colors.accent,
     align: "center"
+  });
+  
+  // Decorative line
+  titleSlide.addShape(pptx.ShapeType.rect, {
+    x: 3.5,
+    y: 3.8,
+    w: 3,
+    h: 0.05,
+    fill: { color: colors.primary }
   });
   
   titleSlide.addText([
@@ -50,7 +101,7 @@ export const generatePhase1ResponsePresentation = () => {
     { text: "1 October 2025 – 14 November 2025", options: { color: colors.white, bold: true } }
   ], {
     x: 0.5,
-    y: 4,
+    y: 4.3,
     w: 9,
     h: 0.5,
     fontSize: 18,
@@ -59,7 +110,7 @@ export const generatePhase1ResponsePresentation = () => {
   
   titleSlide.addText("Product & Development Team Response\nDecember 2025", {
     x: 0.5,
-    y: 5,
+    y: 5.2,
     w: 9,
     h: 0.8,
     fontSize: 16,
@@ -69,15 +120,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Table of Contents
   const tocSlide = pptx.addSlide();
-  tocSlide.addText("Contents", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 32,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(tocSlide, "Contents");
   
   const tocItems = [
     "1. Executive Response",
@@ -94,7 +137,7 @@ export const generatePhase1ResponsePresentation = () => {
   
   tocSlide.addText(tocItems.join("\n"), {
     x: 1,
-    y: 1.5,
+    y: 1.3,
     w: 8,
     h: 4.5,
     fontSize: 16,
@@ -104,15 +147,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Executive Response
   const execSlide = pptx.addSlide();
-  execSlide.addText("Executive Response", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 32,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(execSlide, "Executive Response");
   
   execSlide.addText([
     { text: "Acknowledgment\n", options: { fontSize: 20, bold: true, color: colors.accent } },
@@ -132,15 +167,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Phase 1 Achievements Recognition
   const achievementsSlide = pptx.addSlide();
-  achievementsSlide.addText("Phase 1 Achievements Recognition", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(achievementsSlide, "Phase 1 Achievements Recognition");
   
   const achievementsData = [
     ["Achievement", "Impact", "Status"],
@@ -177,15 +204,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Key Findings Response - User Behavior
   const findingsSlide1 = pptx.addSlide();
-  findingsSlide1.addText("Response to Key Findings", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(findingsSlide1, "Response to Key Findings");
   
   findingsSlide1.addText("1. Drop-Off After Initial Sign-Up", {
     x: 0.5,
@@ -240,15 +259,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Key Findings Response - Email Verification Friction
   const findingsSlide2 = pptx.addSlide();
-  findingsSlide2.addText("Response to Key Findings", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(findingsSlide2, "Response to Key Findings");
   
   findingsSlide2.addText("2. Email Verification Friction", {
     x: 0.5,
@@ -293,15 +304,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Key Findings Response - Platform Walkthrough
   const findingsSlide3 = pptx.addSlide();
-  findingsSlide3.addText("Response to Key Findings", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(findingsSlide3, "Response to Key Findings");
   
   findingsSlide3.addText("3. Platform Walkthrough Issues", {
     x: 0.5,
@@ -346,15 +349,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // UX Issues & Remediation Plan
   const uxSlide = pptx.addSlide();
-  uxSlide.addText("UX Issues & Remediation Plan", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(uxSlide, "UX Issues & Remediation Plan");
   
   const uxData = [
     ["UX Issue", "Current State", "Target State", "Timeline"],
@@ -391,15 +386,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Technical Debt & Quality Improvements
   const techDebtSlide = pptx.addSlide();
-  techDebtSlide.addText("Technical Debt & Quality Improvements", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(techDebtSlide, "Technical Debt & Quality Improvements");
   
   const techData = [
     ["Category", "Issue", "Impact", "Resolution", "Week"],
@@ -425,15 +412,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Remediation Roadmap - Week 1
   const roadmapWeek1 = pptx.addSlide();
-  roadmapWeek1.addText("Remediation Roadmap: Week 1", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(roadmapWeek1, "Remediation Roadmap: Week 1");
   
   roadmapWeek1.addText([
     { text: "Priority: ", options: { bold: true, color: colors.accent } },
@@ -461,15 +440,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Remediation Roadmap - Week 2
   const roadmapWeek2 = pptx.addSlide();
-  roadmapWeek2.addText("Remediation Roadmap: Week 2", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(roadmapWeek2, "Remediation Roadmap: Week 2");
   
   roadmapWeek2.addText([
     { text: "Priority: ", options: { bold: true, color: colors.accent } },
@@ -497,15 +468,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Remediation Roadmap - Week 3
   const roadmapWeek3 = pptx.addSlide();
-  roadmapWeek3.addText("Remediation Roadmap: Week 3", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(roadmapWeek3, "Remediation Roadmap: Week 3");
   
   roadmapWeek3.addText([
     { text: "Priority: ", options: { bold: true, color: colors.accent } },
@@ -533,15 +496,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Remediation Roadmap - Week 4
   const roadmapWeek4 = pptx.addSlide();
-  roadmapWeek4.addText("Remediation Roadmap: Week 4", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(roadmapWeek4, "Remediation Roadmap: Week 4");
   
   roadmapWeek4.addText([
     { text: "Priority: ", options: { bold: true, color: colors.accent } },
@@ -569,15 +524,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Remediation Roadmap - Week 5
   const roadmapWeek5 = pptx.addSlide();
-  roadmapWeek5.addText("Remediation Roadmap: Week 5", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(roadmapWeek5, "Remediation Roadmap: Week 5");
   
   roadmapWeek5.addText([
     { text: "Priority: ", options: { bold: true, color: colors.accent } },
@@ -605,15 +552,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Phase 2 Readiness Plan
   const phase2Slide = pptx.addSlide();
-  phase2Slide.addText("Phase 2 Readiness Plan", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(phase2Slide, "Phase 2 Readiness Plan");
   
   const phase2Data = [
     ["Milestone", "Criteria", "Target Date", "Status"],
@@ -650,15 +589,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Resource Allocation & Timeline
   const resourceSlide = pptx.addSlide();
-  resourceSlide.addText("Resource Allocation & Timeline", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(resourceSlide, "Resource Allocation & Timeline");
   
   const resourceData = [
     ["Team Member", "Role", "Focus Areas", "Weeks"],
@@ -700,15 +631,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Success Metrics & KPIs
   const metricsSlide = pptx.addSlide();
-  metricsSlide.addText("Success Metrics & KPIs", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(metricsSlide, "Success Metrics & KPIs");
   
   const metricsData = [
     ["Metric", "Current", "Target", "Measurement"],
@@ -736,15 +659,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Tracking & Reporting
   const trackingSlide = pptx.addSlide();
-  trackingSlide.addText("Tracking & Reporting", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(trackingSlide, "Tracking & Reporting");
   
   trackingSlide.addText([
     { text: "Weekly Progress Reports\n\n", options: { fontSize: 20, bold: true, color: colors.accent } },
@@ -771,15 +686,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Risk Mitigation
   const riskSlide = pptx.addSlide();
-  riskSlide.addText("Risk Mitigation Strategy", {
-    x: 0.5,
-    y: 0.5,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    bold: true,
-    color: colors.primary
-  });
+  addBrandedHeader(riskSlide, "Risk Mitigation Strategy");
   
   const riskData = [
     ["Risk", "Probability", "Impact", "Mitigation Strategy"],
@@ -816,11 +723,20 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Commitment Summary
   const commitmentSlide = pptx.addSlide();
-  commitmentSlide.background = { color: colors.accent };
+  commitmentSlide.background = { color: colors.primary };
+  
+  // Add Kumii Logo
+  commitmentSlide.addImage({
+    path: kumiiLogoPath,
+    x: 4.0,
+    y: 0.4,
+    w: 2.0,
+    h: 0.8
+  });
   
   commitmentSlide.addText("Our Commitment", {
     x: 0.5,
-    y: 1.2,
+    y: 1.5,
     w: 9,
     h: 0.8,
     fontSize: 36,
@@ -838,7 +754,7 @@ export const generatePhase1ResponsePresentation = () => {
     { text: "✓ 70%+ test coverage\n\n", options: { fontSize: 18, color: colors.white } }
   ], {
     x: 1,
-    y: 2.3,
+    y: 2.6,
     w: 8,
     h: 3,
     align: "left",
@@ -849,9 +765,18 @@ export const generatePhase1ResponsePresentation = () => {
   const closingSlide = pptx.addSlide();
   closingSlide.background = { color: colors.secondary };
   
+  // Add Kumii Logo
+  closingSlide.addImage({
+    path: kumiiLogoPath,
+    x: 4.0,
+    y: 0.5,
+    w: 2.0,
+    h: 0.8
+  });
+  
   closingSlide.addText("Thank You", {
     x: 0.5,
-    y: 2,
+    y: 2.2,
     w: 9,
     h: 0.8,
     fontSize: 44,
@@ -862,11 +787,11 @@ export const generatePhase1ResponsePresentation = () => {
   
   closingSlide.addText("Questions & Discussion", {
     x: 0.5,
-    y: 3,
+    y: 3.2,
     w: 9,
     h: 0.6,
     fontSize: 28,
-    color: colors.highlight,
+    color: colors.accent,
     align: "center"
   });
   
@@ -876,7 +801,7 @@ export const generatePhase1ResponsePresentation = () => {
     { text: "December 2025", options: { fontSize: 14, color: colors.lightGray, italic: true } }
   ], {
     x: 0.5,
-    y: 4.2,
+    y: 4.5,
     w: 9,
     h: 1,
     align: "center"

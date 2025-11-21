@@ -724,7 +724,7 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                     onClick={downloadPhase1ResponsePresentation} 
                     variant="default" 
                     size="lg"
-                    className="gap-2 bg-highlight hover:bg-highlight/90"
+                    className="gap-2 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white shadow-lg"
                   >
                     <FileDown className="w-5 h-5" />
                     Download Phase 1 Response & Roadmap

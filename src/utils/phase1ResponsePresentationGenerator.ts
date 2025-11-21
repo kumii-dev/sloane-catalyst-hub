@@ -238,6 +238,613 @@ export const generatePhase1ResponsePresentation = () => {
     bullet: true
   });
 
+  // Key Findings Response - Email Verification Friction
+  const findingsSlide2 = pptx.addSlide();
+  findingsSlide2.addText("Response to Key Findings", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  findingsSlide2.addText("2. Email Verification Friction", {
+    x: 0.5,
+    y: 1.3,
+    w: 9,
+    h: 0.4,
+    fontSize: 20,
+    bold: true,
+    color: colors.accent
+  });
+  
+  const emailData = [
+    ["Issue", "Root Cause", "Solution", "Priority"],
+    ["Users don't verify email", "Emails in spam folder", "Improve email deliverability", "P0"],
+    ["Confusing verification flow", "Unclear instructions", "Add clear messaging & resend option", "P0"],
+    ["No reminder system", "Users forget to check", "Implement reminder emails", "P1"],
+    ["Broken email links", "Session timeout issues", "Extend verification link validity", "P1"]
+  ];
+  
+  findingsSlide2.addTable(toTableRows(emailData), {
+    x: 0.5,
+    y: 1.9,
+    w: 9,
+    h: 2.2,
+    fontSize: 11,
+    border: { pt: 1, color: colors.accent },
+    fill: { color: colors.lightGray },
+    color: colors.darkText,
+    rowH: 0.5
+  } as any);
+  
+  findingsSlide2.addText([
+    { text: "Implementation: ", options: { bold: true, color: colors.accent } },
+    { text: "Week 1-2", options: { color: colors.darkText } }
+  ], {
+    x: 0.5,
+    y: 4.3,
+    w: 9,
+    h: 0.4,
+    fontSize: 14
+  });
+
+  // Key Findings Response - Platform Walkthrough
+  const findingsSlide3 = pptx.addSlide();
+  findingsSlide3.addText("Response to Key Findings", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  findingsSlide3.addText("3. Platform Walkthrough Issues", {
+    x: 0.5,
+    y: 1.3,
+    w: 9,
+    h: 0.4,
+    fontSize: 20,
+    bold: true,
+    color: colors.accent
+  });
+  
+  const walkthroughData = [
+    ["Issue", "User Impact", "Solution", "Priority"],
+    ["No first-time user tour", "Confusion about features", "Implement interactive tour", "P0"],
+    ["Hidden key features", "Low feature adoption", "Feature discovery prompts", "P0"],
+    ["Unclear navigation", "Users get lost", "Simplified menu structure", "P0"],
+    ["No contextual help", "Support burden", "Add inline help tooltips", "P1"]
+  ];
+  
+  findingsSlide3.addTable(toTableRows(walkthroughData), {
+    x: 0.5,
+    y: 1.9,
+    w: 9,
+    h: 2.2,
+    fontSize: 11,
+    border: { pt: 1, color: colors.accent },
+    fill: { color: colors.lightGray },
+    color: colors.darkText,
+    rowH: 0.5
+  } as any);
+  
+  findingsSlide3.addText([
+    { text: "Implementation: ", options: { bold: true, color: colors.accent } },
+    { text: "Week 2-3", options: { color: colors.darkText } }
+  ], {
+    x: 0.5,
+    y: 4.3,
+    w: 9,
+    h: 0.4,
+    fontSize: 14
+  });
+
+  // UX Issues & Remediation Plan
+  const uxSlide = pptx.addSlide();
+  uxSlide.addText("UX Issues & Remediation Plan", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  const uxData = [
+    ["UX Issue", "Current State", "Target State", "Timeline"],
+    ["Onboarding completion", "23% complete profile", "85% completion rate", "Week 1-2"],
+    ["Feature discovery", "Low awareness", "Guided feature tours", "Week 2-3"],
+    ["Navigation clarity", "Users report confusion", "Intuitive menu structure", "Week 3"],
+    ["Mobile responsiveness", "Inconsistent experience", "Fully responsive design", "Week 4"],
+    ["Loading states", "No feedback", "Clear loading indicators", "Week 3"],
+    ["Error messaging", "Technical jargon", "User-friendly messages", "Week 2"]
+  ];
+  
+  uxSlide.addTable(toTableRows(uxData), {
+    x: 0.5,
+    y: 1.4,
+    w: 9,
+    h: 3.5,
+    fontSize: 11,
+    border: { pt: 1, color: colors.accent },
+    fill: { color: colors.lightGray },
+    color: colors.darkText,
+    rowH: 0.5
+  } as any);
+  
+  uxSlide.addText("All critical UX issues will be resolved before Phase 2 launch", {
+    x: 0.5,
+    y: 5.2,
+    w: 9,
+    h: 0.5,
+    fontSize: 14,
+    italic: true,
+    color: colors.success,
+    align: "center"
+  });
+
+  // Technical Debt & Quality Improvements
+  const techDebtSlide = pptx.addSlide();
+  techDebtSlide.addText("Technical Debt & Quality Improvements", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  const techData = [
+    ["Category", "Issue", "Impact", "Resolution", "Week"],
+    ["Performance", "Slow page loads", "High", "Code splitting & lazy loading", "3"],
+    ["Code Quality", "Duplicate code", "Medium", "Refactor shared components", "4"],
+    ["Testing", "Low test coverage", "High", "Add unit & integration tests", "5"],
+    ["Security", "Unvalidated inputs", "Critical", "Input validation & sanitization", "1"],
+    ["Database", "Slow queries", "Medium", "Add indexes & optimize queries", "2"],
+    ["Error Handling", "Poor error tracking", "High", "Implement Sentry monitoring", "1"]
+  ];
+  
+  techDebtSlide.addTable(toTableRows(techData), {
+    x: 0.5,
+    y: 1.4,
+    w: 9,
+    h: 3.5,
+    fontSize: 10,
+    border: { pt: 1, color: colors.accent },
+    fill: { color: colors.lightGray },
+    color: colors.darkText,
+    rowH: 0.5
+  } as any);
+
+  // Remediation Roadmap - Week 1
+  const roadmapWeek1 = pptx.addSlide();
+  roadmapWeek1.addText("Remediation Roadmap: Week 1", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  roadmapWeek1.addText([
+    { text: "Priority: ", options: { bold: true, color: colors.accent } },
+    { text: "Critical Issues (P0)\n\n", options: { color: colors.darkText } },
+    { text: "✓ Progressive Onboarding Flow\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Mandatory persona selection after signup\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Profile completion wizard\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Progress indicator (0-100%)\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "✓ Security & Input Validation\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Implement input sanitization\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Add CSRF protection\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Set up Sentry error tracking\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "✓ Email Deliverability\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Configure SPF & DKIM records\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Improve email templates\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Add resend verification option", options: { fontSize: 14, color: colors.darkText } }
+  ], {
+    x: 0.5,
+    y: 1.3,
+    w: 9,
+    h: 4.5,
+    fontSize: 14,
+    valign: "top"
+  });
+
+  // Remediation Roadmap - Week 2
+  const roadmapWeek2 = pptx.addSlide();
+  roadmapWeek2.addText("Remediation Roadmap: Week 2", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  roadmapWeek2.addText([
+    { text: "Priority: ", options: { bold: true, color: colors.accent } },
+    { text: "High Priority Issues (P0-P1)\n\n", options: { color: colors.darkText } },
+    { text: "✓ Interactive Platform Tour\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • First-time user walkthrough\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Feature discovery tooltips\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Skip/replay options\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "✓ User-Friendly Error Messages\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Replace technical jargon\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Add actionable solutions\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Implement toast notifications\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "✓ Database Optimization\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Add missing indexes\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Optimize slow queries\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Implement query caching", options: { fontSize: 14, color: colors.darkText } }
+  ], {
+    x: 0.5,
+    y: 1.3,
+    w: 9,
+    h: 4.5,
+    fontSize: 14,
+    valign: "top"
+  });
+
+  // Remediation Roadmap - Week 3
+  const roadmapWeek3 = pptx.addSlide();
+  roadmapWeek3.addText("Remediation Roadmap: Week 3", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  roadmapWeek3.addText([
+    { text: "Priority: ", options: { bold: true, color: colors.accent } },
+    { text: "Navigation & Performance\n\n", options: { color: colors.darkText } },
+    { text: "✓ Navigation Improvements\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Simplified menu structure\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Breadcrumb navigation\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Quick action shortcuts\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "✓ Performance Optimization\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Implement code splitting\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Add lazy loading for routes\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Optimize image delivery\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "✓ Loading States\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Add skeleton loaders\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Implement progress indicators\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Better async state handling", options: { fontSize: 14, color: colors.darkText } }
+  ], {
+    x: 0.5,
+    y: 1.3,
+    w: 9,
+    h: 4.5,
+    fontSize: 14,
+    valign: "top"
+  });
+
+  // Remediation Roadmap - Week 4
+  const roadmapWeek4 = pptx.addSlide();
+  roadmapWeek4.addText("Remediation Roadmap: Week 4", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  roadmapWeek4.addText([
+    { text: "Priority: ", options: { bold: true, color: colors.accent } },
+    { text: "Mobile & Code Quality\n\n", options: { color: colors.darkText } },
+    { text: "✓ Mobile Responsiveness\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Fix layout issues on mobile\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Touch-friendly UI elements\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Mobile-optimized forms\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "✓ Code Refactoring\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Extract shared components\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Remove duplicate code\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Improve code organization\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "✓ Accessibility Improvements\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • ARIA labels and roles\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Keyboard navigation\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Screen reader compatibility", options: { fontSize: 14, color: colors.darkText } }
+  ], {
+    x: 0.5,
+    y: 1.3,
+    w: 9,
+    h: 4.5,
+    fontSize: 14,
+    valign: "top"
+  });
+
+  // Remediation Roadmap - Week 5
+  const roadmapWeek5 = pptx.addSlide();
+  roadmapWeek5.addText("Remediation Roadmap: Week 5", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  roadmapWeek5.addText([
+    { text: "Priority: ", options: { bold: true, color: colors.accent } },
+    { text: "Testing & Quality Assurance\n\n", options: { color: colors.darkText } },
+    { text: "✓ Automated Testing\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Unit tests for core functions\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Integration tests for APIs\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • E2E tests for critical flows\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "✓ Documentation\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Code documentation\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • API documentation\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • User guides\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "✓ Final QA & Bug Fixes\n", options: { fontSize: 16, color: colors.darkText, bold: true } },
+    { text: "  • Cross-browser testing\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Performance benchmarking\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "  • Security audit", options: { fontSize: 14, color: colors.darkText } }
+  ], {
+    x: 0.5,
+    y: 1.3,
+    w: 9,
+    h: 4.5,
+    fontSize: 14,
+    valign: "top"
+  });
+
+  // Phase 2 Readiness Plan
+  const phase2Slide = pptx.addSlide();
+  phase2Slide.addText("Phase 2 Readiness Plan", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  const phase2Data = [
+    ["Milestone", "Criteria", "Target Date", "Status"],
+    ["All P0 issues resolved", "100% critical bugs fixed", "Week 2", "On Track"],
+    ["Onboarding completion >80%", "User testing validation", "Week 3", "On Track"],
+    ["Performance benchmarks met", "<2s page load time", "Week 3", "On Track"],
+    ["Security audit passed", "No critical vulnerabilities", "Week 4", "On Track"],
+    ["Test coverage >70%", "Unit + integration tests", "Week 5", "On Track"],
+    ["Documentation complete", "All docs up to date", "Week 5", "On Track"]
+  ];
+  
+  phase2Slide.addTable(toTableRows(phase2Data), {
+    x: 0.5,
+    y: 1.4,
+    w: 9,
+    h: 3.5,
+    fontSize: 11,
+    border: { pt: 1, color: colors.accent },
+    fill: { color: colors.lightGray },
+    color: colors.darkText,
+    rowH: 0.5
+  } as any);
+  
+  phase2Slide.addText("Phase 2 launch ready by end of Week 5", {
+    x: 0.5,
+    y: 5.2,
+    w: 9,
+    h: 0.5,
+    fontSize: 16,
+    bold: true,
+    color: colors.success,
+    align: "center"
+  });
+
+  // Resource Allocation & Timeline
+  const resourceSlide = pptx.addSlide();
+  resourceSlide.addText("Resource Allocation & Timeline", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  const resourceData = [
+    ["Team Member", "Role", "Focus Areas", "Weeks"],
+    ["Frontend Dev 1", "Senior Developer", "Onboarding, Navigation, UX", "1-5"],
+    ["Frontend Dev 2", "Developer", "Mobile, Responsiveness, UI", "3-5"],
+    ["Backend Dev", "Senior Developer", "Security, Performance, Database", "1-3"],
+    ["QA Engineer", "Tester", "Testing, Bug fixes, QA", "4-5"],
+    ["UX Designer", "Designer", "User flows, Prototypes, Testing", "1-2"],
+    ["Product Manager", "PM", "Coordination, Prioritization", "1-5"]
+  ];
+  
+  resourceSlide.addTable(toTableRows(resourceData), {
+    x: 0.5,
+    y: 1.4,
+    w: 9,
+    h: 3.5,
+    fontSize: 11,
+    border: { pt: 1, color: colors.accent },
+    fill: { color: colors.lightGray },
+    color: colors.darkText,
+    rowH: 0.5
+  } as any);
+  
+  resourceSlide.addText([
+    { text: "Total Team: ", options: { bold: true, color: colors.accent } },
+    { text: "6 people  |  ", options: { color: colors.darkText } },
+    { text: "Duration: ", options: { bold: true, color: colors.accent } },
+    { text: "5 weeks  |  ", options: { color: colors.darkText } },
+    { text: "Budget: ", options: { bold: true, color: colors.accent } },
+    { text: "Within current allocation", options: { color: colors.darkText } }
+  ], {
+    x: 0.5,
+    y: 5.2,
+    w: 9,
+    h: 0.5,
+    fontSize: 14,
+    align: "center"
+  });
+
+  // Success Metrics & KPIs
+  const metricsSlide = pptx.addSlide();
+  metricsSlide.addText("Success Metrics & KPIs", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  const metricsData = [
+    ["Metric", "Current", "Target", "Measurement"],
+    ["Profile completion rate", "23%", "85%", "% of users with complete profiles"],
+    ["Email verification rate", "~70%", "95%", "% of users verifying email"],
+    ["Feature adoption", "Low", "High", "% using key features weekly"],
+    ["Page load time", "4-6s", "<2s", "Average load time"],
+    ["User retention (Week 1)", "Unknown", "60%", "% returning after 1 week"],
+    ["Support tickets", "High", "-50%", "Reduction in common issues"],
+    ["Mobile experience score", "3/5", "4.5/5", "User satisfaction rating"],
+    ["Test coverage", "~20%", "70%+", "% of code covered by tests"]
+  ];
+  
+  metricsSlide.addTable(toTableRows(metricsData), {
+    x: 0.5,
+    y: 1.4,
+    w: 9,
+    h: 4,
+    fontSize: 10,
+    border: { pt: 1, color: colors.accent },
+    fill: { color: colors.lightGray },
+    color: colors.darkText,
+    rowH: 0.48
+  } as any);
+
+  // Tracking & Reporting
+  const trackingSlide = pptx.addSlide();
+  trackingSlide.addText("Tracking & Reporting", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  trackingSlide.addText([
+    { text: "Weekly Progress Reports\n\n", options: { fontSize: 20, bold: true, color: colors.accent } },
+    { text: "• Every Monday: Team standup & week planning\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "• Every Wednesday: Mid-week progress check\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "• Every Friday: Week review & metrics update\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "Monitoring Tools\n\n", options: { fontSize: 20, bold: true, color: colors.accent } },
+    { text: "• Sentry: Error tracking & performance monitoring\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "• Google Analytics: User behavior & engagement\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "• Hotjar: Session recordings & heatmaps\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "• Jira: Task tracking & sprint management\n\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "Communication\n\n", options: { fontSize: 20, bold: true, color: colors.accent } },
+    { text: "• Slack channel for daily updates\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "• Weekly email summary to stakeholders\n", options: { fontSize: 14, color: colors.darkText } },
+    { text: "• Bi-weekly demo to product team", options: { fontSize: 14, color: colors.darkText } }
+  ], {
+    x: 0.5,
+    y: 1.3,
+    w: 9,
+    h: 4.5,
+    fontSize: 14,
+    valign: "top"
+  });
+
+  // Risk Mitigation
+  const riskSlide = pptx.addSlide();
+  riskSlide.addText("Risk Mitigation Strategy", {
+    x: 0.5,
+    y: 0.5,
+    w: 9,
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.primary
+  });
+  
+  const riskData = [
+    ["Risk", "Probability", "Impact", "Mitigation Strategy"],
+    ["Timeline delays", "Medium", "High", "Built-in buffer time, prioritization"],
+    ["Technical blockers", "Low", "High", "Early spike tasks, expert consultation"],
+    ["Resource unavailability", "Low", "Medium", "Cross-training, backup resources"],
+    ["Scope creep", "Medium", "Medium", "Strict change control process"],
+    ["Integration issues", "Low", "Medium", "Early integration testing"],
+    ["User acceptance", "Low", "High", "Continuous user testing & feedback"]
+  ];
+  
+  riskSlide.addTable(toTableRows(riskData), {
+    x: 0.5,
+    y: 1.4,
+    w: 9,
+    h: 3.5,
+    fontSize: 11,
+    border: { pt: 1, color: colors.accent },
+    fill: { color: colors.lightGray },
+    color: colors.darkText,
+    rowH: 0.55
+  } as any);
+  
+  riskSlide.addText("Weekly risk review in team meetings", {
+    x: 0.5,
+    y: 5.2,
+    w: 9,
+    h: 0.5,
+    fontSize: 14,
+    italic: true,
+    color: colors.info,
+    align: "center"
+  });
+
+  // Commitment Summary
+  const commitmentSlide = pptx.addSlide();
+  commitmentSlide.background = { color: colors.accent };
+  
+  commitmentSlide.addText("Our Commitment", {
+    x: 0.5,
+    y: 1.2,
+    w: 9,
+    h: 0.8,
+    fontSize: 36,
+    bold: true,
+    color: colors.white,
+    align: "center"
+  });
+  
+  commitmentSlide.addText([
+    { text: "✓ All critical issues resolved by end of Week 2\n\n", options: { fontSize: 18, color: colors.white } },
+    { text: "✓ Platform ready for Phase 2 by end of Week 5\n\n", options: { fontSize: 18, color: colors.white } },
+    { text: "✓ Profile completion rate >85%\n\n", options: { fontSize: 18, color: colors.white } },
+    { text: "✓ Page load times <2 seconds\n\n", options: { fontSize: 18, color: colors.white } },
+    { text: "✓ Mobile-optimized experience\n\n", options: { fontSize: 18, color: colors.white } },
+    { text: "✓ 70%+ test coverage\n\n", options: { fontSize: 18, color: colors.white } }
+  ], {
+    x: 1,
+    y: 2.3,
+    w: 8,
+    h: 3,
+    align: "left",
+    valign: "top"
+  });
+
   // Closing Slide
   const closingSlide = pptx.addSlide();
   closingSlide.background = { color: colors.secondary };

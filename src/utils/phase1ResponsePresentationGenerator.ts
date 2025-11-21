@@ -1,103 +1,31 @@
+import {
+  createKumiiBrandedPresentation,
+  addKumiiBrandedHeader,
+  createKumiiTitleSlide,
+  createKumiiClosingSlide,
+  KUMII_COLORS,
+} from "./kumiiPowerpointTemplate";
 import pptxgen from "pptxgenjs";
-import kumiiLogoPath from '@/assets/kumii-logo.png';
 
 export const generatePhase1ResponsePresentation = () => {
-  const pptx = new pptxgen();
+  const pptx = createKumiiBrandedPresentation();
   
   // Helper to convert string arrays to table rows
   const toTableRows = (data: string[][]): any[] => data.map(row => row.map(cell => ({ text: cell })));
   
-  // Helper to add Kumii branded header to slides
-  const addBrandedHeader = (slide: any, title: string) => {
-    // Add logo
-    slide.addImage({
-      path: kumiiLogoPath,
-      x: 8.5,
-      y: 0.2,
-      w: 1.2,
-      h: 0.48
-    });
-    
-    // Add title
-    slide.addText(title, {
-      x: 0.5,
-      y: 0.3,
-      w: 7.5,
-      h: 0.6,
-      fontSize: 28,
-      bold: true,
-      color: colors.primary
-    });
-    
-    // Add separator line
-    slide.addShape(pptx.ShapeType.rect, {
-      x: 0.5,
-      y: 0.95,
-      w: 9,
-      h: 0.03,
-      fill: { color: colors.primary }
-    });
-  };
-  
-  // Kumii Official Brand Colors
-  const colors = {
-    primary: "7A8566",      // Sage Green (Primary Brand Color)
-    secondary: "444345",    // Dark Charcoal
-    accent: "C5DF94",       // Light Green
-    highlight: "F5A623",    // Golden Yellow (for emphasis)
-    lightGray: "CDCDCE",    // Light Gray
-    white: "FFFFFF",
-    darkText: "444345",
-    success: "C5DF94",
-    warning: "F5A623",
-    info: "7A8566"
-  };
+  // Use template branding (colors and header function)
+  const colors = KUMII_COLORS;
 
-  // Title Slide with Kumii Branding
-  const titleSlide = pptx.addSlide();
-  titleSlide.background = { color: colors.secondary };
+  // Title Slide - using template
+  createKumiiTitleSlide(
+    pptx,
+    "Kumii Phase 1 Assessment",
+    "Response & Remediation Roadmap"
+  );
   
-  // Add Kumii Logo
-  titleSlide.addImage({
-    path: kumiiLogoPath,
-    x: 4.0,
-    y: 0.5,
-    w: 2.0,
-    h: 0.8
-  });
-  
-  titleSlide.addText("Kumii Phase 1 Assessment", {
-    x: 0.5,
-    y: 2.0,
-    w: 9,
-    h: 1,
-    fontSize: 44,
-    bold: true,
-    color: colors.white,
-    align: "center"
-  });
-  
-  titleSlide.addText("Response & Remediation Roadmap", {
-    x: 0.5,
-    y: 3.0,
-    w: 9,
-    h: 0.6,
-    fontSize: 28,
-    color: colors.accent,
-    align: "center"
-  });
-  
-  // Decorative line
-  titleSlide.addShape(pptx.ShapeType.rect, {
-    x: 3.5,
-    y: 3.8,
-    w: 3,
-    h: 0.05,
-    fill: { color: colors.primary }
-  });
-  
-  titleSlide.addText([
-    { text: "Period Covered: ", options: { color: colors.lightGray } },
+  // Remove slides reference and just add text
+  pptx.addSlide().addText([
+    { text: "Period Covered: ", options: { color: KUMII_COLORS.lightGray } },
     { text: "1 October 2025 – 14 November 2025", options: { color: colors.white, bold: true } }
   ], {
     x: 0.5,

@@ -39,6 +39,7 @@ import { generateKumiiProfilePDF } from "@/utils/kumiiProfilePdfGenerator";
 import { generateMafikaProfileWord } from "@/utils/mafikaProfileWordGenerator";
 import { generatePhase1ResponsePresentation } from "@/utils/phase1ResponsePresentationGenerator";
 import { useAuth } from "@/hooks/useAuth";
+import { PlatformDocumentUpload } from "@/components/PlatformDocumentUpload";
 
 const SystemDocumentation = () => {
   const navigate = useNavigate();
@@ -828,6 +829,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                     <Presentation className="w-5 h-5" />
                     Download Journey Maps PowerPoint
                   </Button>
+                </div>
+
+                {/* Platform Documentation Upload Section */}
+                <div className="space-y-4">
+                  <h2 className="text-2xl font-bold">Platform Documentation Management</h2>
+                  <p className="text-muted-foreground">
+                    Upload and manage platform documentation created outside the platform. All PowerPoint presentations will automatically use Kumii branding.
+                  </p>
+                  <PlatformDocumentUpload />
                 </div>
 
                 {/* Executive Summary */}

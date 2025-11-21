@@ -37,6 +37,7 @@ import { generateArchitectureDocumentPDF } from "@/utils/architectureDocumentPdf
 import { generateMACHPrinciplesPDF } from "@/utils/machPrinciplesPdfGenerator";
 import { generateKumiiProfilePDF } from "@/utils/kumiiProfilePdfGenerator";
 import { generateMafikaProfileWord } from "@/utils/mafikaProfileWordGenerator";
+import { generatePhase1ResponsePresentation } from "@/utils/phase1ResponsePresentationGenerator";
 import { useAuth } from "@/hooks/useAuth";
 
 const SystemDocumentation = () => {
@@ -343,6 +344,18 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
       console.error('PowerPoint generation error:', error);
       toast.dismiss();
       toast.error("Failed to generate presentation");
+    }
+  };
+
+  const downloadPhase1ResponsePresentation = () => {
+    try {
+      toast.loading("Generating Phase 1 Response PowerPoint...");
+      generatePhase1ResponsePresentation();
+      toast.dismiss();
+      toast.success("Phase 1 Response Presentation Downloaded!");
+    } catch (error) {
+      console.error('Error generating Phase 1 response:', error);
+      toast.error("Failed to generate Phase 1 response presentation");
     }
   };
 
@@ -707,6 +720,15 @@ Because when African entrepreneurs succeed, we all win. Welcome to the future of
                 
                 {/* Download Buttons */}
                 <div className="flex flex-wrap gap-4 justify-center">
+                  <Button 
+                    onClick={downloadPhase1ResponsePresentation} 
+                    variant="default" 
+                    size="lg"
+                    className="gap-2 bg-highlight hover:bg-highlight/90"
+                  >
+                    <FileDown className="w-5 h-5" />
+                    Download Phase 1 Response & Roadmap
+                  </Button>
                   <Button 
                     onClick={downloadKumiiPresentation} 
                     variant="default" 

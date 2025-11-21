@@ -8,7 +8,16 @@ export const KUMII_COLORS = {
   lightGreen: "81C784",     // Accent
   goldenYellow: "FFC107",   // Highlight
   white: "FFFFFF",
-  lightGray: "F5F5F5"
+  lightGray: "F5F5F5",
+  // Aliases for compatibility
+  primary: "66BB6A",
+  secondary: "2D3436",
+  accent: "81C784",
+  highlight: "FFC107",
+  darkText: "2D3436",
+  success: "81C784",
+  warning: "FFC107",
+  info: "66BB6A"
 };
 
 /**

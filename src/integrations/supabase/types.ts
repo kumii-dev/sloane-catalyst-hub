@@ -3214,6 +3214,51 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_documents: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          document_name: string
+          file_path: string
+          file_size: number
+          id: string
+          mime_type: string
+          tags: string[] | null
+          updated_at: string | null
+          uploaded_at: string | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          document_name: string
+          file_path: string
+          file_size: number
+          id?: string
+          mime_type: string
+          tags?: string[] | null
+          updated_at?: string | null
+          uploaded_at?: string | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          document_name?: string
+          file_path?: string
+          file_size?: number
+          id?: string
+          mime_type?: string
+          tags?: string[] | null
+          updated_at?: string | null
+          uploaded_at?: string | null
+          uploaded_by?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           bio: string | null

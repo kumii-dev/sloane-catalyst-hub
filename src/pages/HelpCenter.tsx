@@ -5,6 +5,7 @@ import { Search, MessageCircle, Book, Video, Mail } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 
 const HelpCenter = () => {
   const navigate = useNavigate();
@@ -48,30 +49,45 @@ const HelpCenter = () => {
     }
   ];
 
+  const handleResourceAction = (title: string) => {
+    if (title === "Email Support") {
+      navigate('/contact-us');
+    } else {
+      toast({
+        title: "Coming Soon",
+        description: `${title} will be available soon. We're working on bringing you comprehensive support resources.`,
+      });
+    }
+  };
+
   const resources = [
     {
       icon: Book,
       title: "User Guides",
       description: "Step-by-step guides for all platform features",
-      action: "Browse Guides"
+      action: "Browse Guides",
+      available: false
     },
     {
       icon: Video,
       title: "Video Tutorials",
       description: "Watch comprehensive video walkthroughs",
-      action: "Watch Videos"
+      action: "Watch Videos",
+      available: false
     },
     {
       icon: MessageCircle,
       title: "Live Chat Support",
       description: "Chat with our support team in real-time",
-      action: "Start Chat"
+      action: "Start Chat",
+      available: false
     },
     {
       icon: Mail,
       title: "Email Support",
       description: "Send us your questions via email",
-      action: "Contact Us"
+      action: "Contact Us",
+      available: true
     }
   ];
 
@@ -109,8 +125,15 @@ const HelpCenter = () => {
                   <CardDescription>{resource.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => handleResourceAction(resource.title)}
+                  >
                     {resource.action}
+                    {!resource.available && (
+                      <span className="ml-2 text-xs text-muted-foreground">(Coming Soon)</span>
+                    )}
                   </Button>
                 </CardContent>
               </Card>

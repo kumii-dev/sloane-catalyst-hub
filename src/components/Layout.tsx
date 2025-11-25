@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocation } from "react-router-dom";
 import { FloatingAIChat } from "@/components/FloatingAIChat";
+import { FloatingProfileBadge } from "@/components/FloatingProfileBadge";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -103,6 +104,7 @@ export function Layout({ children, showSidebar = true, hideSecondarySidebar = fa
           {children}
         </main>
         <FloatingAIChat />
+        <FloatingProfileBadge />
       </div>
     );
   }
@@ -153,6 +155,7 @@ export function Layout({ children, showSidebar = true, hideSecondarySidebar = fa
         </main>
       </div>
       <FloatingAIChat />
+      <FloatingProfileBadge />
     </div>
   );
 }

@@ -140,9 +140,8 @@ const HelpCenter = () => {
                   Our support team is available Monday to Friday, 9am - 5pm SAST
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-col sm:flex-row gap-4 justify-center">
+              <CardContent className="flex justify-center">
                 <Button variant="default">Contact Support</Button>
-                <Button variant="outline">Schedule a Call</Button>
               </CardContent>
             </Card>
           </div>

@@ -20,7 +20,7 @@ const UserTypes = () => {
       buttonText: "Start Growing",
       buttonVariant: "hero" as const,
       gradient: "from-primary to-primary-light",
-      link: "/startup-dashboard"
+      link: "/funding/startup-dashboard"
     },
     {
       icon: Building,

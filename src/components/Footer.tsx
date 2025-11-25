@@ -1,7 +1,6 @@
 import { Building2, Mail, Phone, MapPin, Twitter, Linkedin, Facebook } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import logo from "@/assets/kumii-logo.png";
+import NewsletterSubscription from "./NewsletterSubscription";
 
 const Footer = () => {
   const footerLinks = [
@@ -102,24 +101,7 @@ const Footer = () => {
           </div>
 
           {/* Newsletter Section */}
-          <div className="mt-16 pt-8 border-t border-primary-foreground/20">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div>
-                <h3 className="font-semibold text-xl mb-2 text-accent">Stay Updated</h3>
-                <p className="text-primary-foreground/80">
-                  Get the latest updates on funding opportunities, new services, and success stories.
-                </p>
-              </div>
-              <div className="flex gap-3">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/60"
-                />
-                <Button variant="hero">Subscribe</Button>
-              </div>
-            </div>
-          </div>
+          <NewsletterSubscription />
         </div>
 
         {/* Bottom Section */}

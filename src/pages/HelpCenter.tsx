@@ -38,6 +38,10 @@ const HelpCenter = () => {
     {
       question: "How do I upgrade my KYC level?",
       answer: "Go to your profile settings, click on 'KYC Verification', and follow the prompts to upload the required documents for your desired verification level."
+    },
+    {
+      question: "How do I update my profile information?",
+      answer: "Navigate to your dashboard and click on 'Edit Profile'. From there, you can update your personal information, bio, profile picture, and other relevant details. Make sure to save your changes before leaving the page."
     }
   ];
 

@@ -50,21 +50,21 @@ const NewsletterSubscription = () => {
 
   return (
     <div className="mt-16 pt-8 border-t border-primary-foreground/20">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div className="grid grid-cols-1 gap-8 items-center">
         <div>
           <h3 className="font-semibold text-xl mb-2 text-accent">Stay Updated</h3>
           <p className="text-primary-foreground/80">
             Get the latest updates on funding opportunities, new services, and success stories.
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="flex gap-3">
+        <form onSubmit={handleSubmit} className="flex gap-3 w-full max-w-2xl">
           <Input
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={isLoading}
-            className="flex-1 bg-background border-border text-foreground placeholder:text-muted-foreground"
+            className="flex-1 min-w-[300px] bg-background border-border text-foreground placeholder:text-muted-foreground"
             required
           />
           <Button type="submit" variant="hero" disabled={isLoading}>

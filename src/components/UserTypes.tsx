@@ -1,8 +1,11 @@
 import { Rocket, Building, Users, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 const UserTypes = () => {
+  const navigate = useNavigate();
+  
   const userTypes = [
     {
       icon: Rocket,
@@ -16,7 +19,8 @@ const UserTypes = () => {
       ],
       buttonText: "Start Growing",
       buttonVariant: "hero" as const,
-      gradient: "from-primary to-primary-light"
+      gradient: "from-primary to-primary-light",
+      link: "/startup-dashboard"
     },
     {
       icon: Building,
@@ -30,7 +34,8 @@ const UserTypes = () => {
       ],
       buttonText: "Join Marketplace",
       buttonVariant: "premium" as const,
-      gradient: "from-accent to-accent-light"
+      gradient: "from-accent to-accent-light",
+      link: "/become-provider"
     },
     {
       icon: Briefcase,
@@ -44,7 +49,8 @@ const UserTypes = () => {
       ],
       buttonText: "Find Opportunities",
       buttonVariant: "success" as const,
-      gradient: "from-success to-green-400"
+      gradient: "from-success to-green-400",
+      link: "/funding-hub"
     },
     {
       icon: Users,
@@ -58,7 +64,8 @@ const UserTypes = () => {
       ],
       buttonText: "Become Mentor",
       buttonVariant: "default" as const,
-      gradient: "from-primary-light to-primary"
+      gradient: "from-primary-light to-primary",
+      link: "/become-mentor"
     }
   ];
 
@@ -114,6 +121,7 @@ const UserTypes = () => {
                 <Button 
                   variant={userType.buttonVariant} 
                   className="w-full"
+                  onClick={() => navigate(userType.link)}
                 >
                   {userType.buttonText}
                 </Button>

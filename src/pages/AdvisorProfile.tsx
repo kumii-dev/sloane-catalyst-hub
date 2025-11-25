@@ -202,7 +202,7 @@ const AdvisorProfile = () => {
                     {advisor.hourly_rate && (
                       <div className="flex items-center gap-2 text-primary font-semibold">
                         <Clock className="w-5 h-5" />
-                        <span>${advisor.hourly_rate}/hour</span>
+                        <span>R{advisor.hourly_rate}/hour</span>
                       </div>
                     )}
                   </div>

@@ -353,7 +353,7 @@ const FindAdvisor = () => {
 
                       {advisor.hourly_rate && (
                         <p className="text-center text-sm font-semibold text-primary">
-                          ${advisor.hourly_rate}/hour
+                          R{advisor.hourly_rate}/hour
                         </p>
                       )}
                     </CardContent>

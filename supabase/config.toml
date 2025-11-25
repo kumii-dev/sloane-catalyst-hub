@@ -24,8 +24,5 @@ verify_jwt = false
 [functions.get-daily-token]
 verify_jwt = true
 
-[functions.send-confirmation-email]
-verify_jwt = false
-
 [functions.subscribe-status-notifications]
 verify_jwt = false

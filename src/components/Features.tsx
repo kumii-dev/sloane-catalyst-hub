@@ -100,12 +100,9 @@ const Features = () => {
             <p className="text-lg text-white/90 mb-6 max-w-2xl mx-auto">
               Join thousands of successful SMMEs and startups who've accelerated their growth through our platform.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex justify-center">
               <Button variant="hero" size="lg" onClick={() => navigate('/access-to-market')}>
                 Get Started Today
-              </Button>
-              <Button variant="hero-outline" size="lg">
-                Schedule Demo
               </Button>
             </div>
           </div>

@@ -50,7 +50,7 @@ const UserTypes = () => {
       buttonText: "Find Opportunities",
       buttonVariant: "success" as const,
       gradient: "from-success to-green-400",
-      link: "/funding-hub"
+      link: "/funding"
     },
     {
       icon: Users,

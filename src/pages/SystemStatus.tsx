@@ -2,8 +2,15 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, AlertCircle, Clock, Activity, Database, Zap, Cloud } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import NewsletterSubscription from "@/components/NewsletterSubscription";
+import { ComingSoon } from "@/components/ComingSoon";
+import { useState } from "react";
 
 const SystemStatus = () => {
+  const [showSubscribeDialog, setShowSubscribeDialog] = useState(false);
+  const [showHistoryDialog, setShowHistoryDialog] = useState(false);
+
   const services = [
     {
       name: "Web Application",
@@ -227,13 +234,19 @@ const SystemStatus = () => {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex-1 p-4 bg-muted rounded-lg">
+                <div 
+                  onClick={() => setShowSubscribeDialog(true)}
+                  className="flex-1 p-4 bg-muted rounded-lg cursor-pointer hover:bg-muted/80 transition-colors"
+                >
                   <div className="font-medium mb-1">Email Notifications</div>
                   <div className="text-sm text-muted-foreground">
                     Get notified about incidents and maintenance
                   </div>
                 </div>
-                <div className="flex-1 p-4 bg-muted rounded-lg">
+                <div 
+                  onClick={() => setShowHistoryDialog(true)}
+                  className="flex-1 p-4 bg-muted rounded-lg cursor-pointer hover:bg-muted/80 transition-colors"
+                >
                   <div className="font-medium mb-1">Status History</div>
                   <div className="text-sm text-muted-foreground">
                     View 90-day uptime and incident history
@@ -243,6 +256,30 @@ const SystemStatus = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Subscribe Dialog */}
+        <Dialog open={showSubscribeDialog} onOpenChange={setShowSubscribeDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Subscribe to System Status Updates</DialogTitle>
+              <DialogDescription>
+                Get notified about system incidents and scheduled maintenance
+              </DialogDescription>
+            </DialogHeader>
+            <NewsletterSubscription />
+          </DialogContent>
+        </Dialog>
+
+        {/* Status History Dialog */}
+        <Dialog open={showHistoryDialog} onOpenChange={setShowHistoryDialog}>
+          <DialogContent>
+            <ComingSoon 
+              title="Status History" 
+              description="Detailed 90-day uptime and incident history coming soon."
+              showBackButton={false}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
   );

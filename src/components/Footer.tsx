@@ -67,7 +67,7 @@ const Footer = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm">
                   <MapPin className="h-4 w-4 text-accent flex-shrink-0" />
-                  <span>Johannesburg, South Africa</span>
+                  <span>22 on Sloane, Corner of Sloane & Sherborne Street, Bryanston, Johannesburg, 2021, South Africa</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Mail className="h-4 w-4 text-accent flex-shrink-0" />

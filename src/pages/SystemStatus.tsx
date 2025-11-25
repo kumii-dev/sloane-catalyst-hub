@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, AlertCircle, Clock, Activity, Database, Zap, Cloud } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import NewsletterSubscription from "@/components/NewsletterSubscription";
+import StatusNotificationsSubscription from "@/components/StatusNotificationsSubscription";
 import { ComingSoon } from "@/components/ComingSoon";
 import { useState } from "react";
 
@@ -266,7 +266,7 @@ const SystemStatus = () => {
                 Get notified about system incidents and scheduled maintenance
               </DialogDescription>
             </DialogHeader>
-            <NewsletterSubscription />
+            <StatusNotificationsSubscription />
           </DialogContent>
         </Dialog>
 

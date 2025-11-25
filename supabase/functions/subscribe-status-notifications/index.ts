@@ -67,7 +67,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email
     const emailResponse = await resend.emails.send({
-      from: "Kumii <onboarding@resend.dev>",
+      from: "Kumii <no-reply@kumii.africa>",
       to: [email],
       subject: "System Status Notifications Activated!",
       html: `

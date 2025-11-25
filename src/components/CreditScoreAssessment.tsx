@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, ArrowRight } from "lucide-react";
+import { Shield, ArrowRight, Construction } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -52,41 +52,59 @@ const CreditScoreAssessment = ({ onScoreGenerated }: CreditScoreAssessmentProps)
         {loading ? (
           <p className="text-muted-foreground mb-6">Loading...</p>
         ) : !startupProfile ? (
-          <>
-            <p className="text-muted-foreground mb-6">
-              Create your startup profile to access credit assessment.
-            </p>
+          <div className="space-y-4">
+            <div className="flex justify-center">
+              <Construction className="h-12 w-12 text-rating" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg mb-2">Create Your Startup Profile</h3>
+              <p className="text-muted-foreground">
+                Create your startup profile to access credit assessment features.
+              </p>
+            </div>
             <Button asChild>
               <Link to="/edit-profile?tab=startup&edit=1">
                 Create Startup Profile
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
-          </>
+          </div>
         ) : (userProfile?.profile_completion_percentage ?? 0) < 100 ? (
-          <>
-            <p className="text-muted-foreground mb-6">
-              Complete your profile to unlock credit assessment.
-            </p>
+          <div className="space-y-4">
+            <div className="flex justify-center">
+              <Construction className="h-12 w-12 text-rating" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg mb-2">Complete Your Profile</h3>
+              <p className="text-muted-foreground">
+                Complete your profile to unlock credit assessment features.
+              </p>
+            </div>
             <Button asChild>
               <Link to="/edit-profile?edit=1">
                 Complete Profile
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
-          </>
+          </div>
         ) : (
-          <>
-            <p className="text-muted-foreground mb-6">
-              The credit assessment feature is being finalized. Check back soon!
-            </p>
+          <div className="space-y-4">
+            <div className="flex justify-center">
+              <Construction className="h-12 w-12 text-rating" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg mb-2">Feature Coming Soon</h3>
+              <p className="text-muted-foreground">
+                The credit assessment feature is being finalized. Check back soon!
+              </p>
+            </div>
             <Button asChild>
               <Link to="/funding/startup-dashboard">
                 View Dashboard
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
-          </>
+          </div>
         )}
       </CardContent>
     </Card>

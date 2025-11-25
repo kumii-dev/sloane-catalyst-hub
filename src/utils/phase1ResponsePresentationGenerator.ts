@@ -5,6 +5,7 @@ import {
   createKumiiClosingSlide,
   KUMII_COLORS,
 } from "./kumiiPowerpointTemplate";
+import kumiiLogo from "@/assets/kumii-logo.png";
 import pptxgen from "pptxgenjs";
 
 export const generatePhase1ResponsePresentation = () => {
@@ -22,33 +23,10 @@ export const generatePhase1ResponsePresentation = () => {
     "Kumii Phase 1 Assessment",
     "Response & Remediation Roadmap"
   );
-  
-  // Remove slides reference and just add text
-  pptx.addSlide().addText([
-    { text: "Period Covered: ", options: { color: KUMII_COLORS.lightGray } },
-    { text: "1 October 2025 – 14 November 2025", options: { color: colors.white, bold: true } }
-  ], {
-    x: 0.5,
-    y: 4.3,
-    w: 9,
-    h: 0.5,
-    fontSize: 18,
-    align: "center"
-  });
-  
-  titleSlide.addText("Product & Development Team Response\nDecember 2025", {
-    x: 0.5,
-    y: 5.2,
-    w: 9,
-    h: 0.8,
-    fontSize: 16,
-    color: colors.lightGray,
-    align: "center"
-  });
 
   // Table of Contents
   const tocSlide = pptx.addSlide();
-  addBrandedHeader(tocSlide, "Contents");
+  addKumiiBrandedHeader(tocSlide, "Contents");
   
   const tocItems = [
     "1. Executive Response",
@@ -75,7 +53,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Executive Response
   const execSlide = pptx.addSlide();
-  addBrandedHeader(execSlide, "Executive Response");
+  addKumiiBrandedHeader(execSlide, "Executive Response");
   
   execSlide.addText([
     { text: "Acknowledgment\n", options: { fontSize: 20, bold: true, color: colors.accent } },
@@ -95,7 +73,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Phase 1 Achievements Recognition
   const achievementsSlide = pptx.addSlide();
-  addBrandedHeader(achievementsSlide, "Phase 1 Achievements Recognition");
+  addKumiiBrandedHeader(achievementsSlide, "Phase 1 Achievements Recognition");
   
   const achievementsData = [
     ["Achievement", "Impact", "Status"],
@@ -132,7 +110,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Key Findings Response - User Behavior
   const findingsSlide1 = pptx.addSlide();
-  addBrandedHeader(findingsSlide1, "Response to Key Findings");
+  addKumiiBrandedHeader(findingsSlide1, "Response to Key Findings");
   
   findingsSlide1.addText("1. Drop-Off After Initial Sign-Up", {
     x: 0.5,
@@ -187,7 +165,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Key Findings Response - Email Verification Friction
   const findingsSlide2 = pptx.addSlide();
-  addBrandedHeader(findingsSlide2, "Response to Key Findings");
+  addKumiiBrandedHeader(findingsSlide2, "Response to Key Findings");
   
   findingsSlide2.addText("2. Email Verification Friction", {
     x: 0.5,
@@ -232,7 +210,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Key Findings Response - Platform Walkthrough
   const findingsSlide3 = pptx.addSlide();
-  addBrandedHeader(findingsSlide3, "Response to Key Findings");
+  addKumiiBrandedHeader(findingsSlide3, "Response to Key Findings");
   
   findingsSlide3.addText("3. Platform Walkthrough Issues", {
     x: 0.5,
@@ -277,7 +255,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // UX Issues & Remediation Plan
   const uxSlide = pptx.addSlide();
-  addBrandedHeader(uxSlide, "UX Issues & Remediation Plan");
+  addKumiiBrandedHeader(uxSlide, "UX Issues & Remediation Plan");
   
   const uxData = [
     ["UX Issue", "Current State", "Target State", "Timeline"],
@@ -314,7 +292,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Technical Debt & Quality Improvements
   const techDebtSlide = pptx.addSlide();
-  addBrandedHeader(techDebtSlide, "Technical Debt & Quality Improvements");
+  addKumiiBrandedHeader(techDebtSlide, "Technical Debt & Quality Improvements");
   
   const techData = [
     ["Category", "Issue", "Impact", "Resolution", "Week"],
@@ -340,7 +318,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Remediation Roadmap - Week 1
   const roadmapWeek1 = pptx.addSlide();
-  addBrandedHeader(roadmapWeek1, "Remediation Roadmap: Week 1");
+  addKumiiBrandedHeader(roadmapWeek1, "Remediation Roadmap: Week 1");
   
   roadmapWeek1.addText([
     { text: "Priority: ", options: { bold: true, color: colors.accent } },
@@ -368,7 +346,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Remediation Roadmap - Week 2
   const roadmapWeek2 = pptx.addSlide();
-  addBrandedHeader(roadmapWeek2, "Remediation Roadmap: Week 2");
+  addKumiiBrandedHeader(roadmapWeek2, "Remediation Roadmap: Week 2");
   
   roadmapWeek2.addText([
     { text: "Priority: ", options: { bold: true, color: colors.accent } },
@@ -396,7 +374,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Remediation Roadmap - Week 3
   const roadmapWeek3 = pptx.addSlide();
-  addBrandedHeader(roadmapWeek3, "Remediation Roadmap: Week 3");
+  addKumiiBrandedHeader(roadmapWeek3, "Remediation Roadmap: Week 3");
   
   roadmapWeek3.addText([
     { text: "Priority: ", options: { bold: true, color: colors.accent } },
@@ -424,7 +402,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Remediation Roadmap - Week 4
   const roadmapWeek4 = pptx.addSlide();
-  addBrandedHeader(roadmapWeek4, "Remediation Roadmap: Week 4");
+  addKumiiBrandedHeader(roadmapWeek4, "Remediation Roadmap: Week 4");
   
   roadmapWeek4.addText([
     { text: "Priority: ", options: { bold: true, color: colors.accent } },
@@ -452,7 +430,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Remediation Roadmap - Week 5
   const roadmapWeek5 = pptx.addSlide();
-  addBrandedHeader(roadmapWeek5, "Remediation Roadmap: Week 5");
+  addKumiiBrandedHeader(roadmapWeek5, "Remediation Roadmap: Week 5");
   
   roadmapWeek5.addText([
     { text: "Priority: ", options: { bold: true, color: colors.accent } },
@@ -480,7 +458,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Phase 2 Readiness Plan
   const phase2Slide = pptx.addSlide();
-  addBrandedHeader(phase2Slide, "Phase 2 Readiness Plan");
+  addKumiiBrandedHeader(phase2Slide, "Phase 2 Readiness Plan");
   
   const phase2Data = [
     ["Milestone", "Criteria", "Target Date", "Status"],
@@ -517,7 +495,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Resource Allocation & Timeline
   const resourceSlide = pptx.addSlide();
-  addBrandedHeader(resourceSlide, "Resource Allocation & Timeline");
+  addKumiiBrandedHeader(resourceSlide, "Resource Allocation & Timeline");
   
   const resourceData = [
     ["Team Member", "Role", "Focus Areas", "Weeks"],
@@ -559,7 +537,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Success Metrics & KPIs
   const metricsSlide = pptx.addSlide();
-  addBrandedHeader(metricsSlide, "Success Metrics & KPIs");
+  addKumiiBrandedHeader(metricsSlide, "Success Metrics & KPIs");
   
   const metricsData = [
     ["Metric", "Current", "Target", "Measurement"],
@@ -587,7 +565,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Tracking & Reporting
   const trackingSlide = pptx.addSlide();
-  addBrandedHeader(trackingSlide, "Tracking & Reporting");
+  addKumiiBrandedHeader(trackingSlide, "Tracking & Reporting");
   
   trackingSlide.addText([
     { text: "Weekly Progress Reports\n\n", options: { fontSize: 20, bold: true, color: colors.accent } },
@@ -614,7 +592,7 @@ export const generatePhase1ResponsePresentation = () => {
 
   // Risk Mitigation
   const riskSlide = pptx.addSlide();
-  addBrandedHeader(riskSlide, "Risk Mitigation Strategy");
+  addKumiiBrandedHeader(riskSlide, "Risk Mitigation Strategy");
   
   const riskData = [
     ["Risk", "Probability", "Impact", "Mitigation Strategy"],
@@ -655,7 +633,7 @@ export const generatePhase1ResponsePresentation = () => {
   
   // Add Kumii Logo
   commitmentSlide.addImage({
-    path: kumiiLogoPath,
+    path: kumiiLogo,
     x: 4.0,
     y: 0.4,
     w: 2.0,
@@ -695,7 +673,7 @@ export const generatePhase1ResponsePresentation = () => {
   
   // Add Kumii Logo
   closingSlide.addImage({
-    path: kumiiLogoPath,
+    path: kumiiLogo,
     x: 4.0,
     y: 0.5,
     w: 2.0,

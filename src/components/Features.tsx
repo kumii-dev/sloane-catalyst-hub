@@ -1,7 +1,10 @@
 import { Building2, Users, Lightbulb, TrendingUp, Zap, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Features = () => {
+  const navigate = useNavigate();
+  
   const features = [
     {
       icon: Building2,
@@ -98,7 +101,7 @@ const Features = () => {
               Join thousands of successful SMMEs and startups who've accelerated their growth through our platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="lg">
+              <Button variant="hero" size="lg" onClick={() => navigate('/services')}>
                 Get Started Today
               </Button>
               <Button variant="hero-outline" size="lg">

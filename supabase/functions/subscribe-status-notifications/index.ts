@@ -45,24 +45,18 @@ const handler = async (req: Request): Promise<Response> => {
       .eq("email", email)
       .single();
 
-    if (existing) {
-      return new Response(
-        JSON.stringify({ message: "You're already subscribed to system status notifications!" }),
-        {
-          status: 200,
-          headers: { "Content-Type": "application/json", ...corsHeaders },
-        }
-      );
-    }
+    const alreadySubscribed = !!existing;
 
-    // Insert subscription
-    const { error: insertError } = await supabase
-      .from("status_notifications_subscriptions")
-      .insert([{ email }]);
+    if (!alreadySubscribed) {
+      // Insert subscription for new subscribers
+      const { error: insertError } = await supabase
+        .from("status_notifications_subscriptions")
+        .insert([{ email }]);
 
-    if (insertError) {
-      console.error("Error inserting subscription:", insertError);
-      throw insertError;
+      if (insertError) {
+        console.error("Error inserting subscription:", insertError);
+        throw insertError;
+      }
     }
 
     // Send confirmation email
@@ -94,8 +88,11 @@ const handler = async (req: Request): Promise<Response> => {
 
     return new Response(
       JSON.stringify({ 
-        message: "Successfully subscribed! Check your email for confirmation.",
-        success: true 
+        message: alreadySubscribed
+          ? "You're already subscribed. We've re-sent the confirmation email to your inbox."
+          : "Successfully subscribed! Check your email for confirmation.",
+        success: true,
+        alreadySubscribed,
       }),
       {
         status: 200,

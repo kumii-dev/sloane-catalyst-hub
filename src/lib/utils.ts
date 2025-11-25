@@ -11,3 +11,7 @@ export function formatNumber(value: number, decimals: number = 0): string {
     maximumFractionDigits: decimals,
   }).format(value);
 }
+
+export function formatBoldText(text: string): string {
+  return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+}

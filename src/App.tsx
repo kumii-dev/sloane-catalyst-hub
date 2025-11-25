@@ -78,6 +78,9 @@ import MyLearning from "./pages/MyLearning";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import HelpCenter from "./pages/HelpCenter";
+import UserGuides from "./pages/UserGuides";
+import VideoTutorials from "./pages/VideoTutorials";
+import LiveChatSupport from "./pages/LiveChatSupport";
 import ContactUs from "./pages/ContactUs";
 import APIDocumentation from "./pages/APIDocumentation";
 import SystemStatus from "./pages/SystemStatus";
@@ -168,6 +171,9 @@ const App = () => (
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             <Route path="/help-center" element={<HelpCenter />} />
+            <Route path="/help/user-guides" element={<UserGuides />} />
+            <Route path="/help/video-tutorials" element={<VideoTutorials />} />
+            <Route path="/help/live-chat-support" element={<LiveChatSupport />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/api-documentation" element={<APIDocumentation />} />
             <Route path="/system-status" element={<SystemStatus />} />

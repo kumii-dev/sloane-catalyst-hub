@@ -51,7 +51,7 @@ export function FloatingProfileBadge() {
             <User className="w-5 h-5 md:w-6 md:h-6" />
           </div>
           <div>
-            <h3 className="font-semibold text-sm md:text-base">Profile Status</h3>
+            <h3 className="font-semibold text-sm md:text-base text-rating">Profile Status: REMINDER</h3>
             <div className="flex items-center gap-2 mt-1">
               <div className="bg-primary-foreground/20 rounded-full px-2 py-0.5">
                 <span className="text-xs md:text-sm font-bold">{completion}%</span>

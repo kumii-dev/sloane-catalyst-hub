@@ -35,44 +35,42 @@ export function FloatingProfileBadge() {
 
   return (
     <div className="fixed bottom-24 right-4 md:bottom-6 md:right-6 z-40 animate-in slide-in-from-bottom-4 duration-500">
-      <div className="relative bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-2xl shadow-2xl p-4 md:p-6 max-w-[280px] md:max-w-sm">
+      <div className="relative bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-xl shadow-lg p-3 max-w-[200px]">
         {/* Close button */}
         <button
           onClick={() => setIsDismissed(true)}
-          className="absolute top-2 right-2 text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+          className="absolute top-1.5 right-1.5 text-primary-foreground/70 hover:text-primary-foreground transition-colors"
           aria-label="Dismiss profile reminder"
         >
-          <X className="w-4 h-4" />
+          <X className="w-3 h-3" />
         </button>
 
         {/* Icon and Badge */}
-        <div className="flex items-center gap-3 mb-3">
-          <div className="bg-primary-foreground/20 rounded-full p-2">
-            <User className="w-5 h-5 md:w-6 md:h-6" />
+        <div className="flex items-center gap-2 mb-2">
+          <div className="bg-primary-foreground/20 rounded-full p-1.5">
+            <User className="w-4 h-4" />
           </div>
-          <div>
-            <h3 className="font-semibold text-sm md:text-base">Profile Status</h3>
-            <div className="flex items-center gap-2 mt-1">
-              <div className="bg-primary-foreground/20 rounded-full px-2 py-0.5">
-                <span className="text-xs md:text-sm font-bold">{completion}%</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-1.5">
+              <div className="bg-primary-foreground/20 rounded-full px-1.5 py-0.5">
+                <span className="text-xs font-bold">{completion}%</span>
               </div>
-              <span className="text-xs text-primary-foreground/80">Complete</span>
+              <span className="text-[10px] text-primary-foreground/80">Profile</span>
             </div>
           </div>
         </div>
 
         {/* Message */}
-        <p className="text-xs md:text-sm text-primary-foreground/90 mb-4 leading-relaxed">
-          Complete your profile to unlock all platform features and get better matches.
+        <p className="text-[10px] text-primary-foreground/90 mb-2 leading-tight">
+          Complete profile to unlock features
         </p>
 
         {/* CTA Button */}
         <Button
           onClick={() => navigate('/edit-profile')}
-          className="w-full bg-background text-foreground hover:bg-background/90 font-medium shadow-sm text-sm"
-          size="sm"
+          className="w-full bg-background text-foreground hover:bg-background/90 font-medium shadow-sm text-xs h-7"
         >
-          Complete Profile
+          Update
         </Button>
       </div>
     </div>

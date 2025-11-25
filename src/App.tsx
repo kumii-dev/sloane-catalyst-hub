@@ -64,6 +64,7 @@ import Calendar from "./pages/Calendar";
 import Files from "./pages/Files";
 import Copilot from "./pages/Copilot";
 import About from "./pages/About";
+import Careers from "./pages/Careers";
 import SystemDocumentation from "./pages/SystemDocumentation";
 import SessionReview from "./pages/SessionReview";
 import InstallPWA from "./pages/InstallPWA";
@@ -155,6 +156,7 @@ const App = () => (
           <Route path="/files" element={<Files />} />
           <Route path="/copilot" element={<Copilot />} />
             <Route path="/about" element={<About />} />
+            <Route path="/careers" element={<Careers />} />
             <Route path="/system-documentation" element={<SystemDocumentation />} />
             <Route path="/features" element={<FeatureDocumentation />} />
             <Route path="/review/:sessionId" element={<SessionReview />} />

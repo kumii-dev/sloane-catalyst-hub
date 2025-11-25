@@ -64,7 +64,7 @@ const NewsletterSubscription = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={isLoading}
-            className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/60"
+            className="flex-1 bg-background border-border text-foreground placeholder:text-muted-foreground"
             required
           />
           <Button type="submit" variant="hero" disabled={isLoading}>

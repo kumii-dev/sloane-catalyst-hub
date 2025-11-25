@@ -144,7 +144,7 @@ const HelpCenter = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex justify-center">
-                <Button variant="default" onClick={() => navigate('/contact')}>Contact Support</Button>
+                <Button variant="default" onClick={() => navigate('/contact-us')}>Contact Support</Button>
               </CardContent>
             </Card>
           </div>

@@ -20,19 +20,8 @@ const ContactUs = () => {
   });
 
   const handleStartChat = () => {
-    // Find and click the floating AI chat button
-    const chatButton = document.querySelector('[aria-label="Open AI Chat"]') as HTMLButtonElement;
-    if (chatButton) {
-      chatButton.click();
-    } else {
-      // Fallback: scroll to bottom where chat button typically is
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-      // Try to find the button after a short delay
-      setTimeout(() => {
-        const btn = document.querySelector('button[class*="MessageCircle"]') as HTMLButtonElement;
-        if (btn) btn.click();
-      }, 300);
-    }
+    // Dispatch custom event to open the AI chat
+    window.dispatchEvent(new Event('openAIChat'));
   };
 
   const handleSubmit = (e: React.FormEvent) => {

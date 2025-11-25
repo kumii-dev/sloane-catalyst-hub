@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { formatBoldText } from '@/lib/utils';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -192,7 +193,10 @@ export const FloatingAIChat = () => {
                           : 'bg-muted'
                       }`}
                     >
-                      <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
+                      <p 
+                        className="text-sm whitespace-pre-wrap break-words"
+                        dangerouslySetInnerHTML={{ __html: formatBoldText(message.content) }}
+                      />
                     </div>
                   </div>
                 ))}

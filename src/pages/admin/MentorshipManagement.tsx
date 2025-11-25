@@ -848,7 +848,7 @@ export default function MentorshipManagement() {
                   <div>
                     <p className="text-sm font-medium">Hourly Rate</p>
                     <p className="text-sm text-muted-foreground">
-                      ${selectedAdvisor.hourly_rate || "Not set"}
+                      R{selectedAdvisor.hourly_rate || "Not set"}
                     </p>
                   </div>
                   <div>

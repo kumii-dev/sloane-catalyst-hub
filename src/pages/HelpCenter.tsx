@@ -4,8 +4,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Search, MessageCircle, Book, Video, Mail } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const HelpCenter = () => {
+  const navigate = useNavigate();
+  
   const faqs = [
     {
       question: "How do I register on the Kumii platform?",
@@ -141,7 +144,7 @@ const HelpCenter = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex justify-center">
-                <Button variant="default">Contact Support</Button>
+                <Button variant="default" onClick={() => navigate('/contact')}>Contact Support</Button>
               </CardContent>
             </Card>
           </div>

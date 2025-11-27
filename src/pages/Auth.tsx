@@ -628,7 +628,7 @@ const Auth = () => {
                 className="w-full"
               >
                 <Github className="w-4 h-4 mr-2" />
-                GitHub
+                Git Hub
               </Button>
             </div>
           </div>

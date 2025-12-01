@@ -8,8 +8,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { CheckCircle, XCircle, Eye, Package, Users, Activity, Shield, UserPlus, BarChart3 } from "lucide-react";
+import { CheckCircle, XCircle, Eye, Package, Users, Activity, Shield, UserPlus, BarChart3, Brain, AlertTriangle, Lock, Database } from "lucide-react";
 import { CurrencyIcon } from "@/components/ui/currency-icon";
+import { AIAgentMonitoringDashboard } from "@/components/AIAgentMonitoringDashboard";
+import { RealTimeSecurityEvents } from "@/components/RealTimeSecurityEvents";
+import { ActiveUserSessions } from "@/components/ActiveUserSessions";
 
 export default function AdminDashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -19,6 +22,12 @@ export default function AdminDashboard() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [totalUsers, setTotalUsers] = useState<number>(0);
   const [activeListings, setActiveListings] = useState<number>(0);
+  const [securityStats, setSecurityStats] = useState({
+    activeEvents: 0,
+    activeSessions: 0,
+    criticalAlerts: 0,
+    aiAgentsActive: 5
+  });
 
   useEffect(() => {
     if (!authLoading) {
@@ -85,6 +94,34 @@ export default function AdminDashboard() {
       setActiveListings(activeCount);
     }
 
+    // Fetch security statistics
+    try {
+      const { count: eventsCount } = await supabase
+        .from("auth_events" as any)
+        .select("*", { count: 'exact', head: true })
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      const { count: sessionsCount } = await supabase
+        .from("user_sessions" as any)
+        .select("*", { count: 'exact', head: true })
+        .eq("is_active", true);
+
+      const { count: criticalCount } = await supabase
+        .from("auth_events" as any)
+        .select("*", { count: 'exact', head: true })
+        .eq("severity", "critical")
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      setSecurityStats({
+        activeEvents: eventsCount || 0,
+        activeSessions: sessionsCount || 0,
+        criticalAlerts: criticalCount || 0,
+        aiAgentsActive: 5
+      });
+    } catch (error) {
+      console.error("Error fetching security stats:", error);
+    }
+
     setPageLoading(false);
   };
 
@@ -120,10 +157,22 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid grid-cols-3 lg:grid-cols-6 w-full">
+          <TabsList className="grid grid-cols-3 lg:grid-cols-9 w-full">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               Overview
+            </TabsTrigger>
+            <TabsTrigger value="security" className="flex items-center gap-2">
+              <Shield className="w-4 h-4" />
+              Security
+            </TabsTrigger>
+            <TabsTrigger value="ai-agents" className="flex items-center gap-2">
+              <Brain className="w-4 h-4" />
+              AI Agents
+            </TabsTrigger>
+            <TabsTrigger value="sessions" className="flex items-center gap-2">
+              <Lock className="w-4 h-4" />
+              Sessions
             </TabsTrigger>
             <TabsTrigger value="registrations" className="flex items-center gap-2">
               <UserPlus className="w-4 h-4" />
@@ -134,7 +183,7 @@ export default function AdminDashboard() {
               Listings
             </TabsTrigger>
             <TabsTrigger value="users" className="flex items-center gap-2">
-              <Shield className="w-4 h-4" />
+              <Users className="w-4 h-4" />
               Users
             </TabsTrigger>
             <TabsTrigger value="financial" className="flex items-center gap-2">
@@ -186,6 +235,64 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Security Overview Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  Security Operations Overview
+                </CardTitle>
+                <CardDescription>Real-time security metrics and AI agent status</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                  <div className="flex flex-col space-y-2 p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Brain className="w-5 h-5 text-blue-600" />
+                      <span className="text-sm font-medium">AI Agents Active</span>
+                    </div>
+                    <div className="text-3xl font-bold text-blue-600">{securityStats.aiAgentsActive}</div>
+                  </div>
+                  <div className="flex flex-col space-y-2 p-4 bg-green-50 dark:bg-green-950 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Lock className="w-5 h-5 text-green-600" />
+                      <span className="text-sm font-medium">Active Sessions</span>
+                    </div>
+                    <div className="text-3xl font-bold text-green-600">{securityStats.activeSessions}</div>
+                  </div>
+                  <div className="flex flex-col space-y-2 p-4 bg-purple-50 dark:bg-purple-950 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Activity className="w-5 h-5 text-purple-600" />
+                      <span className="text-sm font-medium">Events (24h)</span>
+                    </div>
+                    <div className="text-3xl font-bold text-purple-600">{securityStats.activeEvents}</div>
+                  </div>
+                  <div className="flex flex-col space-y-2 p-4 bg-red-50 dark:bg-red-950 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="w-5 h-5 text-red-600" />
+                      <span className="text-sm font-medium">Critical Alerts</span>
+                    </div>
+                    <div className="text-3xl font-bold text-red-600">{securityStats.criticalAlerts}</div>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <Button onClick={() => navigate("/ai-agent-monitoring")} variant="default">
+                    <Brain className="w-4 h-4 mr-2" />
+                    View AI Agents Dashboard
+                  </Button>
+                  <Button onClick={() => navigate("/security-operations")} variant="outline">
+                    <Shield className="w-4 h-4 mr-2" />
+                    Security Operations
+                  </Button>
+                  <Button onClick={() => navigate("/siem-dashboard")} variant="outline">
+                    <Database className="w-4 h-4 mr-2" />
+                    SIEM Dashboard
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle>Quick Actions</CardTitle>
@@ -228,6 +335,87 @@ export default function AdminDashboard() {
                     <span>System Performance</span>
                   </div>
                 </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="security" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  Real-Time Security Events
+                </CardTitle>
+                <CardDescription>Live feed of authentication and security events</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RealTimeSecurityEvents />
+              </CardContent>
+            </Card>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Security Operations</CardTitle>
+                  <CardDescription>Access comprehensive security monitoring tools</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button onClick={() => navigate("/security-operations")} className="w-full">
+                    Security Operations Center
+                  </Button>
+                  <Button onClick={() => navigate("/incident-management")} variant="outline" className="w-full">
+                    Incident Management
+                  </Button>
+                  <Button onClick={() => navigate("/threat-intelligence")} variant="outline" className="w-full">
+                    Threat Intelligence
+                  </Button>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Security Analytics</CardTitle>
+                  <CardDescription>Advanced monitoring and detection</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button onClick={() => navigate("/siem-dashboard")} className="w-full">
+                    SIEM Dashboard
+                  </Button>
+                  <Button onClick={() => navigate("/xdr-dashboard")} variant="outline" className="w-full">
+                    XDR Dashboard
+                  </Button>
+                  <Button onClick={() => navigate("/system-status")} variant="outline" className="w-full">
+                    System Status
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="ai-agents" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Brain className="w-5 h-5" />
+                  AI Agent Monitoring Dashboard
+                </CardTitle>
+                <CardDescription>Real-time monitoring of all AI agents and playbook executions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <AIAgentMonitoringDashboard />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="sessions" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Lock className="w-5 h-5" />
+                  Active User Sessions
+                </CardTitle>
+                <CardDescription>Monitor and manage active user sessions with termination capabilities</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ActiveUserSessions />
               </CardContent>
             </Card>
           </TabsContent>

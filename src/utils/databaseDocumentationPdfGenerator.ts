@@ -357,7 +357,7 @@ export const generateDatabaseDocumentationPDF = () => {
 
   addSection(
     '12.4 Useful Resources',
-    'Documentation:\n• Supabase Docs: https://supabase.com/docs\n• PostgreSQL Docs: https://postgresql.org/docs\n• RLS Guide: https://supabase.com/docs/guides/auth/row-level-security\n\nMonitoring:\n• Supabase Dashboard: https://app.supabase.com\n• Performance Dashboard: /performance (admin only)\n\nSupport:\n• Technical Issues: tech@kumii.africa\n• Security Concerns: security@kumii.africa\n• General Support: support@kumii.africa'
+    'Documentation:\n• Supabase Docs: https://supabase.com/docs\n• PostgreSQL Docs: https://postgresql.org/docs\n• RLS Guide: https://supabase.com/docs/guides/auth/row-level-security\n\nMonitoring:\n• Supabase Dashboard: https://app.supabase.com\n• Performance Dashboard: /performance (admin only)\n\nSupport:\n• Technical Issues: tech@localhost\n• Security Concerns: security@localhost\n• General Support: support@localhost'
   );
 
   addSection(

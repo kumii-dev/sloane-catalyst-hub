@@ -943,7 +943,7 @@ export const generateFeaturesDocumentationPDF = () => {
   
   yPos += 6;
   doc.setFont('helvetica', 'bold');
-  doc.text('support@kumii.africa', pageWidth / 2, yPos, { align: 'center' });
+  doc.text('support@localhost', pageWidth / 2, yPos, { align: 'center' });
 
   // Save PDF
   doc.save('kumii-features-documentation.pdf');

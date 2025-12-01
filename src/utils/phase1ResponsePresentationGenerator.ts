@@ -703,7 +703,7 @@ export const generatePhase1ResponsePresentation = () => {
   
   closingSlide.addText([
     { text: "Product & Development Team\n", options: { fontSize: 16, color: colors.lightGray } },
-    { text: "tech@kumii.africa\n", options: { fontSize: 16, color: colors.white, bold: true } },
+    { text: "tech@localhost\n", options: { fontSize: 16, color: colors.white, bold: true } },
     { text: "December 2025", options: { fontSize: 14, color: colors.lightGray, italic: true } }
   ], {
     x: 0.5,

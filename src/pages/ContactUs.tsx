@@ -37,14 +37,14 @@ const ContactUs = () => {
     {
       icon: Mail,
       title: "Email",
-      details: "info@kumii.africa",
-      action: "mailto:info@kumii.africa"
+      details: "info@localhost",
+      action: "mailto:info@localhost"
     },
     {
       icon: Phone,
       title: "Phone",
-      details: "+27 11 123 4567",
-      action: "tel:+27111234567"
+      details: "011 463 7602",
+      action: "tel:0114637602"
     },
     {
       icon: MapPin,

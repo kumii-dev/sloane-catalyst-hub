@@ -2,8 +2,9 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = "https://qypazgkngxhazgkuevwq.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5cGF6Z2tuZ3hoYXpna3VldndxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNTY4NjUsImV4cCI6MjA3NDYzMjg2NX0.3NgO6VJFYn143_qgl_UncfWpTDmA4hVV85zXneOeMxo";
+// Use environment variables to allow switching between projects
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";

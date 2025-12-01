@@ -1077,7 +1077,7 @@ export const generateArchitectureDocumentPDF = () => {
   doc.setFont('helvetica', 'normal');
   doc.text('Kumii', pageWidth / 2, pageHeight - 48, { align: 'center' });
   doc.text('Enterprise Architecture Team', pageWidth / 2, pageHeight - 40, { align: 'center' });
-  doc.text('www.kumii.africa', pageWidth / 2, pageHeight - 32, { align: 'center' });
+  doc.text('localhost:5173', pageWidth / 2, pageHeight - 32, { align: 'center' });
 
   // Save the PDF
   doc.save('kumii-architecture-document.pdf');

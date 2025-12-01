@@ -399,7 +399,7 @@ const TermsAndConditions = () => {
                 <p className="font-semibold">Kumii Marketplace (Pty) Ltd</p>
                 <p>Legal Department</p>
                 <p>Email: legal@kumii.co.za</p>
-                <p>Phone: +27 11 123 4567</p>
+                <p>Phone: 011 463 7602</p>
                 <p>Address: Johannesburg, South Africa</p>
               </div>
             </CardContent>

@@ -86,6 +86,12 @@ import APIDocumentation from "./pages/APIDocumentation";
 import SystemStatus from "./pages/SystemStatus";
 import ApplicationPortfolio from "./pages/ApplicationPortfolio";
 import OrganizationStructure from "./pages/OrganizationStructure";
+import SecurityOperations from "./pages/SecurityOperations";
+import IncidentManagement from "./pages/IncidentManagement";
+import ThreatIntelligence from "./pages/ThreatIntelligence";
+import SIEMDashboard from "./pages/SIEMDashboard";
+import XDRDashboard from "./pages/XDRDashboard";
+import AIAgentMonitoring from "./pages/AIAgentMonitoring";
 
 const queryClient = new QueryClient();
 
@@ -179,6 +185,12 @@ const App = () => (
             <Route path="/system-status" element={<SystemStatus />} />
             <Route path="/application-portfolio" element={<ApplicationPortfolio />} />
             <Route path="/organization-structure" element={<OrganizationStructure />} />
+            <Route path="/security-operations" element={<SecurityOperations />} />
+            <Route path="/incident-management" element={<IncidentManagement />} />
+            <Route path="/threat-intelligence" element={<ThreatIntelligence />} />
+            <Route path="/siem-dashboard" element={<SIEMDashboard />} />
+            <Route path="/xdr-dashboard" element={<XDRDashboard />} />
+            <Route path="/ai-agent-monitoring" element={<AIAgentMonitoring />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

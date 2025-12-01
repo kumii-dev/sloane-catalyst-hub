@@ -1,4 +1,6 @@
+-- NOTE: Seed data removed for clean database replication
+-- Original seed data (commented out):
 -- Grant admin access to nkambumw@protonmail.com
-INSERT INTO public.user_roles (user_id, role)
-VALUES ('2f175e02-ab82-4a21-af54-38707b0dae9e', 'admin')
-ON CONFLICT (user_id, role) DO NOTHING;
+-- INSERT INTO public.user_roles (user_id, role)
+-- VALUES ('2f175e02-ab82-4a21-af54-38707b0dae9e', 'admin')
+-- ON CONFLICT (user_id, role) DO NOTHING;

@@ -67,7 +67,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email
     const emailResponse = await resend.emails.send({
-      from: "Kumii <no-reply@kumii.africa>",
+      from: "Kumii <no-reply@localhost>",
       to: [email],
       subject: "Welcome to Kumii Newsletter!",
       html: `

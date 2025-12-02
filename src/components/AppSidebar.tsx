@@ -22,6 +22,7 @@ import {
   ChevronDown,
   ChevronUp,
   House,
+  HeadphonesIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +38,7 @@ const primaryNavItems = [
   { icon: FolderOpen, id: "files", title: "Files", badge: null },
   { icon: Bot, id: "copilot", title: "Copilot", badge: null },
   { icon: Grid3X3, id: "apps", title: "Apps", badge: null },
+  { icon: HeadphonesIcon, id: "support", title: "Support", badge: null },
   { icon: MoreHorizontal, id: "more", title: "More", badge: null },
 ];
 
@@ -94,6 +96,14 @@ const secondaryContent = {
       { title: "Mentorship", url: "/mentorship" },
       { title: "Business Tools", url: "/services/category/software-services" },
       { title: "Resources Hub", url: "/resources" },
+    ]
+  },
+  support: {
+    title: "Support",
+    items: [
+      { title: "My Tickets", url: "/support" },
+      { title: "Help Center", url: "/help-center" },
+      { title: "Contact Us", url: "/contact-us" },
     ]
   },
   more: {

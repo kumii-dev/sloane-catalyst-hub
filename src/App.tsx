@@ -92,6 +92,8 @@ import ThreatIntelligence from "./pages/ThreatIntelligence";
 import SIEMDashboard from "./pages/SIEMDashboard";
 import XDRDashboard from "./pages/XDRDashboard";
 import AIAgentMonitoring from "./pages/AIAgentMonitoring";
+import CustomerSupport from "./pages/CustomerSupport";
+import AdminSupportDashboard from "./pages/AdminSupportDashboard";
 
 const queryClient = new QueryClient();
 
@@ -191,6 +193,8 @@ const App = () => (
             <Route path="/siem-dashboard" element={<SIEMDashboard />} />
             <Route path="/xdr-dashboard" element={<XDRDashboard />} />
             <Route path="/ai-agent-monitoring" element={<AIAgentMonitoring />} />
+            <Route path="/support" element={<CustomerSupport />} />
+            <Route path="/admin/support" element={<AdminSupportDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { CheckCircle, XCircle, Eye, Package, Users, Activity, Shield, UserPlus, BarChart3, Brain, AlertTriangle, Lock, Database } from "lucide-react";
+import { CheckCircle, XCircle, Eye, Package, Users, Activity, Shield, UserPlus, BarChart3, Brain, AlertTriangle, Lock, Database, MessageSquare } from "lucide-react";
 import { CurrencyIcon } from "@/components/ui/currency-icon";
 import { AIAgentMonitoringDashboard } from "@/components/AIAgentMonitoringDashboard";
 import { RealTimeSecurityEvents } from "@/components/RealTimeSecurityEvents";
@@ -333,6 +333,12 @@ export default function AdminDashboard() {
                   <div className="flex flex-col items-center gap-2">
                     <Activity className="w-6 h-6" />
                     <span>System Performance</span>
+                  </div>
+                </Button>
+                <Button onClick={() => navigate("/admin/support")} className="h-20">
+                  <div className="flex flex-col items-center gap-2">
+                    <MessageSquare className="w-6 h-6" />
+                    <span>Support Console</span>
                   </div>
                 </Button>
               </CardContent>

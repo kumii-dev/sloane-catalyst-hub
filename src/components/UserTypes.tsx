@@ -1,4 +1,4 @@
-import { Rocket, Building, Users, Briefcase } from "lucide-react";
+import { Rocket, Building, Users, Briefcase, GraduationCap, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
@@ -66,7 +66,38 @@ const UserTypes = () => {
       buttonVariant: "default" as const,
       gradient: "from-primary-light to-primary",
       link: "/become-mentor"
+    },
+    {
+      icon: GraduationCap,
+      title: "Skills Development",
+      description: "Enhance your employability with industry-ready training, practical learning pathways, and growth opportunities through Kumii Academy.",
+      features: [
+        "Accredited digital & technical courses",
+        "Work-readiness & soft skills training",
+        "Job-seeker tools and coaching",
+        "Career advancement support"
+      ],
+      buttonText: "Start Learning",
+      buttonVariant: "default" as const,
+      gradient: "from-blue-500 to-indigo-500",
+      link: "/academy"
+    },
+    {
+      icon: Handshake,
+      title: "Public/Private Entity",
+      description: "Partner with Kumii to strengthen entrepreneurship, unlock ecosystem collaboration, and deliver high-impact development initiatives.",
+      features: [
+        "Ecosystem support programs",
+        "Enterprise & supplier development (ESD)",
+        "Community-level entrepreneurship projects",
+        "Data insights for policy and strategy"
+      ],
+      buttonText: "Partner With Us",
+      buttonVariant: "default" as const,
+      gradient: "from-purple-500 to-pink-500",
+      link: "/partnerships"
     }
+    
   ];
 
   return (
@@ -84,7 +115,7 @@ const UserTypes = () => {
         </div>
 
         {/* User Types Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {userTypes.map((userType, index) => (
             <Card 
               key={index} 
@@ -131,7 +162,7 @@ const UserTypes = () => {
         </div>
 
         {/* Bottom Stats */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
           <div>
             <div className="text-3xl font-bold text-primary mb-2">1,000+</div>
             <div className="text-muted-foreground">Active Startups</div>
@@ -147,6 +178,14 @@ const UserTypes = () => {
           <div>
             <div className="text-3xl font-bold text-primary mb-2">50+</div>
             <div className="text-muted-foreground">Active Funders</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-primary mb-2">2,500+</div>
+            <div className="text-muted-foreground">Skills Learners</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-primary mb-2">25+</div>
+            <div className="text-muted-foreground">Partner Entities</div>
           </div>
         </div>
       </div>

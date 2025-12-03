@@ -20,6 +20,7 @@ import {
   Bell,
   LayoutDashboard
 } from "lucide-react";
+import { toast } from "sonner";
 
 const FundingHub = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -175,7 +176,13 @@ const FundingHub = () => {
               {fundingTypes.map((type, index) => {
                 const IconComponent = type.icon;
                 return (
-                  <Card key={index} className="hover:shadow-lg transition-all cursor-pointer group">
+                  <Card 
+                    key={index} 
+                    className="hover:shadow-lg transition-all cursor-pointer group"
+                    onClick={() => toast.info(`${type.type} filtering coming soon! 🚀`, {
+                      description: "We're working on advanced filtering features for funding types."
+                    })}
+                  >
                     <CardContent className="p-6 text-center">
                       <div className={`w-12 h-12 rounded-lg ${type.color} flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
                         <IconComponent className="w-6 h-6 text-white" />

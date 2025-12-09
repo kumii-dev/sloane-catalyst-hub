@@ -12,7 +12,7 @@ const Features = () => {
       description: "Access affordable CRM, ERP, HR, marketing tools and professional services from verified providers.",
       color: "text-primary",
       bgColor: "bg-primary/10",
-      benefits: ["Discounted SaaS tools", "Vetted service providers", "Flexible subscription plans"]
+      benefits: ["Affordable SaaS tools", "Vetted service providers", "Flexible subscription plans"]
     },
     {
       icon: TrendingUp,
@@ -101,7 +101,7 @@ const Features = () => {
               Join thousands of successful SMMEs and startups who've accelerated their growth through our platform.
             </p>
             <div className="flex justify-center">
-              <Button variant="hero" size="lg" onClick={() => navigate('/access-to-market')}>
+              <Button variant="hero" size="lg" onClick={() => navigate('/auth')}>
                 Get Started Today
               </Button>
             </div>

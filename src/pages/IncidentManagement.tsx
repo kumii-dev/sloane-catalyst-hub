@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AlertCircle, Clock, CheckCircle, XCircle, Search, Plus, Filter, Eye, Edit, MessageSquare } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { ChatAnalysisTab } from "@/components/admin/ChatAnalysisTab";
 
 interface SecurityIncident {
   id: string;
@@ -297,50 +298,65 @@ const IncidentManagement = () => {
           </Card>
         </div>
 
-        {/* Filters */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Input
-                  placeholder="Search incidents..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full"
-                />
-              </div>
-              <Select value={filterSeverity} onValueChange={setFilterSeverity}>
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Severity" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Severities</SelectItem>
-                  <SelectItem value="critical">Critical</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="low">Low</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={filterStatus} onValueChange={setFilterStatus}>
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Statuses</SelectItem>
-                  <SelectItem value="new">New</SelectItem>
-                  <SelectItem value="triaged">Triaged</SelectItem>
-                  <SelectItem value="investigating">Investigating</SelectItem>
-                  <SelectItem value="contained">Contained</SelectItem>
-                  <SelectItem value="remediated">Remediated</SelectItem>
-                  <SelectItem value="closed">Closed</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Tabs for Incidents and Chat Analysis */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
+            <TabsTrigger value="queue">
+              <AlertCircle className="h-4 w-4 mr-2" />
+              Incident Queue
+            </TabsTrigger>
+            <TabsTrigger value="chat-analysis">
+              <MessageSquare className="h-4 w-4 mr-2" />
+              Chat Analysis
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Incident List */}
-        <Card>
+          {/* Incidents Tab */}
+          <TabsContent value="queue" className="space-y-6">
+            {/* Filters */}
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <Input
+                      placeholder="Search incidents..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                  <Select value={filterSeverity} onValueChange={setFilterSeverity}>
+                    <SelectTrigger className="w-[150px]">
+                      <SelectValue placeholder="Severity" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Severities</SelectItem>
+                      <SelectItem value="critical">Critical</SelectItem>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Select value={filterStatus} onValueChange={setFilterStatus}>
+                    <SelectTrigger className="w-[150px]">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Statuses</SelectItem>
+                      <SelectItem value="new">New</SelectItem>
+                      <SelectItem value="triaged">Triaged</SelectItem>
+                      <SelectItem value="investigating">Investigating</SelectItem>
+                      <SelectItem value="contained">Contained</SelectItem>
+                      <SelectItem value="remediated">Remediated</SelectItem>
+                      <SelectItem value="closed">Closed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Incident List */}
+            <Card>
           <CardHeader>
             <CardTitle>Incident Queue</CardTitle>
             <CardDescription>{filteredIncidents.length} incidents</CardDescription>
@@ -389,6 +405,13 @@ const IncidentManagement = () => {
             </div>
           </CardContent>
         </Card>
+          </TabsContent>
+
+          {/* Chat Analysis Tab */}
+          <TabsContent value="chat-analysis">
+            <ChatAnalysisTab />
+          </TabsContent>
+        </Tabs>
       </div>
     </Layout>
   );

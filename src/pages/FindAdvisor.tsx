@@ -7,12 +7,24 @@ import { Badge } from "@/components/ui/badge";
 import { TriangleAvatar } from "@/components/ui/triangle-avatar";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
 import { 
   Star, 
   Search, 
   Filter, 
   Crown,
-  Briefcase
+  Briefcase,
+  X
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -26,6 +38,13 @@ const FindAdvisor = () => {
   const [sortBy, setSortBy] = useState("rating");
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  
+  // Advanced filters state
+  const [showFilters, setShowFilters] = useState(false);
+  const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [minRating, setMinRating] = useState(0);
+  const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
+  const [premiumOnly, setPremiumOnly] = useState(false);
 
   useEffect(() => {
     fetchAdvisors();
@@ -143,8 +162,37 @@ const FindAdvisor = () => {
         area.toLowerCase().includes(selectedCategory.toLowerCase())
       );
     
-    return matchesSearch && matchesCategory;
+    // Advanced filters
+    const matchesPriceRange = !advisor.hourly_rate || 
+      (advisor.hourly_rate >= priceRange[0] && advisor.hourly_rate <= priceRange[1]);
+    
+    const matchesRating = !minRating || (advisor.rating || 0) >= minRating;
+    
+    const matchesAvailability = availabilityFilter.length === 0 || 
+      availabilityFilter.includes(advisor.status);
+    
+    const matchesPremium = !premiumOnly || advisor.is_premium;
+    
+    return matchesSearch && matchesCategory && matchesPriceRange && 
+           matchesRating && matchesAvailability && matchesPremium;
   });
+  
+  const clearFilters = () => {
+    setPriceRange([0, 10000]);
+    setMinRating(0);
+    setAvailabilityFilter([]);
+    setPremiumOnly(false);
+    setSelectedCategory("all");
+    setSearchQuery("");
+    setSortBy("rating");
+  };
+  
+  const activeFilterCount = [
+    priceRange[0] !== 0 || priceRange[1] !== 10000,
+    minRating > 0,
+    availabilityFilter.length > 0,
+    premiumOnly,
+  ].filter(Boolean).length;
 
   const renderStars = (rating: number) => {
     return (
@@ -279,11 +327,188 @@ const FindAdvisor = () => {
                     </SelectContent>
                   </Select>
                   
-                  <Button variant="outline" className="w-full md:w-auto h-12">
-                    <Filter className="w-4 h-4 mr-2" />
-                    More Filters
-                  </Button>
+                  <Dialog open={showFilters} onOpenChange={setShowFilters}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="w-full md:w-auto h-12 relative">
+                        <Filter className="w-4 h-4 mr-2" />
+                        More Filters
+                        {activeFilterCount > 0 && (
+                          <Badge className="ml-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
+                            {activeFilterCount}
+                          </Badge>
+                        )}
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[500px]">
+                      <DialogHeader>
+                        <DialogTitle>Advanced Filters</DialogTitle>
+                        <DialogDescription>
+                          Refine your search with additional criteria
+                        </DialogDescription>
+                      </DialogHeader>
+                      
+                      <div className="space-y-6 py-4">
+                        {/* Price Range Filter */}
+                        <div className="space-y-3">
+                          <Label className="text-base font-semibold">
+                            Hourly Rate (R{priceRange[0]} - R{priceRange[1]})
+                          </Label>
+                          <Slider
+                            value={priceRange}
+                            onValueChange={setPriceRange}
+                            min={0}
+                            max={10000}
+                            step={100}
+                            className="w-full"
+                          />
+                          <div className="flex justify-between text-sm text-muted-foreground">
+                            <span>R0</span>
+                            <span>R10,000+</span>
+                          </div>
+                        </div>
+
+                        {/* Minimum Rating Filter */}
+                        <div className="space-y-3">
+                          <Label className="text-base font-semibold">
+                            Minimum Rating ({minRating} stars)
+                          </Label>
+                          <Slider
+                            value={[minRating]}
+                            onValueChange={(val) => setMinRating(val[0])}
+                            min={0}
+                            max={5}
+                            step={0.5}
+                            className="w-full"
+                          />
+                          <div className="flex justify-between text-sm text-muted-foreground">
+                            <span>Any</span>
+                            <span>5 ⭐</span>
+                          </div>
+                        </div>
+
+                        {/* Availability Filter */}
+                        <div className="space-y-3">
+                          <Label className="text-base font-semibold">Availability</Label>
+                          <div className="space-y-2">
+                            <div className="flex items-center space-x-2">
+                              <Checkbox
+                                id="available"
+                                checked={availabilityFilter.includes('available')}
+                                onCheckedChange={(checked) => {
+                                  setAvailabilityFilter(prev =>
+                                    checked
+                                      ? [...prev, 'available']
+                                      : prev.filter(s => s !== 'available')
+                                  );
+                                }}
+                              />
+                              <label
+                                htmlFor="available"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                Available Now
+                              </label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Checkbox
+                                id="busy"
+                                checked={availabilityFilter.includes('busy')}
+                                onCheckedChange={(checked) => {
+                                  setAvailabilityFilter(prev =>
+                                    checked
+                                      ? [...prev, 'busy']
+                                      : prev.filter(s => s !== 'busy')
+                                  );
+                                }}
+                              />
+                              <label
+                                htmlFor="busy"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                Busy (Limited Availability)
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Premium Only Filter */}
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="premium"
+                              checked={premiumOnly}
+                              onCheckedChange={(checked) => setPremiumOnly(checked as boolean)}
+                            />
+                            <label
+                              htmlFor="premium"
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2"
+                            >
+                              <Crown className="w-4 h-4 text-rating" />
+                              Premium Advisors Only
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-3 justify-between">
+                        <Button
+                          variant="outline"
+                          onClick={clearFilters}
+                          className="flex-1"
+                        >
+                          <X className="w-4 h-4 mr-2" />
+                          Clear All
+                        </Button>
+                        <Button
+                          onClick={() => setShowFilters(false)}
+                          className="flex-1"
+                        >
+                          Apply Filters
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
+                
+                {/* Active Filters Summary */}
+                {activeFilterCount > 0 && (
+                  <div className="flex flex-wrap gap-2 items-center">
+                    <span className="text-sm text-muted-foreground">Active filters:</span>
+                    {(priceRange[0] !== 0 || priceRange[1] !== 10000) && (
+                      <Badge variant="secondary" className="gap-1">
+                        Price: R{priceRange[0]}-R{priceRange[1]}
+                        <button onClick={() => setPriceRange([0, 10000])} className="ml-1">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    )}
+                    {minRating > 0 && (
+                      <Badge variant="secondary" className="gap-1">
+                        Rating: {minRating}+ ⭐
+                        <button onClick={() => setMinRating(0)} className="ml-1">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    )}
+                    {premiumOnly && (
+                      <Badge variant="secondary" className="gap-1">
+                        <Crown className="w-3 h-3" />
+                        Premium
+                        <button onClick={() => setPremiumOnly(false)} className="ml-1">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearFilters}
+                      className="h-7 text-xs"
+                    >
+                      Clear all
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

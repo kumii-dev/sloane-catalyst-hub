@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
@@ -81,6 +82,7 @@ import HelpCenter from "./pages/HelpCenter";
 import UserGuides from "./pages/UserGuides";
 import VideoTutorials from "./pages/VideoTutorials";
 import LiveChatSupport from "./pages/LiveChatSupport";
+import AdminSupportConsole from "./pages/AdminSupportConsole";
 import ContactUs from "./pages/ContactUs";
 import APIDocumentation from "./pages/APIDocumentation";
 import SystemStatus from "./pages/SystemStatus";
@@ -93,17 +95,18 @@ import SIEMDashboard from "./pages/SIEMDashboard";
 import XDRDashboard from "./pages/XDRDashboard";
 import AIAgentMonitoring from "./pages/AIAgentMonitoring";
 import CustomerSupport from "./pages/CustomerSupport";
-import AdminSupportDashboard from "./pages/AdminSupportDashboard";
+import AdminSupportRedirect from "./pages/AdminSupportRedirect";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
@@ -182,6 +185,7 @@ const App = () => (
             <Route path="/help/user-guides" element={<UserGuides />} />
             <Route path="/help/video-tutorials" element={<VideoTutorials />} />
             <Route path="/help/live-chat-support" element={<LiveChatSupport />} />
+            <Route path="/admin/support-console" element={<AdminSupportConsole />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/api-documentation" element={<APIDocumentation />} />
             <Route path="/system-status" element={<SystemStatus />} />
@@ -194,14 +198,15 @@ const App = () => (
             <Route path="/xdr-dashboard" element={<XDRDashboard />} />
             <Route path="/ai-agent-monitoring" element={<AIAgentMonitoring />} />
             <Route path="/support" element={<CustomerSupport />} />
-            <Route path="/admin/support" element={<AdminSupportDashboard />} />
+            <Route path="/admin/support" element={<AdminSupportRedirect />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

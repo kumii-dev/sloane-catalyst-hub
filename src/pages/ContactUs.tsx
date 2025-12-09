@@ -37,8 +37,8 @@ const ContactUs = () => {
     {
       icon: Mail,
       title: "Email",
-      details: "info@localhost",
-      action: "mailto:info@localhost"
+      details: "info@kumii.africa",
+      action: "mailto:info@kumii.africa"
     },
     {
       icon: Phone,

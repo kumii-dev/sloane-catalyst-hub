@@ -719,7 +719,7 @@ export const generateKumiiPresentation = () => {
     line: { color: accentColor, width: 2 }
   });
 
-  closingSlide.addText("Contact: info@kumii.co.za", {
+  closingSlide.addText("Contact: info@kumii.africa", {
     x: 2.5,
     y: 4.7,
     w: 5,

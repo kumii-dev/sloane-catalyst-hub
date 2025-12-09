@@ -12,6 +12,31 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "13.0.5"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       advisor_availability: {
@@ -216,6 +241,110 @@ export type Database = {
         }
         Relationships: []
       }
+      api_key_usage: {
+        Row: {
+          created_at: string | null
+          endpoint: string
+          id: string
+          ip_address: unknown
+          is_suspicious: boolean | null
+          key_id: string | null
+          method: string
+          response_time_ms: number | null
+          status_code: number | null
+          suspicion_reasons: string[] | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          endpoint: string
+          id?: string
+          ip_address: unknown
+          is_suspicious?: boolean | null
+          key_id?: string | null
+          method: string
+          response_time_ms?: number | null
+          status_code?: number | null
+          suspicion_reasons?: string[] | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          endpoint?: string
+          id?: string
+          ip_address?: unknown
+          is_suspicious?: boolean | null
+          key_id?: string | null
+          method?: string
+          response_time_ms?: number | null
+          status_code?: number | null
+          suspicion_reasons?: string[] | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_key_usage_key_id_fkey"
+            columns: ["key_id"]
+            isOneToOne: false
+            referencedRelation: "api_keys"
+            referencedColumns: ["key_id"]
+          },
+        ]
+      }
+      api_keys: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          expires_at: string
+          id: string
+          is_active: boolean | null
+          key_hash: string
+          key_id: string
+          last_used_at: string | null
+          name: string
+          prefix: string
+          revoke_reason: string | null
+          revoked_at: string | null
+          scopes: string[]
+          use_count: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          expires_at: string
+          id?: string
+          is_active?: boolean | null
+          key_hash: string
+          key_id: string
+          last_used_at?: string | null
+          name: string
+          prefix: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          scopes: string[]
+          use_count?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string
+          id?: string
+          is_active?: boolean | null
+          key_hash?: string
+          key_id?: string
+          last_used_at?: string | null
+          name?: string
+          prefix?: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          scopes?: string[]
+          use_count?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -255,6 +384,120 @@ export type Database = {
         }
         Relationships: []
       }
+      auth_context_log: {
+        Row: {
+          city: string | null
+          country_code: string | null
+          created_at: string | null
+          device_fingerprint: string | null
+          id: string
+          ip_address: unknown
+          is_impossible_travel: boolean | null
+          is_new_device: boolean | null
+          is_tor: boolean | null
+          is_vpn: boolean | null
+          isp: string | null
+          login_velocity: number | null
+          policy_decision: string | null
+          policy_reason: string | null
+          risk_factors: Json | null
+          risk_level: string | null
+          risk_score: number | null
+          session_id: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          city?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          device_fingerprint?: string | null
+          id?: string
+          ip_address: unknown
+          is_impossible_travel?: boolean | null
+          is_new_device?: boolean | null
+          is_tor?: boolean | null
+          is_vpn?: boolean | null
+          isp?: string | null
+          login_velocity?: number | null
+          policy_decision?: string | null
+          policy_reason?: string | null
+          risk_factors?: Json | null
+          risk_level?: string | null
+          risk_score?: number | null
+          session_id: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          city?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          device_fingerprint?: string | null
+          id?: string
+          ip_address?: unknown
+          is_impossible_travel?: boolean | null
+          is_new_device?: boolean | null
+          is_tor?: boolean | null
+          is_vpn?: boolean | null
+          isp?: string | null
+          login_velocity?: number | null
+          policy_decision?: string | null
+          policy_reason?: string | null
+          risk_factors?: Json | null
+          risk_level?: string | null
+          risk_score?: number | null
+          session_id?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      auth_events: {
+        Row: {
+          created_at: string | null
+          device_fingerprint: string | null
+          event_category: string | null
+          event_type: string
+          geolocation: Json | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          session_id: string | null
+          severity: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          device_fingerprint?: string | null
+          event_category?: string | null
+          event_type: string
+          geolocation?: Json | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          session_id?: string | null
+          severity?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          device_fingerprint?: string | null
+          event_category?: string | null
+          event_type?: string
+          geolocation?: Json | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          session_id?: string | null
+          severity?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       business_scores: {
         Row: {
           calculated_at: string
@@ -282,6 +525,264 @@ export type Database = {
           score?: number
           top_drivers?: Json | null
           trader_id?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          ai_flag_reason: string | null
+          ai_flagged: boolean | null
+          attachments: Json | null
+          created_at: string
+          edited_at: string | null
+          id: string
+          ip_address: unknown
+          is_edited: boolean | null
+          is_internal: boolean | null
+          is_read: boolean | null
+          message: string
+          metadata: Json | null
+          read_at: string | null
+          read_by: string | null
+          sender_id: string
+          sender_type: string
+          sentiment_score: number | null
+          session_id: string
+          updated_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          ai_flag_reason?: string | null
+          ai_flagged?: boolean | null
+          attachments?: Json | null
+          created_at?: string
+          edited_at?: string | null
+          id?: string
+          ip_address?: unknown
+          is_edited?: boolean | null
+          is_internal?: boolean | null
+          is_read?: boolean | null
+          message: string
+          metadata?: Json | null
+          read_at?: string | null
+          read_by?: string | null
+          sender_id: string
+          sender_type: string
+          sentiment_score?: number | null
+          session_id: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          ai_flag_reason?: string | null
+          ai_flagged?: boolean | null
+          attachments?: Json | null
+          created_at?: string
+          edited_at?: string | null
+          id?: string
+          ip_address?: unknown
+          is_edited?: boolean | null
+          is_internal?: boolean | null
+          is_read?: boolean | null
+          message?: string
+          metadata?: Json | null
+          read_at?: string | null
+          read_by?: string | null
+          sender_id?: string
+          sender_type?: string
+          sentiment_score?: number | null
+          session_id?: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "chat_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "security_flagged_chat_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_session_activity: {
+        Row: {
+          activity_type: string
+          actor_id: string | null
+          actor_type: string
+          created_at: string
+          description: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_value: string | null
+          old_value: string | null
+          session_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          activity_type: string
+          actor_id?: string | null
+          actor_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_value?: string | null
+          old_value?: string | null
+          session_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          activity_type?: string
+          actor_id?: string | null
+          actor_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_value?: string | null
+          old_value?: string | null
+          session_id?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_session_activity_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "chat_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_session_activity_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "security_flagged_chat_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_sessions: {
+        Row: {
+          ai_detected_issues: Json | null
+          ai_recommended_actions: Json | null
+          ai_risk_score: number | null
+          ai_sentiment: Json | null
+          ai_summary: string | null
+          analyzed_at: string | null
+          analyzed_by: string | null
+          archived_at: string | null
+          assigned_at: string | null
+          assigned_to: string | null
+          category: string | null
+          created_at: string
+          customer_feedback: string | null
+          customer_rating: number | null
+          id: string
+          ip_address: unknown
+          is_analyzed: boolean | null
+          is_archived: boolean | null
+          last_activity_at: string
+          linked_incident_id: string | null
+          metadata: Json | null
+          priority: string
+          rated_at: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          security_flag_reason: string | null
+          security_flagged: boolean | null
+          session_number: string
+          status: string
+          updated_at: string
+          user_agent: string | null
+          user_email: string
+          user_id: string
+          user_name: string | null
+        }
+        Insert: {
+          ai_detected_issues?: Json | null
+          ai_recommended_actions?: Json | null
+          ai_risk_score?: number | null
+          ai_sentiment?: Json | null
+          ai_summary?: string | null
+          analyzed_at?: string | null
+          analyzed_by?: string | null
+          archived_at?: string | null
+          assigned_at?: string | null
+          assigned_to?: string | null
+          category?: string | null
+          created_at?: string
+          customer_feedback?: string | null
+          customer_rating?: number | null
+          id?: string
+          ip_address?: unknown
+          is_analyzed?: boolean | null
+          is_archived?: boolean | null
+          last_activity_at?: string
+          linked_incident_id?: string | null
+          metadata?: Json | null
+          priority?: string
+          rated_at?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          security_flag_reason?: string | null
+          security_flagged?: boolean | null
+          session_number: string
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_email: string
+          user_id: string
+          user_name?: string | null
+        }
+        Update: {
+          ai_detected_issues?: Json | null
+          ai_recommended_actions?: Json | null
+          ai_risk_score?: number | null
+          ai_sentiment?: Json | null
+          ai_summary?: string | null
+          analyzed_at?: string | null
+          analyzed_by?: string | null
+          archived_at?: string | null
+          assigned_at?: string | null
+          assigned_to?: string | null
+          category?: string | null
+          created_at?: string
+          customer_feedback?: string | null
+          customer_rating?: number | null
+          id?: string
+          ip_address?: unknown
+          is_analyzed?: boolean | null
+          is_archived?: boolean | null
+          last_activity_at?: string
+          linked_incident_id?: string | null
+          metadata?: Json | null
+          priority?: string
+          rated_at?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          security_flag_reason?: string | null
+          security_flagged?: boolean | null
+          session_number?: string
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_email?: string
+          user_id?: string
+          user_name?: string | null
         }
         Relationships: []
       }
@@ -518,410 +1019,6 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
-      }
-      course_enrollments: {
-        Row: {
-          certificate_issued_at: string | null
-          certificate_url: string | null
-          completed_at: string | null
-          course_id: string
-          created_at: string | null
-          enrolled_at: string | null
-          id: string
-          last_accessed_at: string | null
-          notes: string | null
-          payment_amount: number | null
-          payment_reference: string | null
-          payment_status: string | null
-          progress_percentage: number | null
-          recommended_by: string | null
-          started_at: string | null
-          status: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          certificate_issued_at?: string | null
-          certificate_url?: string | null
-          completed_at?: string | null
-          course_id: string
-          created_at?: string | null
-          enrolled_at?: string | null
-          id?: string
-          last_accessed_at?: string | null
-          notes?: string | null
-          payment_amount?: number | null
-          payment_reference?: string | null
-          payment_status?: string | null
-          progress_percentage?: number | null
-          recommended_by?: string | null
-          started_at?: string | null
-          status?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          certificate_issued_at?: string | null
-          certificate_url?: string | null
-          completed_at?: string | null
-          course_id?: string
-          created_at?: string | null
-          enrolled_at?: string | null
-          id?: string
-          last_accessed_at?: string | null
-          notes?: string | null
-          payment_amount?: number | null
-          payment_reference?: string | null
-          payment_status?: string | null
-          progress_percentage?: number | null
-          recommended_by?: string | null
-          started_at?: string | null
-          status?: string | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_enrollments_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_lessons: {
-        Row: {
-          content_text: string | null
-          content_type: string
-          content_url: string | null
-          course_id: string
-          created_at: string | null
-          duration_minutes: number | null
-          id: string
-          is_preview: boolean | null
-          is_published: boolean | null
-          metadata: Json | null
-          module_id: string
-          sort_order: number | null
-          title: string
-          updated_at: string | null
-        }
-        Insert: {
-          content_text?: string | null
-          content_type: string
-          content_url?: string | null
-          course_id: string
-          created_at?: string | null
-          duration_minutes?: number | null
-          id?: string
-          is_preview?: boolean | null
-          is_published?: boolean | null
-          metadata?: Json | null
-          module_id: string
-          sort_order?: number | null
-          title: string
-          updated_at?: string | null
-        }
-        Update: {
-          content_text?: string | null
-          content_type?: string
-          content_url?: string | null
-          course_id?: string
-          created_at?: string | null
-          duration_minutes?: number | null
-          id?: string
-          is_preview?: boolean | null
-          is_published?: boolean | null
-          metadata?: Json | null
-          module_id?: string
-          sort_order?: number | null
-          title?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_lessons_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "course_lessons_module_id_fkey"
-            columns: ["module_id"]
-            isOneToOne: false
-            referencedRelation: "course_modules"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_modules: {
-        Row: {
-          course_id: string
-          created_at: string | null
-          description: string | null
-          duration_minutes: number | null
-          id: string
-          is_published: boolean | null
-          sort_order: number | null
-          title: string
-          updated_at: string | null
-        }
-        Insert: {
-          course_id: string
-          created_at?: string | null
-          description?: string | null
-          duration_minutes?: number | null
-          id?: string
-          is_published?: boolean | null
-          sort_order?: number | null
-          title: string
-          updated_at?: string | null
-        }
-        Update: {
-          course_id?: string
-          created_at?: string | null
-          description?: string | null
-          duration_minutes?: number | null
-          id?: string
-          is_published?: boolean | null
-          sort_order?: number | null
-          title?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_modules_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_recommendations: {
-        Row: {
-          course_id: string
-          created_at: string | null
-          id: string
-          is_dismissed: boolean | null
-          is_viewed: boolean | null
-          match_reasons: string[] | null
-          match_score: number | null
-          recommendation_type: string
-          recommended_by: string | null
-          user_id: string
-        }
-        Insert: {
-          course_id: string
-          created_at?: string | null
-          id?: string
-          is_dismissed?: boolean | null
-          is_viewed?: boolean | null
-          match_reasons?: string[] | null
-          match_score?: number | null
-          recommendation_type: string
-          recommended_by?: string | null
-          user_id: string
-        }
-        Update: {
-          course_id?: string
-          created_at?: string | null
-          id?: string
-          is_dismissed?: boolean | null
-          is_viewed?: boolean | null
-          match_reasons?: string[] | null
-          match_score?: number | null
-          recommendation_type?: string
-          recommended_by?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_recommendations_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_reviews: {
-        Row: {
-          course_id: string
-          created_at: string | null
-          enrollment_id: string | null
-          helpful_count: number | null
-          id: string
-          is_verified_completion: boolean | null
-          rating: number
-          review_text: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          course_id: string
-          created_at?: string | null
-          enrollment_id?: string | null
-          helpful_count?: number | null
-          id?: string
-          is_verified_completion?: boolean | null
-          rating: number
-          review_text?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          course_id?: string
-          created_at?: string | null
-          enrollment_id?: string | null
-          helpful_count?: number | null
-          id?: string
-          is_verified_completion?: boolean | null
-          rating?: number
-          review_text?: string | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_reviews_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "course_reviews_enrollment_id_fkey"
-            columns: ["enrollment_id"]
-            isOneToOne: false
-            referencedRelation: "course_enrollments"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      courses: {
-        Row: {
-          average_rating: number | null
-          category: string
-          certificate_enabled: boolean | null
-          created_at: string | null
-          currency: string | null
-          delivery_mode: string
-          delivery_type: string
-          description: string
-          duration_hours: number | null
-          duration_text: string | null
-          has_assessment: boolean | null
-          id: string
-          is_featured: boolean | null
-          is_free: boolean | null
-          language: string | null
-          learning_outcomes: string[] | null
-          level: string | null
-          passing_score: number | null
-          prerequisites: string[] | null
-          price: number | null
-          provider_id: string
-          search_vector: unknown
-          short_description: string | null
-          slug: string
-          status: string | null
-          subcategory: string | null
-          tags: string[] | null
-          target_audience: string[] | null
-          thumbnail_url: string | null
-          title: string
-          total_completions: number | null
-          total_enrollments: number | null
-          total_reviews: number | null
-          updated_at: string | null
-          video_preview_url: string | null
-        }
-        Insert: {
-          average_rating?: number | null
-          category: string
-          certificate_enabled?: boolean | null
-          created_at?: string | null
-          currency?: string | null
-          delivery_mode: string
-          delivery_type: string
-          description: string
-          duration_hours?: number | null
-          duration_text?: string | null
-          has_assessment?: boolean | null
-          id?: string
-          is_featured?: boolean | null
-          is_free?: boolean | null
-          language?: string | null
-          learning_outcomes?: string[] | null
-          level?: string | null
-          passing_score?: number | null
-          prerequisites?: string[] | null
-          price?: number | null
-          provider_id: string
-          search_vector?: unknown
-          short_description?: string | null
-          slug: string
-          status?: string | null
-          subcategory?: string | null
-          tags?: string[] | null
-          target_audience?: string[] | null
-          thumbnail_url?: string | null
-          title: string
-          total_completions?: number | null
-          total_enrollments?: number | null
-          total_reviews?: number | null
-          updated_at?: string | null
-          video_preview_url?: string | null
-        }
-        Update: {
-          average_rating?: number | null
-          category?: string
-          certificate_enabled?: boolean | null
-          created_at?: string | null
-          currency?: string | null
-          delivery_mode?: string
-          delivery_type?: string
-          description?: string
-          duration_hours?: number | null
-          duration_text?: string | null
-          has_assessment?: boolean | null
-          id?: string
-          is_featured?: boolean | null
-          is_free?: boolean | null
-          language?: string | null
-          learning_outcomes?: string[] | null
-          level?: string | null
-          passing_score?: number | null
-          prerequisites?: string[] | null
-          price?: number | null
-          provider_id?: string
-          search_vector?: unknown
-          short_description?: string | null
-          slug?: string
-          status?: string | null
-          subcategory?: string | null
-          tags?: string[] | null
-          target_audience?: string[] | null
-          thumbnail_url?: string | null
-          title?: string
-          total_completions?: number | null
-          total_enrollments?: number | null
-          total_reviews?: number | null
-          updated_at?: string | null
-          video_preview_url?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "courses_provider_id_fkey"
-            columns: ["provider_id"]
-            isOneToOne: false
-            referencedRelation: "learning_providers"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       credit_assessments: {
         Row: {
@@ -1428,6 +1525,44 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      csrf_tokens: {
+        Row: {
+          created_at: string | null
+          csrf_token: string
+          expires_at: string
+          id: string
+          is_used: boolean | null
+          session_id: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          csrf_token: string
+          expires_at: string
+          id?: string
+          is_used?: boolean | null
+          session_id: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          csrf_token?: string
+          expires_at?: string
+          id?: string
+          is_used?: boolean | null
+          session_id?: string
+          used_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "csrf_tokens_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "user_sessions"
+            referencedColumns: ["session_id"]
+          },
+        ]
       }
       email_cohort_mappings: {
         Row: {
@@ -1946,257 +2081,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      learning_badges: {
-        Row: {
-          badge_image_url: string | null
-          badge_type: string
-          created_at: string | null
-          criteria: Json
-          description: string | null
-          id: string
-          is_stackable: boolean | null
-          name: string
-          points: number | null
-        }
-        Insert: {
-          badge_image_url?: string | null
-          badge_type: string
-          created_at?: string | null
-          criteria: Json
-          description?: string | null
-          id?: string
-          is_stackable?: boolean | null
-          name: string
-          points?: number | null
-        }
-        Update: {
-          badge_image_url?: string | null
-          badge_type?: string
-          created_at?: string | null
-          criteria?: Json
-          description?: string | null
-          id?: string
-          is_stackable?: boolean | null
-          name?: string
-          points?: number | null
-        }
-        Relationships: []
-      }
-      learning_path_courses: {
-        Row: {
-          course_id: string
-          created_at: string | null
-          id: string
-          is_required: boolean | null
-          learning_path_id: string
-          sort_order: number | null
-        }
-        Insert: {
-          course_id: string
-          created_at?: string | null
-          id?: string
-          is_required?: boolean | null
-          learning_path_id: string
-          sort_order?: number | null
-        }
-        Update: {
-          course_id?: string
-          created_at?: string | null
-          id?: string
-          is_required?: boolean | null
-          learning_path_id?: string
-          sort_order?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "learning_path_courses_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "learning_path_courses_learning_path_id_fkey"
-            columns: ["learning_path_id"]
-            isOneToOne: false
-            referencedRelation: "learning_paths"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      learning_paths: {
-        Row: {
-          category: string
-          created_at: string | null
-          description: string | null
-          estimated_duration_hours: number | null
-          id: string
-          is_published: boolean | null
-          level: string | null
-          provider_id: string | null
-          thumbnail_url: string | null
-          title: string
-          total_courses: number | null
-          total_enrollments: number | null
-          updated_at: string | null
-        }
-        Insert: {
-          category: string
-          created_at?: string | null
-          description?: string | null
-          estimated_duration_hours?: number | null
-          id?: string
-          is_published?: boolean | null
-          level?: string | null
-          provider_id?: string | null
-          thumbnail_url?: string | null
-          title: string
-          total_courses?: number | null
-          total_enrollments?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          category?: string
-          created_at?: string | null
-          description?: string | null
-          estimated_duration_hours?: number | null
-          id?: string
-          is_published?: boolean | null
-          level?: string | null
-          provider_id?: string | null
-          thumbnail_url?: string | null
-          title?: string
-          total_courses?: number | null
-          total_enrollments?: number | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "learning_paths_provider_id_fkey"
-            columns: ["provider_id"]
-            isOneToOne: false
-            referencedRelation: "learning_providers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      learning_progress: {
-        Row: {
-          completed_at: string | null
-          created_at: string | null
-          enrollment_id: string
-          id: string
-          last_position: string | null
-          lesson_id: string
-          progress_percentage: number | null
-          status: string | null
-          time_spent_minutes: number | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          completed_at?: string | null
-          created_at?: string | null
-          enrollment_id: string
-          id?: string
-          last_position?: string | null
-          lesson_id: string
-          progress_percentage?: number | null
-          status?: string | null
-          time_spent_minutes?: number | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          completed_at?: string | null
-          created_at?: string | null
-          enrollment_id?: string
-          id?: string
-          last_position?: string | null
-          lesson_id?: string
-          progress_percentage?: number | null
-          status?: string | null
-          time_spent_minutes?: number | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "learning_progress_enrollment_id_fkey"
-            columns: ["enrollment_id"]
-            isOneToOne: false
-            referencedRelation: "course_enrollments"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "learning_progress_lesson_id_fkey"
-            columns: ["lesson_id"]
-            isOneToOne: false
-            referencedRelation: "course_lessons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      learning_providers: {
-        Row: {
-          accreditations: Json | null
-          average_rating: number | null
-          bio: string | null
-          created_at: string | null
-          id: string
-          is_verified: boolean | null
-          logo_url: string | null
-          organization_name: string
-          provider_status: string | null
-          revenue_share_percentage: number | null
-          specializations: string[] | null
-          total_courses: number | null
-          total_enrollments: number | null
-          updated_at: string | null
-          user_id: string
-          verification_date: string | null
-          website: string | null
-        }
-        Insert: {
-          accreditations?: Json | null
-          average_rating?: number | null
-          bio?: string | null
-          created_at?: string | null
-          id?: string
-          is_verified?: boolean | null
-          logo_url?: string | null
-          organization_name: string
-          provider_status?: string | null
-          revenue_share_percentage?: number | null
-          specializations?: string[] | null
-          total_courses?: number | null
-          total_enrollments?: number | null
-          updated_at?: string | null
-          user_id: string
-          verification_date?: string | null
-          website?: string | null
-        }
-        Update: {
-          accreditations?: Json | null
-          average_rating?: number | null
-          bio?: string | null
-          created_at?: string | null
-          id?: string
-          is_verified?: boolean | null
-          logo_url?: string | null
-          organization_name?: string
-          provider_status?: string | null
-          revenue_share_percentage?: number | null
-          specializations?: string[] | null
-          total_courses?: number | null
-          total_enrollments?: number | null
-          updated_at?: string | null
-          user_id?: string
-          verification_date?: string | null
-          website?: string | null
-        }
-        Relationships: []
       }
       listing_categories: {
         Row: {
@@ -4409,6 +4293,307 @@ export type Database = {
         }
         Relationships: []
       }
+      support_messages: {
+        Row: {
+          attachments: Json | null
+          created_at: string
+          edited_at: string | null
+          id: string
+          ip_address: unknown
+          is_edited: boolean | null
+          is_internal: boolean | null
+          is_read: boolean | null
+          message: string
+          metadata: Json | null
+          read_at: string | null
+          read_by: string | null
+          sender_id: string
+          sender_type: string
+          ticket_id: string
+          updated_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          attachments?: Json | null
+          created_at?: string
+          edited_at?: string | null
+          id?: string
+          ip_address?: unknown
+          is_edited?: boolean | null
+          is_internal?: boolean | null
+          is_read?: boolean | null
+          message: string
+          metadata?: Json | null
+          read_at?: string | null
+          read_by?: string | null
+          sender_id: string
+          sender_type: string
+          ticket_id: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          attachments?: Json | null
+          created_at?: string
+          edited_at?: string | null
+          id?: string
+          ip_address?: unknown
+          is_edited?: boolean | null
+          is_internal?: boolean | null
+          is_read?: boolean | null
+          message?: string
+          metadata?: Json | null
+          read_at?: string | null
+          read_by?: string | null
+          sender_id?: string
+          sender_type?: string
+          ticket_id?: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_ticket_activity: {
+        Row: {
+          activity_type: string
+          actor_id: string | null
+          actor_type: string
+          created_at: string
+          description: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_value: string | null
+          old_value: string | null
+          ticket_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          activity_type: string
+          actor_id?: string | null
+          actor_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_value?: string | null
+          old_value?: string | null
+          ticket_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          activity_type?: string
+          actor_id?: string | null
+          actor_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_value?: string | null
+          old_value?: string | null
+          ticket_id?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_ticket_activity_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          archived_at: string | null
+          assigned_at: string | null
+          assigned_to: string | null
+          category: string
+          created_at: string
+          customer_feedback: string | null
+          customer_rating: number | null
+          id: string
+          ip_address: unknown
+          is_archived: boolean | null
+          last_activity_at: string
+          metadata: Json | null
+          priority: string
+          rated_at: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          subject: string
+          ticket_number: string
+          updated_at: string
+          user_agent: string | null
+          user_email: string
+          user_id: string
+          user_name: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          assigned_at?: string | null
+          assigned_to?: string | null
+          category: string
+          created_at?: string
+          customer_feedback?: string | null
+          customer_rating?: number | null
+          id?: string
+          ip_address?: unknown
+          is_archived?: boolean | null
+          last_activity_at?: string
+          metadata?: Json | null
+          priority?: string
+          rated_at?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          subject: string
+          ticket_number: string
+          updated_at?: string
+          user_agent?: string | null
+          user_email: string
+          user_id: string
+          user_name?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          assigned_at?: string | null
+          assigned_to?: string | null
+          category?: string
+          created_at?: string
+          customer_feedback?: string | null
+          customer_rating?: number | null
+          id?: string
+          ip_address?: unknown
+          is_archived?: boolean | null
+          last_activity_at?: string
+          metadata?: Json | null
+          priority?: string
+          rated_at?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          subject?: string
+          ticket_number?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_email?: string
+          user_id?: string
+          user_name?: string | null
+        }
+        Relationships: []
+      }
+      token_fingerprints: {
+        Row: {
+          created_at: string | null
+          device_fingerprint: string
+          first_used_at: string
+          id: string
+          ip_address: unknown
+          is_revoked: boolean | null
+          last_used_at: string | null
+          revoke_reason: string | null
+          revoked_at: string | null
+          token_id: string
+          unique_devices: string[] | null
+          unique_ips: string[] | null
+          use_count: number | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          device_fingerprint: string
+          first_used_at: string
+          id?: string
+          ip_address: unknown
+          is_revoked?: boolean | null
+          last_used_at?: string | null
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          token_id: string
+          unique_devices?: string[] | null
+          unique_ips?: string[] | null
+          use_count?: number | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          device_fingerprint?: string
+          first_used_at?: string
+          id?: string
+          ip_address?: unknown
+          is_revoked?: boolean | null
+          last_used_at?: string | null
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          token_id?: string
+          unique_devices?: string[] | null
+          unique_ips?: string[] | null
+          use_count?: number | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      token_usage_events: {
+        Row: {
+          created_at: string | null
+          device_fingerprint: string | null
+          endpoint: string | null
+          id: string
+          ip_address: unknown
+          is_suspicious: boolean | null
+          suspicion_reasons: string[] | null
+          suspicion_score: number | null
+          token_id: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          device_fingerprint?: string | null
+          endpoint?: string | null
+          id?: string
+          ip_address: unknown
+          is_suspicious?: boolean | null
+          suspicion_reasons?: string[] | null
+          suspicion_score?: number | null
+          token_id: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          device_fingerprint?: string | null
+          endpoint?: string | null
+          id?: string
+          ip_address?: unknown
+          is_suspicious?: boolean | null
+          suspicion_reasons?: string[] | null
+          suspicion_score?: number | null
+          token_id?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number
@@ -4805,51 +4990,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_badges: {
-        Row: {
-          badge_id: string
-          course_id: string | null
-          earned_at: string | null
-          id: string
-          is_showcased: boolean | null
-          metadata: Json | null
-          user_id: string
-        }
-        Insert: {
-          badge_id: string
-          course_id?: string | null
-          earned_at?: string | null
-          id?: string
-          is_showcased?: boolean | null
-          metadata?: Json | null
-          user_id: string
-        }
-        Update: {
-          badge_id?: string
-          course_id?: string | null
-          earned_at?: string | null
-          id?: string
-          is_showcased?: boolean | null
-          metadata?: Json | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_badges_badge_id_fkey"
-            columns: ["badge_id"]
-            isOneToOne: false
-            referencedRelation: "learning_badges"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_badges_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -4868,6 +5008,57 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      user_sessions: {
+        Row: {
+          created_at: string | null
+          device_fingerprint: string | null
+          expires_at: string
+          id: string
+          ip_address: unknown
+          is_active: boolean | null
+          last_activity_at: string | null
+          mfa_verified: boolean | null
+          risk_level: string | null
+          session_id: string
+          terminated_at: string | null
+          termination_reason: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          device_fingerprint?: string | null
+          expires_at: string
+          id?: string
+          ip_address: unknown
+          is_active?: boolean | null
+          last_activity_at?: string | null
+          mfa_verified?: boolean | null
+          risk_level?: string | null
+          session_id: string
+          terminated_at?: string | null
+          termination_reason?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          device_fingerprint?: string | null
+          expires_at?: string
+          id?: string
+          ip_address?: unknown
+          is_active?: boolean | null
+          last_activity_at?: string | null
+          mfa_verified?: boolean | null
+          risk_level?: string | null
+          session_id?: string
+          terminated_at?: string | null
+          termination_reason?: string | null
+          user_agent?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -4942,6 +5133,22 @@ export type Database = {
       }
     }
     Views: {
+      chat_session_stats: {
+        Row: {
+          active_sessions: number | null
+          analyzed_count: number | null
+          avg_rating: number | null
+          avg_resolution_time_minutes: number | null
+          avg_risk_score: number | null
+          closed_sessions: number | null
+          resolved_sessions: number | null
+          security_flagged_count: number | null
+          sessions_last_24h: number | null
+          sessions_last_7d: number | null
+          waiting_sessions: number | null
+        }
+        Relationships: []
+      }
       public_profiles: {
         Row: {
           bio: string | null
@@ -4978,6 +5185,38 @@ export type Database = {
         }
         Relationships: []
       }
+      security_flagged_chat_sessions: {
+        Row: {
+          ai_detected_issues: Json | null
+          ai_risk_score: number | null
+          created_at: string | null
+          id: string | null
+          last_message_at: string | null
+          linked_incident_id: string | null
+          message_count: number | null
+          resolved_at: string | null
+          security_flag_reason: string | null
+          session_number: string | null
+          user_email: string | null
+          user_name: string | null
+        }
+        Relationships: []
+      }
+      support_ticket_stats: {
+        Row: {
+          avg_rating: number | null
+          avg_resolution_time_hours: number | null
+          closed_tickets: number | null
+          high_priority_tickets: number | null
+          in_progress_tickets: number | null
+          open_tickets: number | null
+          resolved_tickets: number | null
+          tickets_last_24h: number | null
+          tickets_last_7d: number | null
+          urgent_tickets: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_credits: {
@@ -4988,6 +5227,23 @@ export type Database = {
           p_user_id: string
         }
         Returns: undefined
+      }
+      analyze_chat_session: {
+        Args: {
+          p_ai_detected_issues?: Json
+          p_ai_recommended_actions?: Json
+          p_ai_risk_score?: number
+          p_ai_sentiment?: Json
+          p_ai_summary: string
+          p_analyzer_id: string
+          p_session_id: string
+        }
+        Returns: boolean
+      }
+      archive_old_tickets: { Args: never; Returns: number }
+      assign_ticket: {
+        Args: { p_actor_id: string; p_assignee_id: string; p_ticket_id: string }
+        Returns: boolean
       }
       calculate_funding_match_score: {
         Args: { funder_id_param: string; startup_id_param: string }
@@ -5001,6 +5257,10 @@ export type Database = {
         Args: { buyer_user_id_param: string; service_id_param: string }
         Returns: number
       }
+      cleanup_expired_csrf_tokens: { Args: never; Returns: number }
+      cleanup_expired_sessions: { Args: never; Returns: number }
+      cleanup_expired_tokens: { Args: never; Returns: number }
+      cleanup_old_auth_events: { Args: never; Returns: number }
       create_direct_conversation: {
         Args: { p_title: string; p_user1: string; p_user2: string }
         Returns: string
@@ -5018,6 +5278,16 @@ export type Database = {
         }
         Returns: undefined
       }
+      delete_old_archived_tickets: { Args: never; Returns: number }
+      flag_chat_security: {
+        Args: {
+          p_create_incident?: boolean
+          p_flag_reason: string
+          p_flagged_by: string
+          p_session_id: string
+        }
+        Returns: string
+      }
       generate_mentor_matches_for_user: {
         Args: { user_id_param: string }
         Returns: number
@@ -5030,6 +5300,17 @@ export type Database = {
           query_text: string
           state: string
           wait_event: string
+        }[]
+      }
+      get_active_sessions: {
+        Args: { p_user_id: string }
+        Returns: {
+          created_at: string
+          device_fingerprint: string
+          ip_address: unknown
+          last_activity_at: string
+          mfa_verified: boolean
+          session_id: string
         }[]
       }
       get_database_stats: {
@@ -5149,12 +5430,51 @@ export type Database = {
         Args: { _startup_id: string; _user_id: string }
         Returns: boolean
       }
+      log_auth_event: {
+        Args: {
+          p_event_category: string
+          p_event_type: string
+          p_ip_address?: unknown
+          p_metadata?: Json
+          p_severity: string
+          p_user_id: string
+        }
+        Returns: string
+      }
+      log_chat_activity: {
+        Args: {
+          p_activity_type: string
+          p_actor_id: string
+          p_actor_type: string
+          p_description?: string
+          p_new_value?: string
+          p_old_value?: string
+          p_session_id: string
+        }
+        Returns: string
+      }
+      log_ticket_activity: {
+        Args: {
+          p_activity_type: string
+          p_actor_id: string
+          p_actor_type: string
+          p_description?: string
+          p_new_value?: string
+          p_old_value?: string
+          p_ticket_id: string
+        }
+        Returns: string
+      }
       recalculate_mentor_rating: {
         Args: { p_mentor_user_id: string }
         Returns: {
           new_rating: number
           total_reviews: number
         }[]
+      }
+      revoke_token: {
+        Args: { p_reason?: string; p_token_id: string }
+        Returns: boolean
       }
       search_all: {
         Args: { result_limit?: number; search_query: string }
@@ -5165,6 +5485,14 @@ export type Database = {
           result_type: string
           title: string
         }[]
+      }
+      terminate_session: {
+        Args: { p_reason?: string; p_session_id: string }
+        Returns: boolean
+      }
+      update_ticket_status: {
+        Args: { p_actor_id: string; p_new_status: string; p_ticket_id: string }
+        Returns: boolean
       }
     }
     Enums: {
@@ -5180,7 +5508,7 @@ export type Database = {
         | "software_provider"
         | "software_provider_pending"
         | "mentorship_admin"
-        | "learning_provider"
+        | "support_agent"
       application_status:
         | "draft"
         | "submitted"
@@ -5417,6 +5745,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       access_level: ["public", "registered", "cohort_only", "premium"],
@@ -5431,7 +5762,7 @@ export const Constants = {
         "software_provider",
         "software_provider_pending",
         "mentorship_admin",
-        "learning_provider",
+        "support_agent",
       ],
       application_status: [
         "draft",

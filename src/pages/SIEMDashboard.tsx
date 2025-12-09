@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Play, FileText, Download, TrendingUp, Activity, Database, Network } from "lucide-react";
+import { Search, Play, FileText, Download, TrendingUp, Activity, Database, Network, MessageCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SecurityEvent {
   id: string;
@@ -47,6 +48,7 @@ const SIEMDashboard = () => {
   const [eventType, setEventType] = useState("all");
   const [showQueryBuilder, setShowQueryBuilder] = useState(false);
   const [searchResults, setSearchResults] = useState<SecurityEvent[]>([]);
+  const [chatSecurityEvents, setChatSecurityEvents] = useState<any[]>([]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -60,18 +62,67 @@ const SIEMDashboard = () => {
         return;
       }
       setIsAuthorized(true);
+      loadChatSecurityEvents();
     };
     checkAuth();
   }, [user, hasRole, navigate]);
 
-  // Mock security events data
-  const mockEvents: SecurityEvent[] = [
+  const loadChatSecurityEvents = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('chat_session_activity')
+        .select(`
+          *,
+          chat_sessions (
+            session_number,
+            user_email,
+            ai_risk_score,
+            security_flag_reason
+          )
+        `)
+        .in('activity_type', ['security_flagged', 'analyzed', 'incident_created'])
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      if (error) throw error;
+      
+      // Transform to security events format
+      const transformedEvents = (data || []).map(activity => ({
+        id: activity.id,
+        event_timestamp: activity.created_at,
+        event_type: 'chat_security',
+        sub_type: activity.activity_type,
+        severity: 
+          activity.activity_type === 'incident_created' ? 'critical' as const :
+          activity.activity_type === 'security_flagged' ? 'high' as const :
+          'medium' as const,
+        user_email: activity.chat_sessions?.user_email,
+        action: `Chat ${activity.activity_type}`,
+        outcome: 'logged',
+        details: {
+          session_number: activity.chat_sessions?.session_number,
+          description: activity.description,
+          flag_reason: activity.chat_sessions?.security_flag_reason
+        },
+        ai_risk_score: activity.chat_sessions?.ai_risk_score,
+        source_ip: null
+      }));
+
+      setChatSecurityEvents(transformedEvents);
+    } catch (error) {
+      console.error('Error loading chat security events:', error);
+    }
+  };
+
+  // Combine mock events with real chat security events
+  const allEvents = [
+    ...chatSecurityEvents,
     {
       id: "1",
       event_timestamp: "2025-12-01T17:45:23Z",
       event_type: "authentication",
       sub_type: "login_attempt",
-      severity: "medium",
+      severity: "medium" as const,
       user_email: "user@example.com",
       source_ip: "192.0.2.100",
       action: "login",
@@ -132,7 +183,9 @@ const SIEMDashboard = () => {
       details: { rate_limit_hit: true, requests_per_minute: 120 },
       ai_risk_score: 55
     }
-  ];
+  ].sort((a, b) => new Date(b.event_timestamp).getTime() - new Date(a.event_timestamp).getTime());
+
+  const mockEvents = allEvents;
 
   const queryTemplates: QueryTemplate[] = [
     {
@@ -215,6 +268,18 @@ ORDER BY correlation_id, event_timestamp;`
       informational: "bg-gray-500"
     };
     return colors[severity as keyof typeof colors] || "bg-gray-500";
+  };
+
+  const getEventIcon = (eventType: string) => {
+    if (eventType === 'chat_security') {
+      return <MessageCircle className="w-4 h-4" />;
+    } else if (eventType === 'database_access') {
+      return <Database className="w-4 h-4" />;
+    } else if (eventType === 'api_access') {
+      return <Network className="w-4 h-4" />;
+    } else {
+      return <Activity className="w-4 w-4" />;
+    }
   };
 
   if (!isAuthorized) {
@@ -422,13 +487,21 @@ ORDER BY correlation_id, event_timestamp;`
               <CardContent>
                 <div className="space-y-2">
                   {mockEvents.map((event) => (
-                    <Card key={event.id} className="hover:bg-accent/50 transition-colors cursor-pointer">
+                    <Card 
+                      key={event.id} 
+                      className={`hover:bg-accent/50 transition-colors cursor-pointer ${
+                        event.event_type === 'chat_security' ? 'border-l-4 border-l-orange-500' : ''
+                      }`}
+                    >
                       <CardContent className="pt-4">
                         <div className="flex items-start gap-4">
                           <div className={`w-2 h-full ${getSeverityColor(event.severity)} rounded`}></div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
-                              <Badge variant="outline">{event.event_type}</Badge>
+                              <div className="flex items-center gap-1">
+                                {getEventIcon(event.event_type)}
+                                <Badge variant="outline">{event.event_type}</Badge>
+                              </div>
                               <Badge variant="secondary">{event.sub_type}</Badge>
                               {event.ai_risk_score && event.ai_risk_score > 50 && (
                                 <Badge className="bg-red-100 text-red-800">

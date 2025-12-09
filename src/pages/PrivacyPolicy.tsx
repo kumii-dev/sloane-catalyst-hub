@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
             </CardHeader>
             <CardContent className="prose prose-sm max-w-none space-y-4">
               <p>
-                Kumii Marketplace (Pty) Ltd ("we", "us", "our") is committed to protecting your privacy and 
+                Kumii (Pty) Ltd ("we", "us", "our") is committed to protecting your privacy and 
                 complying with the Protection of Personal Information Act, 2013 (POPIA). This Privacy Policy 
                 explains how we collect, use, disclose, and safeguard your personal information when you use 
                 our platform.
@@ -147,7 +147,7 @@ const PrivacyPolicy = () => {
                 <li><strong>Lodge a complaint:</strong> Submit a complaint to the Information Regulator</li>
               </ul>
               <p className="mt-4">
-                To exercise these rights, contact us at privacy@kumii.co.za
+                To exercise these rights, contact us at info@kumii.africa
               </p>
             </CardContent>
           </Card>
@@ -253,11 +253,11 @@ const PrivacyPolicy = () => {
                 For questions about this Privacy Policy or to exercise your rights, please contact us:
               </p>
               <div className="bg-muted p-4 rounded-lg">
-                <p className="font-semibold">Kumii Marketplace (Pty) Ltd</p>
+                <p className="font-semibold">Kumii (Pty) Ltd</p>
                 <p>Privacy Officer</p>
-                <p>Email: privacy@kumii.co.za</p>
+                <p>Email: info@kumii.africa</p>
                 <p>Phone: 011 463 7602</p>
-                <p>Address: Johannesburg, South Africa</p>
+                <p>Address: Cnr Winnie Mandela Drive and Sloane Street, Bryanston, 2191, Johannesburg, South Africa</p>
               </div>
             </CardContent>
           </Card>

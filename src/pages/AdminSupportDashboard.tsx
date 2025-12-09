@@ -97,17 +97,31 @@ const AdminSupportDashboard = () => {
         .from('user_roles')
         .select('role')
         .eq('user_id', user.id)
-        .in('role', ['admin', 'support_agent'])
-        .single();
+        .in('role', ['admin', 'support_agent']);
 
-      if (error || !data) {
+      if (error) {
+        console.error('Error checking roles:', error);
         toast({
           title: 'Access Denied',
           description: 'You do not have permission to access this page',
           variant: 'destructive'
         });
         navigate('/');
+        return;
       }
+
+      if (!data || data.length === 0) {
+        toast({
+          title: 'Access Denied',
+          description: 'You need admin or support agent role to access this page',
+          variant: 'destructive'
+        });
+        navigate('/');
+        return;
+      }
+
+      // User has at least one of the required roles
+      setLoading(false);
     } catch (error) {
       console.error('Error checking admin access:', error);
       navigate('/');

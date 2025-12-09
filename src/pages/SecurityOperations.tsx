@@ -4,15 +4,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
   Shield, AlertTriangle, Activity, TrendingUp, Clock, 
   CheckCircle2, XCircle, AlertCircle, Eye, Bot, 
-  Zap, FileText, BarChart3, Settings
+  Zap, FileText, BarChart3, Settings, MessageCircle
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const SecurityOperations = () => {
   const { user, hasRole } = useAuth();
@@ -21,6 +23,10 @@ const SecurityOperations = () => {
   const [mtta, setMtta] = useState("4.2");
   const [mttr, setMttr] = useState("18.5");
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [flaggedChats, setFlaggedChats] = useState<any[]>([]);
+  const [selectedChat, setSelectedChat] = useState<any>(null);
+  const [chatDialogOpen, setChatDialogOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -39,10 +45,64 @@ const SecurityOperations = () => {
       }
       
       setIsAuthorized(true);
+      loadFlaggedChats();
+      subscribeToFlaggedChats();
     };
 
     checkAuth();
   }, [user, hasRole, navigate]);
+
+  const loadFlaggedChats = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('security_flagged_chat_sessions')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+      setFlaggedChats(data || []);
+    } catch (error) {
+      console.error('Error loading flagged chats:', error);
+    }
+  };
+
+  const subscribeToFlaggedChats = () => {
+    const channel = supabase
+      .channel('flagged_chats_monitor')
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'chat_sessions',
+        filter: 'security_flagged=eq.true'
+      }, (payload) => {
+        toast.error('🚨 New security-flagged chat session detected!');
+        loadFlaggedChats();
+      })
+      .subscribe();
+
+    return () => supabase.removeChannel(channel);
+  };
+
+  const handleViewChatDetails = async (chat: any) => {
+    setSelectedChat(chat);
+    setChatDialogOpen(true);
+    
+    // Load messages for this session
+    try {
+      const { data, error } = await supabase
+        .from('chat_messages')
+        .select('*')
+        .eq('session_id', chat.id)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+      setChatMessages(data || []);
+    } catch (error) {
+      console.error('Error loading chat messages:', error);
+      toast.error('Failed to load chat messages');
+    }
+  };
 
   if (!isAuthorized) {
     return null; // or a loading spinner
@@ -370,6 +430,86 @@ const SecurityOperations = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Flagged Chat Sessions */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <MessageCircle className="h-5 w-5" />
+                      Security-Flagged Chat Sessions
+                    </CardTitle>
+                    <CardDescription>
+                      Live chat sessions flagged for security review
+                    </CardDescription>
+                  </div>
+                  <Badge variant="destructive" className="text-lg px-3 py-1">
+                    {flaggedChats.length} Flagged
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {flaggedChats.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <CheckCircle2 className="w-12 h-12 mx-auto mb-2 text-green-500" />
+                    <p>No security-flagged chat sessions</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {flaggedChats.map((chat) => (
+                      <Card key={chat.id} className="border-l-4 border-l-red-500">
+                        <CardContent className="pt-4">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Badge variant="outline" className="font-mono text-xs">
+                                  {chat.session_number}
+                                </Badge>
+                                {chat.ai_risk_score && (
+                                  <Badge 
+                                    variant={
+                                      chat.ai_risk_score > 75 ? "destructive" : 
+                                      chat.ai_risk_score > 50 ? "default" : 
+                                      "secondary"
+                                    }
+                                  >
+                                    Risk: {chat.ai_risk_score}/100
+                                  </Badge>
+                                )}
+                                <Badge variant="outline">
+                                  {chat.message_count} messages
+                                </Badge>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="text-sm font-medium">
+                                  User: {chat.user_name || chat.user_email}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                  <AlertTriangle className="w-3 h-3 inline mr-1" />
+                                  {chat.security_flag_reason}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  Flagged: {new Date(chat.created_at).toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleViewChatDetails(chat)}
+                            >
+                              <Eye className="w-4 h-4 mr-1" />
+                              View
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Threat Intelligence Tab */}
@@ -554,6 +694,98 @@ const SecurityOperations = () => {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Chat Details Dialog */}
+        <Dialog open={chatDialogOpen} onOpenChange={setChatDialogOpen}>
+          <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Chat Session Details</DialogTitle>
+              <DialogDescription>
+                {selectedChat?.session_number} - Security Flagged Session
+              </DialogDescription>
+            </DialogHeader>
+            
+            {selectedChat && (
+              <div className="space-y-4 mt-4">
+                {/* Session Info */}
+                <div className="grid grid-cols-2 gap-4 p-4 bg-muted rounded-lg">
+                  <div>
+                    <div className="text-xs text-muted-foreground">User</div>
+                    <div className="font-medium">{selectedChat.user_email}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground">Risk Score</div>
+                    <Badge variant={selectedChat.ai_risk_score > 75 ? "destructive" : "default"}>
+                      {selectedChat.ai_risk_score}/100
+                    </Badge>
+                  </div>
+                  <div className="col-span-2">
+                    <div className="text-xs text-muted-foreground mb-1">Security Concern</div>
+                    <div className="text-sm">{selectedChat.security_flag_reason}</div>
+                  </div>
+                  {selectedChat.ai_detected_issues && selectedChat.ai_detected_issues.length > 0 && (
+                    <div className="col-span-2">
+                      <div className="text-xs text-muted-foreground mb-1">Detected Issues</div>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedChat.ai_detected_issues.map((issue: any, idx: number) => (
+                          <Badge key={idx} variant="outline" className="text-xs">
+                            {issue.issue || issue}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Messages */}
+                <div>
+                  <h4 className="font-semibold mb-3">Chat Messages ({chatMessages.length})</h4>
+                  <ScrollArea className="h-[300px] border rounded-lg p-4">
+                    <div className="space-y-3">
+                      {chatMessages.map((message) => (
+                        <div
+                          key={message.id}
+                          className={`p-3 rounded-lg ${
+                            message.sender_type === 'customer'
+                              ? 'bg-primary/10 ml-8'
+                              : 'bg-muted mr-8'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <Badge variant="outline" className="text-xs">
+                              {message.sender_type}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(message.created_at).toLocaleTimeString()}
+                            </span>
+                          </div>
+                          <p className="text-sm whitespace-pre-wrap">{message.message}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+
+                {/* Actions */}
+                <div className="flex justify-between pt-4 border-t">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setChatDialogOpen(false);
+                      navigate('/incident-management');
+                    }}
+                  >
+                    <AlertTriangle className="w-4 h-4 mr-2" />
+                    Create Incident
+                  </Button>
+                  <Button variant="outline" onClick={() => setChatDialogOpen(false)}>
+                    Close
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
   );

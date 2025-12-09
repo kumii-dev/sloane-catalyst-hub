@@ -25,7 +25,7 @@ const TermsAndConditions = () => {
                 If you do not agree with these Terms, you must not use our Services.
               </p>
               <p>
-                Kumii Marketplace (Pty) Ltd is a company registered in South Africa and operates in accordance 
+                Kumii (Pty) Ltd is a company registered in South Africa and operates in accordance 
                 with South African law.
               </p>
             </CardContent>
@@ -218,7 +218,7 @@ const TermsAndConditions = () => {
               <h4 className="font-semibold mt-4">8.3 Copyright Infringement</h4>
               <p>
                 We respect intellectual property rights. If you believe content infringes your copyright, 
-                contact us at legal@kumii.co.za with details of the alleged infringement.
+                contact us at info@kumii.africa with details of the alleged infringement.
               </p>
             </CardContent>
           </Card>
@@ -396,11 +396,11 @@ const TermsAndConditions = () => {
                 For questions, concerns, or notices regarding these Terms, please contact:
               </p>
               <div className="bg-muted p-4 rounded-lg">
-                <p className="font-semibold">Kumii Marketplace (Pty) Ltd</p>
+                <p className="font-semibold">Kumii (Pty) Ltd</p>
                 <p>Legal Department</p>
-                <p>Email: legal@kumii.co.za</p>
+                <p>Email: info@kumii.africa</p>
                 <p>Phone: 011 463 7602</p>
-                <p>Address: Johannesburg, South Africa</p>
+                <p>Address: Cnr Winnie Mandela Drive and Sloane Street, Bryanston, 2191, Johannesburg, South Africa</p>
               </div>
             </CardContent>
           </Card>

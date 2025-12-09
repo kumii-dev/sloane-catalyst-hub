@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 import microsoftLogo from "@/assets/microsoft-logo.png";
 import nedbankLogo from "@/assets/nedbank-logo.png";
+import oldmutualLogo from "@/assets/oldmutual-logo.png";
 const Hero = () => {
   return <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -80,7 +81,7 @@ const Hero = () => {
                 <span className="text-white font-semibold text-base sm:text-lg">Mentorship & Learning</span>
               </div>
             </Link>
-            <Link to="/copilot" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
+            <Link to="/services/category/software-services" className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 hover:scale-105 transition-all cursor-pointer group">
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="rounded-xl p-2 sm:p-3 flex-shrink-0 group-hover:shadow-lg transition-all" style={{
                 backgroundColor: 'hsl(15 80% 70%)'
@@ -111,7 +112,7 @@ const Hero = () => {
               </Link>
             </Button>
             <Button variant="hero-outline" size="lg" className="text-lg px-8 py-4" asChild>
-              <Link to="/auth">
+              <Link to="/access-to-market">
                 Explore Services
               </Link>
             </Button>
@@ -131,7 +132,7 @@ const Hero = () => {
                 <span className="text-white font-bold text-xl">African Bank</span>
               </div>
               <div className="bg-white/10 backdrop-blur-sm px-6 py-4 rounded-lg border border-white/20 hover:bg-white/15 transition-all">
-                <img src={nedbankLogo} alt="Nedbank" className="h-8 opacity-90 hover:opacity-100 transition-opacity" />
+                <img src={oldmutualLogo} alt="Oldmutual" className="h-8 opacity-90 hover:opacity-100 transition-opacity" />
               </div>
             </div>
           </div>
@@ -139,8 +140,8 @@ const Hero = () => {
       </div>
 
       {/* Floating Elements */}
-      <div className="absolute top-20 left-10 w-20 h-20 bg-accent/20 rounded-full animate-float" />
-      <div className="absolute bottom-20 right-10 w-32 h-32 bg-white/10 rounded-full animate-float" style={{
+      <div className="hidden absolute top-20 left-10 w-20 h-20 bg-accent/20 rounded-full animate-float" />
+      <div className="hidden absolute bottom-20 right-10 w-32 h-32 bg-white/10 rounded-full animate-float" style={{
       animationDelay: '2s'
     }} />
     </section>;

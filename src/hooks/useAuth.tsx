@@ -49,15 +49,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .from('user_roles')
         .select('role')
         .eq('user_id', user.id)
-        .eq('role', role as any)
-        .single();
+        .eq('role', role as any);
       
-      if (error && error.code !== 'PGRST116') { // PGRST116 is "no rows returned"
+      if (error) {
         console.error('Error checking user role:', error);
         return false;
       }
       
-      return !!data;
+      return data && data.length > 0;
     } catch (error) {
       console.error('Exception checking user role:', error);
       return false;

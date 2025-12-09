@@ -12,7 +12,7 @@ const HelpCenter = () => {
   const faqs = [
     {
       question: "How do I register on the Kumii platform?",
-      answer: "Click on the 'Sign Up' button on the homepage, choose your user type (Startup, Service Provider, Mentor, or Funder), and complete the registration form with your details."
+      answer: "Click on the 'Sign Up' button on the homepage, choose your user type (Startup, Service Provider, Mentor, or Funder), and complete the registration form and your profile” with your details."
     },
     {
       question: "How do I book a mentorship session?",

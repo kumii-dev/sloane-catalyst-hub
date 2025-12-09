@@ -33,10 +33,9 @@ const PerformanceDashboard = () => {
       .from("user_roles")
       .select("role")
       .eq("user_id", user.id)
-      .eq("role", "admin")
-      .single();
+      .in("role", ["admin", "support_agent"]);
 
-    if (error || !data) {
+    if (error || !data || data.length === 0) {
       toast({ title: "Access denied", description: "Admin privileges required", variant: "destructive" });
       navigate("/");
       return;

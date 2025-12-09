@@ -67,11 +67,11 @@ const Footer = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm">
                   <MapPin className="h-4 w-4 text-accent flex-shrink-0" />
-                  <span>22 on Sloane, Corner of Sloane & Sherborne Street, Bryanston, Johannesburg, 2021, South Africa</span>
+                  <span>22 On Sloane, Cnr of Sloane & Winnie Mandela Street, Bryanston, Johannesburg, 2191, South Africa</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Mail className="h-4 w-4 text-accent flex-shrink-0" />
-                  <span>info@localhost</span>
+                  <span>info@kumi.africa</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Phone className="h-4 w-4 text-accent flex-shrink-0" />

@@ -20,7 +20,7 @@ export default function UserManagement() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<any[]>([]);
   const [adminEmail, setAdminEmail] = useState('');
-  const [selectedRole, setSelectedRole] = useState<'admin' | 'mentorship_admin'>('admin');
+  const [selectedRole, setSelectedRole] = useState<string>('admin');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -50,10 +50,9 @@ export default function UserManagement() {
       .from('user_roles')
       .select('role')
       .eq('user_id', user.id)
-      .eq('role', 'admin')
-      .single();
+      .in('role', ['admin', 'support_agent']);
 
-    if (error || !data) {
+    if (error || !data || data.length === 0) {
       toast.error('Access denied. Admin privileges required.');
       navigate('/');
       return;
@@ -113,7 +112,7 @@ export default function UserManagement() {
       .from('user_roles')
       .insert({
         user_id: targetUser.user_id,
-        role: selectedRole
+        role: selectedRole as any
       });
 
     if (error) {
@@ -126,7 +125,21 @@ export default function UserManagement() {
       return;
     }
 
-    toast.success(`${adminEmail} has been granted ${selectedRole === 'admin' ? 'Admin' : 'Mentorship Admin'} access`);
+    const roleNames: Record<string, string> = {
+      admin: 'Admin',
+      mentorship_admin: 'Mentorship Admin',
+      support_agent: 'Support Agent',
+      mentor: 'Mentor',
+      advisor: 'Advisor',
+      funder: 'Funder',
+      startup: 'Startup',
+      smme: 'SMME',
+      service_provider: 'Service Provider',
+      software_provider: 'Software Provider',
+      learning_provider: 'Learning Provider'
+    };
+
+    toast.success(`${adminEmail} has been granted ${roleNames[selectedRole] || selectedRole} access`);
     setAdminEmail('');
     setSelectedRole('admin');
     fetchUsers();
@@ -135,7 +148,15 @@ export default function UserManagement() {
   const revokeAdmin = (userId: string, email: string) => {
     setConfirmAction({
       type: 'revokeAdmin',
-      data: { userId, email }
+      data: { userId, email, role: 'admin' }
+    });
+    setShowConfirmDialog(true);
+  };
+
+  const revokeRole = (userId: string, email: string, role: string) => {
+    setConfirmAction({
+      type: 'revokeRole',
+      data: { userId, email, role }
     });
     setShowConfirmDialog(true);
   };
@@ -157,6 +178,37 @@ export default function UserManagement() {
     fetchUsers();
   };
 
+  const executeRevokeRole = async (userId: string, email: string, role: string) => {
+    const { error } = await supabase
+      .from('user_roles')
+      .delete()
+      .eq('user_id', userId)
+      .eq('role', role as any);
+
+    if (error) {
+      toast.error(`Failed to revoke ${role} role`);
+      console.error(error);
+      return;
+    }
+
+    const roleNames: Record<string, string> = {
+      admin: 'Admin',
+      mentorship_admin: 'Mentorship Admin',
+      support_agent: 'Support Agent',
+      mentor: 'Mentor',
+      advisor: 'Advisor',
+      funder: 'Funder',
+      startup: 'Startup',
+      smme: 'SMME',
+      service_provider: 'Service Provider',
+      software_provider: 'Software Provider',
+      learning_provider: 'Learning Provider'
+    };
+
+    toast.success(`${roleNames[role] || role} role revoked for ${email}`);
+    fetchUsers();
+  };
+
   const handleConfirmAction = () => {
     if (!confirmAction) return;
 
@@ -164,6 +216,8 @@ export default function UserManagement() {
       executeToggleUserStatus(confirmAction.data.userId, confirmAction.data.currentStatus, confirmAction.data.email);
     } else if (confirmAction.type === 'revokeAdmin') {
       executeRevokeAdmin(confirmAction.data.userId, confirmAction.data.email);
+    } else if (confirmAction.type === 'revokeRole') {
+      executeRevokeRole(confirmAction.data.userId, confirmAction.data.email, confirmAction.data.role);
     }
 
     setShowConfirmDialog(false);
@@ -302,6 +356,8 @@ export default function UserManagement() {
     active: users.filter(u => u.is_active).length,
     disabled: users.filter(u => !u.is_active).length,
     admins: users.filter(u => u.roles.includes('admin')).length,
+    supportAgents: users.filter(u => u.roles.includes('support_agent')).length,
+    mentorshipAdmins: users.filter(u => u.roles.includes('mentorship_admin')).length,
     startups: users.filter(u => u.persona_type === 'startup_founder').length,
     mentors: users.filter(u => u.persona_type === 'mentor').length,
     providers: users.filter(u => u.persona_type === 'service_provider').length,
@@ -357,6 +413,22 @@ export default function UserManagement() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.admins}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Support Agents</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.supportAgents}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Mentorship Admins</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.mentorshipAdmins}</div>
             </CardContent>
           </Card>
           <Card>
@@ -490,12 +562,22 @@ export default function UserManagement() {
                             )}
                           </TableCell>
                           <TableCell>
-                            <div className="flex gap-1">
+                            <div className="flex gap-1 flex-wrap">
                               {u.roles.map((role: string) => (
-                                <Badge key={role} variant="secondary">
-                                  {role}
+                                <Badge key={role} variant="secondary" className="cursor-pointer group">
+                                  <span>{role}</span>
+                                  <button
+                                    onClick={() => revokeRole(u.user_id, u.email, role)}
+                                    className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    title={`Revoke ${role} role`}
+                                  >
+                                    ×
+                                  </button>
                                 </Badge>
                               ))}
+                              {u.roles.length === 0 && (
+                                <span className="text-sm text-muted-foreground">No roles</span>
+                              )}
                             </div>
                           </TableCell>
                           <TableCell>
@@ -574,13 +656,22 @@ export default function UserManagement() {
                 <div className="space-y-4 mb-6">
                   <div>
                     <Label htmlFor="role-select">Role Type</Label>
-                    <Select value={selectedRole} onValueChange={(v) => setSelectedRole(v as 'admin' | 'mentorship_admin')}>
+                    <Select value={selectedRole} onValueChange={setSelectedRole}>
                       <SelectTrigger id="role-select">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="admin">Full Admin</SelectItem>
+                        <SelectItem value="support_agent">Support Agent</SelectItem>
                         <SelectItem value="mentorship_admin">Mentorship Admin</SelectItem>
+                        <SelectItem value="mentor">Mentor</SelectItem>
+                        <SelectItem value="advisor">Advisor</SelectItem>
+                        <SelectItem value="funder">Funder</SelectItem>
+                        <SelectItem value="startup">Startup</SelectItem>
+                        <SelectItem value="smme">SMME</SelectItem>
+                        <SelectItem value="service_provider">Service Provider</SelectItem>
+                        <SelectItem value="software_provider">Software Provider</SelectItem>
+                        <SelectItem value="learning_provider">Learning Provider</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
